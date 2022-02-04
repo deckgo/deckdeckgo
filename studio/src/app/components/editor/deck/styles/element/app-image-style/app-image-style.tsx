@@ -32,7 +32,7 @@ export class AppImageStyle {
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private currentImageSize: ImageSize;
@@ -75,22 +75,22 @@ export class AppImageStyle {
   }
 
   private async initCSS() {
-    this.imageHeightCSS = this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-height');
-    this.imageJustifyContentCSS = this.selectedElement.style.getPropertyValue('justify-content');
+    this.imageHeightCSS = this.selectedTarget.style.getPropertyValue('--deckgo-lazy-img-height');
+    this.imageJustifyContentCSS = this.selectedTarget.style.getPropertyValue('justify-content');
   }
 
   private initImageSize(): Promise<ImageSize> {
     return new Promise<ImageSize>((resolve) => {
-      if (!this.selectedElement || !this.selectedElement.style) {
+      if (!this.selectedTarget || !this.selectedTarget.style) {
         resolve(null);
         return;
       }
 
-      if (this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-height') === '25%') {
+      if (this.selectedTarget.style.getPropertyValue('--deckgo-lazy-img-height') === '25%') {
         resolve(ImageSize.SMALL);
-      } else if (this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-height') === '50%') {
+      } else if (this.selectedTarget.style.getPropertyValue('--deckgo-lazy-img-height') === '50%') {
         resolve(ImageSize.MEDIUM);
-      } else if (this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-height') === '75%') {
+      } else if (this.selectedTarget.style.getPropertyValue('--deckgo-lazy-img-height') === '75%') {
         resolve(ImageSize.LARGE);
       } else {
         resolve(ImageSize.ORIGINAL);
@@ -100,16 +100,16 @@ export class AppImageStyle {
 
   private initImageAlignment(): Promise<ImageAlignment> {
     return new Promise<ImageAlignment>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.style) {
+      if (!this.selectedTarget || !this.selectedTarget.style) {
         resolve(null);
         return;
       }
 
-      if (this.selectedElement.style.getPropertyValue('justify-content') === 'center') {
+      if (this.selectedTarget.style.getPropertyValue('justify-content') === 'center') {
         resolve(ImageAlignment.CENTER);
-      } else if (this.selectedElement.style.getPropertyValue('justify-content') === 'flex-end') {
+      } else if (this.selectedTarget.style.getPropertyValue('justify-content') === 'flex-end') {
         resolve(ImageAlignment.END);
-      } else if (this.selectedElement.style.getPropertyValue('justify-content') === 'flex-start') {
+      } else if (this.selectedTarget.style.getPropertyValue('justify-content') === 'flex-start') {
         resolve(ImageAlignment.START);
       } else {
         const result: ImageAlignment = await this.findSlideDefaultAlignment();
@@ -120,7 +120,7 @@ export class AppImageStyle {
 
   private findSlideDefaultAlignment(): Promise<ImageAlignment> {
     return new Promise<ImageAlignment>((resolve) => {
-      const parent: HTMLElement = this.selectedElement.parentElement;
+      const parent: HTMLElement = this.selectedTarget.parentElement;
 
       if (isSlide(parent)) {
         const container: HTMLElement = parent.shadowRoot.querySelector('.deckgo-slide');
@@ -145,7 +145,7 @@ export class AppImageStyle {
 
     this.currentImageSize = $event.detail.value;
 
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -164,7 +164,7 @@ export class AppImageStyle {
 
     this.currentImageAlignment = $event.detail.value;
 
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -186,7 +186,7 @@ export class AppImageStyle {
       return;
     }
 
-    setStyle(this.selectedElement, {
+    setStyle(this.selectedTarget, {
       properties,
       type: 'element',
       updateUI: async (_value: string) => {
@@ -202,7 +202,7 @@ export class AppImageStyle {
       }
     });
 
-    this.imgDidChange.emit(this.selectedElement);
+    this.imgDidChange.emit(this.selectedTarget);
   }
 
   private handleImageHeightInput($event: CustomEvent<KeyboardEvent>) {
@@ -211,12 +211,12 @@ export class AppImageStyle {
 
   private async updateImageHeightCSS() {
     if (!this.imageHeightCSS || this.imageHeightCSS === '') {
-      this.selectedElement.style.removeProperty('--deckgo-lazy-img-height');
+      this.selectedTarget.style.removeProperty('--deckgo-lazy-img-height');
     } else {
-      this.selectedElement.style.setProperty('--deckgo-lazy-img-height', this.imageHeightCSS);
+      this.selectedTarget.style.setProperty('--deckgo-lazy-img-height', this.imageHeightCSS);
     }
 
-    this.imgDidChange.emit(this.selectedElement);
+    this.imgDidChange.emit(this.selectedTarget);
   }
 
   private handleImageJustifyContentInput($event: CustomEvent<KeyboardEvent>) {
@@ -224,10 +224,10 @@ export class AppImageStyle {
   }
 
   private async updateImageJustifyContentCSS() {
-    this.selectedElement.style.setProperty('display', 'inline-flex');
-    this.selectedElement.style.setProperty('justify-content', this.imageJustifyContentCSS);
+    this.selectedTarget.style.setProperty('display', 'inline-flex');
+    this.selectedTarget.style.setProperty('justify-content', this.imageJustifyContentCSS);
 
-    this.imgDidChange.emit(this.selectedElement);
+    this.imgDidChange.emit(this.selectedTarget);
   }
 
   render() {

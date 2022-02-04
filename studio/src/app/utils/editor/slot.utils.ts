@@ -1,50 +1,50 @@
 import {SlotType} from '../../types/editor/slot-type';
 
 export class SlotUtils {
-  static isNodeReveal(selectedElement: HTMLElement): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.REVEAL;
+  static isNodeReveal(selectedTarget: HTMLElement): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.REVEAL;
   }
 
-  static isNodeRevealList(selectedElement: HTMLElement): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.REVEAL_LIST;
+  static isNodeRevealList(selectedTarget: HTMLElement): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.REVEAL_LIST;
   }
 
-  static isNodeList(selectedElement: HTMLElement): boolean {
+  static isNodeList(selectedTarget: HTMLElement): boolean {
     return (
-      selectedElement &&
-      selectedElement.nodeName &&
-      (selectedElement.nodeName.toLowerCase() === SlotType.OL ||
-        selectedElement.nodeName.toLowerCase() === SlotType.UL ||
-        selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST)
+      selectedTarget &&
+      selectedTarget.nodeName &&
+      (selectedTarget.nodeName.toLowerCase() === SlotType.OL ||
+        selectedTarget.nodeName.toLowerCase() === SlotType.UL ||
+        selectedTarget.nodeName.toLowerCase() === SlotType.REVEAL_LIST)
     );
   }
 
-  static isNodeImage(selectedElement: HTMLElement | null): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.IMG;
+  static isNodeImage(selectedTarget: HTMLElement | null): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.IMG;
   }
 
-  static isNodeSocial(selectedElement: HTMLElement | null): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.SOCIAL;
+  static isNodeSocial(selectedTarget: HTMLElement | null): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.SOCIAL;
   }
 
-  static isNodeCode(selectedElement: HTMLElement | null): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.CODE;
+  static isNodeCode(selectedTarget: HTMLElement | null): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.CODE;
   }
 
-  static isNodeWordCloud(selectedElement: HTMLElement | null): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.WORD_CLOUD;
+  static isNodeWordCloud(selectedTarget: HTMLElement | null): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.WORD_CLOUD;
   }
 
-  static isNodeMarkdown(selectedElement: HTMLElement | null): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.MARKDOWN;
+  static isNodeMarkdown(selectedTarget: HTMLElement | null): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.MARKDOWN;
   }
 
   static isSlotTypeEditable(type: SlotType): boolean {
     return type !== SlotType.IMG && type !== SlotType.SOCIAL && type !== SlotType.DEMO;
   }
 
-  static isNodeDragDropResize(selectedElement: HTMLElement | null): boolean {
-    return selectedElement?.nodeName?.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
+  static isNodeDragDropResize(selectedTarget: HTMLElement | null): boolean {
+    return selectedTarget?.nodeName?.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
   }
 
   static isNodeEditable(element?: HTMLElement): boolean {
@@ -56,7 +56,7 @@ export class SlotUtils {
     );
   }
 
-  static isNodeTitle(selectedElement: HTMLElement): boolean {
-    return [SlotType.H1.toString(), SlotType.H2.toString(), SlotType.H3.toString()].includes(selectedElement.nodeName.toLowerCase());
+  static isNodeTitle(selectedTarget: HTMLElement): boolean {
+    return [SlotType.H1.toString(), SlotType.H2.toString(), SlotType.H3.toString()].includes(selectedTarget.nodeName.toLowerCase());
   }
 }

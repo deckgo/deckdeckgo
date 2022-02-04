@@ -10,7 +10,7 @@ import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 })
 export class AppColorWordCloud {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Event() wordCloudDidChange: EventEmitter<void>;
 
@@ -22,7 +22,7 @@ export class AppColorWordCloud {
   private colorRef!: HTMLAppColorElement;
 
   private async applyColor($event: CustomEvent<string>) {
-    if (!this.selectedElement || !$event) {
+    if (!this.selectedTarget || !$event) {
       return;
     }
 
@@ -34,14 +34,14 @@ export class AppColorWordCloud {
   }
 
   private initColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
       };
     }
 
-    return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(this.getStyle()));
+    return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue(this.getStyle()));
   };
 
   private emitChange() {
@@ -49,7 +49,7 @@ export class AppColorWordCloud {
   }
 
   private async resetColor() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -59,7 +59,7 @@ export class AppColorWordCloud {
   private updateStyle(value: string | null) {
     const redoIndex: number = this.colorIndex;
 
-    setStyle(this.selectedElement, {
+    setStyle(this.selectedTarget, {
       properties: [{property: this.getStyle(), value}],
       type: 'element',
       updateUI: async (_value: string) => {

@@ -10,7 +10,7 @@ export class AppMath {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   mathDidChange: EventEmitter<HTMLElement>;
@@ -29,11 +29,11 @@ export class AppMath {
   }
 
   private async initCurrent(): Promise<void> {
-    this.macros = this.selectedElement ? this.selectedElement.getAttribute('macros') : undefined;
+    this.macros = this.selectedTarget ? this.selectedTarget.getAttribute('macros') : undefined;
   }
 
   private emitMathDidChange() {
-    this.mathDidChange.emit(this.selectedElement);
+    this.mathDidChange.emit(this.selectedTarget);
   }
 
   private handleMacrosInput($event: CustomEvent<KeyboardEvent>) {
@@ -41,14 +41,14 @@ export class AppMath {
   }
 
   private async applyMacrosInput(): Promise<void> {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     if (this.macros && this.macros !== '') {
-      this.selectedElement.setAttribute('macros', this.macros);
+      this.selectedTarget.setAttribute('macros', this.macros);
     } else {
-      this.selectedElement.removeAttribute('macros');
+      this.selectedTarget.removeAttribute('macros');
     }
 
     this.emitMathDidChange();

@@ -6,7 +6,7 @@ import {Template, TemplateDataProp, SlideScope} from '@deckdeckgo/editor';
 
 import templatesStore from '../../../../stores/templates.store';
 
-import {SelectedElement} from '../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../types/editor/selected-target';
 
 interface Property {
   prop: TemplateDataProp;
@@ -18,7 +18,7 @@ interface Property {
 })
 export class AppEditSlideUser {
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -29,32 +29,32 @@ export class AppEditSlideUser {
   private template: Template | undefined;
 
   async componentWillLoad() {
-    this.template = this.getTemplates().find((template: Template) => template.data.tag === this.selectedElement.slide?.nodeName);
+    this.template = this.getTemplates().find((template: Template) => template.data.tag === this.selectedTarget.slide?.nodeName);
 
     this.stringProperties = this.template?.data?.props
       ?.filter((prop: TemplateDataProp) => prop.type === 'string' || prop.type === 'number')
       .map((prop: TemplateDataProp) => {
         return {
           prop,
-          value: this.selectedElement.element.getAttribute(prop.name)
+          value: this.selectedTarget.target.getAttribute(prop.name)
         };
       });
   }
 
   private getTemplates(): Template[] {
-    return this.selectedElement?.slide?.scope === SlideScope.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
+    return this.selectedTarget?.slide?.scope === SlideScope.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
   }
 
   private async onInputCustomUrlChange($event: CustomEvent<InputChangeEventDetail>, prop: TemplateDataProp) {
     const value: string | undefined | null = $event.detail.value;
 
     if (!value || value === '') {
-      this.selectedElement.element.removeAttribute(prop.name);
+      this.selectedTarget.target.removeAttribute(prop.name);
     } else {
-      this.selectedElement.element.setAttribute(prop.name, value);
+      this.selectedTarget.target.setAttribute(prop.name, value);
     }
 
-    this.slideDidChange.emit(this.selectedElement.element);
+    this.slideDidChange.emit(this.selectedTarget.target);
   }
 
   render() {

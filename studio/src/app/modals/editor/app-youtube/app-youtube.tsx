@@ -15,11 +15,11 @@ export class AppYoutube {
   private youtubeUrl: string;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   componentWillLoad() {
-    if (this.selectedElement) {
-      this.youtubeUrl = this.selectedElement.getAttribute('src');
+    if (this.selectedTarget) {
+      this.youtubeUrl = this.selectedTarget.getAttribute('src');
     }
   }
 

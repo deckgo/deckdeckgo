@@ -22,7 +22,7 @@ export class AppImageChoice {
   @Event() private action: EventEmitter<ImageAction>;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slide: boolean = false;

@@ -14,7 +14,7 @@ import {AppIcon} from '../../../core/app-icon/app-icon';
 })
 export class AppSlotType {
   @Prop()
-  selectedElement: HTMLElement | undefined;
+  selectedTarget: HTMLElement | undefined;
 
   @Prop()
   skip: boolean = false;
@@ -31,22 +31,22 @@ export class AppSlotType {
   @Event() private selectType: EventEmitter<SlotType | null>;
 
   componentWillLoad() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
-    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
       this.initCurrentTypeList();
     } else {
       this.initCurrentType();
     }
 
-    this.onlyTextTypes = this.selectedElement.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
+    this.onlyTextTypes = this.selectedTarget.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
   }
 
   private initCurrentType() {
     // prettier-ignore
-    const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
+    const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedTarget) ? this.selectedTarget.firstElementChild as HTMLElement : this.selectedTarget;
 
     if (element.nodeName && element.nodeName !== '') {
       this.currentType = this.initSlotType(element.nodeName.toLowerCase());
@@ -54,7 +54,7 @@ export class AppSlotType {
   }
 
   private initCurrentTypeList() {
-    this.currentType = this.selectedElement.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
+    this.currentType = this.selectedTarget.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
   }
 
   private initSlotType(type: string): SlotType {

@@ -12,7 +12,7 @@ export class AppPollOptions {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -40,13 +40,13 @@ export class AppPollOptions {
 
   private isPollAnswered(): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve(false);
         return;
       }
 
-      if (typeof (this.selectedElement as any).isAnswered === 'function') {
-        const result: boolean = await (this.selectedElement as any).isAnswered();
+      if (typeof (this.selectedTarget as any).isAnswered === 'function') {
+        const result: boolean = await (this.selectedTarget as any).isAnswered();
         resolve(result);
         return;
       }
@@ -57,12 +57,12 @@ export class AppPollOptions {
 
   private initQuestion(): Promise<string | undefined> {
     return new Promise<string | undefined>((resolve) => {
-      if (!this.selectedElement || this.selectedElement === undefined) {
+      if (!this.selectedTarget || this.selectedTarget === undefined) {
         resolve(undefined);
         return;
       }
 
-      const slot: HTMLElement = this.selectedElement.querySelector(":scope > [slot='question']");
+      const slot: HTMLElement = this.selectedTarget.querySelector(":scope > [slot='question']");
 
       resolve(!slot ? undefined : slot.innerHTML);
     });
@@ -70,12 +70,12 @@ export class AppPollOptions {
 
   private initAnswers(): Promise<string[]> {
     return new Promise<string[]>((resolve) => {
-      if (!this.selectedElement || this.selectedElement === undefined) {
+      if (!this.selectedTarget || this.selectedTarget === undefined) {
         resolve(this.initEmptyAnswers());
         return;
       }
 
-      const slots: NodeListOf<HTMLElement> = this.selectedElement.querySelectorAll(':scope > [slot]');
+      const slots: NodeListOf<HTMLElement> = this.selectedTarget.querySelectorAll(':scope > [slot]');
 
       if (!slots || slots.length <= 0) {
         resolve(this.initEmptyAnswers());
@@ -170,12 +170,12 @@ export class AppPollOptions {
 
   private updateSlide(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || this.selectedElement === undefined || !document) {
+      if (!this.selectedTarget || this.selectedTarget === undefined || !document) {
         resolve(undefined);
         return;
       }
 
-      const slots: NodeListOf<HTMLElement> = this.selectedElement.querySelectorAll(':scope > [slot]');
+      const slots: NodeListOf<HTMLElement> = this.selectedTarget.querySelectorAll(':scope > [slot]');
 
       if (!slots || slots.length <= 0) {
         resolve();
@@ -193,7 +193,7 @@ export class AppPollOptions {
 
       await Promise.all(promises);
 
-      this.slideDidChange.emit(this.selectedElement);
+      this.slideDidChange.emit(this.selectedTarget);
 
       resolve();
     });
@@ -201,20 +201,20 @@ export class AppPollOptions {
 
   private updateSlot(slotName: string, elementName: string, value: string): Promise<void> {
     return new Promise<void>((resolve) => {
-      const slot: HTMLElement = this.selectedElement.querySelector(`:scope > [slot=\'${slotName}\']`);
+      const slot: HTMLElement = this.selectedTarget.querySelector(`:scope > [slot=\'${slotName}\']`);
       if (!slot) {
         if (value && value !== undefined && value !== '') {
           const newSlot: HTMLElement = document.createElement(elementName);
           newSlot.setAttribute('slot', slotName);
           newSlot.innerHTML = value;
 
-          this.selectedElement.appendChild(newSlot);
+          this.selectedTarget.appendChild(newSlot);
         }
       } else {
         if (value && value !== undefined && value !== '') {
           slot.innerHTML = value;
         } else {
-          this.selectedElement.removeChild(slot);
+          this.selectedTarget.removeChild(slot);
         }
       }
 

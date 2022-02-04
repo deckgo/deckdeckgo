@@ -16,7 +16,7 @@ export class AppColorQRCode {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private applyColorType: ApplyColorType = ApplyColorType.QR_CODE;
@@ -26,7 +26,7 @@ export class AppColorQRCode {
   private colorRef!: HTMLAppColorElement;
 
   private initColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
@@ -34,9 +34,9 @@ export class AppColorQRCode {
     }
 
     if (this.applyColorType === ApplyColorType.BACKDROP) {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-qrcode-background-fill'));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue('--deckgo-qrcode-background-fill'));
     } else {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-qrcode-color-fill'));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue('--deckgo-qrcode-color-fill'));
     }
   };
 
@@ -49,28 +49,28 @@ export class AppColorQRCode {
   }
 
   private async resetColor() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     if (this.applyColorType === ApplyColorType.BACKDROP) {
-      this.selectedElement.style.removeProperty('--deckgo-qrcode-background-fill');
+      this.selectedTarget.style.removeProperty('--deckgo-qrcode-background-fill');
     } else {
-      this.selectedElement.style.removeProperty('--deckgo-qrcode-color-fill');
+      this.selectedTarget.style.removeProperty('--deckgo-qrcode-color-fill');
     }
 
     this.colorChange.emit();
   }
 
   private async applyColor($event: CustomEvent<string>) {
-    if (!this.selectedElement || !$event) {
+    if (!this.selectedTarget || !$event) {
       return;
     }
 
     if (this.applyColorType === ApplyColorType.BACKDROP) {
-      this.selectedElement.style.setProperty('--deckgo-qrcode-background-fill', $event.detail);
+      this.selectedTarget.style.setProperty('--deckgo-qrcode-background-fill', $event.detail);
     } else {
-      this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', $event.detail);
+      this.selectedTarget.style.setProperty('--deckgo-qrcode-color-fill', $event.detail);
     }
 
     this.colorChange.emit();

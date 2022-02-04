@@ -23,7 +23,7 @@ export class AppColorDeckSlide {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private applyColorType: ApplyColorType = ApplyColorType.FILL;
@@ -41,11 +41,11 @@ export class AppColorDeckSlide {
   private colorRef!: HTMLAppColorElement;
 
   async componentWillLoad() {
-    this.chartType = await ChartUtils.initSlideChartType(this.selectedElement);
+    this.chartType = await ChartUtils.initSlideChartType(this.selectedTarget);
   }
 
   private initColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
@@ -54,16 +54,16 @@ export class AppColorDeckSlide {
 
     if (this.applyColorType === ApplyColorType.FILL) {
       return ColorUtils.splitColor(
-        this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`))
+        this.hexOrRgb(this.selectedTarget.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`))
       );
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      return ColorUtils.splitColor(this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`)));
+      return ColorUtils.splitColor(this.hexOrRgb(this.selectedTarget.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`)));
     } else if (this.applyColorType === ApplyColorType.AXIS) {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-axis-color'));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue('--deckgo-chart-axis-color'));
     } else if (this.applyColorType === ApplyColorType.GRID) {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-grid-stroke'));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue('--deckgo-chart-grid-stroke'));
     } else {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-text-color'));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue('--deckgo-chart-text-color'));
     }
   };
 
@@ -83,22 +83,22 @@ export class AppColorDeckSlide {
   }
 
   private async applyColor($event: CustomEvent<string>) {
-    if (!this.selectedElement || !$event) {
+    if (!this.selectedTarget || !$event) {
       return;
     }
 
     const selectedColor: string = $event.detail;
 
     if (this.applyColorType === ApplyColorType.FILL) {
-      this.selectedElement.style.setProperty(`--deckgo-chart-fill-color-${this.colorIndex}`, selectedColor);
+      this.selectedTarget.style.setProperty(`--deckgo-chart-fill-color-${this.colorIndex}`, selectedColor);
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      this.selectedElement.style.setProperty(`--deckgo-chart-stroke-${this.colorIndex}`, selectedColor);
+      this.selectedTarget.style.setProperty(`--deckgo-chart-stroke-${this.colorIndex}`, selectedColor);
     } else if (this.applyColorType === ApplyColorType.AXIS) {
-      this.selectedElement.style.setProperty('--deckgo-chart-axis-color', selectedColor);
+      this.selectedTarget.style.setProperty('--deckgo-chart-axis-color', selectedColor);
     } else if (this.applyColorType === ApplyColorType.GRID) {
-      this.selectedElement.style.setProperty('--deckgo-chart-grid-stroke', selectedColor);
+      this.selectedTarget.style.setProperty('--deckgo-chart-grid-stroke', selectedColor);
     } else {
-      this.selectedElement.style.setProperty('--deckgo-chart-text-color', selectedColor);
+      this.selectedTarget.style.setProperty('--deckgo-chart-text-color', selectedColor);
     }
 
     this.colorChange.emit();
@@ -119,20 +119,20 @@ export class AppColorDeckSlide {
   }
 
   private async resetColor() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     if (this.applyColorType === ApplyColorType.FILL) {
-      this.selectedElement.style.removeProperty(`--deckgo-chart-fill-color-${this.colorIndex}`);
+      this.selectedTarget.style.removeProperty(`--deckgo-chart-fill-color-${this.colorIndex}`);
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      this.selectedElement.style.removeProperty(`--deckgo-chart-stroke-${this.colorIndex}`);
+      this.selectedTarget.style.removeProperty(`--deckgo-chart-stroke-${this.colorIndex}`);
     } else if (this.applyColorType === ApplyColorType.AXIS) {
-      this.selectedElement.style.removeProperty('--deckgo-chart-axis-color');
+      this.selectedTarget.style.removeProperty('--deckgo-chart-axis-color');
     } else if (this.applyColorType === ApplyColorType.GRID) {
-      this.selectedElement.style.removeProperty('--deckgo-chart-grid-stroke');
+      this.selectedTarget.style.removeProperty('--deckgo-chart-grid-stroke');
     } else {
-      this.selectedElement.style.removeProperty('--deckgo-chart-text-color');
+      this.selectedTarget.style.removeProperty('--deckgo-chart-text-color');
     }
 
     this.colorChange.emit();

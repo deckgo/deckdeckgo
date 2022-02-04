@@ -2,7 +2,7 @@ import {SlideScope} from '@deckdeckgo/editor';
 
 import {SlotType} from './slot-type';
 
-export interface SelectedSlot {
+export interface SelectedElement {
   code: boolean;
   math: boolean;
   wordCloud: boolean;
@@ -28,9 +28,9 @@ export interface SelectedSlide {
   fixed: boolean;
 }
 
-export interface SelectedElement {
-  element: HTMLElement;
+export interface SelectedTarget {
+  target: HTMLElement;
   type: 'slide' | 'element';
   slide?: SelectedSlide;
-  slot?: SelectedSlot;
+  element?: SelectedElement;
 }

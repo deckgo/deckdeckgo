@@ -16,7 +16,7 @@ export class AppColorTextBackground {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slide: boolean = false;
@@ -32,7 +32,7 @@ export class AppColorTextBackground {
   @Event() colorChange: EventEmitter<void>;
 
   private initBackground = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
@@ -40,14 +40,14 @@ export class AppColorTextBackground {
     }
 
     return ColorUtils.splitColor(
-      this.selectedElement.style.getPropertyValue('--background')
-        ? this.selectedElement.style.getPropertyValue('--background')
-        : this.selectedElement.style.background
+      this.selectedTarget.style.getPropertyValue('--background')
+        ? this.selectedTarget.style.getPropertyValue('--background')
+        : this.selectedTarget.style.background
     );
   };
 
   private initColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
@@ -55,9 +55,9 @@ export class AppColorTextBackground {
     }
 
     return ColorUtils.splitColor(
-      this.selectedElement.style.getPropertyValue('--color')
-        ? this.selectedElement.style.getPropertyValue('--color')
-        : this.selectedElement.style.color
+      this.selectedTarget.style.getPropertyValue('--color')
+        ? this.selectedTarget.style.getPropertyValue('--color')
+        : this.selectedTarget.style.color
     );
   };
 
@@ -70,27 +70,27 @@ export class AppColorTextBackground {
   }
 
   private async resetColor() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     if (this.colorType === 'background') {
-      this.selectedElement.style.removeProperty('--background');
-      this.selectedElement.style.removeProperty('background');
+      this.selectedTarget.style.removeProperty('--background');
+      this.selectedTarget.style.removeProperty('background');
     } else {
-      this.selectedElement.style.removeProperty('--color');
-      this.selectedElement.style.removeProperty('color');
+      this.selectedTarget.style.removeProperty('--color');
+      this.selectedTarget.style.removeProperty('color');
     }
 
     this.colorChange.emit();
   }
 
   private async applyTextColor(selectedColor: string) {
-    if (!this.selectedElement || !selectedColor) {
+    if (!this.selectedTarget || !selectedColor) {
       return;
     }
 
-    setStyle(this.selectedElement, {
+    setStyle(this.selectedTarget, {
       properties: [{property: this.deck || this.slide ? '--color' : 'color', value: selectedColor}],
       type: this.deck ? 'deck' : this.slide ? 'slide' : 'element',
       updateUI: async (_value: string) => await this.colorRef.loadColor()
@@ -100,11 +100,11 @@ export class AppColorTextBackground {
   }
 
   private async applyBackground(selectedColor: string) {
-    if (!this.selectedElement || !selectedColor) {
+    if (!this.selectedTarget || !selectedColor) {
       return;
     }
 
-    setStyle(this.selectedElement, {
+    setStyle(this.selectedTarget, {
       properties: [{value: selectedColor, property: this.deck || this.slide ? '--background' : 'background'}],
       type: this.deck ? 'deck' : this.slide ? 'slide' : 'element',
       updateUI: async (_value: string) => await this.colorRef.loadColor()

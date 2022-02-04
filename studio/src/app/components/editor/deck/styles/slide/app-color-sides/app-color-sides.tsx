@@ -21,7 +21,7 @@ export class AppColorSides {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   template: 'split' | 'author';
@@ -37,7 +37,7 @@ export class AppColorSides {
   private colorRef!: HTMLAppColorElement;
 
   private initColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
@@ -45,9 +45,9 @@ export class AppColorSides {
     }
 
     if (this.applyColorType === ApplyColorType.BACKGROUND) {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(`--slide-${this.template}-background-${this.side}`));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue(`--slide-${this.template}-background-${this.side}`));
     } else {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(`--slide-${this.template}-color-${this.side}`));
+      return ColorUtils.splitColor(this.selectedTarget.style.getPropertyValue(`--slide-${this.template}-color-${this.side}`));
     }
   };
 
@@ -60,28 +60,28 @@ export class AppColorSides {
   }
 
   private async resetColor() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     if (this.applyColorType === ApplyColorType.BACKGROUND) {
-      this.selectedElement.style.removeProperty(`--slide-${this.template}-background-${this.side}`);
+      this.selectedTarget.style.removeProperty(`--slide-${this.template}-background-${this.side}`);
     } else {
-      this.selectedElement.style.removeProperty(`--slide-${this.template}-color-${this.side}`);
+      this.selectedTarget.style.removeProperty(`--slide-${this.template}-color-${this.side}`);
     }
 
     this.colorChange.emit();
   }
 
   private async applyColor($event: CustomEvent<string>) {
-    if (!this.selectedElement || !$event) {
+    if (!this.selectedTarget || !$event) {
       return;
     }
 
     if (this.applyColorType === ApplyColorType.BACKGROUND) {
-      this.selectedElement.style.setProperty(`--slide-${this.template}-background-${this.side}`, $event.detail);
+      this.selectedTarget.style.setProperty(`--slide-${this.template}-background-${this.side}`, $event.detail);
     } else {
-      this.selectedElement.style.setProperty(`--slide-${this.template}-color-${this.side}`, $event.detail);
+      this.selectedTarget.style.setProperty(`--slide-${this.template}-color-${this.side}`, $event.detail);
     }
 
     this.colorChange.emit();

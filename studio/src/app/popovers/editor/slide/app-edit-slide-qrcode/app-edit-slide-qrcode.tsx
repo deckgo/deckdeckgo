@@ -20,7 +20,7 @@ export class AppEditSlideQRCode {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -35,8 +35,8 @@ export class AppEditSlideQRCode {
   private action: EventEmitter<EditAction>;
 
   async componentWillLoad() {
-    this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode');
-    this.customContent = this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
+    this.customQRCode = this.selectedTarget && this.selectedTarget.hasAttribute('custom-qrcode');
+    this.customContent = this.customQRCode && this.selectedTarget ? this.selectedTarget.getAttribute('content') : undefined;
   }
 
   private async onRadioCustomLink($event: CustomEvent) {
@@ -53,7 +53,7 @@ export class AppEditSlideQRCode {
 
   private onInputCustomUrlChange(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
@@ -65,10 +65,10 @@ export class AppEditSlideQRCode {
         return;
       }
 
-      this.selectedElement.setAttribute('content', this.customContent);
-      this.selectedElement.setAttribute('custom-qrcode', `${true}`);
+      this.selectedTarget.setAttribute('content', this.customContent);
+      this.selectedTarget.setAttribute('custom-qrcode', `${true}`);
 
-      this.slideDidChange.emit(this.selectedElement);
+      this.slideDidChange.emit(this.selectedTarget);
 
       resolve();
     });
@@ -104,7 +104,7 @@ export class AppEditSlideQRCode {
 
   private setDefaultQRCodeLink(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
@@ -116,12 +116,12 @@ export class AppEditSlideQRCode {
 
       const url: string = await publishUrl(editorStore.state.deck.data.meta);
 
-      this.selectedElement.setAttribute('content', url);
-      this.selectedElement.removeAttribute('custom-qrcode');
+      this.selectedTarget.setAttribute('content', url);
+      this.selectedTarget.removeAttribute('custom-qrcode');
 
       this.customContent = undefined;
 
-      this.slideDidChange.emit(this.selectedElement);
+      this.slideDidChange.emit(this.selectedTarget);
 
       resolve();
     });

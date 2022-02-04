@@ -7,7 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
 import { SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
-import { SelectedElement } from "./app/types/editor/selected-element";
+import { SelectedTarget } from "./app/types/editor/selected-target";
 import { MonacoEditorOptions } from "@deckdeckgo/monaco-editor";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
@@ -55,7 +55,7 @@ export namespace Components {
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
     }
     interface AppActionsElement {
-        "blurSelectedElement": () => Promise<void>;
+        "blurSelectedTarget": () => Promise<void>;
         "elementFocus": EventEmitter;
         "reset": () => Promise<void>;
         "slideCopy": EventEmitter;
@@ -74,15 +74,15 @@ export namespace Components {
         "src": string;
     }
     interface AppBlock {
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
     }
     interface AppBorderRadius {
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
     }
     interface AppBottomSheet {
     }
     interface AppBoxShadow {
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
     }
     interface AppBreadcrumbs {
         "slideNumber": number;
@@ -93,7 +93,7 @@ export namespace Components {
     }
     interface AppCode {
         "codeDidChange": EventEmitter<HTMLElement> | undefined;
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppCodeEditor {
         "code": string;
@@ -102,7 +102,7 @@ export namespace Components {
     interface AppCodeLanguages {
         "codeDidChange": EventEmitter<HTMLElement> | undefined;
         "currentLanguage": PrismLanguage | undefined;
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppColor {
         "defaultColor": string;
@@ -110,29 +110,29 @@ export namespace Components {
         "loadColor": () => Promise<void>;
     }
     interface AppColorChart {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppColorCode {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppColorQrcode {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppColorSides {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "template": 'split' | 'author';
     }
     interface AppColorTextBackground {
         "colorType": 'text' | 'background';
         "deck": boolean;
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slide": boolean;
     }
     interface AppColorWordCloud {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppCopyStyle {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppCreateSlide {
     }
@@ -163,7 +163,7 @@ export namespace Components {
     interface AppDelete {
     }
     interface AppDemo {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppDocEditor {
         "initNewDoc": () => Promise<void>;
@@ -175,23 +175,23 @@ export namespace Components {
     interface AppEditMode {
     }
     interface AppEditSlide {
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideChart {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideQrcode {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideUser {
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditor {
@@ -199,7 +199,7 @@ export namespace Components {
     interface AppElementStyle {
         "imageHelper": ImageHelper;
         "imgDidChange": EventEmitter<HTMLElement>;
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
     }
     interface AppEmbed {
     }
@@ -216,11 +216,11 @@ export namespace Components {
     interface AppImageChoice {
         "deck": boolean;
         "deleteBackground": boolean;
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slide": boolean;
     }
     interface AppImageElement {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slide": boolean;
     }
     interface AppImageHistory {
@@ -228,18 +228,18 @@ export namespace Components {
         "slide": boolean;
     }
     interface AppImageStyle {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppLinks {
     }
     interface AppList {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppLogo {
     }
     interface AppMath {
         "mathDidChange": EventEmitter<HTMLElement>;
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppMenu {
     }
@@ -268,10 +268,10 @@ export namespace Components {
     interface AppNoTemplates {
     }
     interface AppNotes {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppPlayground {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppPlaygroundPlaceholder {
     }
@@ -279,7 +279,7 @@ export namespace Components {
         "pollKey": string;
     }
     interface AppPollOptions {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppPopoverConfirm {
@@ -308,7 +308,7 @@ export namespace Components {
     interface AppRemoteRequest {
     }
     interface AppReveal {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppRoot {
     }
@@ -325,7 +325,7 @@ export namespace Components {
         "wordCloud": boolean;
     }
     interface AppShape {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppShare {
     }
@@ -355,7 +355,7 @@ export namespace Components {
         "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
-        "selectedElement": HTMLElement | undefined;
+        "selectedTarget": HTMLElement | undefined;
         "skip": boolean;
         "slotTypes": SlotType[] | undefined;
     }
@@ -412,13 +412,13 @@ export namespace Components {
     interface AppTemplatesUser {
     }
     interface AppText {
-        "selectedElement": SelectedElement;
+        "selectedTarget": SelectedTarget;
     }
     interface AppTransformElement {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppTransformSlide {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
     interface AppUnpublish {
     }
@@ -435,7 +435,7 @@ export namespace Components {
     interface AppWaves {
     }
     interface AppYoutube {
-        "selectedElement": HTMLElement;
+        "selectedTarget": HTMLElement;
     }
 }
 declare global {
@@ -1429,18 +1429,18 @@ declare namespace LocalJSX {
     }
     interface AppBlock {
         "onBlockChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
     }
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
     }
     interface AppBottomSheet {
         "onSheetChanged"?: (event: CustomEvent<'open' | 'close'>) => void;
     }
     interface AppBoxShadow {
         "onBoxShadowDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
     }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
@@ -1453,7 +1453,7 @@ declare namespace LocalJSX {
     }
     interface AppCode {
         "codeDidChange"?: EventEmitter<HTMLElement> | undefined;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppCodeEditor {
         "code"?: string;
@@ -1462,7 +1462,7 @@ declare namespace LocalJSX {
     interface AppCodeLanguages {
         "codeDidChange"?: EventEmitter<HTMLElement> | undefined;
         "currentLanguage"?: PrismLanguage | undefined;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppColor {
         "defaultColor"?: string;
@@ -1472,34 +1472,34 @@ declare namespace LocalJSX {
     }
     interface AppColorChart {
         "onColorChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppColorCode {
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppColorQrcode {
         "onColorChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppColorSides {
         "onColorChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "template"?: 'split' | 'author';
     }
     interface AppColorTextBackground {
         "colorType"?: 'text' | 'background';
         "deck"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slide"?: boolean;
     }
     interface AppColorWordCloud {
         "onWordCloudDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppCopyStyle {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
@@ -1539,7 +1539,7 @@ declare namespace LocalJSX {
     interface AppDelete {
     }
     interface AppDemo {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppDocEditor {
     }
@@ -1550,25 +1550,25 @@ declare namespace LocalJSX {
     interface AppEditMode {
     }
     interface AppEditSlide {
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideChart {
         "onAction"?: (event: CustomEvent<EditAction>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideQrcode {
         "onAction"?: (event: CustomEvent<EditAction>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideUser {
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditor {
@@ -1577,7 +1577,7 @@ declare namespace LocalJSX {
         "imageHelper"?: ImageHelper;
         "imgDidChange"?: EventEmitter<HTMLElement>;
         "onOptionsDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
     }
     interface AppEmbed {
     }
@@ -1596,11 +1596,11 @@ declare namespace LocalJSX {
         "deck"?: boolean;
         "deleteBackground"?: boolean;
         "onAction"?: (event: CustomEvent<ImageAction>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slide"?: boolean;
     }
     interface AppImageElement {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slide"?: boolean;
     }
     interface AppImageHistory {
@@ -1610,20 +1610,20 @@ declare namespace LocalJSX {
     }
     interface AppImageStyle {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppLinks {
     }
     interface AppList {
         "onListStyleChanged"?: (event: CustomEvent<ListStyle>) => void;
         "onToggleList"?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppLogo {
     }
     interface AppMath {
         "mathDidChange"?: EventEmitter<HTMLElement>;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppMenu {
     }
@@ -1652,10 +1652,10 @@ declare namespace LocalJSX {
     interface AppNoTemplates {
     }
     interface AppNotes {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppPlayground {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppPlaygroundPlaceholder {
     }
@@ -1663,7 +1663,7 @@ declare namespace LocalJSX {
         "pollKey"?: string;
     }
     interface AppPollOptions {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppPopoverConfirm {
@@ -1697,7 +1697,7 @@ declare namespace LocalJSX {
     }
     interface AppReveal {
         "onToggleReveal"?: (event: CustomEvent<boolean>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppRoot {
     }
@@ -1715,7 +1715,7 @@ declare namespace LocalJSX {
         "wordCloud"?: boolean;
     }
     interface AppShape {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppShare {
     }
@@ -1751,7 +1751,7 @@ declare namespace LocalJSX {
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
-        "selectedElement"?: HTMLElement | undefined;
+        "selectedTarget"?: HTMLElement | undefined;
         "skip"?: boolean;
         "slotTypes"?: SlotType[] | undefined;
     }
@@ -1820,13 +1820,13 @@ declare namespace LocalJSX {
     }
     interface AppText {
         "onTextDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: SelectedElement;
+        "selectedTarget"?: SelectedTarget;
     }
     interface AppTransformElement {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppTransformSlide {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface AppUnpublish {
     }
@@ -1843,7 +1843,7 @@ declare namespace LocalJSX {
     interface AppWaves {
     }
     interface AppYoutube {
-        "selectedElement"?: HTMLElement;
+        "selectedTarget"?: HTMLElement;
     }
     interface IntrinsicElements {
         "app-404": App404;

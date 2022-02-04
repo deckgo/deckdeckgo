@@ -465,14 +465,14 @@ export class AppDeckEditor implements ComponentInterface {
         return;
       }
 
-      const selectedElement: HTMLElement = $event.detail;
+      const selectedTarget: HTMLElement = $event.detail;
 
-      if (isSlide(selectedElement)) {
+      if (isSlide(selectedTarget)) {
         resolve();
         return;
       }
 
-      const slide: HTMLElement = selectedElement.parentElement;
+      const slide: HTMLElement = selectedTarget.parentElement;
 
       if (!slide || !slide.parentNode) {
         resolve();

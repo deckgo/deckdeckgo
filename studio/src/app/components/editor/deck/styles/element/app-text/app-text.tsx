@@ -7,7 +7,7 @@ import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
 import {FontSize} from '../../../../../../types/editor/font-size';
-import {SelectedElement} from '../../../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../../../types/editor/selected-target';
 
 import {AlignUtils, TextAlign} from '../../../../../../utils/editor/align.utils';
 import {initFontSize, toggleFontSize} from '../../../../../../utils/editor/font-size.utils';
@@ -28,7 +28,7 @@ enum LetterSpacing {
 })
 export class AppText {
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   @State()
   private align: TextAlign | undefined;
@@ -78,16 +78,16 @@ export class AppText {
 
   private async init() {
     this.letterSpacing = await this.initLetterSpacing();
-    this.align = await AlignUtils.getAlignment(this.selectedElement?.element);
-    this.fontSize = await initFontSize(this.selectedElement?.element);
+    this.align = await AlignUtils.getAlignment(this.selectedTarget?.target);
+    this.fontSize = await initFontSize(this.selectedTarget?.target);
   }
 
   private async initLetterSpacing(): Promise<LetterSpacing> {
-    if (!this.selectedElement || !this.selectedElement.element) {
+    if (!this.selectedTarget || !this.selectedTarget.target) {
       return LetterSpacing.NORMAL;
     }
 
-    const spacing: string = this.selectedElement.element.style.letterSpacing;
+    const spacing: string = this.selectedTarget.target.style.letterSpacing;
 
     if (!spacing || spacing === '') {
       return LetterSpacing.NORMAL;
@@ -111,7 +111,7 @@ export class AppText {
   }
 
   private async updateLetterSpacing($event: CustomEvent): Promise<void> {
-    if (!this.selectedElement || !this.selectedElement.element || !$event || !$event.detail) {
+    if (!this.selectedTarget || !this.selectedTarget.target || !$event || !$event.detail) {
       return;
     }
 
@@ -145,9 +145,9 @@ export class AppText {
   }
 
   private async initCSS() {
-    this.letterSpacingCSS = this.selectedElement?.element?.style.letterSpacing;
-    this.alignCSS = this.selectedElement?.element?.style.textAlign;
-    this.fontSizeCSS = this.selectedElement?.element?.style.fontSize;
+    this.letterSpacingCSS = this.selectedTarget?.target?.style.letterSpacing;
+    this.alignCSS = this.selectedTarget?.target?.style.textAlign;
+    this.fontSizeCSS = this.selectedTarget?.target?.style.fontSize;
   }
 
   private handleLetterSpacingInput($event: CustomEvent<KeyboardEvent>) {
@@ -166,9 +166,9 @@ export class AppText {
       return;
     }
 
-    setStyle(this.selectedElement.element, {
+    setStyle(this.selectedTarget.target, {
       properties: [{property, value}],
-      type: this.selectedElement.type,
+      type: this.selectedTarget.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
         this.ignoreUpdateStyle = true;
@@ -176,13 +176,13 @@ export class AppText {
         if (settingsStore.state.editMode === 'css') {
           switch (property) {
             case 'letter-spacing':
-              this.letterSpacingCSS = this.selectedElement?.element?.style.letterSpacing;
+              this.letterSpacingCSS = this.selectedTarget?.target?.style.letterSpacing;
               break;
             case 'font-size':
-              this.fontSizeCSS = this.selectedElement?.element?.style.fontSize;
+              this.fontSizeCSS = this.selectedTarget?.target?.style.fontSize;
               break;
             case 'text-align':
-              this.alignCSS = this.selectedElement?.element?.style.textAlign;
+              this.alignCSS = this.selectedTarget?.target?.style.textAlign;
           }
 
           return;
@@ -193,17 +193,17 @@ export class AppText {
             this.letterSpacing = await this.initLetterSpacing();
             break;
           case 'font-size':
-            this.fontSize = await initFontSize(this.selectedElement?.element);
+            this.fontSize = await initFontSize(this.selectedTarget?.target);
             break;
           case 'text-align':
-            this.align = await AlignUtils.getAlignment(this.selectedElement?.element);
+            this.align = await AlignUtils.getAlignment(this.selectedTarget?.target);
         }
       }
     });
   }
 
   private async updateAlign($event: CustomEvent): Promise<void> {
-    if (!this.selectedElement || !this.selectedElement.element || !$event || !$event.detail) {
+    if (!this.selectedTarget || !this.selectedTarget.target || !$event || !$event.detail) {
       return;
     }
 
@@ -217,7 +217,7 @@ export class AppText {
   }
 
   private updateAlignCSS(alignCSS: string) {
-    if (!this.selectedElement || !this.selectedElement.element) {
+    if (!this.selectedTarget || !this.selectedTarget.target) {
       return;
     }
 
@@ -233,11 +233,11 @@ export class AppText {
 
     this.fontSize = $event.detail.value;
 
-    if (!this.selectedElement || !this.selectedElement.element) {
+    if (!this.selectedTarget || !this.selectedTarget.target) {
       return;
     }
 
-    const size: string | undefined = toggleFontSize(this.selectedElement.element, this.fontSize);
+    const size: string | undefined = toggleFontSize(this.selectedTarget.target, this.fontSize);
 
     if (!size) {
       return;

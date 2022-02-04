@@ -17,24 +17,24 @@ export class AppTransformElement {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private slotTypes: SlotType[] | undefined;
 
   async componentWillLoad() {
-    const slotName: string | null = this.selectedElement.getAttribute('slot');
+    const slotName: string | null = this.selectedTarget.getAttribute('slot');
 
     if (!slotName) {
       this.slotTypes = undefined;
       return;
     }
 
-    const scope: SlideScope = SlideUtils.slideScope(this.selectedElement.parentElement);
+    const scope: SlideScope = SlideUtils.slideScope(this.selectedTarget.parentElement);
 
     const template: Template | undefined = await TemplateUtils.getTemplate(
       scope,
-      this.selectedElement.parentElement?.nodeName.toLowerCase()
+      this.selectedTarget.parentElement?.nodeName.toLowerCase()
     );
 
     if (!template) {
@@ -60,7 +60,7 @@ export class AppTransformElement {
       </ion-toolbar>,
 
       <app-slot-type
-        selectedElement={this.selectedElement}
+        selectedTarget={this.selectedTarget}
         slotTypes={this.slotTypes}
         onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>
     ];

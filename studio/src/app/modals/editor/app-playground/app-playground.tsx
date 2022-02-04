@@ -17,7 +17,7 @@ export class AppPlayground {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private playgroundSrc: string;
@@ -29,12 +29,12 @@ export class AppPlayground {
   private supportsTheme: boolean = true;
 
   componentWillLoad() {
-    if (this.selectedElement) {
-      this.playgroundSrc = this.selectedElement.getAttribute('src');
+    if (this.selectedTarget) {
+      this.playgroundSrc = this.selectedTarget.getAttribute('src');
 
       this.playgroundTheme =
-        this.selectedElement && this.selectedElement.hasAttribute('theme')
-          ? (this.selectedElement.getAttribute('theme') as DeckdeckgoPlaygroundTheme)
+        this.selectedTarget && this.selectedTarget.hasAttribute('theme')
+          ? (this.selectedTarget.getAttribute('theme') as DeckdeckgoPlaygroundTheme)
           : DeckdeckgoPlaygroundTheme.DEFAULT;
 
       this.initSupportsTheme();

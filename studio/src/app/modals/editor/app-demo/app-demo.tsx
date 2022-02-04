@@ -20,11 +20,11 @@ export class AppDemo {
   private demoMode: 'md' | 'ios' = 'md';
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   componentWillLoad() {
-    if (this.selectedElement) {
-      const demo: HTMLElement = this.selectedElement.querySelector('deckgo-demo');
+    if (this.selectedTarget) {
+      const demo: HTMLElement = this.selectedTarget.querySelector('deckgo-demo');
 
       if (demo) {
         this.demoSrc = demo.getAttribute('src');

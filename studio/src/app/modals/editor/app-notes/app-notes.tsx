@@ -14,14 +14,14 @@ export class AppNotes {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private notes: string;
 
   componentWillLoad() {
-    if (this.selectedElement) {
-      const element: HTMLElement = this.selectedElement.querySelector('[slot="notes"]');
+    if (this.selectedTarget) {
+      const element: HTMLElement = this.selectedTarget.querySelector('[slot="notes"]');
 
       this.notes = element ? element.innerText : undefined;
     }
@@ -41,7 +41,7 @@ export class AppNotes {
   }
 
   async save() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       await this.closeModal();
       return;
     }
@@ -53,13 +53,13 @@ export class AppNotes {
 
     const text: Text = document.createTextNode(this.notes);
 
-    let element: HTMLElement = this.selectedElement.querySelector('[slot="notes"]');
+    let element: HTMLElement = this.selectedTarget.querySelector('[slot="notes"]');
 
     if (!element) {
       element = document.createElement('div');
       element.setAttribute('slot', 'notes');
 
-      this.selectedElement.appendChild(element);
+      this.selectedTarget.appendChild(element);
 
       element.appendChild(text);
     } else {
@@ -70,12 +70,12 @@ export class AppNotes {
   }
 
   async delete() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       await this.closeModal();
       return;
     }
 
-    let element: HTMLElement = this.selectedElement.querySelector('[slot="notes"]');
+    let element: HTMLElement = this.selectedTarget.querySelector('[slot="notes"]');
 
     if (!element) {
       await this.closeModal();

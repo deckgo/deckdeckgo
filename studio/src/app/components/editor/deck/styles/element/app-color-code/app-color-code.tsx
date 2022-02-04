@@ -25,7 +25,7 @@ enum CodeColorType {
 })
 export class AppColorCode {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private codeColorType: CodeColorType = undefined;
@@ -48,7 +48,7 @@ export class AppColorCode {
   }
 
   private initCodeColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return {
         rgb: null,
         opacity: null
@@ -58,23 +58,23 @@ export class AppColorCode {
     let color: string;
 
     if (this.codeColorType === CodeColorType.PUNCTUATION) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ?? '98,114,164';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ?? '98,114,164';
     } else if (this.codeColorType === CodeColorType.PROPERTY) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ?? '189,147,249';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-property') ?? '189,147,249';
     } else if (this.codeColorType === CodeColorType.SELECTOR) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ?? '80,250,123';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-selector') ?? '80,250,123';
     } else if (this.codeColorType === CodeColorType.OPERATOR) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ?? '255,121,198';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-operator') ?? '255,121,198';
     } else if (this.codeColorType === CodeColorType.KEYWORD) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ?? '255,121,198';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ?? '255,121,198';
     } else if (this.codeColorType === CodeColorType.FUNCTION) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ?? '255,184,108';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-function') ?? '255,184,108';
     } else if (this.codeColorType === CodeColorType.REGEX) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ?? '241,250,140';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-regex') ?? '241,250,140';
     } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ?? '153,153,153';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ?? '153,153,153';
     } else {
-      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ?? '153,153,153';
+      color = this.selectedTarget.style.getPropertyValue('--deckgo-highlight-code-token-comment') ?? '153,153,153';
     }
 
     return ColorUtils.splitColor(color);
@@ -82,24 +82,24 @@ export class AppColorCode {
 
   private async initTerminal() {
     this.terminal =
-      this.selectedElement && this.selectedElement.hasAttribute('terminal')
-        ? (this.selectedElement.getAttribute('terminal') as DeckdeckgoHighlightCodeTerminal)
+      this.selectedTarget && this.selectedTarget.hasAttribute('terminal')
+        ? (this.selectedTarget.getAttribute('terminal') as DeckdeckgoHighlightCodeTerminal)
         : DeckdeckgoHighlightCodeTerminal.CARBON;
 
     this.theme =
-      this.selectedElement && this.selectedElement.hasAttribute('theme')
-        ? (this.selectedElement.getAttribute('theme') as DeckdeckgoHighlightCodeCarbonTheme)
+      this.selectedTarget && this.selectedTarget.hasAttribute('theme')
+        ? (this.selectedTarget.getAttribute('theme') as DeckdeckgoHighlightCodeCarbonTheme)
         : DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
-    this.toolbar = this.selectedElement?.style.getPropertyValue('--deckgo-highlight-code-carbon-toolbar-display') !== 'none';
+    this.toolbar = this.selectedTarget?.style.getPropertyValue('--deckgo-highlight-code-carbon-toolbar-display') !== 'none';
   }
 
   private async applyCodeColor($event: CustomEvent<string>) {
-    if (!this.selectedElement || !$event) {
+    if (!this.selectedTarget || !$event) {
       return;
     }
 
-    this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
+    this.selectedTarget.style.setProperty(this.getStyle(), $event.detail);
 
     this.updateStyle($event.detail);
   }
@@ -140,7 +140,7 @@ export class AppColorCode {
   }
 
   private async resetCodeColor() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -150,7 +150,7 @@ export class AppColorCode {
   private updateStyle(value: string | null) {
     const redoType: CodeColorType = this.codeColorType;
 
-    setStyle(this.selectedElement, {
+    setStyle(this.selectedTarget, {
       properties: [{property: this.getStyle(), value}],
       type: 'element',
       updateUI: async (_value: string) => {
@@ -170,7 +170,7 @@ export class AppColorCode {
         return;
       }
 
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
@@ -181,7 +181,7 @@ export class AppColorCode {
         this.theme = $event.detail.value;
       }
 
-      this.selectedElement.setAttribute(attribute, $event.detail.value);
+      this.selectedTarget.setAttribute(attribute, $event.detail.value);
 
       this.codeDidChange.emit();
 
@@ -190,16 +190,16 @@ export class AppColorCode {
   }
 
   private async toggleToolbar() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     this.toolbar = !this.toolbar;
 
     if (this.toolbar) {
-      this.selectedElement.style.removeProperty('--deckgo-highlight-code-carbon-toolbar-display');
+      this.selectedTarget.style.removeProperty('--deckgo-highlight-code-carbon-toolbar-display');
     } else {
-      this.selectedElement.style.setProperty('--deckgo-highlight-code-carbon-toolbar-display', 'none');
+      this.selectedTarget.style.setProperty('--deckgo-highlight-code-carbon-toolbar-display', 'none');
     }
 
     this.emitCodeChange();

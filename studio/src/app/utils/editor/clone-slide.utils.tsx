@@ -8,11 +8,11 @@ import {getAttributes} from './attributes.utils';
 import {InitTemplate} from './create-slides.utils';
 
 export class CloneSlideUtils {
-  static async toggleTemplate(selectedElement: HTMLElement, initTemplate: InitTemplate): Promise<JSX.IntrinsicElements> {
+  static async toggleTemplate(selectedTarget: HTMLElement, initTemplate: InitTemplate): Promise<JSX.IntrinsicElements> {
     const SlideElement: string = `deckgo-slide-${(initTemplate.template as SlideTemplate).toLowerCase()}`;
 
     const attributes: any = {
-      ...getAttributes(selectedElement),
+      ...getAttributes(selectedTarget),
       ...(initTemplate.attributes && {...initTemplate.attributes})
     };
 
@@ -41,18 +41,18 @@ export class CloneSlideUtils {
 
     // Toggle slot names if needed
     if (![SlideTemplate.CONTENT, SlideTemplate.TITLE].includes(initTemplate.template as SlideTemplate)) {
-      this.toggleSlotName(selectedElement, 'title', 'start');
-      this.toggleSlotName(selectedElement, 'content', 'end');
+      this.toggleSlotName(selectedTarget, 'title', 'start');
+      this.toggleSlotName(selectedTarget, 'content', 'end');
     } else if (![SlideTemplate.SPLIT].includes(initTemplate.template as SlideTemplate)) {
-      this.toggleSlotName(selectedElement, 'start', 'title');
-      this.toggleSlotName(selectedElement, 'end', 'content');
+      this.toggleSlotName(selectedTarget, 'start', 'title');
+      this.toggleSlotName(selectedTarget, 'end', 'content');
     }
 
-    return <SlideElement key={uuid()} {...attributes} innerHTML={selectedElement.innerHTML}></SlideElement>;
+    return <SlideElement key={uuid()} {...attributes} innerHTML={selectedTarget.innerHTML}></SlideElement>;
   }
 
-  private static toggleSlotName(selectedElement: HTMLElement, currentSlot: string, newSlot: string) {
-    const slot: HTMLElement | null = selectedElement.querySelector(`:scope > [slot="${currentSlot}"]`);
+  private static toggleSlotName(selectedTarget: HTMLElement, currentSlot: string, newSlot: string) {
+    const slot: HTMLElement | null = selectedTarget.querySelector(`:scope > [slot="${currentSlot}"]`);
     slot?.setAttribute('slot', newSlot);
   }
 }
