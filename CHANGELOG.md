@@ -2,7 +2,7 @@
 
 # [6.0.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v6.0.0) (2022-02-04)
 
-Breaking changes: [DeckDeckGo.com](https://deckdeckgo.com) experimental support for documents reverted
+Breaking change: [DeckDeckGo.com](https://deckdeckgo.com) experimental support for documents reverted
 
 ### Applications
 
