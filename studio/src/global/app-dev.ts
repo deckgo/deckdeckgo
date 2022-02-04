@@ -37,7 +37,8 @@ import {setupConfig as setupDeckGoConfig} from '../app/config/environment-config
 
 setupDeckGoConfig({
   app: {
-    mock: true
+    mock: true,
+    features: ['deck', 'doc']
   },
   deckdeckgo: {
     website: 'https://deckdeckgo.com',

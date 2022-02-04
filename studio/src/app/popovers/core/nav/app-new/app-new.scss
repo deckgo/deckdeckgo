@@ -9,7 +9,7 @@ app-new {
 
     justify-items: center;
 
-    padding: 8px 16px 16px;
+    padding: 8px 16px;
 
     button {
       grid-row-start: 2;
@@ -61,9 +61,9 @@ app-new {
   }
 
   p {
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-normal);
     text-align: center;
-    padding: 8px 32px 14px;
+    padding: 16px 32px;
     margin: 0;
   }
 }

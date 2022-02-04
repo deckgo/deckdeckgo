@@ -32,8 +32,11 @@ export interface EnvironmentDeckDeckGoConfig {
   socketUrl: string;
 }
 
+export type EnvironmentAppConfigFeature = 'doc' | 'deck';
+
 export interface EnvironmentAppConfig {
   mock: boolean;
+  features: [EnvironmentAppConfigFeature, ...EnvironmentAppConfigFeature[]];
 }
 
 export interface EnvironmentCloudApi {

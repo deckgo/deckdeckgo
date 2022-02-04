@@ -12,6 +12,9 @@ import {initSyncState, sync} from '../../providers/sync/sync.provider';
 import {worker} from '../../workers/sync.worker.ts?worker';
 import {startSyncTimer, stopSyncTimer} from '../../workers/sync.worker';
 
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {EnvironmentAppConfig} from '../../config/environment-config';
+
 @Component({
   tag: 'app-editor',
   styleUrl: 'app-editor.scss'
@@ -59,8 +62,10 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async init() {
+    const {features} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
+
     const editor: Editor | undefined = await getEdit();
-    this.type = editor?.type || 'deck';
+    this.type = editor?.type || features[0];
   }
 
   private async destroy() {
