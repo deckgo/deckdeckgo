@@ -13,6 +13,7 @@ import {
   deleteOfflineParagraph,
   updateOfflineParagraph
 } from '../../../providers/data/paragraph/paragraph.offline.provider';
+import {editorConfig} from '../../../config/editor';
 
 export class DocDataEvents {
   init() {
@@ -273,7 +274,8 @@ export class DocDataEvents {
 
   private paragraphAttributes(paragraph: HTMLElement): Record<string, string | number | boolean | undefined> | null {
     const attrs: Attr[] = Array.from(paragraph.attributes).filter(
-      ({nodeName}: Attr) => !['id', 'hydrated', 'class', 'contenteditable', 'paragraph_id'].includes(nodeName)
+      ({nodeName}: Attr) =>
+        !['placeholder', 'data-gramm', 'class', 'spellcheck', 'contenteditable', ...editorConfig.excludeAttributes].includes(nodeName)
     );
 
     return attrs.length > 0
