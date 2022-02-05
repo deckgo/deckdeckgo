@@ -120,7 +120,9 @@ export class AppDocs implements ComponentInterface {
     }
 
     const parsedParagraphs: JSX.IntrinsicElements[] = await Promise.all(
-      paragraphs.map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}))
+      paragraphs
+        .filter((paragraph: Paragraph | undefined) => paragraph !== undefined)
+        .map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}))
     );
 
     return {
