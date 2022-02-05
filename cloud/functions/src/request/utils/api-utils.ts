@@ -61,7 +61,7 @@ function query(deck: ApiDeck, context: string, method: string, token: string): P
         return;
       }
 
-      const publishedPresentation: ApiPresentation = await rawResponse.json();
+      const publishedPresentation: ApiPresentation = (await rawResponse.json()) as ApiPresentation;
 
       resolve(publishedPresentation);
     } catch (err) {

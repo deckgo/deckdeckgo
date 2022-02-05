@@ -27,7 +27,7 @@ export function getUser(githubToken: string): Promise<GitHubUser> {
 
       const response: Response = await queryGitHub(githubToken, query);
 
-      const result = await response.json();
+      const result = (await response.json()) as {data: {viewer: GitHubUser}};
 
       resolve(result.data.viewer);
     } catch (err) {
@@ -80,7 +80,7 @@ export function findRepo(githubToken: string, user: GitHubUser, project: string)
 
       const response: Response = await queryGitHub(githubToken, query);
 
-      const repo = await response.json();
+      const repo = (await response.json()) as {data: {repository: DeckGitHubRepo | undefined}};
 
       if (!repo || !repo.data || !repo.data.repository) {
         resolve(undefined);
@@ -121,7 +121,7 @@ export function createRepo(githubToken: string, user: GitHubUser, project: strin
 
       const response: Response = await queryGitHub(githubToken, query);
 
-      const result = await response.json();
+      const result = (await response.json()) as {errors: string; data: {cloneTemplateRepository: {repository: DeckGitHubRepo | undefined}}};
 
       if (!result || !result.data || !result.data.cloneTemplateRepository || result.errors) {
         resolve(undefined);
@@ -156,7 +156,7 @@ Here are the recent changes you made to your slides on [DeckDeckGo](https://deck
 
       const response: Response = await queryGitHub(githubToken, query);
 
-      const result = await response.json();
+      const result = (await response.json()) as {errors: string; data: {createPullRequest: string}};
 
       if (!result || !result.data || !result.data.createPullRequest || result.errors) {
         resolve(undefined);
