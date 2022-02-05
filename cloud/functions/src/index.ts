@@ -3,8 +3,11 @@ import * as functions from 'firebase-functions';
 import 'firebase-functions/lib/logger/compat';
 
 import * as admin from 'firebase-admin';
-const app: admin.app.App = admin.initializeApp();
-app.firestore().settings({timestampsInSnapshots: true});
+
+if (!admin.apps.length) {
+  const app: admin.app.App = admin.initializeApp();
+  app.firestore().settings({timestampsInSnapshots: true});
+}
 
 import {applyWatchDeckCreate, applyWatchDeckDelete} from './watch/watch-deck';
 import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
