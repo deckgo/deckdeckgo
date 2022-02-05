@@ -21,7 +21,7 @@
     "js-beautify": "^1.14.0",
     "jsdom": "^19.0.0",
     "mailchimp-api-v3": "^1.15.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "nodemailer": "^6.7.2",
     "puppeteer": "^2.1.1",
     "rimraf": "^3.0.2",
