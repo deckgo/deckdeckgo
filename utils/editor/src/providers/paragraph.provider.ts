@@ -1,7 +1,7 @@
 import {Paragraph} from '../models/data/paragraph';
 
 export interface GetParagraph {
-  (docId: string, slideId: string): Promise<Paragraph>;
+  (docId: string, slideId: string): Promise<Paragraph | undefined>;
 }
 
 export interface UpdateParagraph {

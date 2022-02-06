@@ -137,13 +137,16 @@ export const loadAndImportDeck = (deck: Deck): Promise<void> => {
 export const loadAndImportDoc = (doc: Doc): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      const promises: Promise<Paragraph>[] | undefined = doc.data.paragraphs?.map((paragraphId: string) =>
+      const promises: Promise<Paragraph | undefined>[] | undefined = doc.data.paragraphs?.map((paragraphId: string) =>
         getParagraph({
           docId: doc.id,
           paragraphId
         })
       );
-      const paragraphs: Paragraph[] = await Promise.all(promises || []);
+
+      const paragraphs: Paragraph[] = (await Promise.all(promises || [])).filter(
+        (paragraph: Paragraph | undefined) => paragraph !== undefined
+      );
 
       await importEditorData({
         id: doc.id,
