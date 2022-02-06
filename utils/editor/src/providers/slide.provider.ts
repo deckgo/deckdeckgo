@@ -1,7 +1,7 @@
 import {Slide} from '../models/data/slide';
 
 export interface GetSlide {
-  (deckId: string, slideId: string): Promise<Slide>;
+  (deckId: string, slideId: string): Promise<Slide | undefined>;
 }
 
 export interface UpdateSlide {
