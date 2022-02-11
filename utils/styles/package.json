@@ -15,7 +15,7 @@
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
     "clean-css-cli": "^5.3.3",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1"
   },
