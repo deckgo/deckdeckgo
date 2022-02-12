@@ -379,14 +379,17 @@ export class FileSystemService {
         } as Deck)
       : undefined;
 
-    const newParagraphs: Paragraph[] | undefined = paragraphs?.map((paragraph: Partial<Paragraph>) => ({
-      data: {
-        ...paragraph.data,
-        updated_at: now,
-        created_at: now
-      },
-      id: uuid()
-    })) as Paragraph[] | undefined;
+    // Even though per definition paragraphs cannot be null, as long as Stylo and the doc editor are not stable it is worth checking it
+    const newParagraphs: Paragraph[] | undefined = paragraphs
+      ?.filter((paragraph: Partial<Paragraph>) => paragraph !== null)
+      .map((paragraph: Partial<Paragraph>) => ({
+        data: {
+          ...paragraph.data,
+          updated_at: now,
+          created_at: now
+        },
+        id: uuid()
+      })) as Paragraph[] | undefined;
 
     const newDoc: Doc | undefined = doc
       ? ({
