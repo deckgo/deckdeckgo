@@ -9,7 +9,6 @@ import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
-import undoRedoStore from '../../stores/undo-redo.store';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 import colorStore from '../../stores/color.store';
@@ -65,9 +64,9 @@ export class AppDocEditor implements ComponentInterface {
   private i18nListener: () => void | undefined;
 
   componentWillLoad() {
-    this.updateEditorToolbarConfig();
+    this.updateEditorConfig();
 
-    this.i18nListener = i18n.onChange('lang', () => this.updateEditorToolbarConfig());
+    this.i18nListener = i18n.onChange('lang', () => this.updateEditorConfig());
   }
 
   async componentDidLoad() {
@@ -92,6 +91,16 @@ export class AppDocEditor implements ComponentInterface {
     this.i18nListener?.();
   }
 
+  async componentDidRender() {
+    if (!this.reloadAfterRender) {
+      return;
+    }
+
+    this.reloadAfterRender = false;
+
+    await this.reload();
+  }
+
   /**
    * Destroy global state and listener.
    */
@@ -99,7 +108,6 @@ export class AppDocEditor implements ComponentInterface {
     this.docDataEvents.destroy();
 
     editorStore.reset();
-    undoRedoStore.reset();
   }
 
   @Listen('actionPublish', {target: 'document'})
@@ -135,10 +143,10 @@ export class AppDocEditor implements ComponentInterface {
   onColorChange({detail}: CustomEvent<StyloPaletteColor>) {
     ColorUtils.updateColor(detail);
 
-    this.updateEditorToolbarConfig();
+    this.updateEditorConfig();
   }
 
-  private updateEditorToolbarConfig() {
+  private updateEditorConfig() {
     this.editorConfig = {
       ...this.editorConfig,
       i18n: {
@@ -169,18 +177,11 @@ export class AppDocEditor implements ComponentInterface {
     this.paragraphs = undefined;
   }
 
-  async componentDidRender() {
-    if (!this.reloadAfterRender) {
-      return;
-    }
-
-    this.reloadAfterRender = false;
-
-    await this.reload();
-  }
-
   private async reload() {
     await this.initOrFetch();
+
+    // Reset config will destroy and init again listener in Stylo. It also reset undo-redo stack.
+    this.updateEditorConfig();
   }
 
   private async initOrFetch() {
