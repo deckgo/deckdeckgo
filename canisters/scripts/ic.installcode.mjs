@@ -34,6 +34,25 @@ const initIdentity = () => {
   return Secp256k1KeyIdentity.fromSecretKey(Buffer.from(privateKey, 'base64'));
 };
 
+const upgradeBucketData = async ({actor, owner, bucketId, wasmModule}) => {
+  console.log(`Upgrading: ${bucketId.toText()}`);
+
+  const arg = IDL.encode([IDL.Principal], [owner]);
+
+  await actor.installCode(bucketId, [...arg], wasmModule);
+
+  console.log(`Done: ${bucketId.toText()}`);
+};
+
+const loadWasm = () => {
+  const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
+  return [...new Uint8Array(buffer)];
+};
+
+const fromNullable = (value) => {
+  return value?.[0];
+};
+
 (async () => {
   try {
     const canisterId = managerPrincipal();
@@ -49,23 +68,20 @@ const initIdentity = () => {
 
     const list = await actor.list('data');
 
-    console.log({list});
+    // bucketId is optional in our backend
+    const filterList = list.filter(({bucketId}) => fromNullable(bucketId) !== undefined);
 
-    if (list.length <= 0) {
+    if (filterList.length <= 0) {
       return;
     }
 
-    const {owner, bucketId} = list[0];
+    const wasmModule = loadWasm();
 
-    const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
+    // bucketId[0] -> effective bucketId
+    // console.log(bucketId[0].toText());
 
-    const arg = IDL.encode([IDL.Principal], [owner]);
-
-    console.log(bucketId[0].toText());
-
-    // TODO: bucketId[0] -> bucketId
-
-    await actor.installCode(bucketId[0], [...arg], [...new Uint8Array(buffer)]);
+    const promises = filterList.map(({owner, bucketId}) => upgradeBucketData({actor, wasmModule, bucketId: fromNullable(bucketId), owner}));
+    await Promise.all(promises);
   } catch (e) {
     console.error(e);
   }
