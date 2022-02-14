@@ -1,4 +1,5 @@
 import Principal "mo:base/Principal";
+import Blob "mo:base/Blob";
 
 import Types "../types/types";
 import IC "../types/ic.types";
@@ -39,12 +40,12 @@ module {
             }}));
         };
 
-        // TODO: does not work out
-        // Arg [68, 73, 68, 76, 0, 0] ?
-        // https://forum.dfinity.org/t/install-code-actor-class-leads-to-error-empty-input-and-too-few-arguments/8984
-        public func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
+        /**
+         * owner: the owner as Principal encoded in Candid arguments. see actor Data and Storage, the Principal is the argument to create the canisters
+         */
+        public func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
             await ic.install_code({
-                arg = Principal.toBlob(owner);
+                arg = owner;
                 wasm_module = wasmModule;
                 mode = #upgrade;
                 canister_id = canisterId;
