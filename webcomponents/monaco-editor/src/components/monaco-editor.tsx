@@ -4,6 +4,8 @@ import * as monaco from 'monaco-editor';
 
 import {MonacoEditorOptions} from '../types/options';
 
+import {escapeCode, unescapeCode} from '../utils/code.utils';
+
 @Component({
   tag: 'deckgo-monaco-editor',
   styleUrl: 'monaco-editor.scss',
@@ -41,7 +43,7 @@ export class MonacoEditor implements ComponentInterface {
     const slottedCode: HTMLElement = this.el.querySelector(':scope > *:first-of-type');
 
     this.editor = monaco.editor.create(this.div, {
-      value: slottedCode?.innerHTML.trim() || '',
+      value: unescapeCode(slottedCode?.innerHTML.trim() || ''),
       ...this.defaultOptions,
       ...(this.options || {})
     });
@@ -60,7 +62,7 @@ export class MonacoEditor implements ComponentInterface {
 
   @Method()
   async save(): Promise<string | undefined> {
-    return this.editor?.getValue();
+    return escapeCode(this.editor?.getValue());
   }
 
   render() {
