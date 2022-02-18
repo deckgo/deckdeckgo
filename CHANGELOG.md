@@ -1,4 +1,12 @@
-<a name="6.x.0"></a>
+<a name="6.1.0"></a>
+
+# [6.1.0](https://github.com/deckgo/deckdeckgo/compare/v6.0.0...v6.1.0) (2022-XX-YY)
+
+### Web Components:
+
+- monaco-editor: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
+
+<a name="6.0.0"></a>
 
 # [6.0.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v6.0.0) (2022-02-04)
 
