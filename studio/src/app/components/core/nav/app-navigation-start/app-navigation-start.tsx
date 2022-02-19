@@ -139,7 +139,7 @@ export class AppNavigationStart {
     });
 
     popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
-      const {action} = data;
+      const {action} = data || {};
 
       switch (action) {
         case MoreAction.NEW:
