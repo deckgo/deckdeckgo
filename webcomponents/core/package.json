@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@deckdeckgo/deck-utils": "^4.1.0",
-    "@deckdeckgo/utils": "^2.4.0"
+    "@deckdeckgo/utils": "^5.1.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1"
