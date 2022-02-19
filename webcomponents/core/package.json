@@ -1,9 +1,9 @@
 {
   "name": "@deckdeckgo/core",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "Add a presentation to your web application using HTML and Web Components",
   "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
+  "module": "dist/deckdeckgo/deckdeckgo.esm.js",
   "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",
