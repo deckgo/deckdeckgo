@@ -51,7 +51,7 @@
     "@deckdeckgo/utils": "^3.1.0",
     "@deckdeckgo/word-cloud": "^1.2.0",
     "@ionic/core": "^5.9.1",
-    "@papyrs/stylo": "^0.0.7-1",
+    "@papyrs/stylo": "^0.0.8",
     "idb-keyval": "^6.0.3",
     "jszip": "^3.7.1",
     "socket.io-client": "2.3.1",
