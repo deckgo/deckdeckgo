@@ -1,3 +1,10 @@
+# 10.0.0 (2021-11-05)
+
+### Build
+
+- deprecated `dist-custom-elements-bundle` replaced with `dist-custom-elements`
+- point `module` entry to `dist/deckdeckgo/deckdeckgo.esm.js`
+
 # 9.0.0 (2021-11-05)
 
 ### Features

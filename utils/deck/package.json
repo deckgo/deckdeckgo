@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/deck-utils",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "author": "David Dal Busco",
   "description": "Utils for the DeckDeckGo presentations",
   "license": "MIT",
@@ -16,11 +16,11 @@
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1"
   },
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/cjs/index.cjs.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
   "scripts": {
-    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib/types",
     "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
   "files": [
