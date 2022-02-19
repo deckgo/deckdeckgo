@@ -1,1 +1,1 @@
-export * from './utils/slides.utils';
+export * from './slides.utils';
