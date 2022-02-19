@@ -56,7 +56,7 @@ export class AppDocEditor implements ComponentInterface {
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
   private containerRef!: HTMLElement;
-  private styleEditorRef!: HTMLStyloEditorElement;
+  private styloEditorRef!: HTMLStyloEditorElement;
 
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
@@ -259,7 +259,7 @@ export class AppDocEditor implements ComponentInterface {
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
-      this.styleEditorRef.containerRef = this.containerRef;
+      this.styloEditorRef.containerRef = this.containerRef;
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
@@ -303,7 +303,7 @@ export class AppDocEditor implements ComponentInterface {
                 {this.paragraphs}
               </article>
 
-              <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
+              <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
             </deckgo-doc>
 
             <app-doc-indicator></app-doc-indicator>
