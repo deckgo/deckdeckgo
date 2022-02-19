@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/deck-utils": "^4.1.0",
+    "@deckdeckgo/deck-utils": "^7.0.0",
     "@deckdeckgo/utils": "^5.1.0"
   },
   "devDependencies": {
