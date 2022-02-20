@@ -11,9 +11,9 @@ export namespace Components {
     interface DeckgoIndicator {
     }
     interface DeckgoStudio {
-        "config": StudioConfig;
         "editorConfig": Partial<StyloConfig>;
         "initNewDoc": () => Promise<void>;
+        "studioConfig": StudioConfig;
     }
 }
 declare global {
@@ -38,8 +38,8 @@ declare namespace LocalJSX {
     interface DeckgoIndicator {
     }
     interface DeckgoStudio {
-        "config"?: StudioConfig;
         "editorConfig"?: Partial<StyloConfig>;
+        "studioConfig"?: StudioConfig;
     }
     interface IntrinsicElements {
         "deckgo-indicator": DeckgoIndicator;

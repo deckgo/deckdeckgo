@@ -33,7 +33,7 @@ export class Studio implements ComponentInterface {
   editorConfig: Partial<StyloConfig>;
 
   @Prop()
-  config: StudioConfig;
+  studioConfig: StudioConfig;
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
@@ -95,7 +95,7 @@ export class Studio implements ComponentInterface {
     editorStore.reset();
   }
 
-  @Watch('config')
+  @Watch('studioConfig')
   onConfigChange() {
     envStore.reset();
 
@@ -103,11 +103,11 @@ export class Studio implements ComponentInterface {
   }
 
   private applyConfig() {
-    if (!this.config) {
+    if (!this.studioConfig) {
       return;
     }
 
-    const {cloud, i18n} = this.config;
+    const {cloud, i18n} = this.studioConfig;
     envStore.state.cloud = cloud;
     i18nStore.state = i18n;
   }

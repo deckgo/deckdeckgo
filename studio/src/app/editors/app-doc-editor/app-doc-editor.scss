@@ -1,32 +1,3 @@
 app-doc-editor {
   height: 100%;
-
-  @import "node_modules/@deckdeckgo/styles/css/doc";
-
-  deckgo-doc {
-    position: relative;
-
-    article {
-      h1:nth-child(1):empty:not(:focus):after {
-        content: "Title";
-        color: rgba(var(--ion-color-medium-rgb), 0.6);
-        white-space: pre;
-        position: relative;
-      }
-
-      div:nth-child(2):empty:last-child:not(:focus):after {
-        content: "Write your document...";
-        color: rgba(var(--ion-color-medium-rgb), 0.6);
-        position: relative;
-      }
-    }
-  }
-
-  stylo-editor {
-    --stylo-add-left: 8px;
-
-    @media (min-width: 768px) {
-      --stylo-add-left: 32px;
-    }
-  }
 }

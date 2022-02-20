@@ -31,7 +31,7 @@ import '@deckdeckgo/slide-poll';
 import '@deckdeckgo/slide-aspect-ratio';
 import '@deckdeckgo/slide-playground';
 
-import '@papyrs/stylo';
+import '@deckdeckgo/studio';
 
 import {setupConfig as setupDeckGoConfig} from '../app/config/environment-config';
 
