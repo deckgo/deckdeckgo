@@ -1,11 +1,7 @@
+import {convertStyle, Slide, SlideScope, SlideTemplate} from '@deckdeckgo/editor';
+import {ParseElementsUtils} from '@deckdeckgo/studio';
 import {h, JSX} from '@stencil/core';
-
 import {v4 as uuid} from 'uuid';
-
-import {Slide, SlideTemplate, SlideScope, convertStyle} from '@deckdeckgo/editor';
-
-import {ParseElementsUtils} from './parse-elements.utils';
-
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 

@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore, ChartEvents, ImageEvents} from '@deckdeckgo/studio';
+import {errorStore, editorStore, busyStore, ChartEvents, ImageEvents, getEdit} from '@deckdeckgo/studio';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -26,7 +26,6 @@ import {cloud} from '../../utils/core/environment.utils';
 import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
-import {getEdit} from '../../utils/editor/editor.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 
 @Component({

@@ -1,5 +1,5 @@
 import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
-import {ChartEvents, errorStore, ImageEvents, syncStore} from '@deckdeckgo/studio';
+import {ChartEvents, errorStore, getEdit, ImageEvents, ParseParagraphsUtils, syncStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -10,8 +10,6 @@ import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import {Editor} from '../../../types/editor/editor';
 import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
-import {getEdit} from '../../../utils/editor/editor.utils';
-import {ParseParagraphsUtils} from '../../../utils/editor/parse-paragraphs.utils';
 
 interface DocAndParagraphs {
   doc: Doc;
@@ -111,7 +109,7 @@ export class AppDocs implements ComponentInterface {
     const parsedParagraphs: JSX.IntrinsicElements[] = await Promise.all(
       paragraphs
         .filter((paragraph: Paragraph | undefined) => paragraph !== undefined)
-        .map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}))
+        .map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}) as Promise<JSX.IntrinsicElements>)
     );
 
     return {

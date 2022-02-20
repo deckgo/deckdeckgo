@@ -1,5 +1,5 @@
 import {StorageFile, User} from '@deckdeckgo/editor';
-import {errorStore} from '@deckdeckgo/studio';
+import {errorStore, clearEdit} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
@@ -17,7 +17,6 @@ import {firebase} from '../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {UserUtils} from '../../../../utils/core/user.utils';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
 
 @Component({
   tag: 'app-profile',

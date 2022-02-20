@@ -1,11 +1,10 @@
 import {SyncEvent} from '@deckdeckgo/editor';
-import {initSyncState, sync} from '@deckdeckgo/studio';
+import {initSyncState, sync, getEdit} from '@deckdeckgo/studio';
 import {isIOS} from '@deckdeckgo/utils';
 import {Component, ComponentInterface, Fragment, h, Listen, State} from '@stencil/core';
 import {EnvironmentAppConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {Editor} from '../../types/editor/editor';
-import {getEdit} from '../../utils/editor/editor.utils';
 import {startSyncTimer, stopSyncTimer} from '../../workers/sync.worker';
 import {worker} from '../../workers/sync.worker.ts?worker';
 

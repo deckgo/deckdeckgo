@@ -17,7 +17,7 @@ import {
   SlideSplitType,
   SlideTemplate
 } from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore} from '@deckdeckgo/studio';
+import {errorStore, editorStore, busyStore, ParseElementsUtils} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
@@ -26,7 +26,6 @@ import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.
 import {publishUrl} from '../../../providers/publish/publish.provider';
 import authStore from '../../../stores/auth.store';
 import {DeckAction} from '../../../types/editor/deck-action';
-import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
 import {SlotUtils} from '../../../utils/editor/slot.utils';

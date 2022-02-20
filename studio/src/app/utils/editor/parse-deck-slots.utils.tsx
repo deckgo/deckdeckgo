@@ -1,6 +1,5 @@
+import {ParseElementsUtils} from '@deckdeckgo/studio';
 import {h, JSX} from '@stencil/core';
-
-import {ParseElementsUtils} from './parse-elements.utils';
 
 export class ParseDeckSlotsUtils {
   static async convert(htmlContent: string, slotName: 'background' | 'header' | 'footer'): Promise<JSX.IntrinsicElements | undefined> {

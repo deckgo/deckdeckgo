@@ -1,4 +1,4 @@
-import {errorStore, syncStore} from '@deckdeckgo/studio';
+import {errorStore, syncStore, clearEdit} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
@@ -6,7 +6,6 @@ import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import {MoreAction} from '../../../../types/editor/more-action';
 import {cloud} from '../../../../utils/core/environment.utils';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
 import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({

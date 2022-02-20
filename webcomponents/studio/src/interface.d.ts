@@ -13,3 +13,7 @@ export * from './types/config';
 export * from './types/env';
 export * from './types/slot-type';
 export * from './utils/sync.utils';
+export * from './utils/attributes.utils';
+export * from './utils/parse-elements.utils';
+export * from './utils/parse-paragraphs.utils';
+export * from './utils/editor.utils';
