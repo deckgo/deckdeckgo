@@ -10,10 +10,11 @@
     "directory": "utils/editor"
   },
   "homepage": "https://deckdeckgo.com",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "lib/cjs/index.cjs.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
   "scripts": {
-    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib/types",
     "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
   "files": [
