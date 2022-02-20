@@ -4,10 +4,6 @@ app-actions-deck-editor {
   background: transparent;
   display: block;
 
-  &.hidden {
-    display: none;
-  }
-
   app-actions-deck,
   app-actions-element {
     &.hidden {

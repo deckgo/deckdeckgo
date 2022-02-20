@@ -47,7 +47,6 @@ export namespace Components {
     }
     interface AppActionsDeckEditor {
         "fullscreen": boolean;
-        "hideActions": boolean;
         "selectDeck": () => Promise<void>;
         "selectStep": (element: HTMLElement | undefined) => Promise<void>;
         "slideNumber": number;
@@ -1391,7 +1390,6 @@ declare namespace LocalJSX {
     }
     interface AppActionsDeckEditor {
         "fullscreen"?: boolean;
-        "hideActions"?: boolean;
         "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;

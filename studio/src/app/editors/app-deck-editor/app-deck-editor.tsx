@@ -96,9 +96,6 @@ export class AppDeckEditor implements ComponentInterface {
   private slidesFetched: boolean = false;
 
   @State()
-  private hideActions: boolean = false;
-
-  @State()
   private fullscreen: boolean = false;
 
   @State()
@@ -106,6 +103,8 @@ export class AppDeckEditor implements ComponentInterface {
 
   @State()
   private mainSize: {width: string; height: string};
+
+  private mobile: boolean = isMobile();
 
   private destroyBusyListener;
   private destroyAuthListener;
@@ -165,7 +164,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.initOrFetch();
 
-    this.fullscreen = isFullscreen() && !isMobile();
+    this.fullscreen = isFullscreen() && !this.mobile;
   }
 
   @Listen('colorChange', {target: 'document', passive: true})
@@ -514,7 +513,7 @@ export class AppDeckEditor implements ComponentInterface {
         return;
       }
 
-      if ($event instanceof MouseEvent && isMobile()) {
+      if ($event instanceof MouseEvent && this.mobile) {
         resolve();
         return;
       }
@@ -654,10 +653,10 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private initMainSize() {
-    if (!this.contentRef || isFullscreen() || (isMobile() && !isIPad() && !isAndroidTablet())) {
+    if (!this.contentRef || isFullscreen() || (this.mobile && !isIPad() && !isAndroidTablet())) {
       this.mainSize = {
-        width: isMobile() ? 'calc(100% - 32px)' : '100%',
-        height: isMobile() ? 'calc(100% - 32px)' : '100%'
+        width: this.mobile ? 'calc(100% - 32px)' : '100%',
+        height: this.mobile ? 'calc(100% - 32px)' : '100%'
       };
       return;
     }
@@ -708,10 +707,6 @@ export class AppDeckEditor implements ComponentInterface {
   @Listen('signIn', {target: 'document'})
   signIn() {
     navigateSignIn();
-  }
-
-  private inlineEditorActivated($event: CustomEvent<boolean>) {
-    this.hideActions = $event ? isMobile() && !isIOS() && $event.detail : false;
   }
 
   @Listen('reorder', {target: 'document'})
@@ -831,7 +826,6 @@ export class AppDeckEditor implements ComponentInterface {
 
             <app-actions-deck-editor
               ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsDeckEditorElement)}
-              hideActions={this.hideActions}
               fullscreen={this.fullscreen}
               slides={this.slides}
               slideNumber={this.activeIndex}
@@ -853,11 +847,11 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private renderInlineEditor() {
-    return (
-      <stylo-toolbar
-        onToolbarActivated={($event: CustomEvent<boolean>) => this.inlineEditorActivated($event)}
-        config={this.editorConfig}></stylo-toolbar>
-    );
+    if (this.mobile) {
+      return undefined;
+    }
+
+    return <stylo-toolbar config={this.editorConfig}></stylo-toolbar>;
   }
 
   private renderLoading() {

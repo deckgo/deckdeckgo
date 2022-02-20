@@ -16,9 +16,6 @@ export class AppActionsDeckEditor {
   @Element() el: HTMLElement;
 
   @Prop()
-  hideActions: boolean = false;
-
-  @Prop()
   fullscreen: boolean = false;
 
   @Prop()
@@ -116,15 +113,8 @@ export class AppActionsDeckEditor {
     }
   }
 
-  @Watch('hideActions')
-  async reset() {
-    if (!this.hideActions) {
-      return;
-    }
-
-    if (this.actionsElementRef) {
-      await this.actionsElementRef.reset();
-    }
+  private async reset() {
+    await this.actionsElementRef?.reset();
   }
 
   private selectStepDeck() {
@@ -169,7 +159,6 @@ export class AppActionsDeckEditor {
       <Host
         class={{
           fullscreen: this.fullscreen,
-          hidden: this.hideActions,
           'hidden-bottom-sheet': this.hideBottomSheet
         }}>
         {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
