@@ -11,6 +11,7 @@
 
 - deck-utils: v7.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
 - editor: v7.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- styles: v1.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/styles/CHANGELOG.md))
 
 <a name="6.0.0"></a>
 

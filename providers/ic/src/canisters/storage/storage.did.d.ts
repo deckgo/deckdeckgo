@@ -24,8 +24,12 @@ export interface HttpResponse {
   status_code: number;
 }
 export interface StorageBucket {
-  commitUpload: (arg_0: {headers: Array<HeaderField__1>; chunkIds: Array<bigint>; batchId: bigint}) => Promise<undefined>;
-  del: (arg_0: {token: [] | [string]; fullPath: string}) => Promise<undefined>;
+  commitUpload: (arg_0: {
+    headers: Array<HeaderField__1>,
+    chunkIds: Array<bigint>,
+    batchId: bigint
+  }) => Promise<undefined>;
+  del: (arg_0: {token: [] | [string], fullPath: string}) => Promise<undefined>;
   http_request: (arg_0: HttpRequest) => Promise<HttpResponse>;
   http_request_streaming_callback: (arg_0: StreamingCallbackToken) => Promise<StreamingCallbackHttpResponse>;
   initUpload: (arg_0: AssetKey) => Promise<{batchId: bigint}>;
@@ -53,9 +57,9 @@ export interface StreamingCallbackToken__1 {
 }
 export type StreamingStrategy = {
   Callback: {
-    token: StreamingCallbackToken__1;
-    callback: [Principal, string];
-  };
+    token: StreamingCallbackToken__1,
+    callback: [Principal, string]
+  }
 };
 export type UserId = Principal;
 export interface _SERVICE extends StorageBucket {}
