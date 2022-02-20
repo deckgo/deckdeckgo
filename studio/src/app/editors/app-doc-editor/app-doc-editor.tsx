@@ -1,4 +1,4 @@
-import {errorStore, StudioConfig, busyStore} from '@deckdeckgo/studio';
+import {busyStore, errorStore, StudioConfig} from '@deckdeckgo/studio';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
@@ -17,9 +17,6 @@ import {ColorUtils} from '../../utils/editor/color.utils';
   styleUrl: 'app-doc-editor.scss'
 })
 export class AppDocEditor implements ComponentInterface {
-  @State()
-  private editorConfig: Partial<StyloConfig> = editorConfig;
-
   @State()
   private studioConfig: StudioConfig | undefined;
 
@@ -82,8 +79,8 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private updateEditorConfig() {
-    this.editorConfig = {
-      ...this.editorConfig,
+    const styloConfig: Partial<StyloConfig> = {
+      ...editorConfig,
       i18n: {
         lang: i18n.state.lang,
         custom: {...i18n.state.editor}
@@ -93,7 +90,8 @@ export class AppDocEditor implements ComponentInterface {
 
     this.studioConfig = {
       cloud: EnvironmentConfigService.getInstance().get('cloud'),
-      i18n: {...i18n.state} as unknown as Record<string, Record<string, string>>
+      i18n: {...i18n.state} as unknown as Record<string, Record<string, string>>,
+      stylo: styloConfig
     };
   }
 
@@ -122,7 +120,6 @@ export class AppDocEditor implements ComponentInterface {
 
             <deckgo-studio
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioElement)}
-              editorConfig={this.editorConfig}
               studioConfig={this.studioConfig}></deckgo-studio>
 
             <app-doc-indicator></app-doc-indicator>
