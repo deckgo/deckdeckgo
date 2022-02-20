@@ -15,9 +15,6 @@ export const config: Config = {
       serviceWorker: null
     },
     {
-      type: 'docs-readme'
-    },
-    {
       type: 'dist-custom-elements',
       autoDefineCustomElements: true
     }
