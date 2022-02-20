@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {SlideScope} from '@deckdeckgo/editor';
-import {busyStore} from '@deckdeckgo/studio';
+import {busyStore, SlotType, SlotUtils} from '@deckdeckgo/studio';
 import {debounce, isFullscreen} from '@deckdeckgo/utils';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -14,12 +14,10 @@ import {EditAction} from '../../../../../../types/editor/edit-action';
 import {MoreAction} from '../../../../../../types/editor/more-action';
 import {PlaygroundAction} from '../../../../../../types/editor/playground-action';
 import {SelectedTarget} from '../../../../../../types/editor/selected-target';
-import {SlotType} from '../../../../../../types/editor/slot-type';
 import {CloneSlideUtils} from '../../../../../../utils/editor/clone-slide.utils';
 import {InitTemplate} from '../../../../../../utils/editor/create-slides.utils';
 import {RevealSlotUtils} from '../../../../../../utils/editor/reveal-slot.utils';
 import {SelectedElementUtils} from '../../../../../../utils/editor/selected-element.utils';
-import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
 import {ToggleSlotUtils} from '../../../../../../utils/editor/toggle-slot.utils';
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 

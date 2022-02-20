@@ -1,11 +1,7 @@
-import {SlideSplitType} from '@deckdeckgo/editor';
-
 import {isSlide} from '@deckdeckgo/deck-utils';
-
-import {SlotType} from '../../types/editor/slot-type';
+import {SlideSplitType} from '@deckdeckgo/editor';
+import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import {SelectedTarget} from '../../types/editor/selected-target';
-
-import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
 import {SlideUtils} from './slide.utils';
 

@@ -1,11 +1,10 @@
 import {Deck, SlideAttributes, SlideScope, SlideTemplate, Template} from '@deckdeckgo/editor';
-import {editorStore} from '@deckdeckgo/studio';
+import {editorStore, SlotType} from '@deckdeckgo/studio';
 import type {SegmentChangeEventDetail} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
-import {SlotType} from '../../../types/editor/slot-type';
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
 

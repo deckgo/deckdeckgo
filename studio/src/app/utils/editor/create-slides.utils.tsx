@@ -1,23 +1,16 @@
-import {h, JSX} from '@stencil/core';
-
-import {v4 as uuid} from 'uuid';
-
-import {SlideAttributes, SlideTemplate, SlideScope, User, Deck, Template} from '@deckdeckgo/editor';
+import {Deck, SlideAttributes, SlideScope, SlideTemplate, Template, User} from '@deckdeckgo/editor';
 import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
-
-import userStore from '../../stores/user.store';
-
-import {publishUrl} from '../../providers/publish/publish.provider';
-
+import {SlotType} from '@deckdeckgo/studio';
+import {h, JSX} from '@stencil/core';
+import {v4 as uuid} from 'uuid';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
+import {publishUrl} from '../../providers/publish/publish.provider';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
-import {SlotType} from '../../types/editor/slot-type';
-
+import userStore from '../../stores/user.store';
+import {createElement} from './create-element.utils';
+import {SlideUtils} from './slide.utils';
 import {SocialUtils} from './social.utils';
 import {TemplateUtils} from './template.utils';
-import {SlideUtils} from './slide.utils';
-import {createElement} from './create-element.utils';
 
 export interface InitTemplate {
   template: SlideTemplate | Template;

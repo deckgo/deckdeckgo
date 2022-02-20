@@ -1,10 +1,8 @@
-import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} from '@stencil/core';
-
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 import {selectSlide} from '@deckdeckgo/editor';
-
-import {SlotUtils} from '../../../../../utils/editor/slot.utils';
+import {SlotUtils} from '@deckdeckgo/studio';
+import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
+import {Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'app-slide-preview',

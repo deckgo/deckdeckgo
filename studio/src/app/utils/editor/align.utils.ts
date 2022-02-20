@@ -1,5 +1,5 @@
+import {SlotType} from '@deckdeckgo/studio';
 import {isRTL} from '@deckdeckgo/utils';
-import {SlotType} from '../../types/editor/slot-type';
 
 export enum TextAlign {
   LEFT = 'left',

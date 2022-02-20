@@ -17,7 +17,7 @@ import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { Expanded } from "./app/types/core/settings";
 import { ImageAction } from "./app/types/editor/image-action";
-import { SlotType } from "./app/types/editor/slot-type";
+import { SlotType } from "@deckdeckgo/studio";
 import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";

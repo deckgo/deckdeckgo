@@ -1,11 +1,6 @@
+import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, Fragment, h, JSX, Prop, State} from '@stencil/core';
-
 import i18n from '../../../../stores/i18n.store';
-
-import {SlotType} from '../../../../types/editor/slot-type';
-
-import {SlotUtils} from '../../../../utils/editor/slot.utils';
-
 import {AppIcon} from '../../../core/app-icon/app-icon';
 
 @Component({

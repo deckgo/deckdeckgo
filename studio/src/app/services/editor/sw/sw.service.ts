@@ -1,8 +1,7 @@
 import {deckSelector} from '@deckdeckgo/editor';
-import {offlineStore} from '@deckdeckgo/studio';
+import {offlineStore, SlotType} from '@deckdeckgo/studio';
 import {EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import assetsStore from '../../../stores/assets.store';
-import {SlotType} from '../../../types/editor/slot-type';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {FontsService} from '../fonts/fonts.service';

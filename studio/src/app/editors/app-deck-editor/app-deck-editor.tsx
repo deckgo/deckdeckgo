@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore, ChartEvents, ImageEvents, getEdit} from '@deckdeckgo/studio';
+import {busyStore, ChartEvents, editorStore, errorStore, getEdit, ImageEvents, SlotType} from '@deckdeckgo/studio';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -21,7 +21,6 @@ import colorStore from '../../stores/color.store';
 import i18n from '../../stores/i18n.store';
 import undoRedoStore from '../../stores/undo-redo.store';
 import {Editor} from '../../types/editor/editor';
-import {SlotType} from '../../types/editor/slot-type';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
@@ -763,7 +762,9 @@ export class AppDeckEditor implements ComponentInterface {
 
   render() {
     const autoSlide: boolean =
-      editorStore.default.state.deck?.data?.attributes?.autoSlide !== undefined ? editorStore.default.state.deck.data.attributes.autoSlide : false;
+      editorStore.default.state.deck?.data?.attributes?.autoSlide !== undefined
+        ? editorStore.default.state.deck.data.attributes.autoSlide
+        : false;
 
     return [
       <ion-content

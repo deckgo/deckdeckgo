@@ -17,7 +17,7 @@ import {
   SlideSplitType,
   SlideTemplate
 } from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore, ParseElementsUtils} from '@deckdeckgo/studio';
+import {errorStore, editorStore, busyStore, ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
@@ -28,7 +28,6 @@ import authStore from '../../../stores/auth.store';
 import {DeckAction} from '../../../types/editor/deck-action';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
-import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 export class DeckDataEvents {
   private mainRef: HTMLElement;

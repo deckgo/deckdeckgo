@@ -1,18 +1,12 @@
-import {Component, h, Host, Listen, State} from '@stencil/core';
-
-import {popoverController} from '@ionic/core';
-
-import {debounce} from '@deckdeckgo/utils';
 import {selectSlide} from '@deckdeckgo/editor';
-
+import {SlotUtils} from '@deckdeckgo/studio';
+import {debounce} from '@deckdeckgo/utils';
+import {popoverController} from '@ionic/core';
+import {Component, h, Host, Listen, State} from '@stencil/core';
 import i18n from '../../../../../stores/i18n.store';
-
 import settingsStore from '../../../../../stores/settings.store';
-
 import {ContrastUtils} from '../../../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../../../utils/editor/node.utils';
-import {SlotUtils} from '../../../../../utils/editor/slot.utils';
-
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({

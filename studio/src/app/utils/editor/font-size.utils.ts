@@ -1,7 +1,6 @@
-import {SlotType} from '../../types/editor/slot-type';
-import {FontSize} from '../../types/editor/font-size';
-
+import {SlotType} from '@deckdeckgo/studio';
 import {h1, h2, normal} from '../../../assets/font-size.json';
+import {FontSize} from '../../types/editor/font-size';
 
 export const initFontSize = (element: HTMLElement | undefined): FontSize => {
   if (!element) {

@@ -1,9 +1,7 @@
 import {User} from '@deckdeckgo/editor';
-
+import {SlotType} from '@deckdeckgo/studio';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
-import {SlotType} from '../../types/editor/slot-type';
 
 export class HeaderFooterUtils {
   static async append(

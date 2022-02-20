@@ -1,6 +1,5 @@
+import {SlotType} from '@deckdeckgo/studio';
 import {h, JSX} from '@stencil/core';
-
-import {SlotType} from '../../types/editor/slot-type';
 
 export const createElement = ({slotType, slotName}: {slotType: SlotType; slotName?: string}): JSX.IntrinsicElements => {
   const Element = slotType.toString();

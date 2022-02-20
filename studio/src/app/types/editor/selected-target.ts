@@ -1,6 +1,5 @@
 import {SlideScope} from '@deckdeckgo/editor';
-
-import {SlotType} from './slot-type';
+import {SlotType} from '@deckdeckgo/studio';
 
 export interface SelectedElement {
   code: boolean;
