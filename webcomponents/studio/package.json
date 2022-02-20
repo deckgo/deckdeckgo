@@ -42,7 +42,7 @@
   ],
   "dependencies": {
     "@deckdeckgo/deck-utils": "^7.0.0",
-    "@deckdeckgo/editor": "^6.0.0",
+    "@deckdeckgo/editor": "^7.0.0",
     "@deckdeckgo/utils": "^5.1.0",
     "@papyrs/stylo": "^0.0.8-2",
     "idb-keyval": "^6.1.0",
