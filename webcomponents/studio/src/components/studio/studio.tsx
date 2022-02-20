@@ -1,7 +1,5 @@
 import {moveCursorToStart} from '@deckdeckgo/utils';
 import {isFirefox} from '@deckdeckgo/utils/lib';
-import '@papyrs/stylo';
-import {StyloConfig} from '@papyrs/stylo';
 import {Component, ComponentInterface, Element, h, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
 import {ChartEvents} from '../../events/chart/chart.events';
@@ -10,8 +8,8 @@ import {DocImageEvents} from '../../events/doc/doc.image.events';
 import {ImageEvents} from '../../events/image/image.events';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
 import busyStore from '../../stores/busy.store';
+import configStore from '../../stores/config.store';
 import editorStore from '../../stores/editor.store';
-import envStore from '../../stores/env.store';
 import i18nStore from '../../stores/i18n.store';
 import {StudioConfig} from '../../types/config';
 import {Editor} from '../../types/editor';
@@ -28,9 +26,6 @@ export class Studio implements ComponentInterface {
 
   @State()
   private paragraphs: JSX.IntrinsicElements[] = [];
-
-  @Prop({mutable: true})
-  editorConfig: Partial<StyloConfig>;
 
   @Prop()
   studioConfig: StudioConfig;
@@ -97,7 +92,7 @@ export class Studio implements ComponentInterface {
 
   @Watch('studioConfig')
   onConfigChange() {
-    envStore.reset();
+    configStore.reset();
 
     this.applyConfig();
   }
@@ -107,8 +102,9 @@ export class Studio implements ComponentInterface {
       return;
     }
 
-    const {cloud, i18n} = this.studioConfig;
-    envStore.state.cloud = cloud;
+    const {cloud, i18n, stylo} = this.studioConfig;
+    configStore.state.cloud = cloud;
+    configStore.state.stylo = stylo;
     i18nStore.state = i18n;
   }
 
@@ -126,11 +122,7 @@ export class Studio implements ComponentInterface {
     await this.initOrFetch();
 
     // Reset config will destroy and init again listener in Stylo. It also reset undo-redo stack.
-    this.updateEditorConfig();
-  }
-
-  private updateEditorConfig() {
-    this.editorConfig = {...this.editorConfig};
+    configStore.state.stylo = {...configStore.state.stylo};
   }
 
   private async initOrFetch() {
@@ -233,7 +225,7 @@ export class Studio implements ComponentInterface {
             {this.paragraphs}
           </article>
 
-          <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
+          <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={configStore.state.stylo}></stylo-editor>
         </deckgo-doc>
 
         <deckgo-indicator></deckgo-indicator>

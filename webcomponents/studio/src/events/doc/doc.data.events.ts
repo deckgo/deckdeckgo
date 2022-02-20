@@ -1,10 +1,10 @@
 import {cleanNode, Doc, DocData, elementIndex, isElementNode, isTextNode, now, Paragraph, ParagraphData} from '@deckdeckgo/editor';
 import {nanoid} from 'nanoid';
-import {editorConfig} from '../../config/editor';
 import {createOfflineDoc, updateOfflineDoc} from '../../providers/doc.offline.provider';
 import {createOfflineParagraph, deleteOfflineParagraph, updateOfflineParagraph} from '../../providers/paragraph.offline.provider';
 import authStore from '../../stores/auth.store';
 import busyStore from '../../stores/busy.store';
+import configStore from '../../stores/config.store';
 import editorStore from '../../stores/editor.store';
 import errorStore from '../../stores/error.store';
 
@@ -268,7 +268,14 @@ export class DocDataEvents {
   private paragraphAttributes(paragraph: HTMLElement): Record<string, string | number | boolean | undefined> | null {
     const attrs: Attr[] = Array.from(paragraph.attributes).filter(
       ({nodeName}: Attr) =>
-        !['placeholder', 'data-gramm', 'class', 'spellcheck', 'contenteditable', ...editorConfig.excludeAttributes].includes(nodeName)
+        ![
+          'placeholder',
+          'data-gramm',
+          'class',
+          'spellcheck',
+          'contenteditable',
+          ...(configStore.state.stylo.excludeAttributes || [])
+        ].includes(nodeName)
     );
 
     return attrs.length > 0

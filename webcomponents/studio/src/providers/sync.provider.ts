@@ -1,7 +1,7 @@
 import {Sync, SyncData, SyncPending, SyncPendingData} from '@deckdeckgo/editor';
 import {del, delMany, get, keys, update} from 'idb-keyval';
 import authStore from '../stores/auth.store';
-import configStore from '../stores/env.store';
+import configStore from '../stores/config.store';
 import offlineStore from '../stores/offline.store';
 import syncStore from '../stores/sync.store';
 import {cloudProvider} from '../utils/providers.utils';

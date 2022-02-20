@@ -5,13 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { StyloConfig } from "@papyrs/stylo";
 import { StudioConfig } from "./types/config";
 export namespace Components {
     interface DeckgoIndicator {
     }
     interface DeckgoStudio {
-        "editorConfig": Partial<StyloConfig>;
         "initNewDoc": () => Promise<void>;
         "studioConfig": StudioConfig;
     }
@@ -38,7 +36,6 @@ declare namespace LocalJSX {
     interface DeckgoIndicator {
     }
     interface DeckgoStudio {
-        "editorConfig"?: Partial<StyloConfig>;
         "studioConfig"?: StudioConfig;
     }
     interface IntrinsicElements {
