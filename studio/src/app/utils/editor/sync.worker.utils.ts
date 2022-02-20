@@ -1,4 +1,4 @@
-import {
+import type {
   Deck,
   Doc,
   Paragraph,
@@ -44,27 +44,35 @@ const collectDecksData = async (data: SyncPending): Promise<Partial<SyncData>> =
     deck
   }));
 
-  const deleteDecks: SyncDataDeck[] | undefined = uniqueSyncData(data.deleteDecks).map(({deckId}: SyncPendingDeck) => ({deckId}));
+  const deleteDecks: SyncDataDeck[] | undefined = uniqueSyncData(data.deleteDecks).map(
+    ({deckId}: SyncPendingDeck) => ({deckId})
+  );
 
   const updateSlides: SyncDataSlide[] | undefined = await Promise.all(
     uniqueSyncData(data.updateSlides).map((slide: SyncPendingSlide) => getSlide(slide))
   );
 
-  const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({
-    deckId,
-    slideId
-  }));
+  const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(
+    ({deckId, slideId}: SyncPendingSlide) => ({
+      deckId,
+      slideId
+    })
+  );
 
   return {
     updateDecks: deleteDecks
       ? updateDecks?.filter(
-          ({deckId}: SyncDataDeck) => !deleteDecks.find(({deckId: deleteDeckId}: SyncDataDeck) => deleteDeckId === deckId)
+          ({deckId}: SyncDataDeck) =>
+            !deleteDecks.find(({deckId: deleteDeckId}: SyncDataDeck) => deleteDeckId === deckId)
         )
       : updateDecks,
     deleteDecks,
     updateSlides: deleteSlides
       ? updateSlides?.filter(
-          ({slideId}: SyncDataSlide) => !deleteSlides.find(({slideId: deleteSlideId}: SyncDataSlide) => deleteSlideId === slideId)
+          ({slideId}: SyncDataSlide) =>
+            !deleteSlides.find(
+              ({slideId: deleteSlideId}: SyncDataSlide) => deleteSlideId === slideId
+            )
         )
       : updateSlides,
     deleteSlides
@@ -72,35 +80,45 @@ const collectDecksData = async (data: SyncPending): Promise<Partial<SyncData>> =
 };
 
 const collectDocsData = async (data: SyncPending): Promise<Partial<SyncData>> => {
-  const updateDocs: SyncDataDoc[] | undefined = (await getMany(uniqueSyncData(data.updateDocs).map(({key}: SyncPendingDoc) => key))).map(
-    (doc: Doc) => ({
-      docId: doc.id,
-      doc
-    })
-  );
+  const updateDocs: SyncDataDoc[] | undefined = (
+    await getMany(uniqueSyncData(data.updateDocs).map(({key}: SyncPendingDoc) => key))
+  ).map((doc: Doc) => ({
+    docId: doc.id,
+    doc
+  }));
 
-  const deleteDocs: SyncDataDoc[] | undefined = uniqueSyncData(data.deleteDocs).map(({docId}: SyncPendingDoc) => ({docId}));
+  const deleteDocs: SyncDataDoc[] | undefined = uniqueSyncData(data.deleteDocs).map(
+    ({docId}: SyncPendingDoc) => ({docId})
+  );
 
   const updateParagraphs: SyncDataParagraph[] | undefined = await Promise.all(
-    uniqueSyncData(data.updateParagraphs).map((paragraph: SyncPendingParagraph) => getParagraph(paragraph))
+    uniqueSyncData(data.updateParagraphs).map((paragraph: SyncPendingParagraph) =>
+      getParagraph(paragraph)
+    )
   );
 
-  const deleteParagraphs: SyncDataParagraph[] | undefined = uniqueSyncData(data.deleteParagraphs).map(
-    ({docId, paragraphId}: SyncPendingParagraph) => ({
-      docId,
-      paragraphId
-    })
-  );
+  const deleteParagraphs: SyncDataParagraph[] | undefined = uniqueSyncData(
+    data.deleteParagraphs
+  ).map(({docId, paragraphId}: SyncPendingParagraph) => ({
+    docId,
+    paragraphId
+  }));
 
   return {
     updateDocs: deleteDocs
-      ? updateDocs?.filter(({docId}: SyncDataDoc) => !deleteDocs.find(({docId: deleteDocId}: SyncDataDoc) => deleteDocId === docId))
+      ? updateDocs?.filter(
+          ({docId}: SyncDataDoc) =>
+            !deleteDocs.find(({docId: deleteDocId}: SyncDataDoc) => deleteDocId === docId)
+        )
       : updateDocs,
     deleteDocs,
     updateParagraphs: deleteParagraphs
       ? updateParagraphs?.filter(
           ({paragraphId}: SyncDataParagraph) =>
-            !deleteParagraphs.find(({paragraphId: deleteParagraphId}: SyncDataParagraph) => deleteParagraphId === paragraphId)
+            !deleteParagraphs.find(
+              ({paragraphId: deleteParagraphId}: SyncDataParagraph) =>
+                deleteParagraphId === paragraphId
+            )
         )
       : updateParagraphs,
     deleteParagraphs
@@ -117,7 +135,11 @@ const getSlide = async ({deckId, slideId, key}: SyncPendingSlide): Promise<SyncD
   };
 };
 
-const getParagraph = async ({docId, paragraphId, key}: SyncPendingParagraph): Promise<SyncDataParagraph> => {
+const getParagraph = async ({
+  docId,
+  paragraphId,
+  key
+}: SyncPendingParagraph): Promise<SyncDataParagraph> => {
   const paragraph: Paragraph | undefined = await get(key);
 
   return {

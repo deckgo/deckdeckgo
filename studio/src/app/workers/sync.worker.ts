@@ -1,5 +1,5 @@
 import {SyncData} from '@deckdeckgo/editor';
-import {collectData} from '@deckdeckgo/studio';
+import {collectData} from '../utils/editor/sync.worker.utils';
 
 // TODO: move Firestore merge to worker
 
