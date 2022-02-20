@@ -1,21 +1,14 @@
-import {Component, h, Fragment, Element, Prop} from '@stencil/core';
-
+import {errorStore, offlineStore, syncStore} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
-
-import authStore from '../../../../stores/auth.store';
-import userStore from '../../../../stores/user.store';
-import i18n from '../../../../stores/i18n.store';
-import errorStore from '../../../../stores/error.store';
-import syncStore from '../../../../stores/sync.store';
-import offlineStore from '../../../../stores/offline.store';
-
-import {signIn} from '../../../../utils/core/signin.utils';
-
-import {AppIcon} from '../../app-icon/app-icon';
-
+import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
+import authStore from '../../../../stores/auth.store';
+import i18n from '../../../../stores/i18n.store';
+import userStore from '../../../../stores/user.store';
 import {cloud} from '../../../../utils/core/environment.utils';
+import {signIn} from '../../../../utils/core/signin.utils';
+import {clearEdit} from '../../../../utils/editor/editor.utils';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-navigation-end',
@@ -46,7 +39,7 @@ export class AppNavigationEnd {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      errorStore.default.state.error = `Something went wrong. ${err}.`;
     }
   }
 
@@ -68,7 +61,7 @@ export class AppNavigationEnd {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      errorStore.default.state.error = `Something went wrong. ${err}.`;
     }
 
     this.loadInput.value = null;
@@ -104,7 +97,7 @@ export class AppNavigationEnd {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data.';
+      errorStore.default.state.error = 'Something went wrong while cleaning the local data.';
     }
 
     await loading.dismiss();
@@ -141,7 +134,7 @@ export class AppNavigationEnd {
   }
 
   private renderActions() {
-    const disabled: boolean = ['in_progress', 'pending', 'init'].includes(syncStore.state.sync);
+    const disabled: boolean = ['in_progress', 'pending', 'init'].includes(syncStore.default.state.sync);
 
     return (
       <Fragment>
@@ -226,32 +219,32 @@ export class AppNavigationEnd {
   }
 
   private renderCloudStatus() {
-    if (!offlineStore.state.online) {
+    if (!offlineStore.default.state.online) {
       return undefined;
     }
 
     const label: string =
-      syncStore.state.sync === 'error'
+      syncStore.default.state.sync === 'error'
         ? i18n.state.sync.cloud_error
-        : syncStore.state.sync === 'in_progress'
+        : syncStore.default.state.sync === 'in_progress'
         ? i18n.state.sync.cloud_in_progress
-        : syncStore.state.sync === 'init'
+        : syncStore.default.state.sync === 'init'
         ? i18n.state.sync.cloud_init
-        : syncStore.state.sync === 'pending'
+        : syncStore.default.state.sync === 'pending'
         ? i18n.state.sync.cloud_pending
         : i18n.state.sync.cloud_idle;
 
     const iconName: string =
-      syncStore.state.sync === 'error'
+      syncStore.default.state.sync === 'error'
         ? 'cloud-offline'
-        : ['in_progress', 'pending', 'init'].includes(syncStore.state.sync)
+        : ['in_progress', 'pending', 'init'].includes(syncStore.default.state.sync)
         ? 'sync'
         : 'cloud-done';
 
     return (
       <button
         key="cloud-status-action"
-        class={`cloud ion-activatable ${syncStore.state.sync}`}
+        class={`cloud ion-activatable ${syncStore.default.state.sync}`}
         aria-label={label}
         onClick={($event: UIEvent) => this.openSyncInfo($event)}>
         <ion-ripple-effect></ion-ripple-effect>

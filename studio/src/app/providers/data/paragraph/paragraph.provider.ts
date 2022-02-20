@@ -1,9 +1,7 @@
-import {Paragraph, GetParagraph} from '@deckdeckgo/editor';
-
+import {GetParagraph, Paragraph} from '@deckdeckgo/editor';
+import {getOfflineParagraph} from '@deckdeckgo/studio';
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
-
-import {getOfflineParagraph} from './paragraph.offline.provider';
 
 export const getParagraph = async ({docId, paragraphId}: {docId: string; paragraphId: string}): Promise<Paragraph> => {
   if (cloud()) {

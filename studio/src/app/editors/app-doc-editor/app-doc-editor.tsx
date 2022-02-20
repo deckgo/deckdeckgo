@@ -1,4 +1,4 @@
-import {StudioConfig} from '@deckdeckgo/studio';
+import {errorStore, StudioConfig, busyStore} from '@deckdeckgo/studio';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
@@ -6,9 +6,7 @@ import {editorConfig} from '../../config/editor';
 import {CodeEvents} from '../../events/editor/code/code.events';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import authStore from '../../stores/auth.store';
-import busyStore from '../../stores/busy.store';
 import colorStore from '../../stores/color.store';
-import errorStore from '../../stores/error.store';
 import i18n from '../../stores/i18n.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
@@ -50,7 +48,7 @@ export class AppDocEditor implements ComponentInterface {
   @Listen('actionPublish', {target: 'document'})
   async onActionPublish() {
     if (!cloud()) {
-      errorStore.state.error = 'No cloud provider to publish material.';
+      errorStore.default.state.error = 'No cloud provider to publish material.';
       return;
     }
 
@@ -135,7 +133,7 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private renderLoading() {
-    if (busyStore.state.docReady) {
+    if (busyStore.default.state.docReady) {
       return undefined;
     }
 

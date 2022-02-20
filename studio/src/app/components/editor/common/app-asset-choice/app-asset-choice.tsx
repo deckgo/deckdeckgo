@@ -1,12 +1,8 @@
-import {Fragment, FunctionalComponent, h} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
-import offlineStore from '../../../../stores/offline.store';
+import {offlineStore} from '@deckdeckgo/studio';
+import {Fragment, FunctionalComponent, h} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
-
 import {EditAction} from '../../../../types/editor/edit-action';
-
 import {tenor, unsplash} from '../../../../utils/core/environment.utils';
 
 const tenorEnabled = tenor();
@@ -18,7 +14,7 @@ interface AppAssetChoiceProps {
 
 export const AppAssetChoice: FunctionalComponent<AppAssetChoiceProps> = ({selectAction}) => {
   const renderStockPhotos = () => {
-    if (!offlineStore.state.online) {
+    if (!offlineStore.default.state.online) {
       // Unsplash not available offline
       return undefined;
     }
@@ -35,7 +31,7 @@ export const AppAssetChoice: FunctionalComponent<AppAssetChoiceProps> = ({select
   };
 
   const renderGif = () => {
-    if (!offlineStore.state.online) {
+    if (!offlineStore.default.state.online) {
       // Tenor not available offline
       return undefined;
     }

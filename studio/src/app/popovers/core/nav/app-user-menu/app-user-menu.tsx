@@ -1,12 +1,10 @@
+import {syncStore} from '@deckdeckgo/studio';
 import {Component, Element, Fragment, h} from '@stencil/core';
-
-import navStore, {NavDirection} from '../../../../stores/nav.store';
-import i18n from '../../../../stores/i18n.store';
-import userStore from '../../../../stores/user.store';
-import authStore from '../../../../stores/auth.store';
-import syncStore from '../../../../stores/sync.store';
-
 import {signOut} from '../../../../providers/auth/auth.provider';
+import authStore from '../../../../stores/auth.store';
+import i18n from '../../../../stores/i18n.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
+import userStore from '../../../../stores/user.store';
 import {clearEdit} from '../../../../utils/editor/editor.utils';
 
 @Component({
@@ -81,7 +79,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signUserOut()} disabled={syncStore.state.dirty || !authStore.state.loggedIn}>
+        <ion-item onClick={() => this.signUserOut()} disabled={syncStore.default.state.dirty || !authStore.state.loggedIn}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

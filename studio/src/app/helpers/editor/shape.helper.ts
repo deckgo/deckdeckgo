@@ -1,17 +1,13 @@
-import {EventEmitter} from '@stencil/core';
-
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {busyStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
-
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
-import busyStore from '../../stores/busy.store';
-
-import {ShapeAction, ShapeActionSVG} from '../../types/editor/shape-action';
+import {EventEmitter} from '@stencil/core';
+import {EditAction} from '../../types/editor/edit-action';
 import {ImageAction} from '../../types/editor/image-action';
+import {ShapeAction, ShapeActionSVG} from '../../types/editor/shape-action';
 import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAttributes, extractAttributes} from '../../utils/editor/image.utils';
-import {EditAction} from '../../types/editor/edit-action';
 
 export class ShapeHelper {
   constructor(private didChange: EventEmitter<HTMLElement>) {}
@@ -29,7 +25,7 @@ export class ShapeHelper {
   }
 
   private async appendShapeSVG(slideElement: HTMLElement, shapeAction: ShapeActionSVG) {
-    busyStore.state.busy = true;
+    busyStore.default.state.busy = true;
 
     await this.appendContentShape(slideElement, shapeAction.ratio, shapeAction.src, shapeAction.label, 'svg');
   }
@@ -47,7 +43,7 @@ export class ShapeHelper {
   }
 
   async cloneShape(shapeElement: HTMLElement) {
-    busyStore.state.busy = true;
+    busyStore.default.state.busy = true;
 
     await this.cloneShapeElement(shapeElement);
   }
@@ -56,7 +52,7 @@ export class ShapeHelper {
     const deckgImg: DeckgoImgAttributes | undefined = extractAttributes(image);
 
     if (deckgImg !== undefined) {
-      busyStore.state.busy = true;
+      busyStore.default.state.busy = true;
 
       await this.appendContentShape(slideElement, 1, deckgImg.src, deckgImg.label, 'img');
     }

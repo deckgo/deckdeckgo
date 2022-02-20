@@ -1,10 +1,7 @@
+import {clearSync} from '@deckdeckgo/studio';
 import {del, get, set} from 'idb-keyval';
-
-import {Editor} from '../../types/editor/editor';
-
-import {clearSync} from '../../providers/sync/sync.provider';
-
 import {ImageHistoryService} from '../../services/editor/image-history/image-history.service';
+import {Editor} from '../../types/editor/editor';
 
 export const getEdit = async (): Promise<Editor | undefined> => {
   let edit: Editor | undefined = await get('deckdeckgo_editor');

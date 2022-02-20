@@ -1,28 +1,19 @@
-import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
-
-import {loadingController} from '@ionic/core';
-
 import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
+import {syncStore, errorStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
-
-import i18n from '../../../stores/i18n.store';
-import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
-import syncStore from '../../../stores/sync.store';
-
+import {loadingController} from '@ionic/core';
+import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
-
-import {ImageEvents} from '../../../events/core/image/image.events';
 import {ChartEvents} from '../../../events/core/chart/chart.events';
-
-import {Editor} from '../../../types/editor/editor';
-
-import {getEdit} from '../../../utils/editor/editor.utils';
-import {ParseParagraphsUtils} from '../../../utils/editor/parse-paragraphs.utils';
-import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
-
+import {ImageEvents} from '../../../events/core/image/image.events';
 import {docs} from '../../../providers/data/doc/doc.provider';
 import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
+import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
+import {Editor} from '../../../types/editor/editor';
+import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
+import {getEdit} from '../../../utils/editor/editor.utils';
+import {ParseParagraphsUtils} from '../../../utils/editor/parse-paragraphs.utils';
 
 interface DocAndParagraphs {
   doc: Doc;
@@ -89,7 +80,7 @@ export class AppDocs implements ComponentInterface {
       this.docs = await this.fetchFirstParagraphs(userDocs);
       this.filterDocs(null);
     } catch (err) {
-      errorStore.state.error = 'Cannot init your dashboard.';
+      errorStore.default.state.error = 'Cannot init your dashboard.';
     }
 
     this.debounceLoading();
@@ -172,7 +163,7 @@ export class AppDocs implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.state.error = err;
+      errorStore.default.state.error = err;
     }
 
     await loading.dismiss();
@@ -253,7 +244,7 @@ export class AppDocs implements ComponentInterface {
       );
     }
 
-    if (syncStore.state.dirty) {
+    if (syncStore.default.state.dirty) {
       return <p>{i18n.state.dashboard.sync_docs}</p>;
     }
 

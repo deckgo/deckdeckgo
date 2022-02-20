@@ -1,11 +1,8 @@
-import {Component, Prop, h, Host, EventEmitter, Event, Fragment} from '@stencil/core';
-
 import {deckSelector, selectSlide} from '@deckdeckgo/editor';
-
-import busyStore from '../../../../../stores/busy.store';
-import deckEditorStore from '../../../../../stores/deck-editor.store';
-
+import {busyStore} from '@deckdeckgo/studio';
+import {Component, Event, EventEmitter, Fragment, h, Host, Prop} from '@stencil/core';
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
+import deckEditorStore from '../../../../../stores/deck-editor.store';
 
 @Component({
   tag: 'app-breadcrumbs',
@@ -68,7 +65,7 @@ export class AppBreadcrumbs {
         onTouchStart={($event) => $event.stopPropagation()}
         class={deckEditorStore.state.step === step ? 'selected' : undefined}
         onClick={() => this.selectStep(step)}
-        disabled={busyStore.state.busy}>
+        disabled={busyStore.default.state.busy}>
         <ion-label>
           {step}{' '}
           {step === 'slide' ? (
@@ -83,6 +80,6 @@ export class AppBreadcrumbs {
   }
 
   private renderSeparator() {
-    return <ion-label class={`separator ${busyStore.state.busy ? 'busy' : ''}`}>&#62;</ion-label>;
+    return <ion-label class={`separator ${busyStore.default.state.busy ? 'busy' : ''}`}>&#62;</ion-label>;
   }
 }

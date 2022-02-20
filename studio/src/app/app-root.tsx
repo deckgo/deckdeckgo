@@ -1,19 +1,13 @@
-import {Component, Element, h, Listen} from '@stencil/core';
-
+import {initSyncState, errorStore} from '@deckdeckgo/studio';
 import {toastController} from '@ionic/core';
-
-import errorStore from './stores/error.store';
-import navStore from './stores/nav.store';
-import authStore from './stores/auth.store';
-
+import {Component, Element, h, Listen} from '@stencil/core';
 import {initAuthProvider} from './providers/auth/auth.provider';
-
-import {ThemeService} from './services/theme/theme.service';
-import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/editor/color/color.service';
-import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {initSyncState} from './providers/sync/sync.provider';
+import {SettingsService} from './services/settings/settings.service';
+import {ThemeService} from './services/theme/theme.service';
+import authStore from './stores/auth.store';
+import navStore, {NavDirection, NavParams} from './stores/nav.store';
 
 @Component({
   tag: 'app-root'
@@ -54,7 +48,7 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
-    this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
+    this.destroyErrorListener = errorStore.default.onChange('error', (error: string | undefined) => {
       if (error && error !== undefined) {
         this.toastError(error);
       }
@@ -113,7 +107,7 @@ export class AppRoot {
     });
 
     toast.onDidDismiss().then(() => {
-      errorStore.state.error = undefined;
+      errorStore.default.state.error = undefined;
     });
 
     await toast.present();

@@ -1,47 +1,35 @@
-import {Component, ComponentInterface, Element, h, JSX, Listen, Method, State} from '@stencil/core';
-
-import type {OverlayEventDetail, ItemReorderEventDetail} from '@ionic/core';
-import {modalController, popoverController} from '@ionic/core';
-
-import {get, set} from 'idb-keyval';
-
-import editorStore from '../../stores/editor.store';
-import busyStore from '../../stores/busy.store';
-import colorStore from '../../stores/color.store';
-import undoRedoStore from '../../stores/undo-redo.store';
-import authStore from '../../stores/auth.store';
-import i18n from '../../stores/i18n.store';
-import errorStore from '../../stores/error.store';
-
-import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {convertStyle, SlideTemplate, elementIndex} from '@deckdeckgo/editor';
-import {StyloPaletteColor, StyloConfigToolbar} from '@papyrs/stylo';
-
-import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
-import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
-import {getEdit} from '../../utils/editor/editor.utils';
-import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
-
+import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
+import {errorStore, editorStore, busyStore} from '@deckdeckgo/studio';
+import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
+import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
+import {modalController, popoverController} from '@ionic/core';
+import {StyloConfigToolbar, StyloPaletteColor} from '@papyrs/stylo';
+import {Component, ComponentInterface, Element, h, JSX, Listen, Method, State} from '@stencil/core';
+import {get, set} from 'idb-keyval';
+import {EnvironmentGoogleConfig} from '../../config/environment-config';
+import {ChartEvents} from '../../events/core/chart/chart.events';
+import {ImageEvents} from '../../events/core/image/image.events';
+import {CodeEvents} from '../../events/editor/code/code.events';
 import {DeckDataEvents} from '../../events/editor/deck/deck.data.events';
-import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {DeckEditorEvents} from '../../events/editor/editor/deck.editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
-import {ImageEvents} from '../../events/core/image/image.events';
-import {ChartEvents} from '../../events/core/chart/chart.events';
-import {CodeEvents} from '../../events/editor/code/code.events';
-
+import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {SlideHelper} from '../../helpers/editor/slide.helper';
-
-import {SlotType} from '../../types/editor/slot-type';
-import {Editor} from '../../types/editor/editor';
-
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {FontsService} from '../../services/editor/fonts/fonts.service';
-
-import {EnvironmentGoogleConfig} from '../../config/environment-config';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import authStore from '../../stores/auth.store';
+import colorStore from '../../stores/color.store';
+import i18n from '../../stores/i18n.store';
+import undoRedoStore from '../../stores/undo-redo.store';
+import {Editor} from '../../types/editor/editor';
+import {SlotType} from '../../types/editor/slot-type';
 import {cloud} from '../../utils/core/environment.utils';
+import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
+import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
+import {getEdit} from '../../utils/editor/editor.utils';
+import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 
 @Component({
   tag: 'app-deck-editor',
@@ -218,7 +206,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.remoteEvents.destroy();
 
-    editorStore.reset();
+    editorStore.default.reset();
     undoRedoStore.reset();
 
     await this.remoteEvents.destroy();
@@ -239,7 +227,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     this.slides = [];
 
-    editorStore.reset();
+    editorStore.default.reset();
     undoRedoStore.reset();
   }
 
@@ -317,27 +305,27 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async initDeckStyle() {
-    if (editorStore.state.deck?.data?.attributes?.style) {
-      this.style = convertStyle(editorStore.state.deck.data.attributes.style);
+    if (editorStore.default.state.deck?.data?.attributes?.style) {
+      this.style = convertStyle(editorStore.default.state.deck.data.attributes.style);
     } else {
       this.style = undefined;
     }
 
-    if (editorStore.state.deck?.data?.attributes?.animation) {
-      this.animation = editorStore.state.deck.data.attributes.animation;
+    if (editorStore.default.state.deck?.data?.attributes?.animation) {
+      this.animation = editorStore.default.state.deck.data.attributes.animation;
     }
 
-    if (editorStore.state.deck?.data?.attributes?.direction) {
-      this.direction = editorStore.state.deck.data.attributes.direction;
+    if (editorStore.default.state.deck?.data?.attributes?.direction) {
+      this.direction = editorStore.default.state.deck.data.attributes.direction;
     }
 
-    if (editorStore.state.deck?.data?.attributes?.directionMobile) {
-      this.directionMobile = editorStore.state.deck.data.attributes.directionMobile;
+    if (editorStore.default.state.deck?.data?.attributes?.directionMobile) {
+      this.directionMobile = editorStore.default.state.deck.data.attributes.directionMobile;
     }
 
-    this.background = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.background, 'background');
-    this.header = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.header, 'header');
-    this.footer = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.footer, 'footer');
+    this.background = await ParseDeckSlotsUtils.convert(editorStore.default.state.deck.data.background, 'background');
+    this.header = await ParseDeckSlotsUtils.convert(editorStore.default.state.deck.data.header, 'header');
+    this.footer = await ParseDeckSlotsUtils.convert(editorStore.default.state.deck.data.footer, 'footer');
 
     const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
     await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
@@ -428,7 +416,7 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     if (!cloud()) {
-      errorStore.state.error = 'No cloud provider to publish material.';
+      errorStore.default.state.error = 'No cloud provider to publish material.';
       return;
     }
 
@@ -773,16 +761,16 @@ export class AppDeckEditor implements ComponentInterface {
 
   @Listen('deckDidLoad', {target: 'document'})
   onDeckDidLoad() {
-    busyStore.state.deckReady = true;
+    busyStore.default.state.deckReady = true;
   }
 
   render() {
     const autoSlide: boolean =
-      editorStore.state.deck?.data?.attributes?.autoSlide !== undefined ? editorStore.state.deck.data.attributes.autoSlide : false;
+      editorStore.default.state.deck?.data?.attributes?.autoSlide !== undefined ? editorStore.default.state.deck.data.attributes.autoSlide : false;
 
     return [
       <ion-content
-        class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`}
+        class={`ion-no-padding ${busyStore.default.state.deckReady ? 'ready' : ''}`}
         onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
         <div class="editor">
           {this.renderSlidesThumbnails()}
@@ -791,7 +779,7 @@ export class AppDeckEditor implements ComponentInterface {
             <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
               <main
                 ref={(el) => (this.mainRef = el as HTMLElement)}
-                class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
+                class={busyStore.default.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
                 style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
                 {this.renderLoading()}
                 <deckgo-deck
@@ -855,7 +843,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private renderLoading() {
-    if (this.slidesFetched && busyStore.state.deckReady) {
+    if (this.slidesFetched && busyStore.default.state.deckReady) {
       return undefined;
     } else {
       return (

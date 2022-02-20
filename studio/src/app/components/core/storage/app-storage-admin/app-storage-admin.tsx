@@ -1,16 +1,11 @@
-import {Component, ComponentInterface, Host, Prop, h, State, Event, EventEmitter} from '@stencil/core';
-
 import {StorageFile} from '@deckdeckgo/editor';
-
+import {errorStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
-
-import i18n from '../../../../stores/i18n.store';
-import store from '../../../../stores/error.store';
-
-import {AppIcon} from '../../app-icon/app-icon';
-
+import {Component, ComponentInterface, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import {deleteFile} from '../../../../providers/storage/storage.provider';
+import i18n from '../../../../stores/i18n.store';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-storage-admin',
@@ -59,7 +54,7 @@ export class AppStorageAdmin implements ComponentInterface {
 
       this.fileDeleted.emit(this.storageFile.fullPath);
     } catch (err) {
-      store.state.error = err;
+      errorStore.default.state.error = err;
     }
 
     await loading.dismiss();

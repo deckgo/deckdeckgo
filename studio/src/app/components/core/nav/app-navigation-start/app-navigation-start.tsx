@@ -1,18 +1,13 @@
-import {Component, h, Fragment, Element} from '@stencil/core';
-
+import {errorStore, syncStore} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
-
+import {Component, Element, Fragment, h} from '@stencil/core';
+import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
 import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
-import errorStore from '../../../../stores/error.store';
-import syncStore from '../../../../stores/sync.store';
-
-import {AppIcon} from '../../app-icon/app-icon';
-
-import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
-import {cloud} from '../../../../utils/core/environment.utils';
 import {MoreAction} from '../../../../types/editor/more-action';
+import {cloud} from '../../../../utils/core/environment.utils';
+import {clearEdit} from '../../../../utils/editor/editor.utils';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-navigation-start',
@@ -30,12 +25,12 @@ export class AppNavigationStart {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      errorStore.default.state.error = `Something went wrong. ${err}.`;
     }
   }
 
   private isSyncing(): boolean {
-    return ['in_progress', 'pending', 'init'].includes(syncStore.state.sync);
+    return ['in_progress', 'pending', 'init'].includes(syncStore.default.state.sync);
   }
 
   private async openFilePicker($event: UIEvent) {
@@ -61,7 +56,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      errorStore.default.state.error = `Something went wrong. ${err}.`;
     }
 
     this.loadInput.value = null;
@@ -112,7 +107,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data.';
+      errorStore.default.state.error = 'Something went wrong while cleaning the local data.';
     }
 
     await loading.dismiss();

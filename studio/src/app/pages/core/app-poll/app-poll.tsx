@@ -1,14 +1,10 @@
-import {Component, h, Prop, State} from '@stencil/core';
-
-import errorStore from '../../../stores/error.store';
-import pollStore from '../../../stores/poll.store';
-import i18n from '../../../stores/i18n.store';
-
-import {get, set} from 'idb-keyval';
-
+import {errorStore} from '@deckdeckgo/studio';
 import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
-
+import {Component, h, Prop, State} from '@stencil/core';
+import {get, set} from 'idb-keyval';
 import {PollService} from '../../../services/poll/poll.service';
+import i18n from '../../../stores/i18n.store';
+import pollStore from '../../../stores/poll.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
@@ -44,7 +40,7 @@ export class AppPoll {
   async componentWillLoad() {
     this.destroyPollListener = pollStore.onChange('poll', (poll: DeckdeckgoPoll | undefined) => {
       if (this.pollKey && (!poll || poll === undefined)) {
-        errorStore.state.error = 'Oopsie the poll was not found. Double check that the code is correct and try again.';
+        errorStore.default.state.error = 'Oopsie the poll was not found. Double check that the code is correct and try again.';
       }
 
       this.connecting = false;
@@ -85,7 +81,7 @@ export class AppPoll {
 
       await set(`deckdeckgo_poll_${pollStore.state.poll.key}`, new Date().getTime());
     } catch (err) {
-      errorStore.state.error = err;
+      errorStore.default.state.error = err;
     }
   }
 

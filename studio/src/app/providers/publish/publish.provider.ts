@@ -1,17 +1,12 @@
-import {Deck, Author, UserSocial, DeckPublish, PublishUrl, Meta, Doc, DocPublish} from '@deckdeckgo/editor';
-
+import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UserSocial} from '@deckdeckgo/editor';
+import {errorStore, editorStore} from '@deckdeckgo/studio';
 import {set} from 'idb-keyval';
-
-import editorStore from '../../stores/editor.store';
-import userStore from '../../stores/user.store';
+import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import authStore from '../../stores/auth.store';
-import errorStore from '../../stores/error.store';
-
+import userStore from '../../stores/user.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
-
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 
 interface PublishInputs {
   name: string;
@@ -30,14 +25,14 @@ export const publish = (inputs: PublishInputs): Promise<void> => {
       }
 
       if (
-        (!editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data) &&
-        (!editorStore.state.doc || !editorStore.state.doc.id || !editorStore.state.doc.data)
+        (!editorStore.default.state.deck || !editorStore.default.state.deck.id || !editorStore.default.state.deck.data) &&
+        (!editorStore.default.state.doc || !editorStore.default.state.doc.id || !editorStore.default.state.doc.data)
       ) {
         reject('No publish data provided.');
         return;
       }
 
-      if (editorStore.state.doc !== null) {
+      if (editorStore.default.state.doc !== null) {
         await publishDoc(inputs);
         return;
       }
@@ -84,7 +79,7 @@ const publishDeck = async (inputs: PublishInputs): Promise<void> => {
 };
 
 const updateDeckMeta = (inputs: PublishInputs): Deck => {
-  const deck: Deck = {...editorStore.state.deck};
+  const deck: Deck = {...editorStore.default.state.deck};
 
   const {name, github} = inputs;
 
@@ -112,7 +107,7 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
 };
 
 const updateDocMeta = (inputs: PublishInputs): Doc => {
-  const doc: Doc = {...editorStore.state.doc};
+  const doc: Doc = {...editorStore.default.state.doc};
 
   const {name} = inputs;
   doc.data.name = name;
@@ -203,7 +198,7 @@ export const updatePublishedDocOffline = async (doc: Doc | undefined) => {
   try {
     await set(`/docs/${doc.id}`, doc);
   } catch (err) {
-    errorStore.state.error = err;
+    errorStore.default.state.error = err;
   }
 };
 
@@ -215,6 +210,6 @@ export const updatePublishedDeckOffline = async (deck: Deck | undefined) => {
   try {
     await set(`/decks/${deck.id}`, deck);
   } catch (err) {
-    errorStore.state.error = err;
+    errorStore.default.state.error = err;
   }
 };

@@ -1,31 +1,22 @@
-import {Component, Listen, State, h, Element, Fragment} from '@stencil/core';
-
+import {StorageFile, User} from '@deckdeckgo/editor';
+import {errorStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
-
-import {StorageFile} from '@deckdeckgo/editor';
-
-import {User} from '@deckdeckgo/editor';
-
-import errorStore from '../../../../stores/error.store';
-import navStore, {NavDirection} from '../../../../stores/nav.store';
-import authStore from '../../../../stores/auth.store';
-import userStore from '../../../../stores/user.store';
-import i18n from '../../../../stores/i18n.store';
-
-import {UserUtils} from '../../../../utils/core/user.utils';
-import {signIn} from '../../../../utils/core/signin.utils';
-import {renderI18n} from '../../../../utils/core/i18n.utils';
-import {firebase} from '../../../../utils/core/environment.utils';
-
-import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-
+import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
+import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
+import {deleteAuth} from '../../../../providers/auth/auth.provider';
 import {updateUser} from '../../../../providers/data/user/user.provider';
 import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
-import {deleteAuth} from '../../../../providers/auth/auth.provider';
-
-import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
+import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
+import authStore from '../../../../stores/auth.store';
+import i18n from '../../../../stores/i18n.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
+import userStore from '../../../../stores/user.store';
+import {firebase} from '../../../../utils/core/environment.utils';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
+import {signIn} from '../../../../utils/core/signin.utils';
+import {UserUtils} from '../../../../utils/core/user.utils';
 import {clearEdit} from '../../../../utils/editor/editor.utils';
 
 @Component({
@@ -266,7 +257,7 @@ export class AppProfile {
 
         this.saving = false;
       } catch (err) {
-        errorStore.state.error = err;
+        errorStore.default.state.error = err;
         this.saving = false;
       }
 
@@ -389,7 +380,7 @@ export class AppProfile {
 
         resolve();
       } catch (err) {
-        errorStore.state.error =
+        errorStore.default.state.error =
           "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });

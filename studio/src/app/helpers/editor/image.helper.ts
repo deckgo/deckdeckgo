@@ -1,18 +1,14 @@
-import {EventEmitter} from '@stencil/core';
-
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {busyStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
-
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
-import busyStore from '../../stores/busy.store';
+import {EventEmitter} from '@stencil/core';
 import authStore from '../../stores/auth.store';
-
-import {ImageAction} from '../../types/editor/image-action';
 import {EditAction} from '../../types/editor/edit-action';
-import {SlotUtils} from '../../utils/editor/slot.utils';
+import {ImageAction} from '../../types/editor/image-action';
 import {SlotType} from '../../types/editor/slot-type';
 import {initDeckgoLazyImgAttributes} from '../../utils/editor/image.utils';
+import {SlotUtils} from '../../utils/editor/slot.utils';
 
 export class ImageHelper {
   constructor(
@@ -82,7 +78,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.state.busy = true;
+      busyStore.default.state.busy = true;
 
       if (slide || deck) {
         await this.appendBackgroundImg(selectedTarget, image as UnsplashPhoto | TenorGif | StorageFile, deck);
@@ -109,7 +105,7 @@ export class ImageHelper {
       const currentSlotElement: HTMLElement = selectedTarget.querySelector(":scope > [slot='background']");
 
       if (currentSlotElement) {
-        busyStore.state.busy = true;
+        busyStore.default.state.busy = true;
 
         if (deck) {
           selectedTarget.removeChild(currentSlotElement);
@@ -249,7 +245,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.state.busy = true;
+      busyStore.default.state.busy = true;
 
       selectedTarget.removeAttribute('img-src');
 
@@ -266,7 +262,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.state.busy = true;
+      busyStore.default.state.busy = true;
 
       selectedTarget.setAttribute(attribute, image.downloadUrl);
 

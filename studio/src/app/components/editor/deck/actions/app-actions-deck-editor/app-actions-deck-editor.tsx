@@ -1,10 +1,7 @@
-import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State, Listen} from '@stencil/core';
-
 import {isSlide} from '@deckdeckgo/deck-utils';
-
+import {Component, Element, Event, EventEmitter, Fragment, h, Host, JSX, Listen, Method, Prop, State, Watch} from '@stencil/core';
 import deckEditorStore from '../../../../../stores/deck-editor.store';
 import undoRedoStore from '../../../../../stores/undo-redo.store';
-
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
 @Component({

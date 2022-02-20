@@ -1,10 +1,7 @@
-import {v4 as uuid} from 'uuid';
-
-import {get, set} from 'idb-keyval';
-
 import {Deck, DeckData} from '@deckdeckgo/editor';
-
-import {syncUpdateDeck} from '../../../utils/editor/sync.utils';
+import {syncUpdateDeck} from '@deckdeckgo/studio';
+import {get, set} from 'idb-keyval';
+import {v4 as uuid} from 'uuid';
 
 export class DeckOfflineProvider {
   private static instance: DeckOfflineProvider;

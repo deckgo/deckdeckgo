@@ -1,14 +1,9 @@
+import {editorStore} from '@deckdeckgo/studio';
 import {Component, h} from '@stencil/core';
-
 import 'web-social-share';
-
-import shareStore, {ShareData} from '../../../stores/share.store';
-import editorStore from '../../../stores/editor.store';
-
 import {publishUrl} from '../../../providers/publish/publish.provider';
-
+import shareStore, {ShareData} from '../../../stores/share.store';
 import {getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
-
 import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
@@ -44,7 +39,7 @@ export class AppShare {
 
   private async shareMobile() {
     const text: string = getShareText();
-    const publishedUrl: string = await publishUrl(editorStore.state.doc?.data.meta || editorStore.state.deck?.data.meta);
+    const publishedUrl: string = await publishUrl(editorStore.default.state.doc?.data.meta || editorStore.default.state.deck?.data.meta);
 
     // @ts-ignore
     await navigator.share({
@@ -60,7 +55,7 @@ export class AppShare {
 
     const text: string = getShareText();
     const twitterText: string = getShareTwitterText();
-    const publishedUrl: string = await publishUrl(editorStore.state.doc?.data.meta || editorStore.state.deck?.data.meta);
+    const publishedUrl: string = await publishUrl(editorStore.default.state.doc?.data.meta || editorStore.default.state.deck?.data.meta);
 
     this.webSocialShareRef.share = {
       displayNames: true,

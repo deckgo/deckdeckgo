@@ -1,13 +1,9 @@
-import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
-
+import {errorStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
-
-import errorStore from '../../../stores/error.store';
+import {Component, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
-
 import {clone, DeckOrDoc, deleteDeckOrDoc} from '../../../utils/core/dashboard.utils';
-
 import {AppIcon} from '../../core/app-icon/app-icon';
 
 @Component({
@@ -71,7 +67,7 @@ export class AppDashboardActions {
 
         this.deleted.emit(this.data.deck?.id || this.data.doc?.id);
       } catch (err) {
-        errorStore.state.error = err;
+        errorStore.default.state.error = err;
       }
 
       await loading.dismiss();
@@ -100,7 +96,7 @@ export class AppDashboardActions {
 
       this.cloned.emit();
     } catch (err) {
-      errorStore.state.error = err;
+      errorStore.default.state.error = err;
     }
 
     await loading.dismiss();

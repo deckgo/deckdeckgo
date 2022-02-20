@@ -1,20 +1,15 @@
-import {Component, State, h, Fragment, Listen, JSX} from '@stencil/core';
-
 import {injectJS} from '@deckdeckgo/editor';
-
+import {errorStore} from '@deckdeckgo/studio';
+import {Component, Fragment, h, JSX, Listen, State} from '@stencil/core';
+import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import i18n from '../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import tokenStore from '../../../stores/token.store';
-import errorStore from '../../../stores/error.store';
-
-import {AppIcon} from '../app-icon/app-icon';
-
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
-
-import {renderI18n} from '../../../utils/core/i18n.utils';
-import {firebase, cloud} from '../../../utils/core/environment.utils';
 import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
+import {cloud, firebase} from '../../../utils/core/environment.utils';
+import {renderI18n} from '../../../utils/core/i18n.utils';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-signin',
@@ -51,7 +46,7 @@ export class AppSignIn {
   private onSignInError = (err?: string) => {
     console.error(err);
 
-    errorStore.state.error = 'There was an issue sign in with the internet identity.';
+    errorStore.default.state.error = 'There was an issue sign in with the internet identity.';
   };
 
   private navigateRedirect() {

@@ -1,6 +1,5 @@
+import {busyStore} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
-
-import store from '../../../../../../stores/busy.store';
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
@@ -22,7 +21,7 @@ export class AppActionBusy {
     return (
       <button
         onClick={(e: UIEvent) => this.action(e)}
-        disabled={store.state.busy}
+        disabled={busyStore.default.state.busy}
         class="ion-activatable"
         onMouseDown={($event) => $event.stopPropagation()}
         onTouchStart={($event) => $event.stopPropagation()}>

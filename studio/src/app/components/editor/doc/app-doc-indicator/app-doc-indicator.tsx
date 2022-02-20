@@ -1,8 +1,6 @@
-import {Component, ComponentInterface, Host, h} from '@stencil/core';
-
-import busyStore from '../../../../stores/busy.store';
+import {busyStore} from '@deckdeckgo/studio';
+import {Component, ComponentInterface, h, Host} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
-
 import {busyBeforeUnload} from '../../../../utils/core/before-unload.utils';
 
 @Component({
@@ -14,11 +12,11 @@ export class AppDocIndicator implements ComponentInterface {
   private destroyListener;
 
   componentWillLoad() {
-    this.destroyListener = busyStore.onChange('busy', (busy: boolean) => {
+    this.destroyListener = busyStore.default.onChange('busy', (busy: boolean) => {
       busyBeforeUnload(busy);
     });
 
-    busyBeforeUnload(busyStore.state.busy);
+    busyBeforeUnload(busyStore.default.state.busy);
   }
 
   disconnectedCallback() {
@@ -28,8 +26,8 @@ export class AppDocIndicator implements ComponentInterface {
   render() {
     return (
       <Host>
-        {busyStore.state.busy ? i18n.state.editor.saving : ''}
-        {!busyStore.state.docReady && !busyStore.state.busy ? i18n.state.core.loading : ''}
+        {busyStore.default.state.busy ? i18n.state.editor.saving : ''}
+        {!busyStore.default.state.docReady && !busyStore.default.state.busy ? i18n.state.core.loading : ''}
       </Host>
     );
   }

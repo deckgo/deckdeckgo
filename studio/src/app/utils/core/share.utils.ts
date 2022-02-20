@@ -1,15 +1,14 @@
+import {editorStore} from '@deckdeckgo/studio';
 import i18n from '../../stores/i18n.store';
 import shareStore, {ShareData} from '../../stores/share.store';
-import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
-
 import {i18nFormat} from './i18n.utils';
 
 export const share = () => {
   const title: string | undefined =
-    editorStore.state.doc !== null
-      ? editorStore.state.doc.data.meta?.title ?? i18n.state.share.a_document
-      : editorStore.state.deck.data.meta?.title ?? i18n.state.share.a_presentation;
+    editorStore.default.state.doc !== null
+      ? editorStore.default.state.doc.data.meta?.title ?? i18n.state.share.a_document
+      : editorStore.default.state.deck.data.meta?.title ?? i18n.state.share.a_presentation;
 
   shareStore.state.share = {
     title,

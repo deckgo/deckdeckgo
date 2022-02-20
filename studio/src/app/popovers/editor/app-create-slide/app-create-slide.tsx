@@ -1,19 +1,13 @@
-import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
-
+import {Deck, SlideAttributes, SlideScope, SlideTemplate, Template} from '@deckdeckgo/editor';
+import {editorStore} from '@deckdeckgo/studio';
 import type {SegmentChangeEventDetail} from '@ionic/core';
-
-import {SlideAttributes, SlideTemplate, SlideScope, Deck, Template} from '@deckdeckgo/editor';
-
-import editorStore from '../../../stores/editor.store';
+import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
-
+import {SlotType} from '../../../types/editor/slot-type';
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
-
-import {SlotType} from '../../../types/editor/slot-type';
-
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-create-slide',
@@ -44,7 +38,7 @@ export class AppCreateSlide {
   }
 
   private async addSlideQRCode() {
-    await this.addSlide(SlideTemplate.QRCODE, editorStore.state.deck);
+    await this.addSlide(SlideTemplate.QRCODE, editorStore.default.state.deck);
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide

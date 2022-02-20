@@ -1,32 +1,22 @@
-import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
-
-import {loadingController} from '@ionic/core';
-
-import {convertStyle} from '@deckdeckgo/editor';
+import {AuthUser, convertStyle, Deck, formatDate, Slide} from '@deckdeckgo/editor';
+import {syncStore, errorStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
-
-import {Deck, Slide, AuthUser, formatDate} from '@deckdeckgo/editor';
-
-import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
-import i18n from '../../../stores/i18n.store';
-import syncStore from '../../../stores/sync.store';
-
-import {Editor} from '../../../types/editor/editor';
-
-import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
-import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
-import {TemplateUtils} from '../../../utils/editor/template.utils';
-import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
-import {getEdit} from '../../../utils/editor/editor.utils';
-
+import {loadingController} from '@ionic/core';
+import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
+import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
+import {ChartEvents} from '../../../events/core/chart/chart.events';
+import {ImageEvents} from '../../../events/core/image/image.events';
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
-
-import {ImageEvents} from '../../../events/core/image/image.events';
-import {ChartEvents} from '../../../events/core/chart/chart.events';
-import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
+import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
+import {Editor} from '../../../types/editor/editor';
+import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
+import {getEdit} from '../../../utils/editor/editor.utils';
+import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
+import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
+import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -96,7 +86,7 @@ export class AppDecks implements ComponentInterface {
       this.decks = await this.fetchFirstSlides(userDecks);
       this.filterDecks(null);
     } catch (err) {
-      errorStore.state.error = 'Cannot init your dashboard.';
+      errorStore.default.state.error = 'Cannot init your dashboard.';
     }
 
     this.debounceLoading();
@@ -204,7 +194,7 @@ export class AppDecks implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.state.error = err;
+      errorStore.default.state.error = err;
     }
 
     await loading.dismiss();
@@ -289,7 +279,7 @@ export class AppDecks implements ComponentInterface {
       );
     }
 
-    if (syncStore.state.dirty) {
+    if (syncStore.default.state.dirty) {
       return <p>{i18n.state.dashboard.sync_slides}</p>;
     }
 

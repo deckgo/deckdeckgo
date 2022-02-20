@@ -1,10 +1,7 @@
-import {v4 as uuid} from 'uuid';
-
-import {del, get, set} from 'idb-keyval';
-
 import {Slide, SlideData} from '@deckdeckgo/editor';
-
-import {syncDeleteSlide, syncUpdateSlide} from '../../../utils/editor/sync.utils';
+import {syncDeleteSlide, syncUpdateSlide} from '@deckdeckgo/studio';
+import {del, get, set} from 'idb-keyval';
+import {v4 as uuid} from 'uuid';
 
 export class SlideOfflineProvider {
   private static instance: SlideOfflineProvider;

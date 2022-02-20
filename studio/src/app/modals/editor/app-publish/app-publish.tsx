@@ -1,17 +1,12 @@
-import {Component, Element, Listen, h, State} from '@stencil/core';
-
 import {Deck, Doc} from '@deckdeckgo/editor';
-
-import i18n from '../../../stores/i18n.store';
-import editorStore from '../../../stores/editor.store';
-
+import {editorStore} from '@deckdeckgo/studio';
+import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
-
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
-
-import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {snapshotDoc} from '../../../providers/data/doc/doc.provider';
 import {updatePublishedDeckOffline, updatePublishedDocOffline} from '../../../providers/publish/publish.provider';
+import i18n from '../../../stores/i18n.store';
+import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 
 @Component({
   tag: 'app-publish',
@@ -35,16 +30,16 @@ export class AppPublish {
   }
 
   private initSnapshot(): Promise<() => void | undefined> {
-    if (editorStore.state.doc !== null) {
+    if (editorStore.default.state.doc !== null) {
       return snapshotDoc({
-        docId: editorStore.state.doc.id,
-        onNext: (snapshot: Doc) => (editorStore.state.doc = {...snapshot})
+        docId: editorStore.default.state.doc.id,
+        onNext: (snapshot: Doc) => (editorStore.default.state.doc = {...snapshot})
       });
     }
 
     return snapshotDeck({
-      deckId: editorStore.state.deck.id,
-      onNext: (snapshot: Deck) => (editorStore.state.deck = {...snapshot})
+      deckId: editorStore.default.state.deck.id,
+      onNext: (snapshot: Deck) => (editorStore.default.state.deck = {...snapshot})
     });
   }
 
@@ -52,8 +47,8 @@ export class AppPublish {
    * We snapshot the doc/deck changes and have to replicate the value to the offline data to replicate the new "meta" information.
    */
   private initOfflineUpdate() {
-    this.docListener = editorStore.onChange('doc', updatePublishedDocOffline);
-    this.deckListener = editorStore.onChange('deck', updatePublishedDeckOffline);
+    this.docListener = editorStore.default.onChange('doc', updatePublishedDocOffline);
+    this.deckListener = editorStore.default.onChange('deck', updatePublishedDeckOffline);
   }
 
   async componentDidLoad() {

@@ -1,34 +1,26 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
-
+import {isSlide} from '@deckdeckgo/deck-utils';
+import {SlideScope} from '@deckdeckgo/editor';
+import {busyStore} from '@deckdeckgo/studio';
+import {debounce, isFullscreen} from '@deckdeckgo/utils';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
-
-import {debounce, isFullscreen} from '@deckdeckgo/utils';
-import {isSlide} from '@deckdeckgo/deck-utils';
-
-import {SlideScope} from '@deckdeckgo/editor';
-
-import store from '../../../../../../stores/busy.store';
-import i18n from '../../../../../../stores/i18n.store';
-import undoRedoStore from '../../../../../../stores/undo-redo.store';
-
+import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
 import {ImageHelper} from '../../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../../helpers/editor/shape.helper';
-
-import {ToggleSlotUtils} from '../../../../../../utils/editor/toggle-slot.utils';
-import {RevealSlotUtils} from '../../../../../../utils/editor/reveal-slot.utils';
-import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
-import {SelectedElementUtils} from '../../../../../../utils/editor/selected-element.utils';
-
-import {SlotType} from '../../../../../../types/editor/slot-type';
+import i18n from '../../../../../../stores/i18n.store';
+import undoRedoStore from '../../../../../../stores/undo-redo.store';
+import {DemoAction} from '../../../../../../types/editor/demo-action';
 import {EditAction} from '../../../../../../types/editor/edit-action';
 import {MoreAction} from '../../../../../../types/editor/more-action';
-import {DemoAction} from '../../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../../types/editor/playground-action';
 import {SelectedTarget} from '../../../../../../types/editor/selected-target';
-
-import {InitTemplate} from '../../../../../../utils/editor/create-slides.utils';
+import {SlotType} from '../../../../../../types/editor/slot-type';
 import {CloneSlideUtils} from '../../../../../../utils/editor/clone-slide.utils';
+import {InitTemplate} from '../../../../../../utils/editor/create-slides.utils';
+import {RevealSlotUtils} from '../../../../../../utils/editor/reveal-slot.utils';
+import {SelectedElementUtils} from '../../../../../../utils/editor/selected-element.utils';
+import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
+import {ToggleSlotUtils} from '../../../../../../utils/editor/toggle-slot.utils';
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
@@ -288,12 +280,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.busy && this.selectedTarget?.type === 'slide') {
+      if (busyStore.default.state.busy && this.selectedTarget?.type === 'slide') {
         resolve();
         return;
       }
 
-      store.state.busy = true;
+      busyStore.default.state.busy = true;
 
       if (this.selectedTarget.type === 'slide') {
         this.slideDelete.emit(this.selectedTarget.target);
@@ -339,7 +331,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.busy || this.selectedTarget?.element?.shape === undefined) {
+      if (busyStore.default.state.busy || this.selectedTarget?.element?.shape === undefined) {
         resolve();
         return;
       }
@@ -357,12 +349,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.busy || this.selectedTarget?.type === 'element') {
+      if (busyStore.default.state.busy || this.selectedTarget?.type === 'element') {
         resolve();
         return;
       }
 
-      store.state.busy = true;
+      busyStore.default.state.busy = true;
 
       this.slideCopy.emit(this.selectedTarget.target);
 
@@ -993,7 +985,7 @@ export class AppActionsElement {
       <button
         onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
         aria-label={i18n.state.editor.delete}
-        disabled={store.state.busy && this.selectedTarget?.type === 'slide'}
+        disabled={busyStore.default.state.busy && this.selectedTarget?.type === 'slide'}
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="trash-bin" ariaLabel="" ariaHidden={true}></AppIcon>
@@ -1009,7 +1001,7 @@ export class AppActionsElement {
       <button
         onClick={() => this.openNotes()}
         aria-label={i18n.state.editor.notes}
-        disabled={store.state.busy}
+        disabled={busyStore.default.state.busy}
         class={classElement}
         tabindex={this.selectedTarget?.type === 'slide' ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
@@ -1027,7 +1019,7 @@ export class AppActionsElement {
       <button
         onClick={() => this.clone()}
         aria-label={i18n.state.editor.copy}
-        disabled={store.state.busy}
+        disabled={busyStore.default.state.busy}
         class={classSlide}
         tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
@@ -1045,7 +1037,7 @@ export class AppActionsElement {
       <button
         onClick={($event: UIEvent) => this.openCopyStyle($event)}
         aria-label={i18n.state.editor.format}
-        disabled={store.state.busy}
+        disabled={busyStore.default.state.busy}
         class={classSlide}
         tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
@@ -1191,7 +1183,10 @@ export class AppActionsElement {
 
   private renderMore() {
     return (
-      <button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.busy} class="small-devices ion-activatable">
+      <button
+        onClick={(e: UIEvent) => this.openMoreActions(e)}
+        disabled={busyStore.default.state.busy}
+        class="small-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="ellipsis-vertical" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.more}</ion-label>
