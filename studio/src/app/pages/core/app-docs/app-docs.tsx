@@ -1,11 +1,9 @@
 import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
-import {syncStore, errorStore} from '@deckdeckgo/studio';
+import {ChartEvents, errorStore, ImageEvents, syncStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
-import {ChartEvents} from '../../../events/core/chart/chart.events';
-import {ImageEvents} from '../../../events/core/image/image.events';
 import {docs} from '../../../providers/data/doc/doc.provider';
 import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
 import authStore from '../../../stores/auth.store';

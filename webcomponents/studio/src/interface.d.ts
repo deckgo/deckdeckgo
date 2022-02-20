@@ -1,4 +1,6 @@
 export * from './components';
+export * from './events/chart/chart.events';
+export * from './events/image/image.events';
 export * from './providers/doc.offline.provider';
 export * from './providers/paragraph.offline.provider';
 export * from './providers/sync.provider';

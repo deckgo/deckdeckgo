@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore} from '@deckdeckgo/studio';
+import {errorStore, editorStore, busyStore, ChartEvents, ImageEvents} from '@deckdeckgo/studio';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -8,8 +8,6 @@ import {StyloConfigToolbar, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Element, h, JSX, Listen, Method, State} from '@stencil/core';
 import {get, set} from 'idb-keyval';
 import {EnvironmentGoogleConfig} from '../../config/environment-config';
-import {ChartEvents} from '../../events/core/chart/chart.events';
-import {ImageEvents} from '../../events/core/image/image.events';
 import {CodeEvents} from '../../events/editor/code/code.events';
 import {DeckDataEvents} from '../../events/editor/deck/deck.data.events';
 import {DeckEditorEvents} from '../../events/editor/editor/deck.editor.events';

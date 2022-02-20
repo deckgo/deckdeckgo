@@ -1,11 +1,9 @@
 import {AuthUser, convertStyle, Deck, formatDate, Slide} from '@deckdeckgo/editor';
-import {syncStore, errorStore} from '@deckdeckgo/studio';
+import {syncStore, errorStore, ChartEvents, ImageEvents} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
-import {ChartEvents} from '../../../events/core/chart/chart.events';
-import {ImageEvents} from '../../../events/core/image/image.events';
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
