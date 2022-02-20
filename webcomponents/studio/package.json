@@ -21,7 +21,8 @@
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "format": "prettier . --write"
   },
   "repository": {
     "type": "git",
@@ -38,5 +39,20 @@
     "editor",
     "rich text",
     "wysiwyg"
-  ]
+  ],
+  "dependencies": {
+    "@deckdeckgo/deck-utils": "^7.0.0",
+    "@deckdeckgo/editor": "^6.0.0",
+    "@deckdeckgo/utils": "^5.1.0",
+    "@papyrs/stylo": "^0.0.8-2",
+    "idb-keyval": "^6.1.0",
+    "nanoid": "^3.3.1"
+  },
+  "peerDependencies": {
+    "@deckdeckgo/core": "^10.0.1",
+    "@deckdeckgo/lazy-img": "^3.2.0"
+  },
+  "devDependencies": {
+    "@stencil/store": "^1.5.0"
+  }
 }

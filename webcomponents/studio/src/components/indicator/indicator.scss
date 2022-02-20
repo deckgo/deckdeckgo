@@ -1,0 +1,8 @@
+deckgo-indicator {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-size: var(--font-size-small);
+  color: rgba(var(--ion-color-medium-rgb), 0.6);
+  padding: 4px 16px;
+}

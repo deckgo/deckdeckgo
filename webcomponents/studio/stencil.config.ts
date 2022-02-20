@@ -1,7 +1,6 @@
 import {Config} from '@stencil/core';
-
-import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
+import {sass} from '@stencil/sass';
 // @ts-ignore
 import autoprefixer from 'autoprefixer';
 
