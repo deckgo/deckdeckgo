@@ -14,7 +14,7 @@ const findEntryPoints = (dir, files) => {
   fs.readdirSync(dir).forEach((file) => {
     const fullPath = path.join(dir, file);
     if (fs.lstatSync(fullPath).isDirectory()) {
-      findFiles(fullPath, files);
+      findEntryPoints(fullPath, files);
     } else if (path.extname(fullPath) === '.ts') {
       files.push(fullPath);
     }
