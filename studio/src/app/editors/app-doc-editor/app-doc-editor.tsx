@@ -121,8 +121,6 @@ export class AppDocEditor implements ComponentInterface {
             <deckgo-studio
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioElement)}
               studioConfig={this.studioConfig}></deckgo-studio>
-
-            <app-doc-indicator></app-doc-indicator>
           </main>
         </ion-content>
       </Fragment>

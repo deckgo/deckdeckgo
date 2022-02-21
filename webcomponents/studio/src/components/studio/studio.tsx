@@ -1,6 +1,6 @@
 import {moveCursorToStart} from '@deckdeckgo/utils';
 import {isFirefox} from '@deckdeckgo/utils/lib';
-import {Component, ComponentInterface, Element, h, JSX, Method, Prop, State, Watch} from '@stencil/core';
+import { Component, ComponentInterface, Element, h, Host, JSX, Method, Prop, State, Watch } from '@stencil/core';
 import {nanoid} from 'nanoid';
 import {ChartEvents} from '../../events/chart/chart.events';
 import {DocDataEvents} from '../../events/doc/doc.data.events';
@@ -219,7 +219,7 @@ export class Studio implements ComponentInterface {
 
   render() {
     return (
-      <main>
+      <Host>
         <deckgo-doc>
           <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
             {this.paragraphs}
@@ -229,7 +229,7 @@ export class Studio implements ComponentInterface {
         </deckgo-doc>
 
         <deckgo-indicator></deckgo-indicator>
-      </main>
+      </Host>
     );
   }
 }
