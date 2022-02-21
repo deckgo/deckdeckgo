@@ -52,6 +52,21 @@ const uploadParagraphLocalUserAssets = ({
 
     try {
       const updateContent = ({data: paragraph, imgSrc, downloadUrl}: {data: Paragraph; imgSrc: string; downloadUrl: string}): Paragraph => {
+        // The paragraph itself might be an image
+        if (paragraph.data.nodeName === 'deckgo-lazy-img') {
+          return {
+            id: paragraph.id,
+            data: {
+              ...paragraph.data,
+              attributes: {
+                ...(paragraph.data.attributes || {}),
+                'img-src': downloadUrl,
+                'img-alt': downloadUrl,
+              }
+            }
+          };
+        }
+
         if (!paragraph.data.children) {
           return paragraph;
         }
