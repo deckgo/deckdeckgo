@@ -90,7 +90,7 @@ export class AppDocEditor implements ComponentInterface {
 
     this.studioConfig = {
       cloud: EnvironmentConfigService.getInstance().get('cloud'),
-      i18n: {...i18n.state} as unknown as Record<string, Record<string, string>>,
+      lang: i18n.state.lang,
       stylo: styloConfig
     };
   }

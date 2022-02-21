@@ -102,10 +102,10 @@ export class Studio implements ComponentInterface {
       return;
     }
 
-    const {cloud, i18n, stylo} = this.studioConfig;
+    const {cloud, lang, stylo} = this.studioConfig;
     configStore.state.cloud = cloud;
     configStore.state.stylo = stylo;
-    i18nStore.state = i18n;
+    i18nStore.state.lang = lang;
   }
 
   @Method()
