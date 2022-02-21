@@ -1,3 +1,15 @@
+# 7.1.0 (2022-02-21)
+
+### Features
+
+- update `docSelector` path
+
+# 7.0.0 (2022-02-20)
+
+### Breaking Changes
+
+- esm and cjs
+
 # 6.0.0 (2021-12-21)
 
 ### Breaking Changes
