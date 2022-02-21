@@ -1,7 +1,7 @@
 import {DeleteFile, GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
 import {offlineStore} from '@deckdeckgo/studio';
+import {authStore} from '@deckdeckgo/studio';
 import {Constants} from '../../config/constants';
-import authStore from '../../stores/auth.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 import {StorageOfflineProvider} from './storage.offline.provider';
@@ -20,7 +20,7 @@ export const uploadOnlineFile = async (
       folder,
       maxSize,
       downloadUrl,
-      userId: authStore.state.authUser.uid
+      userId: authStore.default.state.authUser.uid
     });
   }
 
@@ -28,7 +28,7 @@ export const uploadOnlineFile = async (
 };
 
 export const getFiles = async ({next, folder}: {next: string | null; folder: string}): Promise<StorageFilesList | null> => {
-  if (!authStore.state.loggedIn || !offlineStore.default.state.online) {
+  if (!authStore.default.state.loggedIn || !offlineStore.default.state.online) {
     return StorageOfflineProvider.getInstance().getFiles(folder);
   }
 
@@ -39,7 +39,7 @@ export const getFiles = async ({next, folder}: {next: string | null; folder: str
       next,
       maxResults: Constants.STORAGE.MAX_QUERY_RESULTS,
       folder,
-      userId: authStore.state.authUser.uid
+      userId: authStore.default.state.authUser.uid
     });
   }
 

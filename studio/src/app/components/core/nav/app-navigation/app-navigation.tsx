@@ -70,7 +70,8 @@ export class AppNavigation {
           onClick={() => {
             this.hideIC = true;
             localStorage.setItem('deckgo-hide-announcement-ic', 'true');
-          }}>
+          }}
+        >
           <AppIcon name="close" ariaLabel={i18n.state.core.close}></AppIcon>
         </ion-button>
 
@@ -78,7 +79,8 @@ export class AppNavigation {
           <a
             href="https://medium.com/geekculture/bye-bye-amazon-google-hello-web-3-0-b01bfe8f8783"
             rel="noopener norefferer"
-            target="_blank">
+            target="_blank"
+          >
             We are porting DeckDeckGo to DFINITY’s Internet Computer.
           </a>
         </p>

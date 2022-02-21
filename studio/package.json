@@ -19,7 +19,8 @@
     "start": "stencil build --dev --watch --serve",
     "start:staging": "stencil build --dev --watch --serve --staging",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watch"
+    "test.watch": "stencil test --spec --e2e --watch",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@deckdeckgo/charts": "^2.3.0",

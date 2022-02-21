@@ -24,7 +24,8 @@ export class AppActionBusy {
         disabled={busyStore.default.state.busy}
         class="ion-activatable"
         onMouseDown={($event) => $event.stopPropagation()}
-        onTouchStart={($event) => $event.stopPropagation()}>
+        onTouchStart={($event) => $event.stopPropagation()}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name={this.iconName} ariaLabel="" ariaHidden={true}></AppIcon>
         <slot></slot>

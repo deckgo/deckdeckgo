@@ -19,7 +19,8 @@ export class AppTemplatesCommunity {
           author={true}
           key={template.id}
           custom-tappable
-          onClick={() => this.selectedTemplate.emit(template)}></app-template-showcase>
+          onClick={() => this.selectedTemplate.emit(template)}
+        ></app-template-showcase>
       );
     });
   }

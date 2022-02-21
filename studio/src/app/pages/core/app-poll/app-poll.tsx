@@ -197,7 +197,8 @@ export class AppPoll {
               minlength={1}
               required={true}
               input-mode="text"
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handlePollKeyInput($event)}></ion-input>
+              onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handlePollKeyInput($event)}
+            ></ion-input>
           </ion-item>
         </ion-list>
 
@@ -213,7 +214,8 @@ export class AppPoll {
         class="ion-margin-top"
         disabled={!this.pollKey || this.pollKey === undefined || this.pollKey === '' || this.connecting}
         color="primary"
-        shape="round">
+        shape="round"
+      >
         <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );

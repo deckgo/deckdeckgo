@@ -94,7 +94,8 @@ export class AppTemplateShowcase {
           href={this.template.data.author?.url}
           rel="noopener norefferer"
           target="_blank"
-          onClick={($event: UIEvent) => $event.stopPropagation()}>
+          onClick={($event: UIEvent) => $event.stopPropagation()}
+        >
           {this.template.data.author?.name}
         </a>
       </p>

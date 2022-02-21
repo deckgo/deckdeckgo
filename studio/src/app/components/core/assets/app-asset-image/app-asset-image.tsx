@@ -79,7 +79,8 @@ export class AppAssetImage implements ComponentInterface {
           href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={($event: UIEvent) => $event.stopPropagation()}>
+          onClick={($event: UIEvent) => $event.stopPropagation()}
+        >
           {photo.user.name}
         </a>
       </ion-label>

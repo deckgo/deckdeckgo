@@ -1,6 +1,5 @@
-import {Component, Prop, h} from '@stencil/core';
-
-import authStore from '../../../stores/auth.store';
+import {authStore} from '@deckdeckgo/studio';
+import {Component, h, Prop} from '@stencil/core';
 import userStore from '../../../stores/user.store';
 
 @Component({
@@ -12,7 +11,7 @@ export class AppUserInfo {
   displayAvatar: boolean = false;
 
   render() {
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       return undefined;
     }
 

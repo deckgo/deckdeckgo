@@ -4,6 +4,7 @@ export * from './events/image/image.events';
 export * from './providers/doc.offline.provider';
 export * from './providers/paragraph.offline.provider';
 export * from './providers/sync.provider';
+export * as authStore from './stores/auth.store';
 export * as busyStore from './stores/busy.store';
 export * as editorStore from './stores/editor.store';
 export * as errorStore from './stores/error.store';

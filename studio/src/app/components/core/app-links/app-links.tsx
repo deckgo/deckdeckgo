@@ -91,7 +91,8 @@ export class AppLinks {
           <a
             aria-label="Slack"
             href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"
-            rel="noopener noreferrer">
+            rel="noopener noreferrer"
+          >
             <AppIcon name="slack" ariaLabel="" ariaHidden={true}></AppIcon>
           </a>
         </div>

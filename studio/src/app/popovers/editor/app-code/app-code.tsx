@@ -168,7 +168,8 @@ export class AppCode {
               placeholder={i18n.state.editor.highlight_lines}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={() => this.highlightSelectedLines()}></ion-input>
+              onIonChange={() => this.highlightSelectedLines()}
+            ></ion-input>
           </ion-item>
 
           <ion-item class="ion-margin-top ion-margin-bottom">
@@ -176,7 +177,8 @@ export class AppCode {
             <ion-checkbox
               slot="end"
               checked={this.lineNumbers}
-              onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
+              onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}
+            ></ion-checkbox>
           </ion-item>
         </ion-list>
       </Fragment>

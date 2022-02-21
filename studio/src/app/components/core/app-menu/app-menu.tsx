@@ -1,14 +1,10 @@
+import {authStore} from '@deckdeckgo/studio';
 import {Component, Element, Fragment, h} from '@stencil/core';
-
-import authStore from '../../../stores/auth.store';
-import i18n from '../../../stores/i18n.store';
-
-import {cloud} from '../../../utils/core/environment.utils';
-
-import {AppIcon} from '../app-icon/app-icon';
-
 import {EnvironmentAppConfig, EnvironmentAppConfigFeature} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import i18n from '../../../stores/i18n.store';
+import {cloud} from '../../../utils/core/environment.utils';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-menu',
@@ -41,7 +37,7 @@ export class AppMenu {
   }
 
   private renderUser() {
-    if (authStore.state.loggedIn) {
+    if (authStore.default.state.loggedIn) {
       return (
         <ion-item class="user">
           <app-user-info displayAvatar={true}></app-user-info>

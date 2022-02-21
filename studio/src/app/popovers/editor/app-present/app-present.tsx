@@ -79,7 +79,8 @@ export class AppRemoteRequest {
               mode="md"
               color="dark"
               checked={remoteStore.state.remote}
-              onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+              onIonChange={() => this.toggleRemoteEnabled()}
+            ></ion-toggle>
           </ion-item>
         </ion-list>
       </Host>
@@ -117,7 +118,8 @@ export class AppRemoteRequest {
           shape="round"
           class="ion-margin-bottom"
           disabled={!remoteStore.state.remote}
-          onClick={() => this.openPresenter()}>
+          onClick={() => this.openPresenter()}
+        >
           <ion-label>{i18n.state.editor.open_presenter_view}</ion-label>
         </ion-button>
       </Fragment>
@@ -138,7 +140,8 @@ export class AppRemoteRequest {
           size="small"
           shape="round"
           disabled={!remoteStore.state.remote}
-          onClick={() => this.closePopover(MoreAction.REMOTE)}>
+          onClick={() => this.closePopover(MoreAction.REMOTE)}
+        >
           <ion-label>{i18n.state.editor.connect}</ion-label>
         </ion-button>
       </Fragment>

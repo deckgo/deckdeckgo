@@ -17,14 +17,13 @@ import {
   SlideSplitType,
   SlideTemplate
 } from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore, ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
+import {authStore, busyStore, editorStore, errorStore, ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
 import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
 import {publishUrl} from '../../../providers/publish/publish.provider';
-import authStore from '../../../stores/auth.store';
 import {DeckAction} from '../../../types/editor/deck-action';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
@@ -258,7 +257,7 @@ export class DeckDataEvents {
       try {
         let deck: DeckData = {
           name: `Presentation ${now()}`,
-          owner_id: authStore.state.authUser?.uid
+          owner_id: authStore.default.state.authUser?.uid
         };
 
         const persistedDeck: Deck = await this.deckOfflineProvider.create(deck);

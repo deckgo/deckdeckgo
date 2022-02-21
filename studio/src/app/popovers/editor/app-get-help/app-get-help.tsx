@@ -28,7 +28,8 @@ export class AppGetHelp {
                 <a
                   href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                >
                   Slack
                 </a>
                 , <a href="mailto:hello@deckdeckgo.com">{i18n.state.settings.email}</a> {i18n.state.editor.or}{' '}

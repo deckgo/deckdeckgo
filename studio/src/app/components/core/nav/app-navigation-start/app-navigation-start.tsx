@@ -1,8 +1,8 @@
-import {errorStore, syncStore, clearEdit} from '@deckdeckgo/studio';
+import {clearEdit, errorStore, syncStore} from '@deckdeckgo/studio';
+import {authStore} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
-import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import {MoreAction} from '../../../../types/editor/more-action';
 import {cloud} from '../../../../utils/core/environment.utils';
@@ -102,7 +102,7 @@ export class AppNavigationStart {
 
     try {
       // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean sync data if user signed out, not when a "New deck" is performed.
-      await clearEdit(!authStore.state.loggedIn);
+      await clearEdit(!authStore.default.state.loggedIn);
 
       this.emitReloadEditor(type);
     } catch (err) {
@@ -162,7 +162,8 @@ export class AppNavigationStart {
           key="new-select-action"
           class="ion-activatable"
           onClick={async ($event: UIEvent) => await this.selectType($event)}
-          aria-label={i18n.state.tools.new_presentation}>
+          aria-label={i18n.state.tools.new_presentation}
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -193,7 +194,8 @@ export class AppNavigationStart {
           onTouchStart={($event) => $event.stopPropagation()}
           onClick={async ($event: UIEvent) => await this.openMoreActions($event)}
           color="primary"
-          class="small-devices ion-activatable">
+          class="small-devices ion-activatable"
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaLabel="" ariaHidden={true}></AppIcon>
           <ion-label aria-hidden="true">{i18n.state.editor.files}</ion-label>

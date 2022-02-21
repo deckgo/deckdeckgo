@@ -1,9 +1,9 @@
 import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UserSocial} from '@deckdeckgo/editor';
-import {errorStore, editorStore} from '@deckdeckgo/studio';
+import {editorStore, errorStore} from '@deckdeckgo/studio';
+import {authStore} from '@deckdeckgo/studio';
 import {set} from 'idb-keyval';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
@@ -88,7 +88,7 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
   deck.data.meta = updateMeta({inputs, meta: deck.data.meta});
 
   // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept
-  if (authStore.state.gitHub) {
+  if (authStore.default.state.gitHub) {
     if (deck.data.github) {
       deck.data.github.publish = github;
     } else {
@@ -99,8 +99,8 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
   }
 
   // TODO: FIXME
-  if (deck.data.owner_id === undefined && authStore.state.loggedIn) {
-    deck.data.owner_id = authStore.state.authUser?.uid;
+  if (deck.data.owner_id === undefined && authStore.default.state.loggedIn) {
+    deck.data.owner_id = authStore.default.state.authUser?.uid;
   }
 
   return deck;

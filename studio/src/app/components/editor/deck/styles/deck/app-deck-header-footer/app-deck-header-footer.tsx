@@ -1,14 +1,11 @@
-import {Component, Element, h, Prop, Host, JSX, EventEmitter, State, Event} from '@stencil/core';
-
-import userStore from '../../../../../../stores/user.store';
-import authStore from '../../../../../../stores/auth.store';
+import {authStore} from '@deckdeckgo/studio';
+import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
-import {SocialUtils} from '../../../../../../utils/editor/social.utils';
-import {HeaderFooterUtils} from '../../../../../../utils/editor/header-footer.utils';
 import navStore, {NavDirection} from '../../../../../../stores/nav.store';
-
+import userStore from '../../../../../../stores/user.store';
 import {renderI18n} from '../../../../../../utils/core/i18n.utils';
+import {HeaderFooterUtils} from '../../../../../../utils/editor/header-footer.utils';
+import {SocialUtils} from '../../../../../../utils/editor/social.utils';
 
 @Component({
   tag: 'app-deck-header-footer',
@@ -93,7 +90,7 @@ export class AppDeckHeaderFooter {
   }
 
   render() {
-    if (!authStore.state.loggedIn) {
+    if (!authStore.default.state.loggedIn) {
       return this.renderNotLoggedIn();
     }
 

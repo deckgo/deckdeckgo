@@ -15,7 +15,8 @@ export const AppTemplatesFixed: FunctionalComponent<AppTemplatesFixedProps> = ({
       <app-templates-title
         custom-tappable
         selected={selected === 'title'}
-        onClick={() => selectTemplate({template: SlideTemplate.TITLE})}></app-templates-title>
+        onClick={() => selectTemplate({template: SlideTemplate.TITLE})}
+      ></app-templates-title>
     );
   };
 
@@ -27,12 +28,14 @@ export const AppTemplatesFixed: FunctionalComponent<AppTemplatesFixedProps> = ({
         <app-templates-content
           custom-tappable
           selected={selected === 'content-default'}
-          onClick={() => selectTemplate({template: SlideTemplate.CONTENT})}></app-templates-content>
+          onClick={() => selectTemplate({template: SlideTemplate.CONTENT})}
+        ></app-templates-content>
         <app-templates-content
           custom-tappable
           selected={selected === 'content-bottom'}
           onClick={() => selectTemplate({template: SlideTemplate.CONTENT, style: flexEndStyle})}
-          style={flexEndStyle}></app-templates-content>
+          style={flexEndStyle}
+        ></app-templates-content>
       </Fragment>
     );
   };
@@ -42,7 +45,8 @@ export const AppTemplatesFixed: FunctionalComponent<AppTemplatesFixedProps> = ({
       <app-templates-split
         custom-tappable
         selected={selected === 'split-horizontal'}
-        onClick={() => selectTemplate({template: SlideTemplate.SPLIT})}></app-templates-split>
+        onClick={() => selectTemplate({template: SlideTemplate.SPLIT})}
+      ></app-templates-split>
     );
   };
 
@@ -52,7 +56,8 @@ export const AppTemplatesFixed: FunctionalComponent<AppTemplatesFixedProps> = ({
         custom-tappable
         selected={selected === 'split-vertical'}
         vertical={true}
-        onClick={() => selectTemplate({template: SlideTemplate.SPLIT, attributes: {vertical: true}})}></app-templates-split>
+        onClick={() => selectTemplate({template: SlideTemplate.SPLIT, attributes: {vertical: true}})}
+      ></app-templates-split>
     );
   };
 

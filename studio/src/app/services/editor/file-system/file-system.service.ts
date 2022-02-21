@@ -1,9 +1,9 @@
 import {Deck, Doc, FileImportData, Paragraph, Slide, UserAsset} from '@deckdeckgo/editor';
-import {offlineStore, editorStore} from '@deckdeckgo/studio';
+import {editorStore, offlineStore} from '@deckdeckgo/studio';
+import {authStore} from '@deckdeckgo/studio';
 import {get, getMany} from 'idb-keyval';
 import JSZip from 'jszip';
 import {v4 as uuid} from 'uuid';
-import authStore from '../../../stores/auth.store';
 import {
   getDeckBackgroundImage,
   getParagraphsLocalImages,
@@ -364,7 +364,7 @@ export class FileSystemService {
       ? ({
           data: {
             ...deck.data,
-            owner_id: authStore.state.authUser?.uid,
+            owner_id: authStore.default.state.authUser?.uid,
             slides: newSlides?.map(({id}: Slide) => id),
             updated_at: now,
             created_at: now
@@ -389,7 +389,7 @@ export class FileSystemService {
       ? ({
           data: {
             ...doc.data,
-            owner_id: authStore.state.authUser?.uid,
+            owner_id: authStore.default.state.authUser?.uid,
             paragraphs: newParagraphs?.map(({id}: Paragraph) => id),
             updated_at: now,
             created_at: now

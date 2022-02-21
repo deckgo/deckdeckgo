@@ -1,8 +1,7 @@
 import {Template} from '@deckdeckgo/editor';
-import {errorStore} from '@deckdeckgo/studio';
+import {authStore, errorStore} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, Fragment, h} from '@stencil/core';
 import {initTemplates} from '../../../../../../providers/data/template/template.provider';
-import authStore from '../../../../../../stores/auth.store';
 import i18n from '../../../../../../stores/i18n.store';
 import templatesStore from '../../../../../../stores/templates.store';
 import {renderI18n} from '../../../../../../utils/core/i18n.utils';
@@ -38,7 +37,7 @@ export class AppTemplatesUser {
   }
 
   render() {
-    if (!authStore.state.loggedIn) {
+    if (!authStore.default.state.loggedIn) {
       return this.renderNotLoggedIn();
     }
 
@@ -79,7 +78,8 @@ export class AppTemplatesUser {
           template={template}
           key={template.id}
           custom-tappable
-          onClick={() => this.selectedTemplate.emit(template)}></app-template-showcase>
+          onClick={() => this.selectedTemplate.emit(template)}
+        ></app-template-showcase>
       );
     });
   }

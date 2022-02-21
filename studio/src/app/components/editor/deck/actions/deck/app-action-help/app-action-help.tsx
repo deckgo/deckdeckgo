@@ -45,7 +45,8 @@ export class AppActionHelp {
           onTouchStart={($event) => $event.stopPropagation()}
           aria-label={i18n.state.editor.help}
           onClick={($event: UIEvent) => this.openGetHelp($event)}
-          class="get-help-action ion-activatable">
+          class="get-help-action ion-activatable"
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="help" ariaLabel="" ariaHidden={true}></AppIcon>
           <ion-label aria-hidden="true">{i18n.state.editor.help}</ion-label>

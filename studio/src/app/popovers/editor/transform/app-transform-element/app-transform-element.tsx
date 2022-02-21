@@ -58,7 +58,8 @@ export class AppTransformElement {
       <app-slot-type
         selectedTarget={this.selectedTarget}
         slotTypes={this.slotTypes}
-        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>
+        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}
+      ></app-slot-type>
     ];
   }
 }

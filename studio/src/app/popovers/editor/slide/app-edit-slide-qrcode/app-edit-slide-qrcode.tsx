@@ -157,7 +157,8 @@ export class AppEditSlideQRCode {
           debounce={500}
           disabled={!this.customQRCode}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-          onIonChange={() => this.onInputCustomUrlChange()}></ion-input>
+          onIonChange={() => this.onInputCustomUrlChange()}
+        ></ion-input>
       </ion-item>,
 
       this.renderLogoOptions()

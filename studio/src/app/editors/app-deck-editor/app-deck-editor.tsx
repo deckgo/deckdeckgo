@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {busyStore, ChartEvents, editorStore, errorStore, getEdit, ImageEvents, SlotType} from '@deckdeckgo/studio';
+import {authStore, busyStore, ChartEvents, editorStore, errorStore, getEdit, ImageEvents, SlotType} from '@deckdeckgo/studio';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -16,7 +16,6 @@ import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {SlideHelper} from '../../helpers/editor/slide.helper';
 import {FontsService} from '../../services/editor/fonts/fonts.service';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import authStore from '../../stores/auth.store';
 import colorStore from '../../stores/color.store';
 import i18n from '../../stores/i18n.store';
 import undoRedoStore from '../../stores/undo-redo.store';
@@ -416,7 +415,7 @@ export class AppDeckEditor implements ComponentInterface {
       return;
     }
 
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       await this.signIn();
       return;
     }
@@ -769,7 +768,8 @@ export class AppDeckEditor implements ComponentInterface {
     return [
       <ion-content
         class={`ion-no-padding ${busyStore.default.state.deckReady ? 'ready' : ''}`}
-        onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
+        onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}
+      >
         <div class="editor">
           {this.renderSlidesThumbnails()}
 
@@ -778,7 +778,8 @@ export class AppDeckEditor implements ComponentInterface {
               <main
                 ref={(el) => (this.mainRef = el as HTMLElement)}
                 class={busyStore.default.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
-                style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
+                style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}
+              >
                 {this.renderLoading()}
                 <deckgo-deck
                   ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
@@ -793,7 +794,8 @@ export class AppDeckEditor implements ComponentInterface {
                   onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                   onSlideNextDidChange={() => this.onSlideChange()}
                   onSlidePrevDidChange={() => this.onSlideChange()}
-                  onSlideToChange={() => this.onSlideChange()}>
+                  onSlideToChange={() => this.onSlideChange()}
+                >
                   {this.slides}
                   {this.background}
                   {this.header}
@@ -808,7 +810,8 @@ export class AppDeckEditor implements ComponentInterface {
             <app-breadcrumbs
               ref={(el) => (this.breadCrumbsRef = el as HTMLAppBreadcrumbsElement)}
               slideNumber={this.activeIndex}
-              onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+              onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}
+            ></app-breadcrumbs>
 
             <app-actions-deck-editor
               ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsDeckEditorElement)}
@@ -819,7 +822,8 @@ export class AppDeckEditor implements ComponentInterface {
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
               onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
-              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-deck-editor>
+              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}
+            ></app-actions-deck-editor>
           </div>
         </div>
         {this.renderSlidePreview()}
@@ -861,7 +865,8 @@ export class AppDeckEditor implements ComponentInterface {
       <app-slides-aside
         deckRef={this.deckRef}
         activeIndex={this.activeIndex}
-        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-slides-aside>
+        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}
+      ></app-slides-aside>
     );
   }
 

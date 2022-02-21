@@ -1,4 +1,4 @@
-import {initSyncState, errorStore} from '@deckdeckgo/studio';
+import {authStore, errorStore, initSyncState} from '@deckdeckgo/studio';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
 import {initAuthProvider} from './providers/auth/auth.provider';
@@ -6,7 +6,6 @@ import {ColorService} from './services/editor/color/color.service';
 import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
-import authStore from './stores/auth.store';
 import navStore, {NavDirection, NavParams} from './stores/nav.store';
 
 @Component({
@@ -32,7 +31,7 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.onChange('authUser', async () => await initSyncState());
+    this.destroyAuthListener = authStore.default.onChange('authUser', async () => await initSyncState());
 
     const promises: Promise<void>[] = [
       initAuthProvider(),

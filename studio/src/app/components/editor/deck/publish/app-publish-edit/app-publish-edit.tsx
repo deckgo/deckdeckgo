@@ -1,12 +1,11 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {Deck, deckSelector, Doc, Meta} from '@deckdeckgo/editor';
-import {errorStore, editorStore} from '@deckdeckgo/studio';
+import {authStore, editorStore, errorStore} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
 import {Constants} from '../../../../../config/constants';
 import {EnvironmentDeckDeckGoConfig} from '../../../../../config/environment-config';
 import {publish, publishUrl} from '../../../../../providers/publish/publish.provider';
 import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
-import authStore from '../../../../../stores/auth.store';
 import i18n from '../../../../../stores/i18n.store';
 import {firebase} from '../../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
@@ -352,7 +351,8 @@ export class AppPublishEdit {
           onSubmit={async ($event: UIEvent) => await this.handleSubmit($event)}
           onKeyPress={($event: KeyboardEvent) => {
             $event.key === 'Enter' && $event.preventDefault();
-          }}>
+          }}
+        >
           <ion-list class="inputs-list">
             {this.renderTitleLabel()}
 
@@ -366,7 +366,8 @@ export class AppPublishEdit {
                 required={true}
                 input-mode="text"
                 onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCaptionInput($event)}
-                onIonChange={() => this.validateCaptionInput()}></ion-input>
+                onIonChange={() => this.validateCaptionInput()}
+              ></ion-input>
             </ion-item>
 
             <p class={`small ${this.validTitle ? undefined : 'error'}`}>
@@ -388,7 +389,8 @@ export class AppPublishEdit {
                 disabled={disable}
                 maxlength={Constants.DECK.DESCRIPTION_MAX_LENGTH}
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}
-                onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
+                onIonChange={() => this.validateDescriptionInput()}
+              ></ion-textarea>
             </ion-item>
 
             {this.renderCanonical(disable)}
@@ -405,13 +407,15 @@ export class AppPublishEdit {
                 placeholder="Add a tag..."
                 disabled={!this.tags || this.tags.length >= 5 || disable}
                 onKeyUp={($event: KeyboardEvent) => this.onTagInputKeyUp($event)}
-                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}></ion-input>
+                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}
+              ></ion-input>
             </ion-item>
 
             <app-publish-tags
               tags={this.tags}
               disable-remove={disable}
-              onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-publish-tags>
+              onRemoveTag={($event: CustomEvent) => this.removeTag($event)}
+            ></app-publish-tags>
           </ion-list>
 
           {this.renderGitHub(disable)}
@@ -480,7 +484,8 @@ export class AppPublishEdit {
             required={false}
             input-mode="text"
             onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCanonicalInput($event)}
-            onIonChange={() => this.validateCanonicalInput()}></ion-input>
+            onIonChange={() => this.validateCanonicalInput()}
+          ></ion-input>
         </ion-item>
       </Fragment>
     );
@@ -493,7 +498,8 @@ export class AppPublishEdit {
           type="submit"
           disabled={!this.validTitle || !this.validDescription || !this.validCanonical}
           color="tertiary"
-          shape="round">
+          shape="round"
+        >
           <ion-label>{i18n.state.publish_edit.publish_now}</ion-label>
         </ion-button>
       );
@@ -516,7 +522,7 @@ export class AppPublishEdit {
   }
 
   private renderGitHub(disable: boolean) {
-    if (!authStore.state.gitHub) {
+    if (!authStore.default.state.gitHub) {
       return undefined;
     }
 
@@ -555,7 +561,8 @@ export class AppPublishEdit {
         text={this.caption}
         imgSrc={`${
           EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
-        }/img/deckdeckgo-logo.svg`}></deckgo-social-img>
+        }/img/deckdeckgo-logo.svg`}
+      ></deckgo-social-img>
     );
   }
 }

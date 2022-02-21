@@ -65,7 +65,8 @@ export class AppBreadcrumbs {
         onTouchStart={($event) => $event.stopPropagation()}
         class={deckEditorStore.state.step === step ? 'selected' : undefined}
         onClick={() => this.selectStep(step)}
-        disabled={busyStore.default.state.busy}>
+        disabled={busyStore.default.state.busy}
+      >
         <ion-label>
           {step}{' '}
           {step === 'slide' ? (

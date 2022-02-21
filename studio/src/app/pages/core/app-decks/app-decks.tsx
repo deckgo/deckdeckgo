@@ -1,5 +1,5 @@
 import {AuthUser, convertStyle, Deck, formatDate, Slide} from '@deckdeckgo/editor';
-import {syncStore, errorStore, ChartEvents, ImageEvents, getEdit} from '@deckdeckgo/studio';
+import {authStore, ChartEvents, errorStore, getEdit, ImageEvents, syncStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -7,7 +7,6 @@ import {AppAnonymousContent} from '../../../components/core/app-anonymous-conten
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
-import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import {Editor} from '../../../types/editor/editor';
 import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
@@ -57,7 +56,7 @@ export class AppDecks implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initDashboard();
     });
 
@@ -68,7 +67,7 @@ export class AppDecks implements ComponentInterface {
   }
 
   private async initDashboard() {
-    if (!authStore.state.loggedIn) {
+    if (!authStore.default.state.loggedIn) {
       this.debounceLoading();
       return;
     }
@@ -76,7 +75,7 @@ export class AppDecks implements ComponentInterface {
     this.destroyListener();
 
     try {
-      const userDecks: Deck[] = await decks(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await decks(authStore.default.state.authUser.uid);
 
       await initTemplates();
 
@@ -243,7 +242,7 @@ export class AppDecks implements ComponentInterface {
       return <app-spinner></app-spinner>;
     }
 
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       return <AppAnonymousContent title={i18n.state.menu.presentations} text={i18n.state.settings.access_decks}></AppAnonymousContent>;
     }
 
@@ -319,7 +318,8 @@ export class AppDecks implements ComponentInterface {
           data={{deck: deck.deck}}
           disableDelete={deck.deck.id === this.currentDeckId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}
+        ></app-dashboard-actions>
       </aside>
     );
   }
@@ -332,7 +332,8 @@ export class AppDecks implements ComponentInterface {
         direction="horizontal"
         direction-mobile="horizontal"
         style={deck.style}
-        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
+        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}
+      >
         {deck.slide}
         {deck.background}
         {deck.header}

@@ -66,7 +66,8 @@ export class AppActionShare {
         onTouchStart={($event) => $event.stopPropagation()}
         aria-label={i18n.state.editor.share}
         onClick={($event: UIEvent) => this.share($event)}
-        class="ion-activatable">
+        class="ion-activatable"
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="share" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.share}</ion-label>

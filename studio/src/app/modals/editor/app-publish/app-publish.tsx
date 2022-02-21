@@ -91,9 +91,8 @@ export class AppPublish {
       </ion-header>,
       <ion-content class="ion-padding fullscreen-padding">
         <main
-          class={
-            this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'
-          }>
+          class={this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'}
+        >
           {this.renderMain()}
         </main>
       </ion-content>

@@ -109,7 +109,8 @@ export class AppSignIn {
         config={this.deckDeckGoConfig}
         signInSuccess={this.onSignInSuccess}
         signInError={this.onSignInError}
-        i18n={i18n.state}></Element>
+        i18n={i18n.state}
+      ></Element>
     );
   }
 

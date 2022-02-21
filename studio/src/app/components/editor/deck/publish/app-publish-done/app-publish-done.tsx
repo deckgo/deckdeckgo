@@ -1,6 +1,5 @@
-import {editorStore} from '@deckdeckgo/studio';
+import {authStore, editorStore} from '@deckdeckgo/studio';
 import {Component, Element, h, Prop, State} from '@stencil/core';
-import authStore from '../../../../../stores/auth.store';
 import i18n from '../../../../../stores/i18n.store';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 import {share} from '../../../../../utils/core/share.utils';
@@ -53,7 +52,7 @@ export class AppPublishDone {
   }
 
   private renderGitHub() {
-    if (!authStore.state.gitHub) {
+    if (!authStore.default.state.gitHub) {
       return undefined;
     }
 

@@ -100,7 +100,8 @@ export class AppColorWordCloud {
               onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               {this.renderChartIndexes()}
             </ion-select>
           </ion-item>
@@ -111,7 +112,8 @@ export class AppColorWordCloud {
           ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           initColor={this.initColor}
           onResetColor={() => this.resetColor()}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
+        ></app-color>
       </app-expansion-panel>
     );
   }

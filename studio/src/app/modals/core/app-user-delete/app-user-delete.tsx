@@ -85,7 +85,8 @@ export class AppUserDelete {
               required={true}
               input-mode="text"
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
-              onIonChange={() => this.validateUsernameInput()}></ion-input>
+              onIonChange={() => this.validateUsernameInput()}
+            ></ion-input>
           </ion-item>
 
           <ion-button type="submit" disabled={!this.valid} color="danger" class="ion-margin-top" shape="round">

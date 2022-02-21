@@ -80,7 +80,8 @@ export class AppDemo {
               value={this.demoSrc}
               placeholder={i18n.state.editor.enter_demo_url}
               debounce={500}
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+            ></ion-input>
           </ion-item>
         </ion-list>
 
@@ -91,7 +92,8 @@ export class AppDemo {
           color="dark"
           shape="round"
           onClick={() => this.save()}
-          class="ion-margin-top">
+          class="ion-margin-top"
+        >
           <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
       </ion-content>

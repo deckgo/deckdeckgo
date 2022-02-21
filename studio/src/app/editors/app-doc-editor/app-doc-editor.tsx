@@ -1,11 +1,10 @@
-import {busyStore, errorStore, StudioConfig} from '@deckdeckgo/studio';
+import {authStore, busyStore, errorStore, StudioConfig} from '@deckdeckgo/studio';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
 import {editorConfig} from '../../config/editor';
 import {CodeEvents} from '../../events/editor/code/code.events';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import authStore from '../../stores/auth.store';
 import colorStore from '../../stores/color.store';
 import i18n from '../../stores/i18n.store';
 import {cloud} from '../../utils/core/environment.utils';
@@ -49,7 +48,7 @@ export class AppDocEditor implements ComponentInterface {
       return;
     }
 
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       signIn();
       return;
     }
@@ -120,7 +119,8 @@ export class AppDocEditor implements ComponentInterface {
 
             <deckgo-studio
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioElement)}
-              studioConfig={this.studioConfig}></deckgo-studio>
+              studioConfig={this.studioConfig}
+            ></deckgo-studio>
           </main>
         </ion-content>
       </Fragment>

@@ -1,8 +1,8 @@
-import {errorStore, offlineStore, syncStore, clearEdit} from '@deckdeckgo/studio';
+import {clearEdit, errorStore, offlineStore, syncStore} from '@deckdeckgo/studio';
+import {authStore} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
-import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import userStore from '../../../../stores/user.store';
 import {cloud} from '../../../../utils/core/environment.utils';
@@ -92,7 +92,7 @@ export class AppNavigationEnd {
 
     try {
       // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean sync data if user signed out, not when a "New deck" is performed.
-      await clearEdit(!authStore.state.loggedIn);
+      await clearEdit(!authStore.default.state.loggedIn);
 
       this.emitReloadEditor(type);
     } catch (err) {
@@ -142,7 +142,8 @@ export class AppNavigationEnd {
           class="ion-activatable"
           onClick={($event: UIEvent) => this.selectType($event)}
           disabled={disabled}
-          aria-label={i18n.state.tools.new_presentation}>
+          aria-label={i18n.state.tools.new_presentation}
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -174,7 +175,7 @@ export class AppNavigationEnd {
   }
 
   private renderSignIn() {
-    if (authStore.state.authUser !== null || !this.cloud) {
+    if (authStore.default.state.authUser !== null || !this.cloud) {
       return undefined;
     }
 
@@ -196,7 +197,7 @@ export class AppNavigationEnd {
   }
 
   private renderLoggedInActions() {
-    if (authStore.state.authUser !== null) {
+    if (authStore.default.state.authUser !== null) {
       return (
         <Fragment>
           {this.renderCloudStatus()}
@@ -205,7 +206,8 @@ export class AppNavigationEnd {
             key="user-menu-action"
             class="ion-activatable"
             onClick={(e: UIEvent) => this.openMenu(e)}
-            aria-label={i18n.state.nav.menu}>
+            aria-label={i18n.state.nav.menu}
+          >
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
             <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
@@ -245,7 +247,8 @@ export class AppNavigationEnd {
         key="cloud-status-action"
         class={`cloud ion-activatable ${syncStore.default.state.sync}`}
         aria-label={label}
-        onClick={($event: UIEvent) => this.openSyncInfo($event)}>
+        onClick={($event: UIEvent) => this.openSyncInfo($event)}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name={iconName} ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.sync.cloud}</ion-label>

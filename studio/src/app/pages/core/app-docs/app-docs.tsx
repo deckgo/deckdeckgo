@@ -1,12 +1,11 @@
 import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
-import {ChartEvents, errorStore, getEdit, ImageEvents, ParseParagraphsUtils, syncStore} from '@deckdeckgo/studio';
+import {authStore, ChartEvents, errorStore, getEdit, ImageEvents, ParseParagraphsUtils, syncStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
 import {docs} from '../../../providers/data/doc/doc.provider';
 import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
-import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import {Editor} from '../../../types/editor/editor';
 import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
@@ -45,7 +44,7 @@ export class AppDocs implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initDashboard();
     });
 
@@ -63,7 +62,7 @@ export class AppDocs implements ComponentInterface {
   }
 
   private async initDashboard() {
-    if (!authStore.state.loggedIn) {
+    if (!authStore.default.state.loggedIn) {
       this.debounceLoading();
       return;
     }
@@ -71,7 +70,7 @@ export class AppDocs implements ComponentInterface {
     this.destroyListener();
 
     try {
-      const userDocs: Doc[] = await docs(authStore.state.authUser.uid);
+      const userDocs: Doc[] = await docs(authStore.default.state.authUser.uid);
 
       this.docs = await this.fetchFirstParagraphs(userDocs);
       this.filterDocs(null);
@@ -211,7 +210,7 @@ export class AppDocs implements ComponentInterface {
       return <app-spinner></app-spinner>;
     }
 
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       return <AppAnonymousContent title={i18n.state.menu.documents} text={i18n.state.settings.access_docs}></AppAnonymousContent>;
     }
 
@@ -283,7 +282,8 @@ export class AppDocs implements ComponentInterface {
           data={{doc: doc.doc}}
           disableDelete={doc.doc.id === this.currentDocId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDoc($event)}
-          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}
+        ></app-dashboard-actions>
       </aside>
     );
   }

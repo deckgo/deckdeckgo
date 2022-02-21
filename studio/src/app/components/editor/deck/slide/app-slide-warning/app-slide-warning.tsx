@@ -218,7 +218,8 @@ export class AppSlideWarning {
       <Host
         class={{
           warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow
-        }}>
+        }}
+      >
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
           {this.renderMsg()}

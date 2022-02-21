@@ -1,14 +1,10 @@
-import {Component, Element, Fragment, h, Listen, Prop, State} from '@stencil/core';
-
 import {Template, TemplateData} from '@deckdeckgo/editor';
-
-import authStore from '../../../stores/auth.store';
-import navStore, {NavDirection} from '../../../stores/nav.store';
-import i18n from '../../../stores/i18n.store';
-
-import {renderI18n} from '../../../utils/core/i18n.utils';
-
+import {authStore} from '@deckdeckgo/studio';
+import {Component, Element, Fragment, h, Listen, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-template',
@@ -34,7 +30,7 @@ export class AppTemplate {
   async componentWillLoad() {
     if (!this.template || !this.template.data) {
       this.templateData = {
-        owner_id: authStore.state.authUser.uid
+        owner_id: authStore.default.state.authUser.uid
       };
       return;
     }
@@ -187,7 +183,8 @@ export class AppTemplate {
                     required={true}
                     input-mode="text"
                     onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}
-                    onIonChange={() => this.validateCDNInput()}></ion-input>
+                    onIonChange={() => this.validateCDNInput()}
+                  ></ion-input>
                 </ion-item>
 
                 <ion-item class={`item-title ${errorTag}`}>
@@ -204,7 +201,8 @@ export class AppTemplate {
                     required={true}
                     input-mode="text"
                     onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}
-                    onIonChange={() => this.validateTag()}></ion-input>
+                    onIonChange={() => this.validateTag()}
+                  ></ion-input>
                 </ion-item>
 
                 <ion-item class="item-title">

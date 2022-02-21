@@ -217,7 +217,8 @@ export class AppSlidesAside {
         onDrop={() => this.onDrop()}
         onDragOver={($event: DragEvent) => $event.preventDefault()}
         onDragLeave={() => this.onDragLeave()}
-        class={this.reorderDetail !== undefined ? 'drag' : ''}>
+        class={this.reorderDetail !== undefined ? 'drag' : ''}
+      >
         {this.slides.map((slide: HTMLElement, index: number) => this.renderThumbnail(slide, index))}
       </aside>
     );
@@ -245,7 +246,8 @@ export class AppSlidesAside {
         class={`${dragClass} ${this.activeIndex === index ? 'highlight' : ''}`}
         draggable={true}
         onDragStart={() => this.onDragStart(index)}
-        onDragOver={() => this.onDragHover(index)}></app-slide-thumbnail>
+        onDragOver={() => this.onDragHover(index)}
+      ></app-slide-thumbnail>
     );
   }
 

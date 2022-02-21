@@ -20,7 +20,8 @@ export class AppEditMode {
         mode="ios"
         color="medium"
         value={settingsStore.state.editMode}
-        onIonChange={($event: CustomEvent) => this.switchEditMode($event)}>
+        onIonChange={($event: CustomEvent) => this.switchEditMode($event)}
+      >
         <ion-segment-button value="properties">{i18n.state.editor.properties}</ion-segment-button>
         <ion-segment-button value="css">CSS</ion-segment-button>
       </ion-segment>

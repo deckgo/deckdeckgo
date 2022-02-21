@@ -265,7 +265,8 @@ export class AppActionAddSlide {
       <app-action-busy
         aria-label={i18n.state.editor.add_slide}
         iconName="add"
-        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}
+      >
         <ion-label aria-hidden="true">{i18n.state.editor.add_slide}</ion-label>
       </app-action-busy>
     );

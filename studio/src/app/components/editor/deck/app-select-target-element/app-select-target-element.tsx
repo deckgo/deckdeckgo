@@ -71,7 +71,8 @@ export class AppSelectTargetElement {
         mode="md"
         class="ion-padding-bottom"
         value={selectedValue}
-        onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+        onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}
+      >
         {this.renderQRCode()}
         {this.renderChart()}
         {this.renderSides()}

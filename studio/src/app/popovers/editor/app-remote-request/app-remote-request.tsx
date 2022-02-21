@@ -64,7 +64,8 @@ export class AppRemoteRequest {
         <button
           class="navigation ion-activatable transparent dismiss"
           onClick={() => this.shiftRequestsAndClose()}
-          aria-label={i18n.state.editor.deny}>
+          aria-label={i18n.state.editor.deny}
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="close" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>

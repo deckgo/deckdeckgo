@@ -1,9 +1,8 @@
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-import {busyStore, SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {authStore, busyStore, SlotType, SlotUtils} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
 import {EventEmitter} from '@stencil/core';
-import authStore from '../../stores/auth.store';
 import {EditAction} from '../../types/editor/edit-action';
 import {ImageAction} from '../../types/editor/image-action';
 import {initDeckgoLazyImgAttributes} from '../../utils/editor/image.utils';
@@ -56,7 +55,7 @@ export class ImageHelper {
   }
 
   async openCustomModalRestricted(selectedTarget: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action: EditAction) {
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       this.signIn.emit();
       return;
     }

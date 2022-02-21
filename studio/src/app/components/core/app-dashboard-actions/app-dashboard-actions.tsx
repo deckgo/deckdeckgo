@@ -114,7 +114,8 @@ export class AppDashboardActions {
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
-          disabled={this.actionInProgress || this.disableDelete}>
+          disabled={this.actionInProgress || this.disableDelete}
+        >
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>

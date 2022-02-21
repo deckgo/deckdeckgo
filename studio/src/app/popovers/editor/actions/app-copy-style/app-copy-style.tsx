@@ -44,7 +44,8 @@ export class AppCopyStyle {
         <a
           onClick={() => this.applyStyle()}
           aria-label={i18n.state.editor.apply_style}
-          class={deckEditorStore.state.style !== null ? undefined : 'disabled'}>
+          class={deckEditorStore.state.style !== null ? undefined : 'disabled'}
+        >
           <p>{i18n.state.editor.apply_style}</p>
         </a>
       </div>

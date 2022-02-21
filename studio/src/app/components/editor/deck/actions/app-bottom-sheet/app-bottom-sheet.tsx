@@ -136,7 +136,8 @@ export class AppBottomSheet {
         style={{
           '--bottom-sheet-top': `${this.bottomSheetTop}px`,
           '--contentheight': `${this.contentHeight}px`
-        }}>
+        }}
+      >
         <div class="container" ref={(el) => (this.container = el)}>
           <button class="sheet-indicator" onClick={($event: UIEvent) => this.toggle($event)}>
             <div></div>

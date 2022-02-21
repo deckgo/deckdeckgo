@@ -1,9 +1,8 @@
 import {AuthUser, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
-import {errorStore} from '@deckdeckgo/studio';
+import {authStore, errorStore} from '@deckdeckgo/studio';
 import {Component, ComponentInterface, Event, EventEmitter, h, Host, Method, Prop, State, Watch} from '@stencil/core';
 import {Constants} from '../../../../config/constants';
 import {getFiles} from '../../../../providers/storage/storage.provider';
-import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 
 @Component({
@@ -34,7 +33,7 @@ export class AppStorageFiles implements ComponentInterface {
   private destroyListener;
 
   async componentDidLoad() {
-    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.search();
     });
 
@@ -60,7 +59,7 @@ export class AppStorageFiles implements ComponentInterface {
   }
 
   private async search() {
-    if (!authStore.state.loggedIn) {
+    if (!authStore.default.state.loggedIn) {
       return;
     }
 
@@ -116,7 +115,8 @@ export class AppStorageFiles implements ComponentInterface {
         <ion-infinite-scroll
           threshold="100px"
           disabled={this.disableInfiniteScroll}
-          onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}>
+          onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}
+        >
           <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </Host>
@@ -154,7 +154,8 @@ export class AppStorageFiles implements ComponentInterface {
           {this.admin && (
             <app-storage-admin
               storageFile={storageFile}
-              onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}></app-storage-admin>
+              onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}
+            ></app-storage-admin>
           )}
         </article>
       );
@@ -167,7 +168,8 @@ export class AppStorageFiles implements ComponentInterface {
         {this.admin && (
           <app-storage-admin
             storageFile={storageFile}
-            onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}></app-storage-admin>
+            onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}
+          ></app-storage-admin>
         )}
       </article>
     );

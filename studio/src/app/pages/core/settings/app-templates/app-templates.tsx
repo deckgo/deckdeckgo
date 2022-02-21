@@ -1,10 +1,10 @@
 import {AuthUser, Template} from '@deckdeckgo/editor';
 import {errorStore} from '@deckdeckgo/studio';
+import {authStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
 import {Component, Fragment, h, State} from '@stencil/core';
 import {createUserTemplate, initTemplates, updateTemplate} from '../../../../providers/data/template/template.provider';
-import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import templatesStore from '../../../../stores/templates.store';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
@@ -21,7 +21,7 @@ export class AppTemplates {
   private loading: boolean = false;
 
   async componentDidLoad() {
-    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initUserTemplates();
     });
 
@@ -29,7 +29,7 @@ export class AppTemplates {
   }
 
   private async initUserTemplates() {
-    if (!authStore.state.loggedIn) {
+    if (!authStore.default.state.loggedIn) {
       return;
     }
 
@@ -95,7 +95,7 @@ export class AppTemplates {
   }
 
   private renderGuardedContent() {
-    if (!authStore.state.authUser) {
+    if (!authStore.default.state.authUser) {
       return this.renderNotLoggedInContent();
     }
 
@@ -151,7 +151,8 @@ export class AppTemplates {
           template={template}
           editable={true}
           key={template.id}
-          onClick={() => this.editTemplate(template)}></app-template-showcase>
+          onClick={() => this.editTemplate(template)}
+        ></app-template-showcase>
       );
     });
   }

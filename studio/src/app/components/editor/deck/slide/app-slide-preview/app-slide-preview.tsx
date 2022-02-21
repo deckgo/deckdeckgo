@@ -111,7 +111,8 @@ export class AppSlidePreview {
         style={style}
         class={{
           preview: this.preview
-        }}>
+        }}
+      >
         {this.renderPreview()}
       </Host>
     );

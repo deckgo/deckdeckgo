@@ -243,7 +243,8 @@ export class AppPollOptions {
               placeholder={i18n.state.editor.enter_question}
               debounce={500}
               disabled={this.editDisabled}
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleQuestionInput(e)}></ion-input>
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleQuestionInput(e)}
+            ></ion-input>
           </ion-item>
 
           <h2>Answers</h2>
@@ -273,7 +274,8 @@ export class AppPollOptions {
             placeholder={`Enter answer ${i + 1}`}
             debounce={500}
             disabled={this.editDisabled}
-            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAnswerInput(e, i)}></ion-input>
+            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAnswerInput(e, i)}
+          ></ion-input>
         </ion-item>
       );
     });

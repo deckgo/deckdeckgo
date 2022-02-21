@@ -124,7 +124,8 @@ export class AppNotes {
               class="ion-no-margin"
               maxlength={4096}
               placeholder="The notes related to the current slide"
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleNotesInput(e)}></ion-textarea>
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleNotesInput(e)}
+            ></ion-textarea>
           </ion-item>
         </ion-list>
 

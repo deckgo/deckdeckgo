@@ -984,7 +984,8 @@ export class AppActionsElement {
         onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
         aria-label={i18n.state.editor.delete}
         disabled={busyStore.default.state.busy && this.selectedTarget?.type === 'slide'}
-        class="wider-devices ion-activatable">
+        class="wider-devices ion-activatable"
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="trash-bin" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.delete}</ion-label>
@@ -1001,7 +1002,8 @@ export class AppActionsElement {
         aria-label={i18n.state.editor.notes}
         disabled={busyStore.default.state.busy}
         class={classElement}
-        tabindex={this.selectedTarget?.type === 'slide' ? 0 : -1}>
+        tabindex={this.selectedTarget?.type === 'slide' ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="create" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.notes}</ion-label>
@@ -1019,7 +1021,8 @@ export class AppActionsElement {
         aria-label={i18n.state.editor.copy}
         disabled={busyStore.default.state.busy}
         class={classSlide}
-        tabindex={displayed ? 0 : -1}>
+        tabindex={displayed ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.copy}</ion-label>
@@ -1037,7 +1040,8 @@ export class AppActionsElement {
         aria-label={i18n.state.editor.format}
         disabled={busyStore.default.state.busy}
         class={classSlide}
-        tabindex={displayed ? 0 : -1}>
+        tabindex={displayed ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="color-wand" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.format}</ion-label>
@@ -1076,7 +1080,8 @@ export class AppActionsElement {
         }
         aria-label={i18n.state.editor.options}
         class={classSlide}
-        tabindex={displayed ? 0 : -1}>
+        tabindex={displayed ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.options}</ion-label>
@@ -1093,7 +1098,8 @@ export class AppActionsElement {
         aria-label={i18n.state.editor.transform}
         onClick={() => this.openTransform()}
         class={classToggle}
-        tabindex={displayed ? 0 : -1}>
+        tabindex={displayed ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="flask" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.transform}</ion-label>
@@ -1115,7 +1121,8 @@ export class AppActionsElement {
         onClick={() => this.openShape('app-shape')}
         aria-label={i18n.state.editor.add_shape}
         class={classSlide}
-        tabindex={displayed ? 0 : -1}>
+        tabindex={displayed ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="shapes" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.add_shape}</ion-label>
@@ -1124,7 +1131,8 @@ export class AppActionsElement {
         onClick={() => this.openShape('app-image-element')}
         aria-label={i18n.state.editor.add_image}
         class={`wider-devices ${classSlide}`}
-        tabindex={displayed ? 0 : -1}>
+        tabindex={displayed ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.add_image}</ion-label>
@@ -1140,7 +1148,8 @@ export class AppActionsElement {
         onClick={() => this.openCode()}
         aria-label={i18n.state.editor.options}
         class={classSlideCode}
-        tabindex={this.selectedTarget?.element?.code ? 0 : -1}>
+        tabindex={this.selectedTarget?.element?.code ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.options}</ion-label>
@@ -1155,7 +1164,8 @@ export class AppActionsElement {
         onClick={() => this.openMath()}
         aria-label={i18n.state.editor.options}
         class={classSlideMath}
-        tabindex={this.selectedTarget?.element?.math ? 0 : -1}>
+        tabindex={this.selectedTarget?.element?.math ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.options}</ion-label>
@@ -1171,7 +1181,8 @@ export class AppActionsElement {
         onClick={() => this.openImage()}
         aria-label={i18n.state.editor.image}
         class={classImage}
-        tabindex={this.selectedTarget?.element?.image ? 0 : -1}>
+        tabindex={this.selectedTarget?.element?.image ? 0 : -1}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.image}</ion-label>
@@ -1184,7 +1195,8 @@ export class AppActionsElement {
       <button
         onClick={(e: UIEvent) => this.openMoreActions(e)}
         disabled={busyStore.default.state.busy}
-        class="small-devices ion-activatable">
+        class="small-devices ion-activatable"
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="ellipsis-vertical" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.more}</ion-label>

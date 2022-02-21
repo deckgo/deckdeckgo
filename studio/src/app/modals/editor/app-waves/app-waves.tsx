@@ -178,7 +178,8 @@ export class AppWaves {
           size="small"
           onClick={() => this.setOrientation('upward')}
           color={this.orientation === 'upward' ? 'quaternary' : 'medium'}
-          aria-label={i18n.state.editor.direction_up}>
+          aria-label={i18n.state.editor.direction_up}
+        >
           <AppIcon name="chevron-up" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
@@ -186,7 +187,8 @@ export class AppWaves {
           size="small"
           onClick={() => this.setOrientation('downward')}
           color={this.orientation === 'downward' ? 'quaternary' : 'medium'}
-          aria-label={i18n.state.editor.direction_down}>
+          aria-label={i18n.state.editor.direction_down}
+        >
           <AppIcon name="chevron-down" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
@@ -200,7 +202,8 @@ export class AppWaves {
             step={2}
             value={this.nodes}
             mode="md"
-            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}></ion-range>
+            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}
+          ></ion-range>
 
           <AppIcon name="waves-complex" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
         </div>
@@ -213,7 +216,8 @@ export class AppWaves {
       <app-color
         initColor={this.initColor}
         onResetColor={() => this.resetColor()}
-        onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+        onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
+      ></app-color>
     );
   }
 }
