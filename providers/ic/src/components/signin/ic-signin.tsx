@@ -44,16 +44,25 @@ export class IcSignin implements ComponentInterface {
   render() {
     return (
       <Host>
-        <div class="actions">{this.renderAction()}</div>
+        <div class="actions">
+          {this.renderSpinner()}
+          {this.renderAction()}
+        </div>
 
         {this.renderTerms()}
       </Host>
     );
   }
 
+  private renderSpinner() {
+    return <div class={`spinner ${!this.signInInProgress ? 'hidden' : ''}`}>
+      <slot name="spinner" />
+    </div>
+  }
+
   private renderAction() {
     if (this.signInInProgress) {
-      return <ion-spinner color="medium"></ion-spinner>;
+      return undefined;
     }
 
     return (

@@ -5,6 +5,8 @@ deckgo-ic-signin {
     align-content: center;
 
     padding: 8px 16px;
+
+    height: 100px;
   }
 
   p.terms {
@@ -14,5 +16,9 @@ deckgo-ic-signin {
     text-align: center;
     font-size: var(--font-size-very-small, 10px);
     padding: calc(var(--padding, 16px) / 2) 0;
+  }
+
+  div.spinner.hidden {
+    display: none;
   }
 }
