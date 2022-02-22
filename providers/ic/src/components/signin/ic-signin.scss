@@ -8,9 +8,11 @@ deckgo-ic-signin {
   }
 
   p.terms {
-    font-size: var(--font-size-very-small);
     max-width: 220px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+    font-size: var(--font-size-very-small, 10px);
+    padding: calc(var(--padding, 16px) / 2) 0;
   }
 }

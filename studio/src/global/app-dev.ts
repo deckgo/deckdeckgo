@@ -44,7 +44,9 @@ setupDeckGoConfig({
     website: 'https://deckdeckgo.com',
     globalAssetsUrl: 'http://localhost:3333/assets',
     pollUrl: 'http://localhost:3333/poll',
-    socketUrl: '<@SOCKET_URL@>'
+    socketUrl: '<@SOCKET_URL@>',
+    terms: 'https://deckdeckgo.com/terms',
+    privacy: 'https://deckdeckgo.com/privacy'
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='

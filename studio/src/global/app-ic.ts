@@ -45,7 +45,9 @@ setupDeckGoConfig({
     globalAssetsUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/assets',
     pollUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/poll',
     apiUrl: '<@API_URL@>',
-    socketUrl: '<@SOCKET_URL@>'
+    socketUrl: '<@SOCKET_URL@>',
+    terms: 'https://deckdeckgo.com/terms',
+    privacy: 'https://deckdeckgo.com/privacy'
   },
   tenor: {
     url: 'https://api.tenor.com/v1/',

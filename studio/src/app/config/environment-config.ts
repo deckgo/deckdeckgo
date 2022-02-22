@@ -30,6 +30,8 @@ export interface EnvironmentDeckDeckGoConfig {
   pollUrl: string;
   apiUrl?: string;
   socketUrl: string;
+  terms: string;
+  privacy: string;
 }
 
 export type EnvironmentAppConfigFeature = 'doc' | 'deck';
