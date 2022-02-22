@@ -21,7 +21,7 @@ export class AppDocEditor implements ComponentInterface {
 
   private readonly codeEvents: CodeEvents = new CodeEvents();
 
-  private studioEditorRef!: HTMLDeckgoStudioElement;
+  private studioEditorRef!: HTMLDeckgoStudioDocElement;
 
   private i18nListener: () => void | undefined;
 
@@ -117,10 +117,10 @@ export class AppDocEditor implements ComponentInterface {
           <main>
             {this.renderLoading()}
 
-            <deckgo-studio
-              ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioElement)}
+            <deckgo-studio-doc
+              ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioDocElement)}
               studioConfig={this.studioConfig}
-            ></deckgo-studio>
+            ></deckgo-studio-doc>
           </main>
         </ion-content>
       </Fragment>
