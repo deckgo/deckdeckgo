@@ -7,48 +7,48 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { StudioConfig } from "./types/config";
 export namespace Components {
-    interface DeckgoIndicator {
+    interface DeckgoDocIndicator {
     }
-    interface DeckgoStudio {
+    interface DeckgoStudioDoc {
         "initNewDoc": () => Promise<void>;
         "studioConfig": StudioConfig;
     }
 }
 declare global {
-    interface HTMLDeckgoIndicatorElement extends Components.DeckgoIndicator, HTMLStencilElement {
+    interface HTMLDeckgoDocIndicatorElement extends Components.DeckgoDocIndicator, HTMLStencilElement {
     }
-    var HTMLDeckgoIndicatorElement: {
-        prototype: HTMLDeckgoIndicatorElement;
-        new (): HTMLDeckgoIndicatorElement;
+    var HTMLDeckgoDocIndicatorElement: {
+        prototype: HTMLDeckgoDocIndicatorElement;
+        new (): HTMLDeckgoDocIndicatorElement;
     };
-    interface HTMLDeckgoStudioElement extends Components.DeckgoStudio, HTMLStencilElement {
+    interface HTMLDeckgoStudioDocElement extends Components.DeckgoStudioDoc, HTMLStencilElement {
     }
-    var HTMLDeckgoStudioElement: {
-        prototype: HTMLDeckgoStudioElement;
-        new (): HTMLDeckgoStudioElement;
+    var HTMLDeckgoStudioDocElement: {
+        prototype: HTMLDeckgoStudioDocElement;
+        new (): HTMLDeckgoStudioDocElement;
     };
     interface HTMLElementTagNameMap {
-        "deckgo-indicator": HTMLDeckgoIndicatorElement;
-        "deckgo-studio": HTMLDeckgoStudioElement;
+        "deckgo-doc-indicator": HTMLDeckgoDocIndicatorElement;
+        "deckgo-studio-doc": HTMLDeckgoStudioDocElement;
     }
 }
 declare namespace LocalJSX {
-    interface DeckgoIndicator {
+    interface DeckgoDocIndicator {
     }
-    interface DeckgoStudio {
+    interface DeckgoStudioDoc {
         "studioConfig"?: StudioConfig;
     }
     interface IntrinsicElements {
-        "deckgo-indicator": DeckgoIndicator;
-        "deckgo-studio": DeckgoStudio;
+        "deckgo-doc-indicator": DeckgoDocIndicator;
+        "deckgo-studio-doc": DeckgoStudioDoc;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "deckgo-indicator": LocalJSX.DeckgoIndicator & JSXBase.HTMLAttributes<HTMLDeckgoIndicatorElement>;
-            "deckgo-studio": LocalJSX.DeckgoStudio & JSXBase.HTMLAttributes<HTMLDeckgoStudioElement>;
+            "deckgo-doc-indicator": LocalJSX.DeckgoDocIndicator & JSXBase.HTMLAttributes<HTMLDeckgoDocIndicatorElement>;
+            "deckgo-studio-doc": LocalJSX.DeckgoStudioDoc & JSXBase.HTMLAttributes<HTMLDeckgoStudioDocElement>;
         }
     }
 }

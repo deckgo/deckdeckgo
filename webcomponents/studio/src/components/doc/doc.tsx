@@ -16,11 +16,11 @@ import {Editor} from '../../types/editor';
 import {getEdit} from '../../utils/editor.utils';
 
 @Component({
-  tag: 'deckgo-studio',
-  styleUrl: 'studio.scss',
+  tag: 'deckgo-studio-doc',
+  styleUrl: 'doc.scss',
   shadow: false
 })
-export class Studio implements ComponentInterface {
+export class Doc implements ComponentInterface {
   @Element()
   private el: HTMLElement;
 
@@ -228,7 +228,7 @@ export class Studio implements ComponentInterface {
           <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={configStore.state.stylo}></stylo-editor>
         </deckgo-doc>
 
-        <deckgo-indicator></deckgo-indicator>
+        <deckgo-doc-indicator></deckgo-doc-indicator>
       </Host>
     );
   }

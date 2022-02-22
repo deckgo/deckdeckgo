@@ -4,7 +4,7 @@ import i18n from '../../stores/i18n.store';
 import {busyBeforeUnload} from '../../utils/before-unload.utils';
 
 @Component({
-  tag: 'deckgo-indicator',
+  tag: 'deckgo-doc-indicator',
   styleUrl: 'indicator.scss',
   shadow: false
 })
