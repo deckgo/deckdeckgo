@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "4.1.3",
+  "version": "5.0.0",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -22,9 +22,6 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
-  },
-  "peerDependencies": {
-    "@ionic/core": "^5.7.0"
   },
   "devDependencies": {
     "@deckdeckgo/lazy-img": "^3.2.0",

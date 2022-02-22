@@ -28,7 +28,9 @@ declare namespace LocalJSX {
     interface DeckgoIcSignin {
         "config"?: Record<string, string>;
         "i18n"?: Record<string, Record<string, string>>;
+        "onError"?: (event: CustomEvent<string | undefined>) => void;
         "onInProgress"?: (event: CustomEvent<boolean>) => void;
+        "onSuccess"?: (event: CustomEvent<void>) => void;
         "signInError"?: (err?: string) => void;
         "signInSuccess"?: () => void;
     }

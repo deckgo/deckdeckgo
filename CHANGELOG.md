@@ -2,6 +2,11 @@
 
 # [6.1.0](https://github.com/deckgo/deckdeckgo/compare/v6.0.0...v6.1.0) (2022-XX-YY)
 
+### Providers
+
+- firebase: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+- ic: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+
 ### Web Components:
 
 - core: v10.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/core/CHANGELOG.md))
