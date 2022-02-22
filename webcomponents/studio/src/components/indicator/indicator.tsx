@@ -24,9 +24,6 @@ export class Indicator implements ComponentInterface {
   }
 
   render() {
-
-    console.log('here',busyStore.state.busy,  i18n.state.indicator.saving, busyStore.state.docReady)
-
     return (
       <Host>
         {busyStore.state.busy ? i18n.state.indicator.saving : ''}
