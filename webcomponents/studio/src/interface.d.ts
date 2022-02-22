@@ -12,6 +12,7 @@ export * as offlineStore from './stores/offline.store';
 export * as syncStore from './stores/sync.store';
 export * from './types/config';
 export * from './types/env';
+export * from './types/i18n';
 export * from './types/slot-type';
 export * from './utils/attributes.utils';
 export * from './utils/editor.utils';
