@@ -4,7 +4,7 @@ import {createOfflineDoc, updateOfflineDoc} from '../../providers/doc.offline.pr
 import {createOfflineParagraph, deleteOfflineParagraph, updateOfflineParagraph} from '../../providers/paragraph.offline.provider';
 import authStore from '../../stores/auth.store';
 import busyStore from '../../stores/busy.store';
-import configStore from '../../stores/config.store';
+import configStore from '../../stores/stylo.store';
 import editorStore from '../../stores/editor.store';
 import errorStore from '../../stores/error.store';
 
@@ -274,7 +274,7 @@ export class DocDataEvents {
           'class',
           'spellcheck',
           'contenteditable',
-          ...(configStore.state.stylo.excludeAttributes || [])
+          ...(configStore.state.config.excludeAttributes || [])
         ].includes(nodeName)
     );
 

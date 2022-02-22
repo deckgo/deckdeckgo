@@ -1,7 +1,7 @@
 import {Sync, SyncData, SyncPending, SyncPendingData} from '@deckdeckgo/editor';
 import {del, delMany, get, keys, update} from 'idb-keyval';
 import authStore from '../stores/auth.store';
-import configStore from '../stores/config.store';
+import envStore from '../stores/env.store';
 import offlineStore from '../stores/offline.store';
 import syncStore from '../stores/sync.store';
 import {cloudProvider} from '../utils/providers.utils';
@@ -20,13 +20,13 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    if (!configStore.state.cloud) {
+    if (!envStore.state.cloud) {
       return;
     }
 
     syncStore.state.sync = 'in_progress';
 
-    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>(configStore.state.cloud);
+    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>(envStore.state.cloud);
 
     return sync({
       syncData,

@@ -1,8 +1,10 @@
 import {authStore, errorStore, initSyncState} from '@deckdeckgo/studio';
+import {initEnv} from '@deckdeckgo/studio';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
 import {initAuthProvider} from './providers/auth/auth.provider';
 import {ColorService} from './services/editor/color/color.service';
+import {EnvironmentConfigService} from './services/environment/environment-config.service';
 import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
@@ -38,7 +40,8 @@ export class AppRoot {
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),
-      this.langService.init()
+      this.langService.init(),
+      initEnv({cloud: EnvironmentConfigService.getInstance().get('cloud')})
     ];
 
     Promise.all(promises).then(() => {
