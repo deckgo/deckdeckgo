@@ -4,9 +4,9 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
 import {snapshotDoc} from '../../../providers/data/doc/doc.provider';
 import {updatePublishedDeckOffline, updatePublishedDocOffline} from '../../../providers/publish/publish.provider';
+import editorStore from '../../../stores/editor.store';
 import i18n from '../../../stores/i18n.store';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
-import editorStore from '../../../stores/editor.store';
 
 @Component({
   tag: 'app-publish',

@@ -1,7 +1,7 @@
 import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 import {keys, set} from 'idb-keyval';
-import {encodeFilename} from '../../utils/editor/image.utils';
 import errorStore from '../../stores/error.store';
+import {encodeFilename} from '../../utils/editor/image.utils';
 
 export class StorageOfflineProvider {
   private static instance: StorageOfflineProvider;

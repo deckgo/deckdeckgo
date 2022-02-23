@@ -2,10 +2,10 @@ import {alertController} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 import {publishUrl} from '../../../../providers/publish/publish.provider';
-import i18n from '../../../../stores/i18n.store';
-import {EditAction} from '../../../../types/editor/edit-action';
 import editorStore from '../../../../stores/editor.store';
+import i18n from '../../../../stores/i18n.store';
 import offlineStore from '../../../../stores/offline.store';
+import {EditAction} from '../../../../types/editor/edit-action';
 
 @Component({
   tag: 'app-edit-slide-qrcode'

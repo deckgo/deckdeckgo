@@ -7,6 +7,7 @@ import {modalController, popoverController} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
 import {ImageHelper} from '../../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../../helpers/editor/shape.helper';
+import busyStore from '../../../../../../stores/busy.store';
 import i18n from '../../../../../../stores/i18n.store';
 import undoRedoStore from '../../../../../../stores/undo-redo.store';
 import {DemoAction} from '../../../../../../types/editor/demo-action';
@@ -20,7 +21,6 @@ import {RevealSlotUtils} from '../../../../../../utils/editor/reveal-slot.utils'
 import {SelectedElementUtils} from '../../../../../../utils/editor/selected-element.utils';
 import {ToggleSlotUtils} from '../../../../../../utils/editor/toggle-slot.utils';
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
-import busyStore from '../../../../../../stores/busy.store';
 
 @Component({
   tag: 'app-actions-element',

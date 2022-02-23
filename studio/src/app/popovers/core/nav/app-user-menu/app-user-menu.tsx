@@ -1,11 +1,11 @@
 import {clearEdit} from '@deckdeckgo/studio';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {signOut} from '../../../../providers/auth/auth.provider';
+import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
-import userStore from '../../../../stores/user.store';
-import authStore from '../../../../stores/auth.store';
 import syncStore from '../../../../stores/sync.store';
+import userStore from '../../../../stores/user.store';
 
 @Component({
   tag: 'app-user-menu',

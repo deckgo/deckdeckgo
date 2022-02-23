@@ -2,10 +2,10 @@ import {ImageEvents} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {Component, ComponentInterface, Fragment, h, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
-import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-storage',

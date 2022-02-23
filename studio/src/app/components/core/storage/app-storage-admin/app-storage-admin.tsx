@@ -3,9 +3,9 @@ import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
 import {Component, ComponentInterface, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import {deleteFile} from '../../../../providers/storage/storage.provider';
+import errorStore from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
 import {AppIcon} from '../../app-icon/app-icon';
-import errorStore from '../../../../stores/error.store';
 
 @Component({
   tag: 'app-storage-admin',

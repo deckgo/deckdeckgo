@@ -1,7 +1,7 @@
 import {Component, Event, EventEmitter, h, Host} from '@stencil/core';
+import editorStore from '../../../../stores/editor.store';
 import i18n from '../../../../stores/i18n.store';
 import {MoreAction} from '../../../../types/editor/more-action';
-import editorStore from '../../../../stores/editor.store';
 
 @Component({
   tag: 'app-share-options',

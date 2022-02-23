@@ -6,12 +6,12 @@ import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/c
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
 import {docs} from '../../../providers/data/doc/doc.provider';
 import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
-import i18n from '../../../stores/i18n.store';
-import {Editor} from '../../../types/editor/editor';
-import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
 import authStore from '../../../stores/auth.store';
 import errorStore from '../../../stores/error.store';
+import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
+import {Editor} from '../../../types/editor/editor';
+import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
 
 interface DocAndParagraphs {
   doc: Doc;

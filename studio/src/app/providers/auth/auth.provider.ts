@@ -1,10 +1,10 @@
 import {AuthUser, DeleteAuth, InitAuth, SignOut, User} from '@deckdeckgo/editor';
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
-import authStore from '../../stores/auth.store';
 
 export const initAuthProvider = async () => {
   if (!cloud()) {

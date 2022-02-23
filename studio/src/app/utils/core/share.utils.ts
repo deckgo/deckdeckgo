@@ -1,8 +1,8 @@
+import editorStore from '../../stores/editor.store';
 import i18n from '../../stores/i18n.store';
 import shareStore, {ShareData} from '../../stores/share.store';
 import userStore from '../../stores/user.store';
 import {i18nFormat} from './i18n.utils';
-import editorStore from '../../stores/editor.store';
 
 export const share = () => {
   const title: string | undefined =

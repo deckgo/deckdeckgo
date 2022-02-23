@@ -7,15 +7,15 @@ import {AppAnonymousContent} from '../../../components/core/app-anonymous-conten
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
+import authStore from '../../../stores/auth.store';
+import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
+import syncStore from '../../../stores/sync.store';
 import {Editor} from '../../../types/editor/editor';
 import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
-import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
-import syncStore from '../../../stores/sync.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;

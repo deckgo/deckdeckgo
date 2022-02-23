@@ -2,10 +2,10 @@ import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 import {Component, h, Prop, State} from '@stencil/core';
 import {get, set} from 'idb-keyval';
 import {PollService} from '../../../services/poll/poll.service';
+import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import pollStore from '../../../stores/poll.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
-import errorStore from '../../../stores/error.store';
 
 @Component({
   tag: 'app-poll',

@@ -7,9 +7,9 @@ import {EnvironmentConfigService} from './services/environment/environment-confi
 import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
-import navStore, {NavDirection, NavParams} from './stores/nav.store';
-import errorStore from './stores/error.store';
 import authStore from './stores/auth.store';
+import errorStore from './stores/error.store';
+import navStore, {NavDirection, NavParams} from './stores/nav.store';
 
 @Component({
   tag: 'app-root'

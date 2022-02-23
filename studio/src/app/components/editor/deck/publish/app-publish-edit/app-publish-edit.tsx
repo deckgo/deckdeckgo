@@ -5,13 +5,13 @@ import {Constants} from '../../../../../config/constants';
 import {EnvironmentDeckDeckGoConfig} from '../../../../../config/environment-config';
 import {publish, publishUrl} from '../../../../../providers/publish/publish.provider';
 import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
+import authStore from '../../../../../stores/auth.store';
+import editorStore from '../../../../../stores/editor.store';
+import errorStore from '../../../../../stores/error.store';
 import i18n from '../../../../../stores/i18n.store';
 import {firebase} from '../../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 import {AppIcon} from '../../../../core/app-icon/app-icon';
-import editorStore from '../../../../../stores/editor.store';
-import errorStore from '../../../../../stores/error.store';
-import authStore from '../../../../../stores/auth.store';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;

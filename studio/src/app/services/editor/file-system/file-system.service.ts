@@ -2,6 +2,9 @@ import {Deck, Doc, FileImportData, Paragraph, Slide, UserAsset} from '@deckdeckg
 import {get, getMany} from 'idb-keyval';
 import JSZip from 'jszip';
 import {v4 as uuid} from 'uuid';
+import authStore from '../../../stores/auth.store';
+import editorStore from '../../../stores/editor.store';
+import offlineStore from '../../../stores/offline.store';
 import {
   getDeckBackgroundImage,
   getParagraphsLocalImages,
@@ -12,9 +15,6 @@ import {
   getSlidesOnlineImages
 } from '../../../utils/editor/assets.utils';
 import {ImportAsset, ImportData, importEditorAssets, importEditorData, importEditorSync} from '../../../utils/editor/import.utils';
-import editorStore from '../../../stores/editor.store';
-import offlineStore from '../../../stores/offline.store';
-import authStore from '../../../stores/auth.store';
 
 export class FileSystemService {
   private static instance: FileSystemService;

@@ -16,7 +16,11 @@ import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {SlideHelper} from '../../helpers/editor/slide.helper';
 import {FontsService} from '../../services/editor/fonts/fonts.service';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import authStore from '../../stores/auth.store';
+import busyStore from '../../stores/busy.store';
 import colorStore from '../../stores/color.store';
+import editorStore from '../../stores/editor.store';
+import errorStore from '../../stores/error.store';
 import i18n from '../../stores/i18n.store';
 import undoRedoStore from '../../stores/undo-redo.store';
 import {Editor} from '../../types/editor/editor';
@@ -25,10 +29,6 @@ import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
-import editorStore from '../../stores/editor.store';
-import authStore from '../../stores/auth.store';
-import errorStore from '../../stores/error.store';
-import busyStore from '../../stores/busy.store';
 
 @Component({
   tag: 'app-deck-editor',

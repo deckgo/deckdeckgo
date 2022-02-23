@@ -1,7 +1,7 @@
 import {MergeToken, Token} from '@deckdeckgo/editor';
+import errorStore from '../../../stores/error.store';
 import {firebase} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
-import errorStore from '../../../stores/error.store';
 
 export const mergePlatformToken = async (token: Token) => {
   if (!token) {

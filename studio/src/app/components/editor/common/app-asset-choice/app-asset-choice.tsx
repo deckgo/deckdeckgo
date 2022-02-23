@@ -1,9 +1,9 @@
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 import {Fragment, FunctionalComponent, h} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
+import offlineStore from '../../../../stores/offline.store';
 import {EditAction} from '../../../../types/editor/edit-action';
 import {tenor, unsplash} from '../../../../utils/core/environment.utils';
-import offlineStore from '../../../../stores/offline.store';
 
 const tenorEnabled = tenor();
 const unsplashEnabled = unsplash();

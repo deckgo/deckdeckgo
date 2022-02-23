@@ -2,8 +2,8 @@ import {Deck} from '@deckdeckgo/editor';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 import {Build} from '@stencil/core';
 import {get, set} from 'idb-keyval';
-import remoteStore from '../../../stores/remote.store';
 import editorStore from '../../../stores/editor.store';
+import remoteStore from '../../../stores/remote.store';
 
 export class RemoteService {
   private static instance: RemoteService;

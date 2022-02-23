@@ -1,10 +1,10 @@
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
 import {Component, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
+import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import {clone, DeckOrDoc, deleteDeckOrDoc} from '../../../utils/core/dashboard.utils';
 import {AppIcon} from '../../core/app-icon/app-icon';
-import errorStore from '../../../stores/error.store';
 
 @Component({
   tag: 'app-dashboard-actions',

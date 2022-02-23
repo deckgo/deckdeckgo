@@ -1,6 +1,6 @@
 import {Component, h, Prop} from '@stencil/core';
-import userStore from '../../../stores/user.store';
 import authStore from '../../../stores/auth.store';
+import userStore from '../../../stores/user.store';
 
 @Component({
   tag: 'app-user-info',

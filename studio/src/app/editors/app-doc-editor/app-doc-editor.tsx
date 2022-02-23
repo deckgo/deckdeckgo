@@ -3,14 +3,14 @@ import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
 import {editorConfig} from '../../config/editor';
 import {CodeEvents} from '../../events/editor/code/code.events';
+import authStore from '../../stores/auth.store';
+import busyStore from '../../stores/busy.store';
 import colorStore from '../../stores/color.store';
+import errorStore from '../../stores/error.store';
 import i18n from '../../stores/i18n.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
-import authStore from '../../stores/auth.store';
-import errorStore from '../../stores/error.store';
-import busyStore from '../../stores/busy.store';
 
 @Component({
   tag: 'app-doc-editor',

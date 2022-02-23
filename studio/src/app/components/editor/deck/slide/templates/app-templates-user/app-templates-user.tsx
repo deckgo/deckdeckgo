@@ -1,12 +1,12 @@
 import {Template} from '@deckdeckgo/editor';
 import {Component, Event, EventEmitter, Fragment, h} from '@stencil/core';
 import {initTemplates} from '../../../../../../providers/data/template/template.provider';
+import authStore from '../../../../../../stores/auth.store';
+import errorStore from '../../../../../../stores/error.store';
 import i18n from '../../../../../../stores/i18n.store';
 import templatesStore from '../../../../../../stores/templates.store';
 import {renderI18n} from '../../../../../../utils/core/i18n.utils';
 import {signIn} from '../../../../../../utils/core/signin.utils';
-import authStore from '../../../../../../stores/auth.store';
-import errorStore from '../../../../../../stores/error.store';
 
 @Component({
   tag: 'app-templates-user',

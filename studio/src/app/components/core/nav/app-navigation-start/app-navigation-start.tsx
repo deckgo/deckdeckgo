@@ -2,13 +2,13 @@ import {clearEdit} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
+import authStore from '../../../../stores/auth.store';
+import errorStore from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
+import syncStore from '../../../../stores/sync.store';
 import {MoreAction} from '../../../../types/editor/more-action';
 import {cloud} from '../../../../utils/core/environment.utils';
 import {AppIcon} from '../../app-icon/app-icon';
-import syncStore from '../../../../stores/sync.store';
-import errorStore from '../../../../stores/error.store';
-import authStore from '../../../../stores/auth.store';
 
 @Component({
   tag: 'app-navigation-start',

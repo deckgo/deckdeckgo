@@ -1,8 +1,8 @@
 import {CreateTemplate, GetUserTemplates, Template, TemplateData, UpdateTemplate} from '@deckdeckgo/editor';
+import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
-import authStore from '../../../stores/auth.store';
 
 export const initTemplates = async () => {
   if (!authStore.state.authUser || !authStore.state.loggedIn) {

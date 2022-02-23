@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
-import {AppIcon} from '../../../../../core/app-icon/app-icon';
 import busyStore from '../../../../../../stores/busy.store';
+import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-action-busy',

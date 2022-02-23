@@ -3,11 +3,11 @@ import {JSX} from '@stencil/core';
 import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 import {initTemplates} from '../../providers/data/template/template.provider';
-import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
-import {TemplateUtils} from '../../utils/editor/template.utils';
-import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
 import editorStore from '../../stores/editor.store';
+import errorStore from '../../stores/error.store';
+import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
+import {TemplateUtils} from '../../utils/editor/template.utils';
 
 export class SlideHelper {
   private deckOfflineProvider: DeckOfflineProvider;
