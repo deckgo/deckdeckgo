@@ -1,9 +1,9 @@
 import {Sync, SyncData, SyncPending, SyncPendingData} from '@deckdeckgo/editor';
 import {del, delMany, get, keys, update} from 'idb-keyval';
-import authStore from '../stores/auth.store';
-import envStore from '../stores/env.store';
-import offlineStore from '../stores/offline.store';
-import syncStore from '../stores/sync.store';
+import {AuthStore} from '../stores/auth.store';
+import {EnvStore} from '../stores/env.store';
+import {SyncStore} from '../stores/sync.store';
+import {isOnline} from '../utils/offline.utils';
 import {cloudProvider} from '../utils/providers.utils';
 
 export const sync = async (syncData: SyncData | undefined) => {
@@ -12,7 +12,7 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    if (!authStore.state.loggedIn || !offlineStore.state.online) {
+    if (!AuthStore.getInstance().isLoggedIn() || !isOnline()) {
       return;
     }
 
@@ -20,26 +20,26 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    if (!envStore.state.cloud) {
+    if (!EnvStore.getInstance().get()) {
       return;
     }
 
-    syncStore.state.sync = 'in_progress';
+    SyncStore.getInstance().set('in_progress');
 
-    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>(envStore.state.cloud);
+    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>(EnvStore.getInstance().get());
 
     return sync({
       syncData,
-      userId: authStore.state.authUser.uid,
+      userId: AuthStore.getInstance().get().uid,
       clean: cleanSync
     });
   } catch (err) {
-    syncStore.state.sync = 'error';
+    SyncStore.getInstance().set('error');
     console.error(err);
   }
 };
 
-export const isSyncPending = (): boolean => syncStore.state.sync === 'pending';
+export const isSyncPending = (): boolean => SyncStore.getInstance().get() === 'pending';
 
 export const cleanSync = async ({syncedAt}: SyncData) => {
   await filterPending(syncedAt);
@@ -74,15 +74,15 @@ const filterPending = async (syncedAt: Date) => {
 };
 
 export const initSyncState = async () => {
-  if (!authStore.state.loggedIn) {
-    syncStore.state.sync = authStore.state.authUser?.state === 'initialization' ? 'init' : 'idle';
+  if (!AuthStore.getInstance().isLoggedIn()) {
+    SyncStore.getInstance().set(AuthStore.getInstance().get()?.state === 'initialization' ? 'init' : 'idle');
     return;
   }
 
   const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
   if (!data) {
-    syncStore.state.sync = 'idle';
+    SyncStore.getInstance().set('idle');
     return;
   }
 
@@ -98,11 +98,11 @@ export const initSyncState = async () => {
     (!deleteParagraphs || deleteParagraphs.length === 0) &&
     (!updateParagraphs || updateParagraphs.length === 0)
   ) {
-    syncStore.state.sync = 'idle';
+    SyncStore.getInstance().set('idle');
     return;
   }
 
-  syncStore.state.sync = 'pending';
+  SyncStore.getInstance().set('pending');
 };
 
 export const clearSync = async () => {

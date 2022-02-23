@@ -1,12 +1,12 @@
 import {cleanNode, Doc, DocData, elementIndex, isElementNode, isTextNode, now, Paragraph, ParagraphData} from '@deckdeckgo/editor';
 import {nanoid} from 'nanoid';
+import {excludeAttributes} from '../../constants/doc.constants';
 import {createOfflineDoc, updateOfflineDoc} from '../../providers/doc.offline.provider';
 import {createOfflineParagraph, deleteOfflineParagraph, updateOfflineParagraph} from '../../providers/paragraph.offline.provider';
-import authStore from '../../stores/auth.store';
-import busyStore from '../../stores/busy.store';
-import configStore from '../../stores/stylo.store';
-import editorStore from '../../stores/editor.store';
-import errorStore from '../../stores/error.store';
+import {AuthStore} from '../../stores/auth.store';
+import {BusyStore} from '../../stores/busy.store';
+import {DocStore} from '../../stores/doc.store';
+import {ErrorStore} from '../../stores/error.store';
 
 export class DocDataEvents {
   init() {
@@ -23,7 +23,7 @@ export class DocDataEvents {
 
   private onAddParagraphs = async ({detail: addedParagraphs}: CustomEvent<HTMLElement[]>) => {
     try {
-      busyStore.state.busy = true;
+      BusyStore.getInstance().set(true);
 
       await this.createDoc();
 
@@ -31,30 +31,30 @@ export class DocDataEvents {
         await this.createParagraph(paragraph);
       }
     } catch (err) {
-      errorStore.state.error = err;
+      ErrorStore.getInstance().set(err);
     }
 
-    busyStore.state.busy = false;
+    BusyStore.getInstance().set(false);
   };
 
   private onDeleteParagraphs = async ({detail: removedParagraphs}: CustomEvent<HTMLElement[]>) => {
     try {
-      busyStore.state.busy = true;
+      BusyStore.getInstance().set(true);
 
       const promises: Promise<string | undefined>[] = removedParagraphs.map((paragraph: HTMLElement) => this.deleteParagraph(paragraph));
       const removedParagraphIds: (string | undefined)[] = await Promise.all(promises);
 
       await this.filterDocParagraphList(removedParagraphIds);
     } catch (err) {
-      errorStore.state.error = err;
+      ErrorStore.getInstance().set(err);
     }
 
-    busyStore.state.busy = false;
+    BusyStore.getInstance().set(false);
   };
 
   private onUpdateParagraphs = async ({detail: updatedParagraphs}: CustomEvent<HTMLElement[]>) => {
     try {
-      busyStore.state.busy = true;
+      BusyStore.getInstance().set(true);
 
       // In case of copy-paste, the browser might proceed with a delete-update for which we do not get paragraph_id.
       // It might copy a <p/> within a <div/> instead of creating a child of the container for the new <p/>
@@ -63,27 +63,27 @@ export class DocDataEvents {
         .map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
       await Promise.all(promises);
     } catch (err) {
-      errorStore.state.error = err;
+      ErrorStore.getInstance().set(err);
     }
 
-    busyStore.state.busy = false;
+    BusyStore.getInstance().set(false);
   };
 
   private createDoc(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        if (editorStore.state.doc) {
+        if (DocStore.getInstance().get()) {
           resolve();
           return;
         }
 
         let docData: DocData = {
           name: `Document ${now()}`,
-          owner_id: authStore.state.authUser?.uid
+          owner_id: AuthStore.getInstance().get()?.uid
         };
 
         const persistedDoc: Doc = await createOfflineDoc(docData);
-        editorStore.state.doc = {...persistedDoc};
+        DocStore.getInstance().set({...persistedDoc});
 
         resolve();
       } catch (err) {
@@ -105,7 +105,7 @@ export class DocDataEvents {
       return undefined;
     }
 
-    await deleteOfflineParagraph({docId: editorStore.state.doc.id, paragraphId: paragraphId});
+    await deleteOfflineParagraph({docId: DocStore.getInstance().get().id, paragraphId: paragraphId});
 
     return paragraphId;
   }
@@ -129,7 +129,7 @@ export class DocDataEvents {
       const paragraphId: string = nanoid();
 
       const persistedParagraph: Paragraph = await createOfflineParagraph({
-        docId: editorStore.state.doc.id,
+        docId: DocStore.getInstance().get().id,
         paragraphData: paragraphData,
         paragraphId
       });
@@ -143,7 +143,7 @@ export class DocDataEvents {
   private updateDocParagraphList({paragraphId, paragraphElement}: {paragraphId: string; paragraphElement: HTMLElement}): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const doc: Doc = {...editorStore.state.doc};
+        const doc: Doc = {...DocStore.getInstance().get()};
 
         if (!doc && !doc.data) {
           reject('Missing doc to add the paragraph to the list');
@@ -163,7 +163,7 @@ export class DocDataEvents {
         doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
-        editorStore.state.doc = {...updatedDoc};
+        DocStore.getInstance().set({...updatedDoc});
 
         resolve();
       } catch (err) {
@@ -175,7 +175,7 @@ export class DocDataEvents {
   private filterDocParagraphList(paragraphIds: (string | undefined)[]): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const doc: Doc = {...editorStore.state.doc};
+        const doc: Doc = {...DocStore.getInstance().get()};
 
         if (!doc && !doc.data) {
           reject('Missing doc to update the paragraph to the list');
@@ -197,7 +197,7 @@ export class DocDataEvents {
         doc.data.paragraphs = [...doc.data.paragraphs.filter((paragraphId: string) => !filterParagraphIds.includes(paragraphId))];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
-        editorStore.state.doc = {...updatedDoc};
+        DocStore.getInstance().set({...updatedDoc});
 
         resolve();
       } catch (err) {
@@ -211,17 +211,17 @@ export class DocDataEvents {
       return;
     }
 
-    const docId: string = editorStore.state.doc.id;
+    const docId: string = DocStore.getInstance().get().id;
 
     if (!docId || docId === undefined || docId === '') {
-      errorStore.state.error = 'Doc is not defined';
+      ErrorStore.getInstance().set('Doc is not defined');
       return;
     }
 
     const paragraphId: string | null = paragraph.getAttribute('paragraph_id');
 
     if (!paragraphId) {
-      errorStore.state.error = 'Paragraph is not defined';
+      ErrorStore.getInstance().set('Paragraph is not defined');
       return;
     }
 
@@ -268,14 +268,7 @@ export class DocDataEvents {
   private paragraphAttributes(paragraph: HTMLElement): Record<string, string | number | boolean | undefined> | null {
     const attrs: Attr[] = Array.from(paragraph.attributes).filter(
       ({nodeName}: Attr) =>
-        ![
-          'placeholder',
-          'data-gramm',
-          'class',
-          'spellcheck',
-          'contenteditable',
-          ...(configStore.state.config.excludeAttributes || [])
-        ].includes(nodeName)
+        !['placeholder', 'data-gramm', 'class', 'spellcheck', 'contenteditable', ...excludeAttributes].includes(nodeName)
     );
 
     return attrs.length > 0

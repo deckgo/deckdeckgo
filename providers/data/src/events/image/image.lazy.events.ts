@@ -1,6 +1,4 @@
-import {SlotType} from '../../types/slot-type';
-
-export class DocImageEvents {
+export class ImageLazyEvents {
   private treeObserver: MutationObserver | undefined;
 
   init(containerRef: HTMLElement) {
@@ -15,7 +13,7 @@ export class DocImageEvents {
   private onTreeMutation = async (mutations: MutationRecord[]) => {
     const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
 
-    const imgNode: Node | undefined = addedNodes.find((node: Node) => node.nodeName?.toLowerCase() === SlotType.IMG);
+    const imgNode: Node | undefined = addedNodes.find((node: Node) => node.nodeName?.toLowerCase() === 'deckgo-lazy-img');
 
     if (!imgNode) {
       return;

@@ -1,8 +1,8 @@
 import {SyncPending, SyncPendingDeck, SyncPendingDoc, SyncPendingParagraph, SyncPendingSlide} from '@deckdeckgo/editor';
 import {update} from 'idb-keyval';
-import authStore from '../stores/auth.store';
-import offlineStore from '../stores/offline.store';
-import syncStore from '../stores/sync.store';
+import {AuthStore} from '../stores/auth.store';
+import {SyncStore} from '../stores/sync.store';
+import {isOnline} from './offline.utils';
 
 // We push data only and eliminate duplicates on the worker side when preparing the data
 
@@ -158,13 +158,13 @@ const pendingParagraph = ({docId, paragraphId}: {docId: string; paragraphId: str
 });
 
 const setPendingState = () => {
-  if (!authStore.state.loggedIn || !offlineStore.state.online) {
+  if (!AuthStore.getInstance().isLoggedIn() || !isOnline()) {
     return;
   }
 
-  if (syncStore.state.sync === 'in_progress') {
+  if (SyncStore.getInstance().get() === 'in_progress') {
     return;
   }
 
-  syncStore.state.sync = 'pending';
+  SyncStore.getInstance().set('pending');
 };

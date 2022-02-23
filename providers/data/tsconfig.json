@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "strict": false,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "esnext",
+    "typeRoots": ["../../node_modules/@types"],
+    "skipLibCheck": true,
+    "outDir": "lib"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

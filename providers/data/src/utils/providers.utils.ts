@@ -1,4 +1,4 @@
-import {EnvironmentCloud} from '../types/env';
+import {EnvironmentCloud} from '../types/env.types';
 
 export const cloudProvider = <T>(cloud: EnvironmentCloud): Promise<T> => {
   const {api}: EnvironmentCloud = cloud;

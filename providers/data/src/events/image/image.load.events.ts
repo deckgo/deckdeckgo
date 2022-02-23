@@ -1,7 +1,7 @@
 import type {DeckDeckGoCustomLoad} from '@deckdeckgo/lazy-img';
 import {get} from 'idb-keyval';
 
-export class ImageEvents {
+export class ImageLoadEvents {
   init() {
     document.addEventListener('customLoad', this.onCustomLoad);
   }
