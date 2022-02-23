@@ -1,10 +1,11 @@
-import {offlineStore, editorStore} from '@deckdeckgo/studio';
 import {alertController} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 import {publishUrl} from '../../../../providers/publish/publish.provider';
 import i18n from '../../../../stores/i18n.store';
 import {EditAction} from '../../../../types/editor/edit-action';
+import editorStore from '../../../../stores/editor.store';
+import offlineStore from '../../../../stores/offline.store';
 
 @Component({
   tag: 'app-edit-slide-qrcode'
@@ -107,7 +108,7 @@ export class AppEditSlideQRCode {
         return;
       }
 
-      const url: string = await publishUrl(editorStore.default.state.deck.data.meta);
+      const url: string = await publishUrl(editorStore.state.deck.data.meta);
 
       this.selectedTarget.setAttribute('content', url);
       this.selectedTarget.removeAttribute('custom-qrcode');
@@ -172,7 +173,7 @@ export class AppEditSlideQRCode {
   // In the sync process, when images are uploaded to the cloud, their new URLs should be updated on the slide attributes.
   // Finally, instead of opening a "restricted custom modal", it should open the standard modal.
   private renderLogoOptions() {
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       return undefined;
     }
 

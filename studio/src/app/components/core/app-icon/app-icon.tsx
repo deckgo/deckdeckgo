@@ -1,5 +1,4 @@
 import {FunctionalComponent, h} from '@stencil/core';
-
 import {EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 

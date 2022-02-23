@@ -1,6 +1,5 @@
-import themeStore from '../../stores/theme.store';
-
 import {get, set} from 'idb-keyval';
+import themeStore from '../../stores/theme.store';
 
 export class ThemeService {
   private static instance: ThemeService;

@@ -1,7 +1,6 @@
 import {Component, h} from '@stencil/core';
-
-import settingsStore from '../../../../stores/settings.store';
 import i18n from '../../../../stores/i18n.store';
+import settingsStore from '../../../../stores/settings.store';
 
 @Component({
   tag: 'app-edit-mode',

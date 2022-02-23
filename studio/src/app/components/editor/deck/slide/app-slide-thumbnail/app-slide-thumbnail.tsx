@@ -1,7 +1,6 @@
-import {Component, h, Host, Element, Prop} from '@stencil/core';
-
-import {debounce} from '@deckdeckgo/utils';
 import {cleanNode} from '@deckdeckgo/editor';
+import {debounce} from '@deckdeckgo/utils';
+import {Component, Element, h, Host, Prop} from '@stencil/core';
 
 @Component({
   tag: 'app-slide-thumbnail',

@@ -1,4 +1,3 @@
-import {editorStore} from '@deckdeckgo/studio';
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
 import {DeckAction} from '../../../../../../types/editor/deck-action';
@@ -79,9 +78,7 @@ export class AppDeckTransition {
 
   private async initDeckAutoSlide() {
     this.autoSlide =
-      editorStore.default.state.deck?.data?.attributes?.autoSlide !== undefined
-        ? editorStore.default.state.deck.data.attributes.autoSlide
-        : false;
+      editorStore.state.deck?.data?.attributes?.autoSlide !== undefined ? editorStore.state.deck.data.attributes.autoSlide : false;
   }
 
   private async animateDecks() {

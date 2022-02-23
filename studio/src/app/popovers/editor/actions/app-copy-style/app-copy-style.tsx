@@ -1,5 +1,4 @@
 import {Component, Element, h, Prop} from '@stencil/core';
-
 import deckEditorStore from '../../../../stores/deck-editor.store';
 import i18n from '../../../../stores/i18n.store';
 

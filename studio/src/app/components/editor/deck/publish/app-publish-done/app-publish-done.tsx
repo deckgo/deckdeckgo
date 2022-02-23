@@ -1,9 +1,10 @@
-import {authStore, editorStore} from '@deckdeckgo/studio';
 import {Component, Element, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../stores/i18n.store';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 import {share} from '../../../../../utils/core/share.utils';
 import {AppIcon} from '../../../../core/app-icon/app-icon';
+import authStore from '../../../../../stores/auth.store';
+import editorStore from '../../../../../stores/editor.store';
 
 @Component({
   tag: 'app-publish-done',
@@ -52,20 +53,20 @@ export class AppPublishDone {
   }
 
   private renderGitHub() {
-    if (!authStore.default.state.gitHub) {
+    if (!authStore.state.gitHub) {
       return undefined;
     }
 
     if (
-      !editorStore.default.state.deck ||
-      !editorStore.default.state.deck.data ||
-      !editorStore.default.state.deck.data.github ||
-      !editorStore.default.state.deck.data.github.publish
+      !editorStore.state.deck ||
+      !editorStore.state.deck.data ||
+      !editorStore.state.deck.data.github ||
+      !editorStore.state.deck.data.github.publish
     ) {
       return undefined;
     }
 
-    if (!editorStore.default.state.deck.data.github || !editorStore.default.state.deck.data.github.repo) {
+    if (!editorStore.state.deck.data.github || !editorStore.state.deck.data.github.repo) {
       return (
         <ion-label class="published-url ion-padding ion-text-center">
           {renderI18n(i18n.state.publish_done.source_processing, {
@@ -81,7 +82,7 @@ export class AppPublishDone {
         {renderI18n(i18n.state.publish_done.source_submitted, {
           placeholder: '{0}',
           value: (
-            <a href={`${editorStore.default.state.deck.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
+            <a href={`${editorStore.state.deck.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
               {i18n.state.publish_done.repository}
             </a>
           )

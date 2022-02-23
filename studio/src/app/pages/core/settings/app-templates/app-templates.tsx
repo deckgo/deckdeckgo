@@ -1,6 +1,4 @@
 import {AuthUser, Template} from '@deckdeckgo/editor';
-import {errorStore} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
 import {Component, Fragment, h, State} from '@stencil/core';
@@ -9,6 +7,8 @@ import i18n from '../../../../stores/i18n.store';
 import templatesStore from '../../../../stores/templates.store';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
+import authStore from '../../../../stores/auth.store';
+import errorStore from '../../../../stores/error.store';
 
 @Component({
   tag: 'app-templates',
@@ -21,7 +21,7 @@ export class AppTemplates {
   private loading: boolean = false;
 
   async componentDidLoad() {
-    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initUserTemplates();
     });
 
@@ -29,7 +29,7 @@ export class AppTemplates {
   }
 
   private async initUserTemplates() {
-    if (!authStore.default.state.loggedIn) {
+    if (!authStore.state.loggedIn) {
       return;
     }
 
@@ -40,7 +40,7 @@ export class AppTemplates {
 
       await initTemplates();
     } catch (err) {
-      errorStore.default.state.error = 'Templates can not be fetched.';
+      errorStore.state.error = 'Templates can not be fetched.';
     }
 
     this.loading = false;
@@ -78,7 +78,7 @@ export class AppTemplates {
         templatesStore.state.user = [createdTemplate, ...templatesStore.state.user];
       }
     } catch (err) {
-      errorStore.default.state.error = 'Template can not be saved.';
+      errorStore.state.error = 'Template can not be saved.';
     }
   }
 
@@ -95,7 +95,7 @@ export class AppTemplates {
   }
 
   private renderGuardedContent() {
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       return this.renderNotLoggedInContent();
     }
 

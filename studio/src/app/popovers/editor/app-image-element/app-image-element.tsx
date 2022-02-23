@@ -1,7 +1,5 @@
-import {Component, Element, Prop, h} from '@stencil/core';
-
+import {Component, Element, h, Prop} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
-
 import {ImageAction} from '../../../types/editor/image-action';
 
 @Component({

@@ -1,11 +1,9 @@
 import {Component, Element, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
-
-import i18n from '../../../../stores/i18n.store';
-
-import {TargetElement} from '../../../../types/editor/target-element';
-import {ImageAction} from '../../../../types/editor/image-action';
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import i18n from '../../../../stores/i18n.store';
 import settingsStore from '../../../../stores/settings.store';
+import {ImageAction} from '../../../../types/editor/image-action';
+import {TargetElement} from '../../../../types/editor/target-element';
 
 @Component({
   tag: 'app-deck-style',

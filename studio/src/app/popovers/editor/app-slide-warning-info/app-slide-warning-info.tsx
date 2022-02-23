@@ -1,9 +1,7 @@
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
-
 import i18n from '../../../stores/i18n.store';
-import {renderI18n} from '../../../utils/core/i18n.utils';
-
 import settingsStore from '../../../stores/settings.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-slide-warning-info',

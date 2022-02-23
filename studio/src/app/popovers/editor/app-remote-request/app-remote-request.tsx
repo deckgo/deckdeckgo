@@ -1,15 +1,10 @@
-import {Component, Element, h, State} from '@stencil/core';
-
 import {DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
-
-import remoteStore from '../../../stores/remote.store';
-import i18n from '../../../stores/i18n.store';
-
-import {RemoteService} from '../../../services/editor/remote/remote.service';
-
-import {renderI18n} from '../../../utils/core/i18n.utils';
-
+import {Component, Element, h, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {RemoteService} from '../../../services/editor/remote/remote.service';
+import i18n from '../../../stores/i18n.store';
+import remoteStore from '../../../stores/remote.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-remote-request',

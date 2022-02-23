@@ -1,12 +1,9 @@
-import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {UserUtils} from '../../../utils/core/user.utils';
-import {firebase} from '../../../utils/core/environment.utils';
-
+import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import {firebase} from '../../../utils/core/environment.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
+import {UserUtils} from '../../../utils/core/user.utils';
 
 @Component({
   tag: 'app-user-delete',

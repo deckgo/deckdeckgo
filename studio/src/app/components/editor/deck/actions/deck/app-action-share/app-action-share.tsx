@@ -1,4 +1,3 @@
-import {editorStore} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {popoverController} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
@@ -7,6 +6,7 @@ import {MoreAction} from '../../../../../../types/editor/more-action';
 import {cloud} from '../../../../../../utils/core/environment.utils';
 import {share} from '../../../../../../utils/core/share.utils';
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
+import editorStore from '../../../../../../stores/editor.store';
 
 @Component({
   tag: 'app-action-share'
@@ -21,7 +21,7 @@ export class AppActionShare {
   private cloud: boolean = cloud();
 
   private async share($event: UIEvent) {
-    if (editorStore.default.state.published) {
+    if (editorStore.state.published) {
       await this.openShareOptions($event);
       return;
     }
@@ -56,7 +56,7 @@ export class AppActionShare {
   }
 
   render() {
-    if (!this.cloud && !editorStore.default.state.published) {
+    if (!this.cloud && !editorStore.state.published) {
       return undefined;
     }
 

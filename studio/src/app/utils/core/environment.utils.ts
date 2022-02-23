@@ -1,5 +1,5 @@
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../config/environment-config';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export const tenor = (): boolean => EnvironmentConfigService.getInstance().get('tenor') !== undefined;
 

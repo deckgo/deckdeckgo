@@ -1,14 +1,10 @@
-import {Component, Element, Prop, h, EventEmitter, Event} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
-import settingsStore from '../../../../../../stores/settings.store';
+import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
+import settingsStore from '../../../../../../stores/settings.store';
+import {Expanded} from '../../../../../../types/core/settings';
 import {EditAction} from '../../../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../../../types/editor/image-action';
-import {Expanded} from '../../../../../../types/core/settings';
-
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {AppAssetChoice} from '../../../../common/app-asset-choice/app-asset-choice';
 

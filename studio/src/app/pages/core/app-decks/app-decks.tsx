@@ -1,5 +1,5 @@
 import {AuthUser, convertStyle, Deck, formatDate, Slide} from '@deckdeckgo/editor';
-import {authStore, ChartEvents, errorStore, getEdit, ImageEvents, syncStore} from '@deckdeckgo/studio';
+import {ChartEvents, getEdit, ImageEvents} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -13,6 +13,9 @@ import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashb
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
+import authStore from '../../../stores/auth.store';
+import errorStore from '../../../stores/error.store';
+import syncStore from '../../../stores/sync.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -56,7 +59,7 @@ export class AppDecks implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initDashboard();
     });
 
@@ -67,7 +70,7 @@ export class AppDecks implements ComponentInterface {
   }
 
   private async initDashboard() {
-    if (!authStore.default.state.loggedIn) {
+    if (!authStore.state.loggedIn) {
       this.debounceLoading();
       return;
     }
@@ -75,14 +78,14 @@ export class AppDecks implements ComponentInterface {
     this.destroyListener();
 
     try {
-      const userDecks: Deck[] = await decks(authStore.default.state.authUser.uid);
+      const userDecks: Deck[] = await decks(authStore.state.authUser.uid);
 
       await initTemplates();
 
       this.decks = await this.fetchFirstSlides(userDecks);
       this.filterDecks(null);
     } catch (err) {
-      errorStore.default.state.error = 'Cannot init your dashboard.';
+      errorStore.state.error = 'Cannot init your dashboard.';
     }
 
     this.debounceLoading();
@@ -190,7 +193,7 @@ export class AppDecks implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.default.state.error = err;
+      errorStore.state.error = err;
     }
 
     await loading.dismiss();
@@ -242,7 +245,7 @@ export class AppDecks implements ComponentInterface {
       return <app-spinner></app-spinner>;
     }
 
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       return <AppAnonymousContent title={i18n.state.menu.presentations} text={i18n.state.settings.access_decks}></AppAnonymousContent>;
     }
 
@@ -275,7 +278,7 @@ export class AppDecks implements ComponentInterface {
       );
     }
 
-    if (syncStore.default.state.dirty) {
+    if (syncStore.state.dirty) {
       return <p>{i18n.state.dashboard.sync_slides}</p>;
     }
 

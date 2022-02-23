@@ -1,15 +1,10 @@
-import {Component, Element, EventEmitter, Prop, State, h, Fragment} from '@stencil/core';
-
 import type {OverlayEventDetail} from '@ionic/core';
 import {alertController, modalController} from '@ionic/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {getCodeLanguage} from '../../../utils/editor/prism.utils';
-
-import {PrismLanguage} from '../../../types/editor/prism-language';
-
+import {Component, Element, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import {PrismLanguage} from '../../../types/editor/prism-language';
+import {getCodeLanguage} from '../../../utils/editor/prism.utils';
 
 @Component({
   tag: 'app-code',

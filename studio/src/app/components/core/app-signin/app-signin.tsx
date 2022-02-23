@@ -1,5 +1,4 @@
 import {injectJS} from '@deckdeckgo/editor';
-import {errorStore} from '@deckdeckgo/studio';
 import {Component, Fragment, h, JSX, Listen, State} from '@stencil/core';
 import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
@@ -10,6 +9,7 @@ import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
 import {cloud, firebase} from '../../../utils/core/environment.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {AppIcon} from '../app-icon/app-icon';
+import errorStore from '../../../stores/error.store';
 
 @Component({
   tag: 'app-signin',
@@ -46,7 +46,7 @@ export class AppSignIn {
   private onSignInError = (err?: string) => {
     console.error(err);
 
-    errorStore.default.state.error = 'There was an issue sign in with the internet identity.';
+    errorStore.state.error = 'There was an issue sign in with the internet identity.';
   };
 
   private navigateRedirect() {
@@ -105,12 +105,7 @@ export class AppSignIn {
     const Element = `${tag}`;
 
     this.signIn = (
-      <Element
-        config={this.deckDeckGoConfig}
-        signInSuccess={this.onSignInSuccess}
-        signInError={this.onSignInError}
-        i18n={i18n.state}
-      >
+      <Element config={this.deckDeckGoConfig} signInSuccess={this.onSignInSuccess} signInError={this.onSignInError} i18n={i18n.state}>
         {tag === 'deckgo-ic-signin' ? <ion-spinner color="medium" slot="spinner"></ion-spinner> : undefined}
       </Element>
     );

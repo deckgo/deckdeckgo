@@ -1,5 +1,4 @@
-import {Template, Slide, SlideScope, injectJS} from '@deckdeckgo/editor';
-
+import {injectJS, Slide, SlideScope, Template} from '@deckdeckgo/editor';
 import templatesStore from '../../stores/templates.store';
 
 export class TemplateUtils {

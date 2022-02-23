@@ -1,9 +1,7 @@
+import {SlideAttributes, SlideChartType, SlideTemplate} from '@deckdeckgo/editor';
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
-
 import assetsStore from '../../../../../../../stores/assets.store';
 import i18n from '../../../../../../../stores/i18n.store';
-
-import {SlideAttributes, SlideChartType, SlideTemplate} from '@deckdeckgo/editor';
 
 @Component({
   tag: 'app-templates-charts'

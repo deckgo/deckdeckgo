@@ -1,11 +1,11 @@
 import {CreateTemplate, GetUserTemplates, Template, TemplateData, UpdateTemplate} from '@deckdeckgo/editor';
-import {authStore} from '@deckdeckgo/studio';
 import templatesStore from '../../../stores/templates.store';
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
+import authStore from '../../../stores/auth.store';
 
 export const initTemplates = async () => {
-  if (!authStore.default.state.authUser || !authStore.default.state.loggedIn) {
+  if (!authStore.state.authUser || !authStore.state.loggedIn) {
     return;
   }
 
@@ -20,7 +20,7 @@ export const initTemplates = async () => {
   try {
     const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await cloudProvider<{getUserTemplates: GetUserTemplates}>();
 
-    const templates: Template[] = await getUserTemplates(authStore.default.state.authUser?.uid);
+    const templates: Template[] = await getUserTemplates(authStore.state.authUser?.uid);
 
     if (!templates) {
       return undefined;

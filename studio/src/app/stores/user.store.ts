@@ -1,6 +1,5 @@
-import {createStore} from '@stencil/store';
-
 import {User, UserSocial} from '@deckdeckgo/editor';
+import {createStore} from '@stencil/store';
 
 interface UserStore {
   user: User | undefined;

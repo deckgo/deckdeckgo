@@ -1,6 +1,6 @@
-import {syncStore} from '@deckdeckgo/studio';
 import {Component, Element, h} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
+import syncStore from '../../../stores/sync.store';
 
 @Component({
   tag: 'app-sync-info',
@@ -15,13 +15,13 @@ export class AppSyncInfo {
 
   render() {
     const label: string =
-      syncStore.default.state.sync === 'error'
+      syncStore.state.sync === 'error'
         ? i18n.state.sync.cloud_error
-        : syncStore.default.state.sync === 'in_progress'
+        : syncStore.state.sync === 'in_progress'
         ? i18n.state.sync.cloud_in_progress
-        : syncStore.default.state.sync === 'init'
+        : syncStore.state.sync === 'init'
         ? i18n.state.sync.cloud_init
-        : syncStore.default.state.sync === 'pending'
+        : syncStore.state.sync === 'pending'
         ? i18n.state.sync.cloud_pending
         : i18n.state.sync.cloud_idle;
 

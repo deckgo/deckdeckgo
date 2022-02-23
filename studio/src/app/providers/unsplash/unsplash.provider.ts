@@ -1,10 +1,8 @@
-import {UnsplashPhoto, RegisterUnsplashDownload, UnsplashSearchResponse, GetUnsplashPhotos} from '@deckdeckgo/editor';
-
+import {GetUnsplashPhotos, RegisterUnsplashDownload, UnsplashPhoto, UnsplashSearchResponse} from '@deckdeckgo/editor';
 import {EnvironmentUnsplashConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
-import {unsplashProvider} from '../../utils/core/providers.utils';
 import {unsplash} from '../../utils/core/environment.utils';
+import {unsplashProvider} from '../../utils/core/providers.utils';
 
 export const getUnsplashPhotos = async ({
   searchTerm,

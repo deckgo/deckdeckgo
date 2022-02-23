@@ -1,7 +1,5 @@
-import {createStore} from '@stencil/store';
-
 import {Template} from '@deckdeckgo/editor';
-
+import {createStore} from '@stencil/store';
 import templates from '../../assets/templates.json';
 
 interface Templates {

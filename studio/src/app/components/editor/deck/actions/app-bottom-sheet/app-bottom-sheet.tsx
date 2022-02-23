@@ -1,6 +1,5 @@
-import {Component, h, Element, Host, State, Event, EventEmitter} from '@stencil/core';
-
 import {debounce, unifyEvent} from '@deckdeckgo/utils';
+import {Component, Element, Event, EventEmitter, h, Host, State} from '@stencil/core';
 
 @Component({
   tag: 'app-bottom-sheet',

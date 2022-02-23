@@ -1,12 +1,9 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import {SlideChartType} from '@deckdeckgo/editor';
 import {hexToRgb} from '@deckdeckgo/utils';
-
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
-import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 import {ChartUtils} from '../../../../../../utils/editor/chart.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
   FILL,

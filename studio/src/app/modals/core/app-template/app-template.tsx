@@ -1,10 +1,10 @@
 import {Template, TemplateData} from '@deckdeckgo/editor';
-import {authStore} from '@deckdeckgo/studio';
 import {Component, Element, Fragment, h, Listen, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import i18n from '../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
+import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-template',
@@ -30,7 +30,7 @@ export class AppTemplate {
   async componentWillLoad() {
     if (!this.template || !this.template.data) {
       this.templateData = {
-        owner_id: authStore.default.state.authUser.uid
+        owner_id: authStore.state.authUser.uid
       };
       return;
     }

@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import i18n from '../../../../../../stores/i18n.store';
-
 import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {

@@ -1,8 +1,6 @@
 import {StorageFile} from '@deckdeckgo/editor';
 import {StyloPlugin, StyloPluginCreateParagraphsParams} from '@papyrs/stylo';
-
 import {StorageOfflineProvider} from '../providers/storage/storage.offline.provider';
-
 import {createParagraphImage} from '../utils/editor/plugin.utils';
 
 export const imgStorage: StyloPlugin = {

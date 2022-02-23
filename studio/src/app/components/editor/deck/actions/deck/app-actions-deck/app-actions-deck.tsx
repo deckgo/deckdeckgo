@@ -1,17 +1,12 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
-
+import {selectDeckSlide} from '@deckdeckgo/editor';
+import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
+import {isMobile} from '@deckdeckgo/utils';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
-
-import {isMobile} from '@deckdeckgo/utils';
-import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
-import {selectDeckSlide} from '@deckdeckgo/editor';
-
-import remoteStore from '../../../../../../stores/remote.store';
+import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
+import remoteStore from '../../../../../../stores/remote.store';
 import {MoreAction} from '../../../../../../types/editor/more-action';
-
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({

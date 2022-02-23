@@ -1,18 +1,13 @@
+import {Deck, DeckData, Doc, DocData, Meta, Paragraph, Slide} from '@deckdeckgo/editor';
 import {v4 as uuid} from 'uuid';
-
-import {Deck, Slide, DeckData, Doc, Paragraph, DocData, Meta} from '@deckdeckgo/editor';
-
-import navStore, {NavDirection} from '../../stores/nav.store';
-
-import {ImportData, importEditorData, importEditorSync} from '../editor/import.utils';
-
-import {removeSyncBeforeUnload} from './before-unload.utils';
-
-import {getSlide} from '../../providers/data/slide/slide.provider';
-import {getParagraph} from '../../providers/data/paragraph/paragraph.provider';
-import {deleteDoc} from '../../providers/data/doc/doc.provider';
 import {deleteDeck} from '../../providers/data/deck/deck.provider';
+import {deleteDoc} from '../../providers/data/doc/doc.provider';
+import {getParagraph} from '../../providers/data/paragraph/paragraph.provider';
+import {getSlide} from '../../providers/data/slide/slide.provider';
 import {deleteFile} from '../../providers/storage/storage.provider';
+import navStore, {NavDirection} from '../../stores/nav.store';
+import {ImportData, importEditorData, importEditorSync} from '../editor/import.utils';
+import {removeSyncBeforeUnload} from './before-unload.utils';
 import {firebase} from './environment.utils';
 
 export type DeckOrDoc = {deck: Deck; doc?: never} | {doc: Doc; deck?: never};

@@ -1,9 +1,7 @@
-import {Slide, GetSlide} from '@deckdeckgo/editor';
-
-import {SlideOfflineProvider} from './slide.offline.provider';
-
+import {GetSlide, Slide} from '@deckdeckgo/editor';
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
+import {SlideOfflineProvider} from './slide.offline.provider';
 
 export const getSlide = async (deckId: string, slideId: string): Promise<Slide> => {
   if (cloud()) {

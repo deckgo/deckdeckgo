@@ -1,4 +1,3 @@
-import {errorStore, editorStore} from '@deckdeckgo/studio';
 import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {publishUrl} from '../../../providers/publish/publish.provider';
@@ -17,7 +16,7 @@ export class AppEmbed {
   private embedCodeElement!: HTMLIonTextareaElement;
 
   async componentWillLoad() {
-    const url: string = await publishUrl(editorStore.default.state.deck.data.meta);
+    const url: string = await publishUrl(editorStore.state.deck.data.meta);
     this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 
@@ -57,7 +56,7 @@ export class AppEmbed {
     try {
       await navigator.clipboard.writeText(this.embedCodeElement.value);
     } catch (err) {
-      errorStore.default.state.error = "Well it seems that copy isn't supported by this browser";
+      errorStore.state.error = "Well it seems that copy isn't supported by this browser";
     }
   }
 

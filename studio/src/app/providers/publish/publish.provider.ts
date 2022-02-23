@@ -1,12 +1,13 @@
 import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UserSocial} from '@deckdeckgo/editor';
-import {editorStore, errorStore} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
 import {set} from 'idb-keyval';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import userStore from '../../stores/user.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
+import editorStore from '../../stores/editor.store';
+import authStore from '../../stores/auth.store';
+import errorStore from '../../stores/error.store';
 
 interface PublishInputs {
   name: string;
@@ -25,14 +26,14 @@ export const publish = (inputs: PublishInputs): Promise<void> => {
       }
 
       if (
-        (!editorStore.default.state.deck || !editorStore.default.state.deck.id || !editorStore.default.state.deck.data) &&
-        (!editorStore.default.state.doc || !editorStore.default.state.doc.id || !editorStore.default.state.doc.data)
+        (!editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data) &&
+        (!editorStore.state.doc || !editorStore.state.doc.id || !editorStore.state.doc.data)
       ) {
         reject('No publish data provided.');
         return;
       }
 
-      if (editorStore.default.state.doc !== null) {
+      if (editorStore.state.doc !== null) {
         await publishDoc(inputs);
         return;
       }
@@ -79,7 +80,7 @@ const publishDeck = async (inputs: PublishInputs): Promise<void> => {
 };
 
 const updateDeckMeta = (inputs: PublishInputs): Deck => {
-  const deck: Deck = {...editorStore.default.state.deck};
+  const deck: Deck = {...editorStore.state.deck};
 
   const {name, github} = inputs;
 
@@ -88,7 +89,7 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
   deck.data.meta = updateMeta({inputs, meta: deck.data.meta});
 
   // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept
-  if (authStore.default.state.gitHub) {
+  if (authStore.state.gitHub) {
     if (deck.data.github) {
       deck.data.github.publish = github;
     } else {
@@ -99,15 +100,15 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
   }
 
   // TODO: FIXME
-  if (deck.data.owner_id === undefined && authStore.default.state.loggedIn) {
-    deck.data.owner_id = authStore.default.state.authUser?.uid;
+  if (deck.data.owner_id === undefined && authStore.state.loggedIn) {
+    deck.data.owner_id = authStore.state.authUser?.uid;
   }
 
   return deck;
 };
 
 const updateDocMeta = (inputs: PublishInputs): Doc => {
-  const doc: Doc = {...editorStore.default.state.doc};
+  const doc: Doc = {...editorStore.state.doc};
 
   const {name} = inputs;
   doc.data.name = name;
@@ -198,7 +199,7 @@ export const updatePublishedDocOffline = async (doc: Doc | undefined) => {
   try {
     await set(`/docs/${doc.id}`, doc);
   } catch (err) {
-    errorStore.default.state.error = err;
+    errorStore.state.error = err;
   }
 };
 
@@ -210,6 +211,6 @@ export const updatePublishedDeckOffline = async (deck: Deck | undefined) => {
   try {
     await set(`/decks/${deck.id}`, deck);
   } catch (err) {
-    errorStore.default.state.error = err;
+    errorStore.state.error = err;
   }
 };

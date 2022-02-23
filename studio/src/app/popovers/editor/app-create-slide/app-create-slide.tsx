@@ -1,6 +1,5 @@
 import {Deck, SlideAttributes, SlideScope, SlideTemplate, Template} from '@deckdeckgo/editor';
-import {editorStore, SlotType} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
+import {SlotType} from '@deckdeckgo/studio';
 import type {SegmentChangeEventDetail} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
@@ -37,13 +36,13 @@ export class AppCreateSlide {
   }
 
   private async addSlideQRCode() {
-    await this.addSlide(SlideTemplate.QRCODE, editorStore.default.state.deck);
+    await this.addSlide(SlideTemplate.QRCODE, editorStore.state.deck);
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
   // User template is also only possible if user is logged in
   private async addRestrictedSlide(template: SlideTemplate | Template, scope: SlideScope = SlideScope.DEFAULT, elements?: SlotType[]) {
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       await this.closePopover(null);
       return;

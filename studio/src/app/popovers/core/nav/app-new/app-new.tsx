@@ -1,9 +1,8 @@
-import {ComponentInterface, h, Component, Element, Host, State} from '@stencil/core';
-
-import i18n from '../../../../stores/i18n.store';
+import {Component, ComponentInterface, Element, h, Host, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 import {EnvironmentAppConfig, EnvironmentAppConfigFeature} from '../../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
+import i18n from '../../../../stores/i18n.store';
 
 @Component({
   tag: 'app-new',

@@ -1,8 +1,6 @@
-import colorStore from '../../../stores/color.store';
-
+import {DEFAULT_PALETTE, StyloPalette} from '@papyrs/stylo';
 import {get} from 'idb-keyval';
-
-import {StyloPalette, DEFAULT_PALETTE} from '@papyrs/stylo';
+import colorStore from '../../../stores/color.store';
 
 export class ColorService {
   private static instance: ColorService;

@@ -1,12 +1,9 @@
-import {Component, Element, State, h, Listen, Fragment} from '@stencil/core';
-
-import remoteStore from '../../../stores/remote.store';
-import i18n from '../../../stores/i18n.store';
-
-import {RemoteService} from '../../../services/editor/remote/remote.service';
-import {renderI18n} from '../../../utils/core/i18n.utils';
-
+import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {RemoteService} from '../../../services/editor/remote/remote.service';
+import i18n from '../../../stores/i18n.store';
+import remoteStore from '../../../stores/remote.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-remote-connect',

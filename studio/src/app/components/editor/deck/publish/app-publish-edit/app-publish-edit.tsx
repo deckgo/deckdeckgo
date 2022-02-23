@@ -1,6 +1,5 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {Deck, deckSelector, Doc, Meta} from '@deckdeckgo/editor';
-import {authStore, editorStore, errorStore} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
 import {Constants} from '../../../../../config/constants';
 import {EnvironmentDeckDeckGoConfig} from '../../../../../config/environment-config';
@@ -10,6 +9,9 @@ import i18n from '../../../../../stores/i18n.store';
 import {firebase} from '../../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 import {AppIcon} from '../../../../core/app-icon/app-icon';
+import editorStore from '../../../../../stores/editor.store';
+import errorStore from '../../../../../stores/error.store';
+import authStore from '../../../../../stores/auth.store';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -59,13 +61,13 @@ export class AppPublishEdit {
 
   private destroyListener;
 
-  private mode: 'doc' | 'deck' = editorStore.default.state.doc !== null ? 'doc' : 'deck';
+  private mode: 'doc' | 'deck' = editorStore.state.doc !== null ? 'doc' : 'deck';
 
   componentWillLoad() {
     this.init();
 
     // Firebase only
-    this.destroyListener = editorStore.default.onChange('deck', async (deck: Deck | undefined) => {
+    this.destroyListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
       this.publishing = this.publishing || deck?.data.deploy?.api?.status === 'scheduled';
     });
@@ -81,7 +83,7 @@ export class AppPublishEdit {
 
   private init() {
     if (this.mode === 'doc') {
-      const {data} = editorStore.default.state.doc;
+      const {data} = editorStore.state.doc;
       const {meta} = data;
 
       this.initInputs({name: meta?.title || data.name, description: meta?.description || '', tags: meta?.tags || []});
@@ -91,7 +93,7 @@ export class AppPublishEdit {
       return;
     }
 
-    const {data} = editorStore.default.state.deck;
+    const {data} = editorStore.state.deck;
     const {meta} = data;
 
     this.initInputs({
@@ -100,7 +102,7 @@ export class AppPublishEdit {
       tags: meta?.tags || []
     });
 
-    this.pushToGitHub = editorStore.default.state.deck.data.github ? editorStore.default.state.deck.data.github.publish : true;
+    this.pushToGitHub = editorStore.state.deck.data.github ? editorStore.state.deck.data.github.publish : true;
   }
 
   private initInputs({name, description, tags}: {name: string; description: string; tags: string[]}) {
@@ -147,7 +149,7 @@ export class AppPublishEdit {
         resolve();
       } catch (err) {
         this.publishing = false;
-        errorStore.default.state.error = err;
+        errorStore.state.error = err;
         resolve();
       }
     });
@@ -155,28 +157,28 @@ export class AppPublishEdit {
 
   private onSuccessfulPublish() {
     if (this.mode === 'doc') {
-      const destroyListener = editorStore.default.onChange('doc', async (doc: Doc | undefined) => {
+      const destroyListener = editorStore.onChange('doc', async (doc: Doc | undefined) => {
         if (doc?.data?.deploy?.api?.status === 'successful') {
           destroyListener();
 
-          await this.navigate({meta: editorStore.default.state.doc.data.meta});
+          await this.navigate({meta: editorStore.state.doc.data.meta});
         }
       });
 
       return;
     }
 
-    const currentDeck: Deck = {...editorStore.default.state.deck};
+    const currentDeck: Deck = {...editorStore.state.deck};
 
-    const destroyListener = editorStore.default.onChange('deck', async (deck: Deck | undefined) => {
+    const destroyListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       if (deck?.data?.deploy?.api?.status === 'successful') {
         destroyListener();
 
         // Even if we fixed the delay to publish to Cloudflare CDN and Firebase / AWS deployment (#195), sometimes if too quick, the presentation will not be correctly published
         // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
         await this.navigate({
-          delay: currentDeck.data.api_id !== editorStore.default.state.deck.data.api_id,
-          meta: editorStore.default.state.deck.data.meta
+          delay: currentDeck.data.api_id !== editorStore.state.deck.data.api_id,
+          meta: editorStore.state.deck.data.meta
         });
       }
     });
@@ -433,7 +435,7 @@ export class AppPublishEdit {
   }
 
   private renderFailure() {
-    if (editorStore.default.state.deck?.data?.deploy?.api?.status !== 'failure') {
+    if (editorStore.state.deck?.data?.deploy?.api?.status !== 'failure') {
       return undefined;
     }
 
@@ -522,7 +524,7 @@ export class AppPublishEdit {
   }
 
   private renderGitHub(disable: boolean) {
-    if (!authStore.default.state.gitHub) {
+    if (!authStore.state.gitHub) {
       return undefined;
     }
 
@@ -548,7 +550,7 @@ export class AppPublishEdit {
   }
 
   private renderGitHubText() {
-    if (!editorStore.default.state.deck || !editorStore.default.state.deck.data || !editorStore.default.state.deck.data.github) {
+    if (!editorStore.state.deck || !editorStore.state.deck.data || !editorStore.state.deck.data.github) {
       return <p class="meta-text">{i18n.state.publish_edit.source_push}</p>;
     }
 

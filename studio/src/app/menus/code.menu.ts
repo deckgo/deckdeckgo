@@ -1,9 +1,6 @@
 import {popoverController} from '@ionic/core';
-
 import {StyloMenu} from '@papyrs/stylo';
-
 import {SelectedTarget} from '../types/editor/selected-target';
-
 import {SelectedElementUtils} from '../utils/editor/selected-element.utils';
 
 export const codeMenu: StyloMenu = {

@@ -1,7 +1,5 @@
-import {Component, Event, EventEmitter, h} from '@stencil/core';
-
 import {Template} from '@deckdeckgo/editor';
-
+import {Component, Event, EventEmitter, h} from '@stencil/core';
 import templatesStore from '../../../../../../stores/templates.store';
 
 @Component({

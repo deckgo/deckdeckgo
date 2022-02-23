@@ -1,11 +1,12 @@
 import {Template} from '@deckdeckgo/editor';
-import {authStore, errorStore} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, Fragment, h} from '@stencil/core';
 import {initTemplates} from '../../../../../../providers/data/template/template.provider';
 import i18n from '../../../../../../stores/i18n.store';
 import templatesStore from '../../../../../../stores/templates.store';
 import {renderI18n} from '../../../../../../utils/core/i18n.utils';
 import {signIn} from '../../../../../../utils/core/signin.utils';
+import authStore from '../../../../../../stores/auth.store';
+import errorStore from '../../../../../../stores/error.store';
 
 @Component({
   tag: 'app-templates-user',
@@ -26,7 +27,7 @@ export class AppTemplatesUser {
     try {
       await initTemplates();
     } catch (err) {
-      errorStore.default.state.error = 'Templates can not be fetched.';
+      errorStore.state.error = 'Templates can not be fetched.';
     }
   }
 
@@ -37,7 +38,7 @@ export class AppTemplatesUser {
   }
 
   render() {
-    if (!authStore.default.state.loggedIn) {
+    if (!authStore.state.loggedIn) {
       return this.renderNotLoggedIn();
     }
 

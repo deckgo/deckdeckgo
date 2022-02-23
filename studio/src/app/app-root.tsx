@@ -1,5 +1,4 @@
-import {authStore, errorStore, initSyncState} from '@deckdeckgo/studio';
-import {initEnv} from '@deckdeckgo/studio';
+import {initEnv, initSyncState} from '@deckdeckgo/studio';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
 import {initAuthProvider} from './providers/auth/auth.provider';
@@ -9,6 +8,8 @@ import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
 import navStore, {NavDirection, NavParams} from './stores/nav.store';
+import errorStore from './stores/error.store';
+import authStore from './stores/auth.store';
 
 @Component({
   tag: 'app-root'
@@ -33,7 +34,7 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.default.onChange('authUser', async () => await initSyncState());
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await initSyncState());
 
     const promises: Promise<void>[] = [
       initAuthProvider(),
@@ -50,7 +51,7 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
-    this.destroyErrorListener = errorStore.default.onChange('error', (error: string | undefined) => {
+    this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
       if (error && error !== undefined) {
         this.toastError(error);
       }
@@ -109,7 +110,7 @@ export class AppRoot {
     });
 
     toast.onDidDismiss().then(() => {
-      errorStore.default.state.error = undefined;
+      errorStore.state.error = undefined;
     });
 
     await toast.present();

@@ -1,13 +1,9 @@
-import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment, Host} from '@stencil/core';
-
 import {isIPad, isMobile} from '@deckdeckgo/utils';
-
-import remoteStore from '../../../stores/remote.store';
-import i18n from '../../../stores/i18n.store';
-
-import {MoreAction} from '../../../types/editor/more-action';
-
+import {Component, Element, Event, EventEmitter, Fragment, h, Host, Prop, State} from '@stencil/core';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
+import i18n from '../../../stores/i18n.store';
+import remoteStore from '../../../stores/remote.store';
+import {MoreAction} from '../../../types/editor/more-action';
 
 @Component({
   tag: 'app-present',

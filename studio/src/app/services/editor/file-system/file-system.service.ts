@@ -1,6 +1,4 @@
 import {Deck, Doc, FileImportData, Paragraph, Slide, UserAsset} from '@deckdeckgo/editor';
-import {editorStore, offlineStore} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
 import {get, getMany} from 'idb-keyval';
 import JSZip from 'jszip';
 import {v4 as uuid} from 'uuid';
@@ -14,6 +12,9 @@ import {
   getSlidesOnlineImages
 } from '../../../utils/editor/assets.utils';
 import {ImportAsset, ImportData, importEditorAssets, importEditorData, importEditorSync} from '../../../utils/editor/import.utils';
+import editorStore from '../../../stores/editor.store';
+import offlineStore from '../../../stores/offline.store';
+import authStore from '../../../stores/auth.store';
 
 export class FileSystemService {
   private static instance: FileSystemService;
@@ -51,16 +52,16 @@ export class FileSystemService {
     const doc: Doc | undefined = await this.getDoc();
     const paragraphs: Paragraph[] | undefined = await this.getParagraphs();
 
-    const localSlidesImages: UserAsset[] = await getSlidesLocalImages({deck: editorStore.default.state.deck});
-    const onlineSlidesImages: UserAsset[] = await getSlidesOnlineImages({deck: editorStore.default.state.deck});
+    const localSlidesImages: UserAsset[] = await getSlidesLocalImages({deck: editorStore.state.deck});
+    const onlineSlidesImages: UserAsset[] = await getSlidesOnlineImages({deck: editorStore.state.deck});
 
-    const localSlidesCharts: UserAsset[] = await getSlidesLocalCharts({deck: editorStore.default.state.deck});
-    const onlineSlidesCharts: UserAsset[] = await getSlidesOnlineCharts({deck: editorStore.default.state.deck});
+    const localSlidesCharts: UserAsset[] = await getSlidesLocalCharts({deck: editorStore.state.deck});
+    const onlineSlidesCharts: UserAsset[] = await getSlidesOnlineCharts({deck: editorStore.state.deck});
 
     const deckBackground: UserAsset | undefined = await getDeckBackgroundImage();
 
-    const localParagraphsImages: UserAsset[] = await getParagraphsLocalImages({doc: editorStore.default.state.doc});
-    const onlineParagraphsImages: UserAsset[] = await getParagraphsOnlineImages({doc: editorStore.default.state.doc});
+    const localParagraphsImages: UserAsset[] = await getParagraphsLocalImages({doc: editorStore.state.doc});
+    const onlineParagraphsImages: UserAsset[] = await getParagraphsOnlineImages({doc: editorStore.state.doc});
 
     const blob: Blob = await this.zip({
       data: {
@@ -82,25 +83,25 @@ export class FileSystemService {
     });
 
     await this.save({
-      filename: editorStore.default.state.deck?.data?.name || editorStore.default.state.doc?.data?.name,
+      filename: editorStore.state.deck?.data?.name || editorStore.state.doc?.data?.name,
       blob
     });
   }
 
   private isDeckEdited(): boolean {
-    return !editorStore.default.state.deck || !editorStore.default.state.deck.id || !editorStore.default.state.deck.data;
+    return !editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data;
   }
 
   private isDocEdited(): boolean {
-    return !editorStore.default.state.doc || !editorStore.default.state.doc.id || !editorStore.default.state.doc.data;
+    return !editorStore.state.doc || !editorStore.state.doc.id || !editorStore.state.doc.data;
   }
 
   private async getDeck(): Promise<Deck | undefined> {
-    if (!editorStore.default.state.deck) {
+    if (!editorStore.state.deck) {
       return undefined;
     }
 
-    const {id: deckId}: Deck = editorStore.default.state.deck;
+    const {id: deckId}: Deck = editorStore.state.deck;
 
     const deck: Deck | undefined = await get(`/decks/${deckId}`);
 
@@ -112,11 +113,11 @@ export class FileSystemService {
   }
 
   private async getSlides(): Promise<Slide[] | undefined> {
-    if (!editorStore.default.state.deck) {
+    if (!editorStore.state.deck) {
       return undefined;
     }
 
-    const deck: Deck = editorStore.default.state.deck;
+    const deck: Deck = editorStore.state.deck;
 
     if (!deck.data.slides || deck.data.slides.length <= 0) {
       return [];
@@ -131,11 +132,11 @@ export class FileSystemService {
   }
 
   private async getDoc(): Promise<Doc | undefined> {
-    if (!editorStore.default.state.doc) {
+    if (!editorStore.state.doc) {
       return undefined;
     }
 
-    const {id: docId}: Doc = editorStore.default.state.doc;
+    const {id: docId}: Doc = editorStore.state.doc;
 
     const doc: Doc | undefined = await get(`/docs/${docId}`);
 
@@ -147,11 +148,11 @@ export class FileSystemService {
   }
 
   private async getParagraphs(): Promise<Paragraph[] | undefined> {
-    if (!editorStore.default.state.doc) {
+    if (!editorStore.state.doc) {
       return undefined;
     }
 
-    const doc: Doc = editorStore.default.state.doc;
+    const doc: Doc = editorStore.state.doc;
 
     if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
       return [];
@@ -273,7 +274,7 @@ export class FileSystemService {
     this.listZipAssets({content, zippedAssets, subPath: '/assets/local/data/'});
 
     // We import the cloud assets only if user is online otherwise it will be possible to display those
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       this.listZipAssets({content, zippedAssets, subPath: '/assets/online/images/'});
       this.listZipAssets({content, zippedAssets, subPath: '/assets/online/data/'});
     }
@@ -319,7 +320,7 @@ export class FileSystemService {
     let data: string = await content.file('data.json').async('text');
 
     // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       const assetsContent: string | null = await content.file('assets.json')?.async('text');
       const assets: UserAsset[] = assetsContent ? JSON.parse(assetsContent) : [];
 
@@ -364,7 +365,7 @@ export class FileSystemService {
       ? ({
           data: {
             ...deck.data,
-            owner_id: authStore.default.state.authUser?.uid,
+            owner_id: authStore.state.authUser?.uid,
             slides: newSlides?.map(({id}: Slide) => id),
             updated_at: now,
             created_at: now
@@ -389,7 +390,7 @@ export class FileSystemService {
       ? ({
           data: {
             ...doc.data,
-            owner_id: authStore.default.state.authUser?.uid,
+            owner_id: authStore.state.authUser?.uid,
             paragraphs: newParagraphs?.map(({id}: Paragraph) => id),
             updated_at: now,
             created_at: now

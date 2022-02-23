@@ -1,7 +1,5 @@
-import {FunctionalComponent, Fragment, h} from '@stencil/core';
-
 import {SlideTemplate} from '@deckdeckgo/editor';
-
+import {Fragment, FunctionalComponent, h} from '@stencil/core';
 import {InitTemplate} from '../../../../../../../utils/editor/create-slides.utils';
 
 interface AppTemplatesFixedProps {

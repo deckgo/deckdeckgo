@@ -1,5 +1,4 @@
 import {Component, ComponentInterface, h, Host, Listen, Prop, State} from '@stencil/core';
-
 import {TenorProvider} from '../../../providers/tenor/tenor.provider';
 
 @Component({

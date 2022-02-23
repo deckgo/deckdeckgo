@@ -1,6 +1,5 @@
 import {StorageFile, User} from '@deckdeckgo/editor';
-import {clearEdit, errorStore} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
+import {clearEdit} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
@@ -80,7 +79,7 @@ export class AppProfile {
   }
 
   private async initUser() {
-    if (userStore.state.user && authStore.default.state.loggedIn) {
+    if (userStore.state.user && authStore.state.loggedIn) {
       await this.initUserData();
       return;
     }
@@ -256,7 +255,7 @@ export class AppProfile {
 
         this.saving = false;
       } catch (err) {
-        errorStore.default.state.error = err;
+        errorStore.state.error = err;
         this.saving = false;
       }
 
@@ -379,7 +378,7 @@ export class AppProfile {
 
         resolve();
       } catch (err) {
-        errorStore.default.state.error =
+        errorStore.state.error =
           "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
@@ -422,7 +421,7 @@ export class AppProfile {
   }
 
   private renderGuardedContent() {
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       return this.renderNotLoggedInContent();
     }
 
@@ -479,7 +478,7 @@ export class AppProfile {
           maxlength={64}
           required={this.firebase}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
           onIonChange={() => this.validateNameInput()}
         ></ion-input>
@@ -504,7 +503,7 @@ export class AppProfile {
           maxlength={254}
           required={this.firebase}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
           onIonChange={() => this.validateEmailInput()}
         ></ion-input>
@@ -538,7 +537,7 @@ export class AppProfile {
           minlength={3}
           maxlength={32}
           required={this.firebase}
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
           onIonChange={() => this.validateUsernameInput()}
@@ -552,7 +551,7 @@ export class AppProfile {
       <ion-button
         type="submit"
         class="ion-margin-top"
-        disabled={!this.valid || this.saving || !this.user || !authStore.default.state.loggedIn}
+        disabled={!this.valid || this.saving || !this.user || !authStore.state.loggedIn}
         color="primary"
         shape="round"
       >
@@ -570,7 +569,7 @@ export class AppProfile {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !authStore.default.state.authUser || !authStore.default.state.loggedIn}
+        disabled={this.saving || !authStore.state.authUser || !authStore.state.loggedIn}
       >
         <ion-label>{i18n.state.settings.delete_user}</ion-label>
       </ion-button>
@@ -590,7 +589,7 @@ export class AppProfile {
             type="file"
             accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp"
             onChange={() => this.selectProfilePicture()}
-            disabled={this.saving || !authStore.default.state.loggedIn}
+            disabled={this.saving || !authStore.state.loggedIn}
           />
         </div>
         <p>
@@ -611,7 +610,7 @@ export class AppProfile {
             rows={3}
             value={this.user && this.user.data ? this.user.data.bio : undefined}
             debounce={500}
-            disabled={this.saving || !authStore.default.state.loggedIn}
+            disabled={this.saving || !authStore.state.loggedIn}
             maxlength={192}
             placeholder={i18n.state.settings.bio}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSummaryInput(e)}
@@ -650,7 +649,7 @@ export class AppProfile {
           debounce={500}
           maxlength={128}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}
         ></ion-input>
       </ion-item>
@@ -673,7 +672,7 @@ export class AppProfile {
           debounce={500}
           maxlength={128}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}
         ></ion-input>
       </ion-item>
@@ -696,7 +695,7 @@ export class AppProfile {
           debounce={500}
           maxlength={128}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}
         ></ion-input>
       </ion-item>
@@ -719,7 +718,7 @@ export class AppProfile {
           debounce={500}
           maxlength={128}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}
         ></ion-input>
       </ion-item>
@@ -742,7 +741,7 @@ export class AppProfile {
           debounce={500}
           maxlength={128}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}
         ></ion-input>
       </ion-item>
@@ -768,7 +767,7 @@ export class AppProfile {
           debounce={500}
           maxlength={128}
           input-mode="text"
-          disabled={this.saving || !authStore.default.state.loggedIn}
+          disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}
         ></ion-input>
       </ion-item>,
@@ -807,7 +806,7 @@ export class AppProfile {
             !this.user.data ||
             !this.user.data.social ||
             !this.user.data.social.custom ||
-            !authStore.default.state.loggedIn
+            !authStore.state.loggedIn
           }
         />
       </div>

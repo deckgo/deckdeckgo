@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {authStore, busyStore, ChartEvents, editorStore, errorStore, getEdit, ImageEvents, SlotType} from '@deckdeckgo/studio';
+import {ChartEvents, getEdit, ImageEvents, SlotType} from '@deckdeckgo/studio';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -25,6 +25,10 @@ import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
+import editorStore from '../../stores/editor.store';
+import authStore from '../../stores/auth.store';
+import errorStore from '../../stores/error.store';
+import busyStore from '../../stores/busy.store';
 
 @Component({
   tag: 'app-deck-editor',
@@ -201,7 +205,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.remoteEvents.destroy();
 
-    editorStore.default.reset();
+    editorStore.reset();
     undoRedoStore.reset();
 
     await this.remoteEvents.destroy();
@@ -222,7 +226,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     this.slides = [];
 
-    editorStore.default.reset();
+    editorStore.reset();
     undoRedoStore.reset();
   }
 
@@ -300,27 +304,27 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async initDeckStyle() {
-    if (editorStore.default.state.deck?.data?.attributes?.style) {
-      this.style = convertStyle(editorStore.default.state.deck.data.attributes.style);
+    if (editorStore.state.deck?.data?.attributes?.style) {
+      this.style = convertStyle(editorStore.state.deck.data.attributes.style);
     } else {
       this.style = undefined;
     }
 
-    if (editorStore.default.state.deck?.data?.attributes?.animation) {
-      this.animation = editorStore.default.state.deck.data.attributes.animation;
+    if (editorStore.state.deck?.data?.attributes?.animation) {
+      this.animation = editorStore.state.deck.data.attributes.animation;
     }
 
-    if (editorStore.default.state.deck?.data?.attributes?.direction) {
-      this.direction = editorStore.default.state.deck.data.attributes.direction;
+    if (editorStore.state.deck?.data?.attributes?.direction) {
+      this.direction = editorStore.state.deck.data.attributes.direction;
     }
 
-    if (editorStore.default.state.deck?.data?.attributes?.directionMobile) {
-      this.directionMobile = editorStore.default.state.deck.data.attributes.directionMobile;
+    if (editorStore.state.deck?.data?.attributes?.directionMobile) {
+      this.directionMobile = editorStore.state.deck.data.attributes.directionMobile;
     }
 
-    this.background = await ParseDeckSlotsUtils.convert(editorStore.default.state.deck.data.background, 'background');
-    this.header = await ParseDeckSlotsUtils.convert(editorStore.default.state.deck.data.header, 'header');
-    this.footer = await ParseDeckSlotsUtils.convert(editorStore.default.state.deck.data.footer, 'footer');
+    this.background = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.background, 'background');
+    this.header = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.header, 'header');
+    this.footer = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.footer, 'footer');
 
     const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
     await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
@@ -411,11 +415,11 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     if (!cloud()) {
-      errorStore.default.state.error = 'No cloud provider to publish material.';
+      errorStore.state.error = 'No cloud provider to publish material.';
       return;
     }
 
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       await this.signIn();
       return;
     }
@@ -756,18 +760,16 @@ export class AppDeckEditor implements ComponentInterface {
 
   @Listen('deckDidLoad', {target: 'document'})
   onDeckDidLoad() {
-    busyStore.default.state.deckReady = true;
+    busyStore.state.deckReady = true;
   }
 
   render() {
     const autoSlide: boolean =
-      editorStore.default.state.deck?.data?.attributes?.autoSlide !== undefined
-        ? editorStore.default.state.deck.data.attributes.autoSlide
-        : false;
+      editorStore.state.deck?.data?.attributes?.autoSlide !== undefined ? editorStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <ion-content
-        class={`ion-no-padding ${busyStore.default.state.deckReady ? 'ready' : ''}`}
+        class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`}
         onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}
       >
         <div class="editor">
@@ -777,7 +779,7 @@ export class AppDeckEditor implements ComponentInterface {
             <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
               <main
                 ref={(el) => (this.mainRef = el as HTMLElement)}
-                class={busyStore.default.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
+                class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
                 style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}
               >
                 {this.renderLoading()}
@@ -845,7 +847,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private renderLoading() {
-    if (this.slidesFetched && busyStore.default.state.deckReady) {
+    if (this.slidesFetched && busyStore.state.deckReady) {
       return undefined;
     } else {
       return (

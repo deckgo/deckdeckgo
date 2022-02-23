@@ -1,9 +1,9 @@
 import {Deck} from '@deckdeckgo/editor';
-import {editorStore} from '@deckdeckgo/studio';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 import {Build} from '@stencil/core';
 import {get, set} from 'idb-keyval';
 import remoteStore from '../../../stores/remote.store';
+import editorStore from '../../../stores/editor.store';
 
 export class RemoteService {
   private static instance: RemoteService;
@@ -38,7 +38,7 @@ export class RemoteService {
   }
 
   async getRoom(): Promise<string | null> {
-    const deck: Deck | null = editorStore.default.state.deck;
+    const deck: Deck | null = editorStore.state.deck;
 
     if (deck?.data?.name !== undefined && deck?.data?.name !== '') {
       return deck.data.name.replace(/\.|#/g, '_');

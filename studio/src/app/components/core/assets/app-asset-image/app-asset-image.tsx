@@ -1,6 +1,5 @@
-import {h, Component, Host, ComponentInterface, Prop, Listen, State, Fragment} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {Component, ComponentInterface, Fragment, h, Host, Listen, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'app-asset-image',

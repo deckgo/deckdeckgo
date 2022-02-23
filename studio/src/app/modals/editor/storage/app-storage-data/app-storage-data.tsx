@@ -1,12 +1,8 @@
-import {Component, Element, Listen, State, h} from '@stencil/core';
-
 import {StorageFile} from '@deckdeckgo/editor';
-
-import i18n from '../../../../stores/i18n.store';
-
-import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
-
+import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
+import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
+import i18n from '../../../../stores/i18n.store';
 
 @Component({
   tag: 'app-storage-data',

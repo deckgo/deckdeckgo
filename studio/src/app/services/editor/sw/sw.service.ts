@@ -1,10 +1,11 @@
 import {deckSelector} from '@deckdeckgo/editor';
-import {offlineStore, SlotType} from '@deckdeckgo/studio';
+import {SlotType} from '@deckdeckgo/studio';
 import {EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import assetsStore from '../../../stores/assets.store';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {FontsService} from '../fonts/fonts.service';
+import offlineStore from '../../../stores/offline.store';
 
 export class SwService {
   private static instance: SwService;
@@ -23,7 +24,7 @@ export class SwService {
   }
 
   async cacheServiceWorker() {
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       return;
     }
 

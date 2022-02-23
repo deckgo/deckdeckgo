@@ -1,12 +1,8 @@
-import {Component, ComponentInterface, Element, Fragment, h, Listen, Prop} from '@stencil/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
-
 import '@deckdeckgo/monaco-editor';
-
 import type {MonacoEditorOptions} from '@deckdeckgo/monaco-editor';
+import {Component, ComponentInterface, Element, Fragment, h, Listen, Prop} from '@stencil/core';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
 
 // @ts-ignore
 self.MonacoEnvironment = {

@@ -1,6 +1,5 @@
-import {modalController, OverlayEventDetail} from '@ionic/core';
-
 import type {MonacoEditorOptions} from '@deckdeckgo/monaco-editor';
+import {modalController, OverlayEventDetail} from '@ionic/core';
 
 export class CodeEvents {
   init() {

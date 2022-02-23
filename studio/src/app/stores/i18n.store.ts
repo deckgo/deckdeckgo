@@ -1,7 +1,5 @@
 import {createStore} from '@stencil/store';
-
 import {set} from 'idb-keyval';
-
 import en from '../../assets/i18n/en.json';
 
 const {state, onChange} = createStore<I18n>({

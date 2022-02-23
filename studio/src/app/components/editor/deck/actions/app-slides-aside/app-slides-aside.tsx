@@ -1,10 +1,8 @@
-import {Component, Listen, h, Host, State, Prop, Event, EventEmitter, Element, Watch} from '@stencil/core';
-
-import type {ItemReorderEventDetail} from '@ionic/core';
-
-import {debounce} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {deckSelector, slideTo, selectDeckSlide, elementIndex} from '@deckdeckgo/editor';
+import {deckSelector, elementIndex, selectDeckSlide, slideTo} from '@deckdeckgo/editor';
+import {debounce} from '@deckdeckgo/utils';
+import type {ItemReorderEventDetail} from '@ionic/core';
+import {Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, Watch} from '@stencil/core';
 
 @Component({
   tag: 'app-slides-aside',

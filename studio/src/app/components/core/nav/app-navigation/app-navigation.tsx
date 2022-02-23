@@ -1,9 +1,6 @@
-import {Component, Prop, h, Host, State} from '@stencil/core';
-
 import {isIOS} from '@deckdeckgo/utils';
-
+import {Component, h, Host, Prop, State} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
-
 import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({

@@ -1,7 +1,5 @@
-import {createStore} from '@stencil/store';
-
 import {Token} from '@deckdeckgo/editor';
-
+import {createStore} from '@stencil/store';
 import {mergePlatformToken} from '../providers/data/platform/platform.provider';
 
 interface TokenStore {

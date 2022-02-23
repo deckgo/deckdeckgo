@@ -17,7 +17,7 @@ import {
   SlideSplitType,
   SlideTemplate
 } from '@deckdeckgo/editor';
-import {authStore, busyStore, editorStore, errorStore, ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
+import {ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
@@ -103,7 +103,7 @@ export class DeckDataEvents {
   };
 
   private onDeckDidLoad = async () => {
-    const url: string = await publishUrl(editorStore.default.state.deck?.data?.meta);
+    const url: string = await publishUrl(editorStore.state.deck?.data?.meta);
     updateSlidesQRCode(url);
   };
 
@@ -204,22 +204,22 @@ export class DeckDataEvents {
           return;
         }
 
-        busyStore.default.state.busy = true;
+        busyStore.state.busy = true;
 
-        if (!editorStore.default.state.deck) {
+        if (!editorStore.state.deck) {
           await this.createDeck();
         }
 
-        const persistedSlide: Slide = await this.postSlide(editorStore.default.state.deck, slide);
+        const persistedSlide: Slide = await this.postSlide(editorStore.state.deck, slide);
 
-        await this.updateDeckSlideList(editorStore.default.state.deck, persistedSlide, slide);
+        await this.updateDeckSlideList(editorStore.state.deck, persistedSlide, slide);
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -257,11 +257,11 @@ export class DeckDataEvents {
       try {
         let deck: DeckData = {
           name: `Presentation ${now()}`,
-          owner_id: authStore.default.state.authUser?.uid
+          owner_id: authStore.state.authUser?.uid
         };
 
         const persistedDeck: Deck = await this.deckOfflineProvider.create(deck);
-        editorStore.default.state.deck = {...persistedDeck};
+        editorStore.state.deck = {...persistedDeck};
 
         resolve(persistedDeck);
       } catch (err) {
@@ -291,7 +291,7 @@ export class DeckDataEvents {
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);
-        editorStore.default.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
@@ -308,9 +308,9 @@ export class DeckDataEvents {
           return;
         }
 
-        busyStore.default.state.busy = true;
+        busyStore.state.busy = true;
 
-        const currentDeck: Deck | null = editorStore.default.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -337,14 +337,14 @@ export class DeckDataEvents {
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
 
-        editorStore.default.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -358,9 +358,9 @@ export class DeckDataEvents {
           return;
         }
 
-        busyStore.default.state.busy = true;
+        busyStore.state.busy = true;
 
-        const currentDeck: Deck | null = editorStore.default.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -376,14 +376,14 @@ export class DeckDataEvents {
         currentDeck.data.name = title;
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-        editorStore.default.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -399,9 +399,9 @@ export class DeckDataEvents {
         return;
       }
 
-      busyStore.default.state.busy = true;
+      busyStore.state.busy = true;
 
-      const currentDeck: Deck | null = editorStore.default.state.deck;
+      const currentDeck: Deck | null = editorStore.state.deck;
 
       if (!currentDeck || !currentDeck.data) {
         return;
@@ -414,12 +414,12 @@ export class DeckDataEvents {
       currentDeck.data.attributes.autoSlide = action.autoSlide;
 
       const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-      editorStore.default.state.deck = {...updatedDeck};
+      editorStore.state.deck = {...updatedDeck};
 
-      busyStore.default.state.busy = false;
+      busyStore.state.busy = false;
     } catch (err) {
-      errorStore.default.state.error = err;
-      busyStore.default.state.busy = false;
+      errorStore.state.error = err;
+      busyStore.state.busy = false;
     }
   }
 
@@ -432,7 +432,7 @@ export class DeckDataEvents {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.default.state.error = 'Slide is not defined';
+          errorStore.state.error = 'Slide is not defined';
           resolve();
           return;
         }
@@ -458,16 +458,16 @@ export class DeckDataEvents {
           slideUpdate.data.attributes = attributes;
         }
 
-        if (editorStore.default.state.deck) {
-          await this.slideOfflineProvider.update(editorStore.default.state.deck.id, slideUpdate);
+        if (editorStore.state.deck) {
+          await this.slideOfflineProvider.update(editorStore.state.deck.id, slideUpdate);
         }
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -482,14 +482,14 @@ export class DeckDataEvents {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.default.state.error = 'Slide is not defined';
+          errorStore.state.error = 'Slide is not defined';
           resolve();
           return;
         }
 
         const slideId: string = slide.getAttribute('slide_id');
 
-        const currentDeck: Deck | null = editorStore.default.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
           const slide: Slide = await this.slideOfflineProvider.get(currentDeck.id, slideId);
@@ -502,7 +502,7 @@ export class DeckDataEvents {
               currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
 
               const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-              editorStore.default.state.deck = {...updatedDeck};
+              editorStore.state.deck = {...updatedDeck};
             }
 
             // 2. Delete the slide
@@ -510,12 +510,12 @@ export class DeckDataEvents {
           }
         }
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -867,13 +867,13 @@ export class DeckDataEvents {
           return;
         }
 
-        const currentDeck: Deck | null = editorStore.default.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
           currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
           const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-          editorStore.default.state.deck = {...updatedDeck};
+          editorStore.state.deck = {...updatedDeck};
         }
 
         resolve();
@@ -912,7 +912,7 @@ export class DeckDataEvents {
 
   private async contentEditable(slide: HTMLElement, editable: boolean = true) {
     if (!slide || slide.childElementCount <= 0) {
-      busyStore.default.state.slideReady = true;
+      busyStore.state.slideReady = true;
       return;
     }
 
@@ -940,6 +940,6 @@ export class DeckDataEvents {
       }
     });
 
-    busyStore.default.state.slideReady = true;
+    busyStore.state.slideReady = true;
   }
 }

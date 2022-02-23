@@ -1,5 +1,4 @@
-import {Doc, DocEntries, DeleteDoc, SnapshotDoc} from '@deckdeckgo/editor';
-
+import {DeleteDoc, Doc, DocEntries, SnapshotDoc} from '@deckdeckgo/editor';
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 

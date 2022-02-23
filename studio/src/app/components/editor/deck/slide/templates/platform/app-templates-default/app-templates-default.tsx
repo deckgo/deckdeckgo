@@ -1,5 +1,4 @@
 import {SlideAttributes, SlideSplitType, SlideTemplate, Template} from '@deckdeckgo/editor';
-import {offlineStore} from '@deckdeckgo/studio';
 import {Component, Element, Event, EventEmitter, Fragment, h} from '@stencil/core';
 import {EnvironmentDeckDeckGoConfig} from '../../../../../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../../../../../services/environment/environment-config.service';
@@ -208,7 +207,7 @@ export class AppTemplatesDefault {
   }
 
   private renderGif() {
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       // For the Gif template, we need to select a Gif in Tenor, which is not accessible offline
       return undefined;
     }
@@ -232,7 +231,7 @@ export class AppTemplatesDefault {
   }
 
   private renderYoutube() {
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       // The youtube slide can't be use offline as we cannot browse youtube
       return undefined;
     }
@@ -250,7 +249,7 @@ export class AppTemplatesDefault {
   }
 
   private renderPlayground() {
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       // The youtube slide can't be use offline as we cannot browse youtube
       return undefined;
     }
@@ -266,7 +265,7 @@ export class AppTemplatesDefault {
   }
 
   private renderAuthor() {
-    if (!offlineStore.default.state.online) {
+    if (!offlineStore.state.online) {
       // The author slide need the user data to be added which we don't have offline
       return undefined;
     }

@@ -1,4 +1,3 @@
-import {authStore} from '@deckdeckgo/studio';
 import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../../../../stores/nav.store';
@@ -90,7 +89,7 @@ export class AppDeckHeaderFooter {
   }
 
   render() {
-    if (!authStore.default.state.loggedIn) {
+    if (!authStore.state.loggedIn) {
       return this.renderNotLoggedIn();
     }
 

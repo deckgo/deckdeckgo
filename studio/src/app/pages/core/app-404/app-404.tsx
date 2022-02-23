@@ -1,8 +1,6 @@
-import {Component, h, Fragment} from '@stencil/core';
-
-import navStore, {NavDirection} from '../../../stores/nav.store';
+import {Component, Fragment, h} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
-
+import navStore, {NavDirection} from '../../../stores/nav.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({

@@ -1,16 +1,12 @@
-import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import type {RangeChangeEventDetail} from '@ionic/core';
-
-import settingsStore from '../../../../../../stores/settings.store';
+import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
-import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
-import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-
+import settingsStore from '../../../../../../stores/settings.store';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 import {SelectedTarget} from '../../../../../../types/editor/selected-target';
+import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-box-shadow'

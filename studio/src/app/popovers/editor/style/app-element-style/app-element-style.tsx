@@ -1,13 +1,10 @@
-import {Component, Element, Event, EventEmitter, Host, h, Prop, State} from '@stencil/core';
-
-import settingsStore from '../../../../stores/settings.store';
+import {Component, Element, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
+import {ImageHelper} from '../../../../helpers/editor/image.helper';
 import i18n from '../../../../stores/i18n.store';
-
-import {TargetElement} from '../../../../types/editor/target-element';
+import settingsStore from '../../../../stores/settings.store';
 import {ImageAction} from '../../../../types/editor/image-action';
 import {SelectedTarget} from '../../../../types/editor/selected-target';
-
-import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import {TargetElement} from '../../../../types/editor/target-element';
 
 @Component({
   tag: 'app-element-style',

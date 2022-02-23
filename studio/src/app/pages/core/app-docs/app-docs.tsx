@@ -1,5 +1,5 @@
 import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
-import {authStore, ChartEvents, errorStore, getEdit, ImageEvents, ParseParagraphsUtils, syncStore} from '@deckdeckgo/studio';
+import {ChartEvents, getEdit, ImageEvents, ParseParagraphsUtils} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -9,6 +9,9 @@ import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider
 import i18n from '../../../stores/i18n.store';
 import {Editor} from '../../../types/editor/editor';
 import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
+import authStore from '../../../stores/auth.store';
+import errorStore from '../../../stores/error.store';
+import syncStore from '../../../stores/sync.store';
 
 interface DocAndParagraphs {
   doc: Doc;
@@ -44,7 +47,7 @@ export class AppDocs implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    this.destroyListener = authStore.default.onChange('authUser', async (_authUser: AuthUser | null) => {
+    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initDashboard();
     });
 
@@ -62,7 +65,7 @@ export class AppDocs implements ComponentInterface {
   }
 
   private async initDashboard() {
-    if (!authStore.default.state.loggedIn) {
+    if (!authStore.state.loggedIn) {
       this.debounceLoading();
       return;
     }
@@ -70,12 +73,12 @@ export class AppDocs implements ComponentInterface {
     this.destroyListener();
 
     try {
-      const userDocs: Doc[] = await docs(authStore.default.state.authUser.uid);
+      const userDocs: Doc[] = await docs(authStore.state.authUser.uid);
 
       this.docs = await this.fetchFirstParagraphs(userDocs);
       this.filterDocs(null);
     } catch (err) {
-      errorStore.default.state.error = 'Cannot init your dashboard.';
+      errorStore.state.error = 'Cannot init your dashboard.';
     }
 
     this.debounceLoading();
@@ -158,7 +161,7 @@ export class AppDocs implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.default.state.error = err;
+      errorStore.state.error = err;
     }
 
     await loading.dismiss();
@@ -210,7 +213,7 @@ export class AppDocs implements ComponentInterface {
       return <app-spinner></app-spinner>;
     }
 
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       return <AppAnonymousContent title={i18n.state.menu.documents} text={i18n.state.settings.access_docs}></AppAnonymousContent>;
     }
 
@@ -239,7 +242,7 @@ export class AppDocs implements ComponentInterface {
       );
     }
 
-    if (syncStore.default.state.dirty) {
+    if (syncStore.state.dirty) {
       return <p>{i18n.state.dashboard.sync_docs}</p>;
     }
 

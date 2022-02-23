@@ -1,4 +1,3 @@
-import {authStore, busyStore, errorStore} from '@deckdeckgo/studio';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
@@ -9,6 +8,9 @@ import i18n from '../../stores/i18n.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
+import authStore from '../../stores/auth.store';
+import errorStore from '../../stores/error.store';
+import busyStore from '../../stores/busy.store';
 
 @Component({
   tag: 'app-doc-editor',
@@ -43,11 +45,11 @@ export class AppDocEditor implements ComponentInterface {
   @Listen('actionPublish', {target: 'document'})
   async onActionPublish() {
     if (!cloud()) {
-      errorStore.default.state.error = 'No cloud provider to publish material.';
+      errorStore.state.error = 'No cloud provider to publish material.';
       return;
     }
 
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       signIn();
       return;
     }
@@ -112,7 +114,8 @@ export class AppDocEditor implements ComponentInterface {
 
             <deckgo-studio-doc
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioDocElement)}
-              styloConfig={this.styloConfig}></deckgo-studio-doc>
+              styloConfig={this.styloConfig}
+            ></deckgo-studio-doc>
           </main>
         </ion-content>
       </Fragment>
@@ -120,7 +123,7 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private renderLoading() {
-    if (busyStore.default.state.docReady) {
+    if (busyStore.state.docReady) {
       return undefined;
     }
 

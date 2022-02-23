@@ -1,11 +1,13 @@
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-import {authStore, busyStore, SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
 import {EventEmitter} from '@stencil/core';
 import {EditAction} from '../../types/editor/edit-action';
 import {ImageAction} from '../../types/editor/image-action';
 import {initDeckgoLazyImgAttributes} from '../../utils/editor/image.utils';
+import authStore from '../../stores/auth.store';
+import busyStore from '../../stores/busy.store';
 
 export class ImageHelper {
   constructor(
@@ -55,7 +57,7 @@ export class ImageHelper {
   }
 
   async openCustomModalRestricted(selectedTarget: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action: EditAction) {
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       return;
     }
@@ -75,7 +77,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.default.state.busy = true;
+      busyStore.state.busy = true;
 
       if (slide || deck) {
         await this.appendBackgroundImg(selectedTarget, image as UnsplashPhoto | TenorGif | StorageFile, deck);
@@ -102,7 +104,7 @@ export class ImageHelper {
       const currentSlotElement: HTMLElement = selectedTarget.querySelector(":scope > [slot='background']");
 
       if (currentSlotElement) {
-        busyStore.default.state.busy = true;
+        busyStore.state.busy = true;
 
         if (deck) {
           selectedTarget.removeChild(currentSlotElement);
@@ -242,7 +244,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.default.state.busy = true;
+      busyStore.state.busy = true;
 
       selectedTarget.removeAttribute('img-src');
 
@@ -259,7 +261,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.default.state.busy = true;
+      busyStore.state.busy = true;
 
       selectedTarget.setAttribute(attribute, image.downloadUrl);
 

@@ -1,11 +1,13 @@
 import {Deck, Slide} from '@deckdeckgo/editor';
-import {errorStore, editorStore, busyStore} from '@deckdeckgo/studio';
 import {JSX} from '@stencil/core';
 import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 import {initTemplates} from '../../providers/data/template/template.provider';
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
+import errorStore from '../../stores/error.store';
+import busyStore from '../../stores/busy.store';
+import editorStore from '../../stores/editor.store';
 
 export class SlideHelper {
   private deckOfflineProvider: DeckOfflineProvider;
@@ -19,23 +21,23 @@ export class SlideHelper {
   loadDeckAndRetrieveSlides(deckId: string): Promise<JSX.IntrinsicElements[]> {
     return new Promise<JSX.IntrinsicElements[]>(async (resolve) => {
       if (!deckId) {
-        errorStore.default.state.error = 'Deck is not defined';
+        errorStore.state.error = 'Deck is not defined';
         resolve(null);
         return;
       }
 
-      busyStore.default.state.busy = true;
+      busyStore.state.busy = true;
 
       try {
         const deck: Deck = await this.deckOfflineProvider.get(deckId);
 
         if (!deck || !deck.data) {
-          errorStore.default.state.error = 'No deck could be fetched';
+          errorStore.state.error = 'No deck could be fetched';
           resolve(null);
           return;
         }
 
-        editorStore.default.state.deck = {...deck};
+        editorStore.state.deck = {...deck};
 
         if (!deck.data.slides || deck.data.slides.length <= 0) {
           resolve([]);
@@ -59,12 +61,12 @@ export class SlideHelper {
           return;
         }
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve(parsedSlides);
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve(null);
       }
     });
@@ -81,7 +83,7 @@ export class SlideHelper {
 
         resolve(element);
       } catch (err) {
-        errorStore.default.state.error = 'Something went wrong while loading and parsing a slide';
+        errorStore.state.error = 'Something went wrong while loading and parsing a slide';
         resolve(null);
       }
     });
@@ -96,7 +98,7 @@ export class SlideHelper {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.default.state.error = 'Slide is not defined';
+          errorStore.state.error = 'Slide is not defined';
           resolve(null);
           return;
         }
@@ -105,17 +107,17 @@ export class SlideHelper {
 
         let element: JSX.IntrinsicElements = null;
 
-        if (editorStore.default.state.deck?.data) {
-          const slide: Slide = await this.slideOfflineProvider.get(editorStore.default.state.deck.id, slideId);
+        if (editorStore.state.deck?.data) {
+          const slide: Slide = await this.slideOfflineProvider.get(editorStore.state.deck.id, slideId);
           element = await ParseSlidesUtils.parseSlide(slide, true, true);
         }
 
-        busyStore.default.state.busy = false;
+        busyStore.state.busy = false;
 
         resolve(element);
       } catch (err) {
-        errorStore.default.state.error = err;
-        busyStore.default.state.busy = false;
+        errorStore.state.error = err;
+        busyStore.state.busy = false;
         resolve(null);
       }
     });

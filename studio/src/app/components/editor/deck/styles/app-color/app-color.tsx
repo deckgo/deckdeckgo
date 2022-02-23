@@ -1,18 +1,12 @@
-import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch, Method} from '@stencil/core';
-
-import type {RangeChangeEventDetail} from '@ionic/core';
-
 import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
-import {StyloPaletteColor, StyloPalette} from '@papyrs/stylo';
-
+import type {RangeChangeEventDetail} from '@ionic/core';
+import {StyloPalette, StyloPaletteColor} from '@papyrs/stylo';
+import {Component, Event, EventEmitter, Fragment, h, Method, Prop, State, Watch} from '@stencil/core';
 import colorStore from '../../../../../stores/color.store';
 import i18n from '../../../../../stores/i18n.store';
 import settingsStore from '../../../../../stores/settings.store';
-
-import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
-
 import {EditMode} from '../../../../../types/core/settings';
-
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({

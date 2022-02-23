@@ -1,7 +1,5 @@
 import {Component, h} from '@stencil/core';
-
 import i18n from '../../../stores/i18n.store';
-
 import {AppIcon} from '../app-icon/app-icon';
 
 @Component({

@@ -1,7 +1,5 @@
-import settingsStore from '../../stores/settings.store';
-
 import {get} from 'idb-keyval';
-
+import settingsStore from '../../stores/settings.store';
 import {EditMode, SettingsPanels} from '../../types/core/settings';
 
 export class SettingsService {

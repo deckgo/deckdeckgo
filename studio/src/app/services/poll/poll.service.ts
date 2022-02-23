@@ -1,10 +1,7 @@
-import * as io from 'socket.io-client';
-
-import store from '../../stores/poll.store';
-
 import {DeckdeckgoPoll} from '@deckdeckgo/types';
-
+import * as io from 'socket.io-client';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
+import store from '../../stores/poll.store';
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 
 export class PollService {

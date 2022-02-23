@@ -1,6 +1,6 @@
 import {AuthUser} from '@deckdeckgo/editor';
-import {authStore} from '@deckdeckgo/studio';
 import {Component, Fragment, h, State} from '@stencil/core';
+import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-signin-page'
@@ -12,7 +12,7 @@ export class AppSigninPage {
   private destroyListener;
 
   async componentWillLoad() {
-    this.destroyListener = authStore.default.onChange('authUser', async (authUser: AuthUser | null) => {
+    this.destroyListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
       if (!authUser) {
         this.signin = true;
       }
@@ -22,7 +22,7 @@ export class AppSigninPage {
   }
 
   private async initSignedIn() {
-    this.signin = authStore.default.state.authUser === null;
+    this.signin = authStore.state.authUser === null;
   }
 
   disconnectedCallback() {

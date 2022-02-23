@@ -1,11 +1,8 @@
 import {Component, h} from '@stencil/core';
-
-import themeStore from '../../../../stores/theme.store';
-import settingsStore from '../../../../stores/settings.store';
-import i18n from '../../../../stores/i18n.store';
-
 import {ThemeService} from '../../../../services/theme/theme.service';
-
+import i18n from '../../../../stores/i18n.store';
+import settingsStore from '../../../../stores/settings.store';
+import themeStore from '../../../../stores/theme.store';
 import {EditMode} from '../../../../types/core/settings';
 
 @Component({

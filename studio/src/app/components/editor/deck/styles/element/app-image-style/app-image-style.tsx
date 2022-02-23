@@ -1,12 +1,8 @@
-import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
-
 import {isSlide} from '@deckdeckgo/deck-utils';
-
-import settingsStore from '../../../../../../stores/settings.store';
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
+import settingsStore from '../../../../../../stores/settings.store';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 

@@ -1,5 +1,4 @@
-import {clearEdit, errorStore, syncStore} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
+import {clearEdit} from '@deckdeckgo/studio';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
@@ -7,6 +6,9 @@ import i18n from '../../../../stores/i18n.store';
 import {MoreAction} from '../../../../types/editor/more-action';
 import {cloud} from '../../../../utils/core/environment.utils';
 import {AppIcon} from '../../app-icon/app-icon';
+import syncStore from '../../../../stores/sync.store';
+import errorStore from '../../../../stores/error.store';
+import authStore from '../../../../stores/auth.store';
 
 @Component({
   tag: 'app-navigation-start',
@@ -24,12 +26,12 @@ export class AppNavigationStart {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.default.state.error = `Something went wrong. ${err}.`;
+      errorStore.state.error = `Something went wrong. ${err}.`;
     }
   }
 
   private isSyncing(): boolean {
-    return ['in_progress', 'pending', 'init'].includes(syncStore.default.state.sync);
+    return ['in_progress', 'pending', 'init'].includes(syncStore.state.sync);
   }
 
   private async openFilePicker($event: UIEvent) {
@@ -55,7 +57,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.default.state.error = `Something went wrong. ${err}.`;
+      errorStore.state.error = `Something went wrong. ${err}.`;
     }
 
     this.loadInput.value = null;
@@ -102,11 +104,11 @@ export class AppNavigationStart {
 
     try {
       // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean sync data if user signed out, not when a "New deck" is performed.
-      await clearEdit(!authStore.default.state.loggedIn);
+      await clearEdit(!authStore.state.loggedIn);
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.default.state.error = 'Something went wrong while cleaning the local data.';
+      errorStore.state.error = 'Something went wrong while cleaning the local data.';
     }
 
     await loading.dismiss();

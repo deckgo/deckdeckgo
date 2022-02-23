@@ -1,5 +1,4 @@
 import {StyloPlugin, StyloPluginCreateParagraphsParams} from '@papyrs/stylo';
-
 import {openPluginModal} from '../utils/editor/plugin.utils';
 
 export const imgUnsplash: StyloPlugin = {

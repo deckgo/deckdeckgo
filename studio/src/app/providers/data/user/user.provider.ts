@@ -1,9 +1,7 @@
-import {User, UpdateUser} from '@deckdeckgo/editor';
-
+import {UpdateUser, User} from '@deckdeckgo/editor';
 import store from '../../../stores/user.store';
-
-import {cloudProvider} from '../../../utils/core/providers.utils';
 import {cloud} from '../../../utils/core/environment.utils';
+import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const updateUser = async (user: User) => {
   if (!cloud()) {

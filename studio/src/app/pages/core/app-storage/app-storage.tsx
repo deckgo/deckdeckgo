@@ -1,11 +1,11 @@
 import {ImageEvents} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {Component, ComponentInterface, Fragment, h, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import i18n from '../../../stores/i18n.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
+import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-storage',
@@ -52,7 +52,7 @@ export class AppStorage implements ComponentInterface {
       <main class="ion-padding fit">
         <h1>{i18n.state.menu.assets}</h1>
 
-        {!authStore.default.state.authUser ? this.renderNotLoggedInContent() : this.renderGuardedContent()}
+        {!authStore.state.authUser ? this.renderNotLoggedInContent() : this.renderGuardedContent()}
       </main>
     );
   }

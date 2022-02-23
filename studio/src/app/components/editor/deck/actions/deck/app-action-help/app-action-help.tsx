@@ -1,9 +1,6 @@
-import {Component, h, Element, Prop, Event, EventEmitter} from '@stencil/core';
-
 import {popoverController} from '@ionic/core';
-
+import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({

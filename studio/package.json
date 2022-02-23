@@ -73,6 +73,7 @@
     "@types/wicg-file-system-access": "^2020.9.4",
     "autoprefixer": "^10.3.7",
     "prettier": "^2.4.1",
+    "prettier-plugin-organize-imports": "^2.3.4",
     "workbox-build": "5.1.4"
   },
   "repository": {

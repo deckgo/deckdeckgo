@@ -1,10 +1,11 @@
-import {clearEdit, syncStore} from '@deckdeckgo/studio';
-import {authStore} from '@deckdeckgo/studio';
+import {clearEdit} from '@deckdeckgo/studio';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {signOut} from '../../../../providers/auth/auth.provider';
 import i18n from '../../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
 import userStore from '../../../../stores/user.store';
+import authStore from '../../../../stores/auth.store';
+import syncStore from '../../../../stores/sync.store';
 
 @Component({
   tag: 'app-user-menu',
@@ -40,7 +41,7 @@ export class AppUserMenu {
   }
 
   private renderUserInfo() {
-    if (!authStore.default.state.loggedIn) {
+    if (!authStore.state.loggedIn) {
       return undefined;
     }
 
@@ -78,7 +79,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signUserOut()} disabled={syncStore.default.state.dirty || !authStore.default.state.loggedIn}>
+        <ion-item onClick={() => this.signUserOut()} disabled={syncStore.state.dirty || !authStore.state.loggedIn}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

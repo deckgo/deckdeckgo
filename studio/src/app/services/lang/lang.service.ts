@@ -1,6 +1,5 @@
-import i18n from '../../stores/i18n.store';
-
 import {get} from 'idb-keyval';
+import i18n from '../../stores/i18n.store';
 
 export class LangService {
   private static instance: LangService;

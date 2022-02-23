@@ -1,6 +1,6 @@
-import {authStore} from '@deckdeckgo/studio';
 import {Component, h, Prop} from '@stencil/core';
 import userStore from '../../../stores/user.store';
+import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-user-info',
@@ -11,7 +11,7 @@ export class AppUserInfo {
   displayAvatar: boolean = false;
 
   render() {
-    if (!authStore.default.state.authUser) {
+    if (!authStore.state.authUser) {
       return undefined;
     }
 

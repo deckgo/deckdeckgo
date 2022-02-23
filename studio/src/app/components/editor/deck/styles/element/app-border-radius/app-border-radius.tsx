@@ -1,13 +1,9 @@
-import {Component, Event, EventEmitter, h, Prop, State, Fragment} from '@stencil/core';
-
 import type {RangeChangeEventDetail} from '@ionic/core';
-
-import settingsStore from '../../../../../../stores/settings.store';
+import {Component, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
+import settingsStore from '../../../../../../stores/settings.store';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
 import {SelectedTarget} from '../../../../../../types/editor/selected-target';
-
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 

@@ -1,14 +1,10 @@
 import {Component, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
-
-import settingsStore from '../../../../../../stores/settings.store';
 import i18n from '../../../../../../stores/i18n.store';
-
-import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-
+import settingsStore from '../../../../../../stores/settings.store';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
 import {FontSize} from '../../../../../../types/editor/font-size';
 import {SelectedTarget} from '../../../../../../types/editor/selected-target';
-
+import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {AlignUtils, TextAlign} from '../../../../../../utils/editor/align.utils';
 import {initFontSize, toggleFontSize} from '../../../../../../utils/editor/font-size.utils';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
