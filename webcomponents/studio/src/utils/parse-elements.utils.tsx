@@ -1,7 +1,6 @@
-import {convertStyle} from '@deckdeckgo/editor';
+import {convertStyle, attributes as getAttributes} from '@deckdeckgo/editor';
 import {h} from '@stencil/core';
 import {SlotType} from '../types/slot-type';
-import {getAttributes} from './attributes.utils';
 import {SlotUtils} from './slot.utils';
 
 export class ParseElementsUtils {

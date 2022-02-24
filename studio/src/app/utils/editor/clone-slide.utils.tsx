@@ -1,5 +1,4 @@
-import {convertStyle, SlideTemplate} from '@deckdeckgo/editor';
-import {getAttributes} from '@deckdeckgo/studio';
+import {convertStyle, SlideTemplate, attributes as getAttributes} from '@deckdeckgo/editor';
 import {h, JSX} from '@stencil/core';
 import {v4 as uuid} from 'uuid';
 import {InitTemplate} from './create-slides.utils';

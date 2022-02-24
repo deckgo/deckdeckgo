@@ -1,5 +1,6 @@
 import {AuthUser, convertStyle, Deck, formatDate, Slide} from '@deckdeckgo/editor';
-import {ChartEvents, getEdit, ImageEvents} from '@deckdeckgo/studio';
+import {getEdit} from '@deckdeckgo/offline';
+import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -48,7 +49,7 @@ export class AppDecks implements ComponentInterface {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private imageEvents: ImageEvents = new ImageEvents();
+  private imageEvents: ImageLoadEvents = new ImageLoadEvents();
   private chartEvents: ChartEvents = new ChartEvents();
 
   private destroyListener;

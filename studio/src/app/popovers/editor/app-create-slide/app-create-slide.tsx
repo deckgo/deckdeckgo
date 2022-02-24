@@ -6,6 +6,8 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import i18n from '../../../stores/i18n.store';
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
+import editorStore from '../../../stores/editor.store';
+import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-create-slide',

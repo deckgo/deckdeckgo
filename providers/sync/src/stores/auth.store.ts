@@ -27,7 +27,7 @@ export class AuthStore extends Store<AuthUser | null | undefined> {
     return this.authUser;
   }
 
-  override subscribe(callback: (data: AuthUser | null) => void): () => void {
+  override subscribe(callback: (data: AuthUser | null | undefined) => void): () => void {
     const unsubscribe: () => void = super.subscribe(callback);
 
     callback(this.authUser);

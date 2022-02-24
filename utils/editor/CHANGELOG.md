@@ -1,3 +1,9 @@
+# 7.2.0 - 7.2.1 (2022-02-24)
+
+### Features
+
+- add function `attributes`
+
 # 7.1.0 (2022-02-21)
 
 ### Features

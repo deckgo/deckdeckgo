@@ -1,10 +1,8 @@
 import {StorageFile, User} from '@deckdeckgo/editor';
-import {clearEdit} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
-import {deleteAuth} from '../../../../providers/auth/auth.provider';
 import {updateUser} from '../../../../providers/data/user/user.provider';
 import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
@@ -16,6 +14,10 @@ import {firebase} from '../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {UserUtils} from '../../../../utils/core/user.utils';
+import errorStore from '../../../../stores/error.store';
+import authStore from '../../../../stores/auth.store';
+import {deleteAuth} from '@deckdeckgo/sync';
+import {clearEdit} from '@deckdeckgo/offline';
 
 @Component({
   tag: 'app-profile',

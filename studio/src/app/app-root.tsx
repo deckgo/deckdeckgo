@@ -1,15 +1,14 @@
-import {initEnv, initSyncState} from '@deckdeckgo/studio';
+import {initAuthProvider, initSync} from '@deckdeckgo/sync';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
-import {initAuthProvider} from './providers/auth/auth.provider';
 import {ColorService} from './services/editor/color/color.service';
 import {EnvironmentConfigService} from './services/environment/environment-config.service';
 import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
-import authStore from './stores/auth.store';
 import errorStore from './stores/error.store';
 import navStore, {NavDirection, NavParams} from './stores/nav.store';
+import {firebaseApiConfig} from './utils/core/auth.utils';
 
 @Component({
   tag: 'app-root'
@@ -34,15 +33,14 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.onChange('authUser', async () => await initSyncState());
+    this.destroyAuthListener = initSync({env: EnvironmentConfigService.getInstance().get('cloud')});
 
     const promises: Promise<void>[] = [
-      initAuthProvider(),
+      initAuthProvider(firebaseApiConfig()),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),
-      this.langService.init(),
-      initEnv({cloud: EnvironmentConfigService.getInstance().get('cloud')})
+      this.langService.init()
     ];
 
     Promise.all(promises).then(() => {

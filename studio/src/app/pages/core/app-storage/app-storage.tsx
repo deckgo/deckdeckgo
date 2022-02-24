@@ -1,4 +1,4 @@
-import {ImageEvents} from '@deckdeckgo/studio';
+import {ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {Component, ComponentInterface, Fragment, h, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
@@ -20,7 +20,7 @@ export class AppStorage implements ComponentInterface {
 
   private readonly debounceLoading: () => void;
 
-  private imageEvents: ImageEvents = new ImageEvents();
+  private imageEvents: ImageLoadEvents = new ImageLoadEvents();
 
   private storageFilesRef: HTMLAppStorageFilesElement | undefined;
 

@@ -9,6 +9,7 @@ import {tenor} from '../../../../../../../utils/core/environment.utils';
 import {InitTemplate} from '../../../../../../../utils/editor/create-slides.utils';
 import {AppIcon} from '../../../../../../core/app-icon/app-icon';
 import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
+import offlineStore from '../../../../../../../stores/offline.store';
 
 @Component({
   tag: 'app-templates-default'

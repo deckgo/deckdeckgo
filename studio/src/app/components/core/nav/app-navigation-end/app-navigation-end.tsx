@@ -1,4 +1,4 @@
-import {clearEdit} from '@deckdeckgo/studio';
+import {clearEdit} from '@deckdeckgo/offline';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
@@ -7,6 +7,10 @@ import userStore from '../../../../stores/user.store';
 import {cloud} from '../../../../utils/core/environment.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {AppIcon} from '../../app-icon/app-icon';
+import errorStore from '../../../../stores/error.store';
+import authStore from '../../../../stores/auth.store';
+import syncStore from '../../../../stores/sync.store';
+import offlineStore from '../../../../stores/offline.store';
 
 @Component({
   tag: 'app-navigation-end',

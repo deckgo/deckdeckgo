@@ -27,6 +27,10 @@ import {publishUrl} from '../../../providers/publish/publish.provider';
 import {DeckAction} from '../../../types/editor/deck-action';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
+import errorStore from '../../../stores/error.store';
+import busyStore from '../../../stores/busy.store';
+import editorStore from '../../../stores/editor.store';
+import authStore from '../../../stores/auth.store';
 
 export class DeckDataEvents {
   private mainRef: HTMLElement;

@@ -2,6 +2,7 @@ import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/
 import i18n from '../../../../../../stores/i18n.store';
 import {DeckAction} from '../../../../../../types/editor/deck-action';
 import {setAttribute} from '../../../../../../utils/editor/undo-redo.deck.utils';
+import editorStore from '../../../../../../stores/editor.store';
 
 @Component({
   tag: 'app-deck-transition',

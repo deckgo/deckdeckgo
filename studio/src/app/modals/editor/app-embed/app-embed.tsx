@@ -2,6 +2,8 @@ import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {publishUrl} from '../../../providers/publish/publish.provider';
 import i18n from '../../../stores/i18n.store';
+import editorStore from '../../../stores/editor.store';
+import errorStore from '../../../stores/error.store';
 
 @Component({
   tag: 'app-embed',

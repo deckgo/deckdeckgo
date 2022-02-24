@@ -1,5 +1,5 @@
 import {Deck, DeckData} from '@deckdeckgo/editor';
-import {syncUpdateDeck} from '@deckdeckgo/studio';
+import {syncUpdateDeck} from '@deckdeckgo/sync';
 import {get, set} from 'idb-keyval';
 import {v4 as uuid} from 'uuid';
 

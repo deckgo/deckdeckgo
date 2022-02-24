@@ -1,4 +1,4 @@
-import {clearEdit} from '@deckdeckgo/studio';
+import {clearEdit} from '@deckdeckgo/offline';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';

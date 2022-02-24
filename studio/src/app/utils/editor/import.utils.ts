@@ -1,5 +1,6 @@
 import {Deck, Doc, Paragraph, Slide} from '@deckdeckgo/editor';
-import {setEditDeckId, setEditDocId, syncUpdateDeck, syncUpdateDoc, syncUpdateParagraph, syncUpdateSlide} from '@deckdeckgo/studio';
+import {syncUpdateDeck, syncUpdateDoc, syncUpdateParagraph, syncUpdateSlide} from '@deckdeckgo/sync';
+import {setEditDeckId, setEditDocId} from '@deckdeckgo/offline';
 import {set, setMany} from 'idb-keyval';
 
 export interface ImportData {

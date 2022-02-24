@@ -1,6 +1,6 @@
-import {clearEdit} from '@deckdeckgo/studio';
+import {clearEdit} from '@deckdeckgo/offline';
+import {signOut} from '@deckdeckgo/sync';
 import {Component, Element, Fragment, h} from '@stencil/core';
-import {signOut} from '../../../../providers/auth/auth.provider';
 import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';

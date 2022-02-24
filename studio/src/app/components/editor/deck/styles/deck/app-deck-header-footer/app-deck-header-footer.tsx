@@ -5,6 +5,7 @@ import userStore from '../../../../../../stores/user.store';
 import {renderI18n} from '../../../../../../utils/core/i18n.utils';
 import {HeaderFooterUtils} from '../../../../../../utils/editor/header-footer.utils';
 import {SocialUtils} from '../../../../../../utils/editor/social.utils';
+import authStore from '../../../../../../stores/auth.store';
 
 @Component({
   tag: 'app-deck-header-footer',

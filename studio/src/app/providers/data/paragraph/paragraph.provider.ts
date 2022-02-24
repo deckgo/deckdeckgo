@@ -1,5 +1,5 @@
 import {GetParagraph, Paragraph} from '@deckdeckgo/editor';
-import {getOfflineParagraph} from '@deckdeckgo/studio';
+import {getOfflineParagraph} from '@deckdeckgo/offline';
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 

@@ -1,5 +1,5 @@
 import {Slide, SlideData} from '@deckdeckgo/editor';
-import {syncDeleteSlide, syncUpdateSlide} from '@deckdeckgo/studio';
+import {syncDeleteSlide, syncUpdateSlide} from '@deckdeckgo/sync';
 import {del, get, set} from 'idb-keyval';
 import {v4 as uuid} from 'uuid';
 

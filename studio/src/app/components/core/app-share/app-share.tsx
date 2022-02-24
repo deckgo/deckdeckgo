@@ -4,6 +4,7 @@ import {publishUrl} from '../../../providers/publish/publish.provider';
 import shareStore, {ShareData} from '../../../stores/share.store';
 import {getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
 import {AppIcon} from '../app-icon/app-icon';
+import editorStore from '../../../stores/editor.store';
 
 @Component({
   tag: 'app-share',

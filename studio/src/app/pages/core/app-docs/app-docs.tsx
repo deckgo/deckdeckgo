@@ -1,5 +1,7 @@
 import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
-import {ChartEvents, getEdit, ImageEvents, ParseParagraphsUtils} from '@deckdeckgo/studio';
+import {ParseParagraphsUtils} from '@deckdeckgo/studio';
+import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
+import {getEdit} from '@deckdeckgo/offline';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -36,7 +38,7 @@ export class AppDocs implements ComponentInterface {
 
   private readonly debounceLoading: () => void = debounce(() => (this.loading = false), 750);
 
-  private imageEvents: ImageEvents = new ImageEvents();
+  private imageEvents: ImageLoadEvents = new ImageLoadEvents();
   private chartEvents: ChartEvents = new ChartEvents();
 
   private destroyListener;

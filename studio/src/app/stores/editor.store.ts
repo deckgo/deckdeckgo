@@ -1,6 +1,6 @@
 import {Deck, Doc} from '@deckdeckgo/editor';
 import {createStore} from '@stencil/store';
-import {setEditDeckId, setEditDocId} from '../utils/editor/editor.utils';
+import {setEditDeckId, setEditDocId} from '@deckdeckgo/offline';
 
 interface EditorStore {
   doc: Doc | null;

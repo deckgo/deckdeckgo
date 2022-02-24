@@ -1,6 +1,8 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {ChartEvents, getEdit, ImageEvents, SlotType} from '@deckdeckgo/studio';
+import {SlotType} from '@deckdeckgo/studio';
+import {getEdit} from '@deckdeckgo/offline';
+import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -71,7 +73,7 @@ export class AppDeckEditor implements ComponentInterface {
   private readonly deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
   private readonly remoteEvents: RemoteEvents = new RemoteEvents();
   private readonly pollEvents: PollEvents = new PollEvents();
-  private readonly imageEvents: ImageEvents = new ImageEvents();
+  private readonly imageEvents: ImageLoadEvents = new ImageLoadEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly codeEvents: CodeEvents = new CodeEvents();
 
