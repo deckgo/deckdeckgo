@@ -6,9 +6,9 @@
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/data
 [npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/data/data/LICENSE
 
-# DeckDeckGo - Data
+# DeckDeckGo - Offline
 
-Sync data and auth providers for [DeckDeckGo] editors.
+Offline providers for [DeckDeckGo] editors.
 
 ## License
 

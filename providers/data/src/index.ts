@@ -10,6 +10,7 @@ export * from './events/doc.events';
 export * from './providers/auth.provider';
 export * from './providers/sync.provider';
 export * from './types/env.types';
+export * from './utils/before-unload.utils';
 
 export const authSubscribe = (callback: (authUser: AuthUser | null) => void): (() => void) => AuthStore.getInstance().subscribe(callback);
 export const docSubscribe = (callback: (doc: Doc | null) => void): (() => void) => DocStore.getInstance().subscribe(callback);

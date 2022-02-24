@@ -1,13 +1,13 @@
 {
-  "name": "@deckdeckgo/data",
+  "name": "@deckdeckgo/offline",
   "version": "0.0.1",
   "author": "David Dal Busco",
-  "description": "Sync data and auth providers for DeckDeckGo editors.",
+  "description": "Offline providers for DeckDeckGo editors.",
   "license": "AGPL-3.0-or-later",
   "repository": {
     "type": "git",
     "url": "git://github.com/deckgo/deckdeckgo.git",
-    "directory": "providers/data"
+    "directory": "providers/offline"
   },
   "homepage": "https://deckdeckgo.com",
   "main": "lib/cjs/index.cjs.js",
@@ -23,6 +23,7 @@
     "README.md"
   ],
   "dependencies": {
+    "idb-keyval": "^6.1.0",
     "nanoid": "^3.3.1"
   },
   "devDependencies": {
