@@ -1,10 +1,10 @@
 [![npm][npm-badge]][npm-badge-url]
 [![license][npm-license]][npm-license-url]
 
-[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/data
-[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/data
-[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/data
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/data/data/LICENSE
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/offline
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/offline
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/offline
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/offline/offline/LICENSE
 
 # DeckDeckGo - Offline
 

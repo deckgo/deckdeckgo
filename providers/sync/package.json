@@ -1,5 +1,5 @@
 {
-  "name": "@deckdeckgo/data",
+  "name": "@deckdeckgo/sync",
   "version": "0.0.1",
   "author": "David Dal Busco",
   "description": "Sync data and auth providers for DeckDeckGo editors.",
