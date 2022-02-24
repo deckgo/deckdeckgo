@@ -3,6 +3,7 @@
 ### Features
 
 - rename sign-in events for new login
+- replace `uuid` with `nanoid`
 
 ### Build
 

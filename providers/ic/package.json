@@ -63,6 +63,6 @@
     "@dfinity/identity": "^0.10.3",
     "@dfinity/principal": "^0.10.3",
     "idb-keyval": "^6.1.0",
-    "uuid": "^3.4.0"
+    "nanoid": "^3.3.1"
   }
 }

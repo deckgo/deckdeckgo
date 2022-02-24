@@ -1,4 +1,4 @@
-import {v4 as uuid} from 'uuid';
+import {nanoid} from 'nanoid';
 
 import {CreateTemplate, GetUserTemplates, Template, TemplateData, UpdateTemplate} from '@deckdeckgo/editor';
 
@@ -8,7 +8,7 @@ export const getUserTemplates: GetUserTemplates = (_userId: string): Promise<Tem
   entries<Template, TemplateData>({startsWith: '/templates/'});
 
 export const createTemplate: CreateTemplate = (data: TemplateData): Promise<Template> => {
-  const id: string = uuid();
+  const id: string = nanoid();
 
   return setData<Template, TemplateData>({key: `/templates/${id}`, id, data});
 };
