@@ -34,4 +34,10 @@ export class UserStore extends Store<User | null | undefined> {
 
     return unsubscribe;
   }
+
+  reset() {
+    this.user = undefined;
+
+    this.populate(this.user);
+  }
 }

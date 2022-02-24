@@ -4,21 +4,27 @@ import {EnvStore} from '../stores/env.store';
 import {UserStore} from '../stores/user.store';
 import {cloudProvider} from '../utils/providers.utils';
 
-export const initAuthProvider = async (config: Record<string, string | boolean> = {}) => {
+export const initAuth = async (config: Record<string, string | boolean> = {}) => {
   if (!EnvStore.getInstance().cloud()) {
     return;
   }
 
-  const {initAuth}: {initAuth: InitAuth} = await cloudProvider<{initAuth: InitAuth}>();
+  const {initAuth: initAuthProvider}: {initAuth: InitAuth} = await cloudProvider<{initAuth: InitAuth}>();
 
-  await initAuth({
+  await initAuthProvider({
     config,
     success: onInitSuccess,
     reset: onInitReset
   });
 };
 
-const onInitReset = async () => AuthStore.getInstance().reset();
+const onInitReset = async () => resetAuth();
+
+const resetAuth = () => {
+  AuthStore.getInstance().reset();
+
+  UserStore.getInstance().reset();
+}
 
 const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => {
   AuthStore.getInstance().set({...authUser});
@@ -34,6 +40,8 @@ export const signOut = async () => {
   const {signOut}: {signOut: SignOut} = await cloudProvider<{signOut: SignOut}>();
 
   await signOut();
+
+  resetAuth();
 };
 
 export const deleteAuth = async (config: Record<string, string | boolean> = {}) => {
@@ -44,5 +52,8 @@ export const deleteAuth = async (config: Record<string, string | boolean> = {}) 
   const {deleteAuth}: {deleteAuth: DeleteAuth} = await cloudProvider<{deleteAuth: DeleteAuth}>();
 
   await deleteAuth({user: UserStore.getInstance().get(), config});
+
   await signOut();
+
+  resetAuth();
 };

@@ -1,4 +1,4 @@
-import {initAuthProvider, initSync} from '@deckdeckgo/sync';
+import {initAuth, initSync} from '@deckdeckgo/sync';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
 import {BusyEvents} from './events/editor/busy/busy.events';
@@ -40,7 +40,7 @@ export class AppRoot {
     this.destroySyncListeners = initSync({env: EnvironmentConfigService.getInstance().get('cloud')});
 
     const promises: Promise<void>[] = [
-      initAuthProvider(firebaseApiConfig()),
+      initAuth(firebaseApiConfig()),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),

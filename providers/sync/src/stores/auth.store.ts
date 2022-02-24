@@ -41,5 +41,7 @@ export class AuthStore extends Store<AuthUser | null> {
 
   reset() {
     this.authUser = null;
+
+    this.populate(this.authUser);
   }
 }
