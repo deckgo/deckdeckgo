@@ -134,6 +134,8 @@ export class AppDocEditor implements ComponentInterface {
               styloConfig={this.styloConfig}
               onDocDidLoad={this.onDocDidLoad}
               onDocDataEvents={this.onDocDataEvents}></deckgo-studio-doc>
+
+            <deckgo-doc-indicator busy={busyStore.state.busy}></deckgo-doc-indicator>
           </main>
         </ion-content>
       </Fragment>

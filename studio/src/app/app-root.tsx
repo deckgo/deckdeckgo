@@ -1,6 +1,7 @@
 import {initAuthProvider, initSync} from '@deckdeckgo/sync';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
+import {BusyEvents} from './events/editor/busy/busy.events';
 import {ErrorEvents} from './events/editor/error/error.events';
 import {ColorService} from './services/editor/color/color.service';
 import {EnvironmentConfigService} from './services/environment/environment-config.service';
@@ -26,6 +27,7 @@ export class AppRoot {
   private destroyAuthListener;
 
   private readonly errorEvents: ErrorEvents = new ErrorEvents();
+  private readonly busyEvents: BusyEvents = new BusyEvents();
 
   constructor() {
     this.themeService = ThemeService.getInstance();
@@ -52,6 +54,7 @@ export class AppRoot {
 
   async componentDidLoad() {
     this.errorEvents.init();
+    this.busyEvents.init();
 
     this.destroyNavListener = navStore.onChange('nav', async (params: NavParams | undefined) => {
       await this.navigate(params);
@@ -60,6 +63,7 @@ export class AppRoot {
 
   disconnectedCallback() {
     this.errorEvents.destroy();
+    this.busyEvents.destroy();
 
     this.destroyErrorListener?.();
     this.destroyNavListener?.();

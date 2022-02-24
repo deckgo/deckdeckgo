@@ -1,7 +1,6 @@
 import {AuthUser, Doc, SyncState, User} from '@deckdeckgo/editor';
 import {initSyncState} from './providers/sync.provider';
 import {AuthStore} from './stores/auth.store';
-import {BusyStore} from './stores/busy.store';
 import {DocStore} from './stores/doc.store';
 import {EnvStore} from './stores/env.store';
 import {SyncStore} from './stores/sync.store';
@@ -20,7 +19,6 @@ export * from './utils/before-unload.utils';
 export const authSubscribe = (callback: (authUser: AuthUser | null) => void): (() => void) => AuthStore.getInstance().subscribe(callback);
 export const docSubscribe = (callback: (doc: Doc | null) => void): (() => void) => DocStore.getInstance().subscribe(callback);
 export const syncSubscribe = (callback: (authUser: SyncState) => void): (() => void) => SyncStore.getInstance().subscribe(callback);
-export const busySubscribe = (callback: (busy: boolean) => void): (() => void) => BusyStore.getInstance().subscribe(callback);
 export const userSubscribe = (callback: (user: User | undefined) => void): (() => void) => UserStore.getInstance().subscribe(callback);
 
 export const initSync = ({env}: {env: EnvironmentCloud | undefined}): (() => void) => {
