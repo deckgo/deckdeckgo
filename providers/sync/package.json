@@ -23,11 +23,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@deckdeckgo/offline": "file:providers/offline",
-    "nanoid": "^3.3.1"
-  },
-  "devDependencies": {
     "@deckdeckgo/editor": "^7.3.1",
-    "@types/node": "^16.9.0"
+    "@deckdeckgo/offline": "^0.0.1",
+    "nanoid": "^3.3.1"
   }
 }

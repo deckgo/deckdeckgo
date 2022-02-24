@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/offline
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/offline
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/offline
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/offline/offline/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/LICENSE
 
 # DeckDeckGo - Offline
 

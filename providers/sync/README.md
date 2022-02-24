@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/sync
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/sync
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/sync
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/sync/sync/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/providers/sync/LICENSE
 
 # DeckDeckGo - Sync
 
