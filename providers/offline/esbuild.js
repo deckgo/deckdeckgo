@@ -36,4 +36,20 @@ esbuild
   })
   .catch(() => process.exit(1));
 
+esbuild
+  .build({
+    entryPoints: ['src/index.ts'],
+    outfile: 'lib/cjs/index.cjs.js',
+    bundle: true,
+    sourcemap: true,
+    minify: true,
+    platform: 'node',
+    target: ['node16']
+  })
+  .catch(() => process.exit(1));
+
+writeFileSync(join(lib, 'index.cjs.js'), "module.exports = require('./cjs/index.cjs.js');");
+
+writeFileSync(join(lib, 'index.js'), "export * from './esm/index.js';");
+
 writeFileSync(join(lib, 'index.js'), "export * from './esm/index.js';");
