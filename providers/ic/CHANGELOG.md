@@ -5,10 +5,6 @@
 - rename sign-in events for new login
 - replace `uuid` with `nanoid`
 
-### Build
-
-- bump dfinity libs v0.10.3
-
 # 5.1.0 (2022-02-22)
 
 ### Features
