@@ -26,4 +26,12 @@ export class DocStore extends Store<Doc | null> {
   get(): Doc | null {
     return this.doc;
   }
+
+  override subscribe(callback: (data: Doc | null) => void): () => void {
+    const unsubscribe: () => void = super.subscribe(callback);
+
+    callback(this.doc);
+
+    return unsubscribe;
+  }
 }

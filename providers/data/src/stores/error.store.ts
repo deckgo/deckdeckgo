@@ -1,4 +1,5 @@
 import {Store} from './store';
+import { EnvironmentCloud } from '../types/env.types';
 
 export class ErrorStore extends Store<string | undefined> {
   private static instance: ErrorStore;
@@ -24,5 +25,13 @@ export class ErrorStore extends Store<string | undefined> {
 
   get(): string | undefined {
     return this.error;
+  }
+
+  override subscribe(callback: (data: string | undefined) => void): () => void {
+    const unsubscribe: () => void = super.subscribe(callback);
+
+    callback(this.error);
+
+    return unsubscribe;
   }
 }

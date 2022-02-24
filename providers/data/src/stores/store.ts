@@ -7,7 +7,7 @@ export abstract class Store<T> {
     this.callbacks.forEach(({callback}: {id: string; callback: (data: T | null) => void}) => callback(data));
   }
 
-  onChange(callback: (data: T | null) => void): () => void {
+  subscribe(callback: (data: T | null) => void): () => void {
     const callbackId: string = nanoid();
     this.callbacks.push({id: callbackId, callback});
 

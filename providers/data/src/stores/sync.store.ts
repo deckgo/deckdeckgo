@@ -26,4 +26,12 @@ export class SyncStore extends Store<SyncState> {
   get(): SyncState {
     return this.syncState;
   }
+
+  override subscribe(callback: (data: SyncState) => void): () => void {
+    const unsubscribe: () => void = super.subscribe(callback);
+
+    callback(this.syncState);
+
+    return unsubscribe;
+  }
 }

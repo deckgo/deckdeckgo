@@ -1,4 +1,5 @@
 import {Store} from './store';
+import { AuthUser } from '@deckdeckgo/editor';
 
 export class BusyStore extends Store<boolean> {
   private static instance: BusyStore;
@@ -24,5 +25,13 @@ export class BusyStore extends Store<boolean> {
 
   get(): boolean {
     return this.busy;
+  }
+
+  override subscribe(callback: (data: boolean) => void): () => void {
+    const unsubscribe: () => void = super.subscribe(callback);
+
+    callback(this.busy);
+
+    return unsubscribe;
   }
 }

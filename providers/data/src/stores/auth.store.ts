@@ -27,6 +27,14 @@ export class AuthStore extends Store<AuthUser | null | undefined> {
     return this.authUser;
   }
 
+  override subscribe(callback: (data: AuthUser | null) => void): () => void {
+    const unsubscribe: () => void = super.subscribe(callback);
+
+    callback(this.authUser);
+
+    return unsubscribe;
+  }
+
   isLoggedIn(): boolean {
     return this.authUser?.state === 'authenticated';
   }
