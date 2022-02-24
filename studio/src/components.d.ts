@@ -17,7 +17,7 @@ import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { Expanded } from "./app/types/core/settings";
 import { ImageAction } from "./app/types/editor/image-action";
-import { SlotType } from "./app/types/editor/slot-type";
+import { SlotType } from "@deckdeckgo/studio";
 import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
@@ -166,8 +166,6 @@ export namespace Components {
     }
     interface AppDocEditor {
         "initNewDoc": () => Promise<void>;
-    }
-    interface AppDocIndicator {
     }
     interface AppDocs {
     }
@@ -683,12 +681,6 @@ declare global {
     var HTMLAppDocEditorElement: {
         prototype: HTMLAppDocEditorElement;
         new (): HTMLAppDocEditorElement;
-    };
-    interface HTMLAppDocIndicatorElement extends Components.AppDocIndicator, HTMLStencilElement {
-    }
-    var HTMLAppDocIndicatorElement: {
-        prototype: HTMLAppDocIndicatorElement;
-        new (): HTMLAppDocIndicatorElement;
     };
     interface HTMLAppDocsElement extends Components.AppDocs, HTMLStencilElement {
     }
@@ -1266,7 +1258,6 @@ declare global {
         "app-delete": HTMLAppDeleteElement;
         "app-demo": HTMLAppDemoElement;
         "app-doc-editor": HTMLAppDocEditorElement;
-        "app-doc-indicator": HTMLAppDocIndicatorElement;
         "app-docs": HTMLAppDocsElement;
         "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
@@ -1540,8 +1531,6 @@ declare namespace LocalJSX {
         "selectedTarget"?: HTMLElement;
     }
     interface AppDocEditor {
-    }
-    interface AppDocIndicator {
     }
     interface AppDocs {
     }
@@ -1885,7 +1874,6 @@ declare namespace LocalJSX {
         "app-delete": AppDelete;
         "app-demo": AppDemo;
         "app-doc-editor": AppDocEditor;
-        "app-doc-indicator": AppDocIndicator;
         "app-docs": AppDocs;
         "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
@@ -2022,7 +2010,6 @@ declare module "@stencil/core" {
             "app-delete": LocalJSX.AppDelete & JSXBase.HTMLAttributes<HTMLAppDeleteElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
             "app-doc-editor": LocalJSX.AppDocEditor & JSXBase.HTMLAttributes<HTMLAppDocEditorElement>;
-            "app-doc-indicator": LocalJSX.AppDocIndicator & JSXBase.HTMLAttributes<HTMLAppDocIndicatorElement>;
             "app-docs": LocalJSX.AppDocs & JSXBase.HTMLAttributes<HTMLAppDocsElement>;
             "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;

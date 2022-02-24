@@ -1,7 +1,6 @@
-import {Component, h, Host, Element, Prop} from '@stencil/core';
-
-import {debounce} from '@deckdeckgo/utils';
 import {cleanNode} from '@deckdeckgo/editor';
+import {debounce} from '@deckdeckgo/utils';
+import {Component, Element, h, Host, Prop} from '@stencil/core';
 
 @Component({
   tag: 'app-slide-thumbnail',
@@ -119,7 +118,8 @@ export class AppSlideThumbnail {
         keyboard={false}
         ref={(el) => (this.deckPreviewRef = el as HTMLDeckgoDeckElement)}
         onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}
-        onDeckDidLoad={($event: CustomEvent) => $event.stopPropagation()}></deckgo-deck>
+        onDeckDidLoad={($event: CustomEvent) => $event.stopPropagation()}
+      ></deckgo-deck>
     );
   }
 }

@@ -1,6 +1,5 @@
 import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
-
-import store from '../../../../../../stores/busy.store';
+import busyStore from '../../../../../../stores/busy.store';
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
@@ -22,10 +21,11 @@ export class AppActionBusy {
     return (
       <button
         onClick={(e: UIEvent) => this.action(e)}
-        disabled={store.state.busy}
+        disabled={busyStore.state.busy}
         class="ion-activatable"
         onMouseDown={($event) => $event.stopPropagation()}
-        onTouchStart={($event) => $event.stopPropagation()}>
+        onTouchStart={($event) => $event.stopPropagation()}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name={this.iconName} ariaLabel="" ariaHidden={true}></AppIcon>
         <slot></slot>

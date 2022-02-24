@@ -1,12 +1,9 @@
-import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {UserUtils} from '../../../utils/core/user.utils';
-import {firebase} from '../../../utils/core/environment.utils';
-
+import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import {firebase} from '../../../utils/core/environment.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
+import {UserUtils} from '../../../utils/core/user.utils';
 
 @Component({
   tag: 'app-user-delete',
@@ -85,7 +82,8 @@ export class AppUserDelete {
               required={true}
               input-mode="text"
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
-              onIonChange={() => this.validateUsernameInput()}></ion-input>
+              onIonChange={() => this.validateUsernameInput()}
+            ></ion-input>
           </ion-item>
 
           <ion-button type="submit" disabled={!this.valid} color="danger" class="ion-margin-top" shape="round">

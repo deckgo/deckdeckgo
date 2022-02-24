@@ -1,18 +1,14 @@
-import {Component, h, Fragment, Element} from '@stencil/core';
-
+import {throwError} from '@deckdeckgo/editor';
+import {clearEdit} from '@deckdeckgo/offline';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
-
+import {Component, Element, Fragment, h} from '@stencil/core';
+import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
 import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
-import errorStore from '../../../../stores/error.store';
 import syncStore from '../../../../stores/sync.store';
-
-import {AppIcon} from '../../app-icon/app-icon';
-
-import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
-import {cloud} from '../../../../utils/core/environment.utils';
 import {MoreAction} from '../../../../types/editor/more-action';
+import {cloud} from '../../../../utils/core/environment.utils';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-navigation-start',
@@ -30,7 +26,7 @@ export class AppNavigationStart {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
   }
 
@@ -61,7 +57,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
 
     this.loadInput.value = null;
@@ -112,7 +108,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data.';
+      throwError('Something went wrong while cleaning the local data.');
     }
 
     await loading.dismiss();
@@ -168,7 +164,8 @@ export class AppNavigationStart {
           key="new-select-action"
           class="ion-activatable"
           onClick={async ($event: UIEvent) => await this.selectType($event)}
-          aria-label={i18n.state.tools.new_presentation}>
+          aria-label={i18n.state.tools.new_presentation}
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -199,7 +196,8 @@ export class AppNavigationStart {
           onTouchStart={($event) => $event.stopPropagation()}
           onClick={async ($event: UIEvent) => await this.openMoreActions($event)}
           color="primary"
-          class="small-devices ion-activatable">
+          class="small-devices ion-activatable"
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaLabel="" ariaHidden={true}></AppIcon>
           <ion-label aria-hidden="true">{i18n.state.editor.files}</ion-label>

@@ -1,11 +1,9 @@
 import {Component, Element, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
-
-import i18n from '../../../../stores/i18n.store';
-
-import {TargetElement} from '../../../../types/editor/target-element';
-import {ImageAction} from '../../../../types/editor/image-action';
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import i18n from '../../../../stores/i18n.store';
 import settingsStore from '../../../../stores/settings.store';
+import {ImageAction} from '../../../../types/editor/image-action';
+import {TargetElement} from '../../../../types/editor/target-element';
 
 @Component({
   tag: 'app-deck-style',
@@ -80,7 +78,8 @@ export class AppDeck {
           textTarget={true}
           transition={true}
           header-footer={true}
-          onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
+          onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}
+        ></app-select-target-element>
 
         {this.renderOptions()}
 
@@ -106,11 +105,13 @@ export class AppDeck {
           colorType={'background'}
           selectedTarget={this.deckElement}
           deck={true}
-          onColorChange={() => this.onDeckChange()}></app-color-text-background>,
+          onColorChange={() => this.onDeckChange()}
+        ></app-color-text-background>,
         <app-image-choice
           selectedTarget={this.deckElement}
           deck={true}
-          onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image-choice>
+          onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
+        ></app-image-choice>
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onDeckChange()}></app-deck-transition>;
@@ -120,7 +121,8 @@ export class AppDeck {
           deckElement={this.deckElement}
           deckDidChange={this.deckDidChange}
           onNavigateSettings={() => this.closePopover()}
-          onNavigateSignIn={() => this.closePopoverAndSignIn()}></app-deck-header-footer>
+          onNavigateSignIn={() => this.closePopoverAndSignIn()}
+        ></app-deck-header-footer>
       );
     } else {
       return undefined;

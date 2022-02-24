@@ -1,16 +1,11 @@
-import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
-
 import type {OverlayEventDetail} from '@ionic/core';
 import {popoverController} from '@ionic/core';
-
+import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
 import editorStore from '../../../../../../stores/editor.store';
 import i18n from '../../../../../../stores/i18n.store';
-
 import {MoreAction} from '../../../../../../types/editor/more-action';
-
 import {cloud} from '../../../../../../utils/core/environment.utils';
 import {share} from '../../../../../../utils/core/share.utils';
-
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
@@ -71,7 +66,8 @@ export class AppActionShare {
         onTouchStart={($event) => $event.stopPropagation()}
         aria-label={i18n.state.editor.share}
         onClick={($event: UIEvent) => this.share($event)}
-        class="ion-activatable">
+        class="ion-activatable"
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="share" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.share}</ion-label>

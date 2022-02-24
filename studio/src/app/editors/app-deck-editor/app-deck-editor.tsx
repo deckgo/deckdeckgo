@@ -1,47 +1,35 @@
-import {Component, ComponentInterface, Element, h, JSX, Listen, Method, State} from '@stencil/core';
-
-import type {OverlayEventDetail, ItemReorderEventDetail} from '@ionic/core';
-import {modalController, popoverController} from '@ionic/core';
-
-import {get, set} from 'idb-keyval';
-
-import editorStore from '../../stores/editor.store';
-import busyStore from '../../stores/busy.store';
-import colorStore from '../../stores/color.store';
-import undoRedoStore from '../../stores/undo-redo.store';
-import authStore from '../../stores/auth.store';
-import i18n from '../../stores/i18n.store';
-import errorStore from '../../stores/error.store';
-
-import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {convertStyle, SlideTemplate, elementIndex} from '@deckdeckgo/editor';
-import {StyloPaletteColor, StyloConfigToolbar} from '@papyrs/stylo';
-
-import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
-import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
-import {getEdit} from '../../utils/editor/editor.utils';
-import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
-
+import {convertStyle, elementIndex, SlideTemplate, throwError} from '@deckdeckgo/editor';
+import {getEdit} from '@deckdeckgo/offline';
+import {SlotType} from '@deckdeckgo/studio';
+import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
+import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
+import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
+import {modalController, popoverController} from '@ionic/core';
+import {StyloConfigToolbar, StyloPaletteColor} from '@papyrs/stylo';
+import {Component, ComponentInterface, Element, h, JSX, Listen, Method, State} from '@stencil/core';
+import {get, set} from 'idb-keyval';
+import {EnvironmentGoogleConfig} from '../../config/environment-config';
+import {CodeEvents} from '../../events/editor/code/code.events';
 import {DeckDataEvents} from '../../events/editor/deck/deck.data.events';
-import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {DeckEditorEvents} from '../../events/editor/editor/deck.editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
-import {ImageEvents} from '../../events/core/image/image.events';
-import {ChartEvents} from '../../events/core/chart/chart.events';
-import {CodeEvents} from '../../events/editor/code/code.events';
-
+import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {SlideHelper} from '../../helpers/editor/slide.helper';
-
-import {SlotType} from '../../types/editor/slot-type';
-import {Editor} from '../../types/editor/editor';
-
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {FontsService} from '../../services/editor/fonts/fonts.service';
-
-import {EnvironmentGoogleConfig} from '../../config/environment-config';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import authStore from '../../stores/auth.store';
+import busyStore from '../../stores/busy.store';
+import colorStore from '../../stores/color.store';
+import editorStore from '../../stores/editor.store';
+import i18n from '../../stores/i18n.store';
+import undoRedoStore from '../../stores/undo-redo.store';
+import {Editor} from '../../types/editor/editor';
 import {cloud} from '../../utils/core/environment.utils';
+import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
+import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
+import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 
 @Component({
   tag: 'app-deck-editor',
@@ -84,7 +72,7 @@ export class AppDeckEditor implements ComponentInterface {
   private readonly deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
   private readonly remoteEvents: RemoteEvents = new RemoteEvents();
   private readonly pollEvents: PollEvents = new PollEvents();
-  private readonly imageEvents: ImageEvents = new ImageEvents();
+  private readonly imageEvents: ImageLoadEvents = new ImageLoadEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly codeEvents: CodeEvents = new CodeEvents();
 
@@ -428,7 +416,7 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     if (!cloud()) {
-      errorStore.state.error = 'No cloud provider to publish material.';
+      throwError('No cloud provider to publish material.');
       return;
     }
 
@@ -783,7 +771,8 @@ export class AppDeckEditor implements ComponentInterface {
     return [
       <ion-content
         class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`}
-        onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
+        onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}
+      >
         <div class="editor">
           {this.renderSlidesThumbnails()}
 
@@ -792,7 +781,8 @@ export class AppDeckEditor implements ComponentInterface {
               <main
                 ref={(el) => (this.mainRef = el as HTMLElement)}
                 class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
-                style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
+                style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}
+              >
                 {this.renderLoading()}
                 <deckgo-deck
                   ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
@@ -807,7 +797,8 @@ export class AppDeckEditor implements ComponentInterface {
                   onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                   onSlideNextDidChange={() => this.onSlideChange()}
                   onSlidePrevDidChange={() => this.onSlideChange()}
-                  onSlideToChange={() => this.onSlideChange()}>
+                  onSlideToChange={() => this.onSlideChange()}
+                >
                   {this.slides}
                   {this.background}
                   {this.header}
@@ -822,7 +813,8 @@ export class AppDeckEditor implements ComponentInterface {
             <app-breadcrumbs
               ref={(el) => (this.breadCrumbsRef = el as HTMLAppBreadcrumbsElement)}
               slideNumber={this.activeIndex}
-              onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+              onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}
+            ></app-breadcrumbs>
 
             <app-actions-deck-editor
               ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsDeckEditorElement)}
@@ -833,7 +825,8 @@ export class AppDeckEditor implements ComponentInterface {
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
               onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
-              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-deck-editor>
+              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}
+            ></app-actions-deck-editor>
           </div>
         </div>
         {this.renderSlidePreview()}
@@ -875,7 +868,8 @@ export class AppDeckEditor implements ComponentInterface {
       <app-slides-aside
         deckRef={this.deckRef}
         activeIndex={this.activeIndex}
-        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-slides-aside>
+        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}
+      ></app-slides-aside>
     );
   }
 

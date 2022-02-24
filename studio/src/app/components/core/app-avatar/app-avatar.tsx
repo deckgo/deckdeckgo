@@ -1,5 +1,4 @@
-import {Component, Prop, h} from '@stencil/core';
-
+import {Component, h, Prop} from '@stencil/core';
 import {AppIcon} from '../app-icon/app-icon';
 
 @Component({

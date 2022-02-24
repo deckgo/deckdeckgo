@@ -1,12 +1,8 @@
-import {Fragment, FunctionalComponent, h} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
-import offlineStore from '../../../../stores/offline.store';
+import {Fragment, FunctionalComponent, h} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
-
+import offlineStore from '../../../../stores/offline.store';
 import {EditAction} from '../../../../types/editor/edit-action';
-
 import {tenor, unsplash} from '../../../../utils/core/environment.utils';
 
 const tenorEnabled = tenor();

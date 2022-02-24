@@ -1,17 +1,11 @@
-import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment} from '@stencil/core';
-
 import {alertController} from '@ionic/core';
-
+import {Component, Element, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
+import {AppIcon} from '../../../../components/core/app-icon/app-icon';
+import {publishUrl} from '../../../../providers/publish/publish.provider';
+import editorStore from '../../../../stores/editor.store';
 import i18n from '../../../../stores/i18n.store';
 import offlineStore from '../../../../stores/offline.store';
-
-import editorStore from '../../../../stores/editor.store';
-
-import {publishUrl} from '../../../../providers/publish/publish.provider';
-
 import {EditAction} from '../../../../types/editor/edit-action';
-
-import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-edit-slide-qrcode'
@@ -164,7 +158,8 @@ export class AppEditSlideQRCode {
           debounce={500}
           disabled={!this.customQRCode}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-          onIonChange={() => this.onInputCustomUrlChange()}></ion-input>
+          onIonChange={() => this.onInputCustomUrlChange()}
+        ></ion-input>
       </ion-item>,
 
       this.renderLogoOptions()

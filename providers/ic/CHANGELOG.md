@@ -1,6 +1,21 @@
+# 5.1.0 (2022-02-24)
+
+### Features
+
+- rename sign-in events for new login
+- replace `uuid` with `nanoid`
+
+# 5.1.0 (2022-02-22)
+
+### Features
+
+- update `docSelector` for new `studio` component
+- remove ionic peer dependency
+- update sign-in component for Papyrs
+
 # 4.1.3 (2021-12-24)
 
-### Feature
+### Features
 
 - add an `<article/>` around the published doc content
 - emit doc and deck published once the overview has been updated too

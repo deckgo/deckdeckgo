@@ -1,14 +1,10 @@
 import {Component, Element, Fragment, h} from '@stencil/core';
-
-import authStore from '../../../stores/auth.store';
-import i18n from '../../../stores/i18n.store';
-
-import {cloud} from '../../../utils/core/environment.utils';
-
-import {AppIcon} from '../app-icon/app-icon';
-
 import {EnvironmentAppConfig, EnvironmentAppConfigFeature} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
+import {cloud} from '../../../utils/core/environment.utils';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-menu',

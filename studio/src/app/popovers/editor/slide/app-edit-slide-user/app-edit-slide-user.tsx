@@ -1,11 +1,7 @@
-import {Component, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
-
+import {SlideScope, Template, TemplateDataProp} from '@deckdeckgo/editor';
 import type {InputChangeEventDetail} from '@ionic/core';
-
-import {Template, TemplateDataProp, SlideScope} from '@deckdeckgo/editor';
-
+import {Component, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 import templatesStore from '../../../../stores/templates.store';
-
 import {SelectedTarget} from '../../../../types/editor/selected-target';
 
 interface Property {
@@ -75,7 +71,8 @@ export class AppEditSlideUser {
             <ion-input
               value={prop.value}
               debounce={500}
-              onIonChange={($event: CustomEvent<InputChangeEventDetail>) => this.onInputCustomUrlChange($event, prop.prop)}></ion-input>
+              onIonChange={($event: CustomEvent<InputChangeEventDetail>) => this.onInputCustomUrlChange($event, prop.prop)}
+            ></ion-input>
           </ion-item>
         </Fragment>
       );

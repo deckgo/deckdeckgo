@@ -1,8 +1,6 @@
+import {SlotUtils} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import i18n from '../../../../../../stores/i18n.store';
-
-import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-reveal',

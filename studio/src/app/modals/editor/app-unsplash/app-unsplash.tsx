@@ -1,15 +1,10 @@
-import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
-
 import {UnsplashPhoto, UnsplashSearchResponse} from '@deckdeckgo/editor';
-
-import i18n from '../../../stores/i18n.store';
-
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-
+import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
-
-import {unsplash} from '../../../utils/core/environment.utils';
 import {getUnsplashPhotos, registerUnsplashDownload} from '../../../providers/unsplash/unsplash.provider';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import i18n from '../../../stores/i18n.store';
+import {unsplash} from '../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-unsplash',
@@ -170,7 +165,8 @@ export class AppUnsplash {
             <ion-infinite-scroll
               threshold="100px"
               disabled={this.disableInfiniteScroll}
-              onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}>
+              onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}
+            >
               <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
             </ion-infinite-scroll>
           </main>
@@ -187,7 +183,8 @@ export class AppUnsplash {
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
               onIonChange={async () => {
                 await this.search();
-              }}></ion-searchbar>
+              }}
+            ></ion-searchbar>
           </ion-toolbar>
         </ion-footer>
       </Fragment>

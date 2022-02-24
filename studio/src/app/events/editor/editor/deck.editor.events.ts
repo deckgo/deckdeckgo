@@ -1,5 +1,5 @@
-import {redo, undo} from '../../../utils/editor/undo-redo.deck.utils';
 import {attachPasteEvent, detachPasteEvent} from '../../../utils/editor/paste.utils';
+import {redo, undo} from '../../../utils/editor/undo-redo.deck.utils';
 
 export class DeckEditorEvents {
   private mainRef: HTMLElement;

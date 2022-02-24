@@ -1,12 +1,8 @@
 import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {filterCodeLanguages} from '../../../utils/editor/prism.utils';
-
-import {PrismLanguage} from '../../../types/editor/prism-language';
-
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import {PrismLanguage} from '../../../types/editor/prism-language';
+import {filterCodeLanguages} from '../../../utils/editor/prism.utils';
 
 @Component({
   tag: 'app-code-languages',
@@ -130,7 +126,8 @@ export class AppCodeLanguages {
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
             onIonChange={() => {
               this.search();
-            }}></ion-searchbar>
+            }}
+          ></ion-searchbar>
         </ion-toolbar>
       </ion-footer>
     ];

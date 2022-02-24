@@ -1,8 +1,6 @@
-import {Template, TemplateData, GetUserTemplates, CreateTemplate, UpdateTemplate} from '@deckdeckgo/editor';
-
+import {CreateTemplate, GetUserTemplates, Template, TemplateData, UpdateTemplate} from '@deckdeckgo/editor';
 import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
-
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 

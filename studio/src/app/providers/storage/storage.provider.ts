@@ -1,14 +1,10 @@
-import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
-
+import {DeleteFile, GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
+import {Constants} from '../../config/constants';
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
-
-import {StorageOfflineProvider} from './storage.offline.provider';
-
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
-
-import {Constants} from '../../config/constants';
+import {StorageOfflineProvider} from './storage.offline.provider';
 
 export const uploadOnlineFile = async (
   data: File,

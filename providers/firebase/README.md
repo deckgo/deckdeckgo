@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/firebase
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/firebase
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/firebase
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/firebase/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/LICENSE
 
 # DeckDeckGo - Firebase
 

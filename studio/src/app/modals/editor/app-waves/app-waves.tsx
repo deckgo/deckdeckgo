@@ -1,15 +1,10 @@
-import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
-
 import type {RangeChangeEventDetail} from '@ionic/core';
-
+import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import i18n from '../../../stores/i18n.store';
-
 import {ColorUtils, InitStyleColor} from '../../../utils/editor/color.utils';
 import {WavesUtils} from '../../../utils/editor/waves.utils';
-
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
-
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
   tag: 'app-waves',
@@ -178,7 +173,8 @@ export class AppWaves {
           size="small"
           onClick={() => this.setOrientation('upward')}
           color={this.orientation === 'upward' ? 'quaternary' : 'medium'}
-          aria-label={i18n.state.editor.direction_up}>
+          aria-label={i18n.state.editor.direction_up}
+        >
           <AppIcon name="chevron-up" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
@@ -186,7 +182,8 @@ export class AppWaves {
           size="small"
           onClick={() => this.setOrientation('downward')}
           color={this.orientation === 'downward' ? 'quaternary' : 'medium'}
-          aria-label={i18n.state.editor.direction_down}>
+          aria-label={i18n.state.editor.direction_down}
+        >
           <AppIcon name="chevron-down" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
@@ -200,7 +197,8 @@ export class AppWaves {
             step={2}
             value={this.nodes}
             mode="md"
-            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}></ion-range>
+            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}
+          ></ion-range>
 
           <AppIcon name="waves-complex" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
         </div>
@@ -213,7 +211,8 @@ export class AppWaves {
       <app-color
         initColor={this.initColor}
         onResetColor={() => this.resetColor()}
-        onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+        onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
+      ></app-color>
     );
   }
 }

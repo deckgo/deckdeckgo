@@ -1,7 +1,5 @@
-import {Component, Event, EventEmitter, h} from '@stencil/core';
-
 import {Template} from '@deckdeckgo/editor';
-
+import {Component, Event, EventEmitter, h} from '@stencil/core';
 import templatesStore from '../../../../../../stores/templates.store';
 
 @Component({
@@ -19,7 +17,8 @@ export class AppTemplatesCommunity {
           author={true}
           key={template.id}
           custom-tappable
-          onClick={() => this.selectedTemplate.emit(template)}></app-template-showcase>
+          onClick={() => this.selectedTemplate.emit(template)}
+        ></app-template-showcase>
       );
     });
   }

@@ -1,9 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State, Host} from '@stencil/core';
-
 import {SlideAttributesYAxisDomain, SlideChartType} from '@deckdeckgo/editor';
-
+import {Component, Element, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
-
 import {EditAction} from '../../../../types/editor/edit-action';
 import {ChartUtils} from '../../../../utils/editor/chart.utils';
 
@@ -184,7 +181,8 @@ export class AppEditSlideChart {
             placeholder=";"
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSeparatorInput(e)}
-            onIonChange={() => this.applyChartChanges()}></ion-input>
+            onIonChange={() => this.applyChartChanges()}
+          ></ion-input>
         </ion-item>
 
         <ion-item class="action-button ion-margin-top">
@@ -216,7 +214,8 @@ export class AppEditSlideChart {
           placeholder="yyyy-MM-dd"
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleDatePatternInput(e)}
-          onIonChange={() => this.applyChartChanges()}></ion-input>
+          onIonChange={() => this.applyChartChanges()}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -236,7 +235,8 @@ export class AppEditSlideChart {
           placeholder={i18n.state.editor.radius_display}
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInnerRadiusInput(e)}
-          onIonChange={() => this.applyChartChanges()}></ion-input>
+          onIonChange={() => this.applyChartChanges()}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -273,7 +273,8 @@ export class AppEditSlideChart {
           onIonChange={(e: CustomEvent) => this.toggleYAxisDomain(e)}
           interface="popover"
           mode="md"
-          class="ion-padding-start ion-padding-end">
+          class="ion-padding-start ion-padding-end"
+        >
           <ion-select-option value="max">{i18n.state.editor.max}</ion-select-option>
           <ion-select-option value="extent">{i18n.state.editor.extent}</ion-select-option>
         </ion-select>
@@ -288,7 +289,8 @@ export class AppEditSlideChart {
           placeholder={i18n.state.editor.custom_number_ticks}
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleTicksInput(e)}
-          onIonChange={() => this.applyChartChanges()}></ion-input>
+          onIonChange={() => this.applyChartChanges()}
+        ></ion-input>
       </ion-item>
     ];
   }

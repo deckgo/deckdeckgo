@@ -1,16 +1,12 @@
+import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
-import settingsStore from '../../../../../../stores/settings.store';
 import i18n from '../../../../../../stores/i18n.store';
+import settingsStore from '../../../../../../stores/settings.store';
 import undoRedoStore from '../../../../../../stores/undo-redo.store';
-
-import {SlotType} from '../../../../../../types/editor/slot-type';
-import {ListStyle} from '../../../../../../types/editor/list-style';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-
-import {ListUtils} from '../../../../../../utils/editor/list.utils';
-import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
+import {ListStyle} from '../../../../../../types/editor/list-style';
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
+import {ListUtils} from '../../../../../../utils/editor/list.utils';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
@@ -159,7 +155,8 @@ export class AppList {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.list}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({list: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({list: $event.detail})}
+      >
         <ion-label slot="title">{i18n.state.editor.list}</ion-label>
 
         <ion-list>
@@ -172,7 +169,8 @@ export class AppList {
               onIonChange={($event: CustomEvent) => this.setListType($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               <ion-select-option value={SlotType.OL}>{i18n.state.editor.ordered}</ion-select-option>
               <ion-select-option value={SlotType.UL}>{i18n.state.editor.unordered}</ion-select-option>
             </ion-select>
@@ -188,7 +186,8 @@ export class AppList {
               onIonChange={($event: CustomEvent) => this.setListStyle($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               {this.listType === SlotType.OL ? this.renderOrderedStyles() : this.renderUnorderedStyles()}
             </ion-select>
           </ion-item>
@@ -199,7 +198,8 @@ export class AppList {
               placeholder="list-style-type"
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={() => this.updateLetterSpacingCSS()}></ion-input>
+              onIonChange={() => this.updateLetterSpacingCSS()}
+            ></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

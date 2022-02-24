@@ -1,5 +1,4 @@
 import {createStore} from '@stencil/store';
-
 import {BreadcrumbsStep} from '../types/editor/breadcrumbs-step';
 
 interface DeckEditorStore {

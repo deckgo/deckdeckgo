@@ -1,10 +1,7 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {DemoAction} from '../../../types/editor/demo-action';
-
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import {DemoAction} from '../../../types/editor/demo-action';
 
 @Component({
   tag: 'app-demo',
@@ -80,7 +77,8 @@ export class AppDemo {
               value={this.demoSrc}
               placeholder={i18n.state.editor.enter_demo_url}
               debounce={500}
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+            ></ion-input>
           </ion-item>
         </ion-list>
 
@@ -91,7 +89,8 @@ export class AppDemo {
           color="dark"
           shape="round"
           onClick={() => this.save()}
-          class="ion-margin-top">
+          class="ion-margin-top"
+        >
           <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
       </ion-content>

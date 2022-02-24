@@ -1,28 +1,16 @@
-import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
-
-import {loadingController} from '@ionic/core';
-
-import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
+import {AuthUser, Doc, formatDate, Paragraph, throwError} from '@deckdeckgo/editor';
+import {getEdit} from '@deckdeckgo/offline';
+import {ParseParagraphsUtils} from '@deckdeckgo/studio';
+import {ChartEvents, docs, getParagraph, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
-
-import i18n from '../../../stores/i18n.store';
-import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
-import syncStore from '../../../stores/sync.store';
-
+import {loadingController} from '@ionic/core';
+import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
-
-import {ImageEvents} from '../../../events/core/image/image.events';
-import {ChartEvents} from '../../../events/core/chart/chart.events';
-
+import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
+import syncStore from '../../../stores/sync.store';
 import {Editor} from '../../../types/editor/editor';
-
-import {getEdit} from '../../../utils/editor/editor.utils';
-import {ParseParagraphsUtils} from '../../../utils/editor/parse-paragraphs.utils';
 import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
-
-import {docs} from '../../../providers/data/doc/doc.provider';
-import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
 
 interface DocAndParagraphs {
   doc: Doc;
@@ -47,7 +35,7 @@ export class AppDocs implements ComponentInterface {
 
   private readonly debounceLoading: () => void = debounce(() => (this.loading = false), 750);
 
-  private imageEvents: ImageEvents = new ImageEvents();
+  private imageEvents: ImageLoadEvents = new ImageLoadEvents();
   private chartEvents: ChartEvents = new ChartEvents();
 
   private destroyListener;
@@ -89,7 +77,7 @@ export class AppDocs implements ComponentInterface {
       this.docs = await this.fetchFirstParagraphs(userDocs);
       this.filterDocs(null);
     } catch (err) {
-      errorStore.state.error = 'Cannot init your dashboard.';
+      throwError('Cannot init your dashboard.');
     }
 
     this.debounceLoading();
@@ -122,7 +110,7 @@ export class AppDocs implements ComponentInterface {
     const parsedParagraphs: JSX.IntrinsicElements[] = await Promise.all(
       paragraphs
         .filter((paragraph: Paragraph | undefined) => paragraph !== undefined)
-        .map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}))
+        .map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}) as Promise<JSX.IntrinsicElements>)
     );
 
     return {
@@ -172,7 +160,7 @@ export class AppDocs implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.state.error = err;
+      throwError(err);
     }
 
     await loading.dismiss();

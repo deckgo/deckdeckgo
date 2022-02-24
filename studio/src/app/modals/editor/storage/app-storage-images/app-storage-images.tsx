@@ -1,14 +1,9 @@
-import {Component, Element, Listen, State, h} from '@stencil/core';
-
 import {StorageFile} from '@deckdeckgo/editor';
-
-import i18n from '../../../../stores/i18n.store';
-
-import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-
-import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
-
+import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
+import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
+import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
+import i18n from '../../../../stores/i18n.store';
 
 @Component({
   tag: 'app-storage-images',
@@ -107,7 +102,8 @@ export class AppStorageImages {
       <ion-content class="ion-padding">
         <app-storage-files
           folder={'images'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-storage-files>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}
+        ></app-storage-files>
 
         <input type="file" accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp" onChange={() => this.upload()} />
       </ion-content>,

@@ -1,6 +1,5 @@
-import {createStore} from '@stencil/store';
-
 import {UserSocial} from '@deckdeckgo/editor';
+import {createStore} from '@stencil/store';
 
 export interface ShareData {
   title: string;

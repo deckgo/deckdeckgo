@@ -1,10 +1,7 @@
-import {v4 as uuid} from 'uuid';
-
+import {Deck, deckSelector, Doc, docSelector, UserAsset} from '@deckdeckgo/editor';
+import {SlotType} from '@deckdeckgo/studio';
 import {get, getMany} from 'idb-keyval';
-
-import {Deck, deckSelector, docSelector, UserAsset, Doc} from '@deckdeckgo/editor';
-
-import {SlotType} from '../../types/editor/slot-type';
+import {v4 as uuid} from 'uuid';
 
 export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
   return getDeckImage();

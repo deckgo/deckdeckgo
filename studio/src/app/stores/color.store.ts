@@ -1,8 +1,6 @@
-import {createStore} from '@stencil/store';
-
-import {set} from 'idb-keyval';
-
 import {StyloPalette} from '@papyrs/stylo';
+import {createStore} from '@stencil/store';
+import {set} from 'idb-keyval';
 
 interface ColorStore {
   history: StyloPalette[];

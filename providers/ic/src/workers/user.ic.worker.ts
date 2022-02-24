@@ -1,6 +1,6 @@
 import {Identity} from '@dfinity/agent';
 
-import {v4 as uuid} from 'uuid';
+import {nanoid} from 'nanoid';
 
 import {User, UserData} from '@deckdeckgo/editor';
 
@@ -77,7 +77,7 @@ const initUserData = async ({actor}: {actor: DataBucketActor}): Promise<User> =>
 const createUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
   const now: Date = new Date();
 
-  const id: string = uuid();
+  const id: string = nanoid();
 
   const data: UserData = {
     created_at: now,

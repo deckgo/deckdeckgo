@@ -1,6 +1,6 @@
-import {Component, ComponentInterface, h, Event, EventEmitter, State, Fragment, Prop} from '@stencil/core';
-
+import {Component, ComponentInterface, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import {signIn} from '../../providers/auth/auth.ic';
+import {IconDfinity} from '../icons/dfinity';
 
 @Component({
   tag: 'deckgo-ic-signin',
@@ -25,51 +25,66 @@ export class IcSignin implements ComponentInterface {
   @State()
   private signInInProgress: boolean = false;
 
+  @Event()
+  ddgSignInSuccess: EventEmitter<void>;
+
+  @Event()
+  ddgSignInError: EventEmitter<string | undefined>;
+
   private async signUserIn() {
     this.inProgress.emit(true);
     this.signInInProgress = true;
 
-    await signIn({onSuccess: this.signInSuccess, onError: this.signInError});
+    const signInSuccess: () => void = this.signInSuccess || (() => this.ddgSignInSuccess.emit());
+    const signInError: (err?: string) => void = this.signInError || ((err?: string) => this.ddgSignInError.emit(err));
+
+    await signIn({onSuccess: signInSuccess, onError: signInError});
   }
 
   render() {
     return (
-      <Fragment>
-        <div class="actions">{this.renderAction()}</div>
+      <Host>
+        <div class="actions">
+          {this.renderSpinner()}
+          {this.renderAction()}
+        </div>
 
         {this.renderTerms()}
-      </Fragment>
+      </Host>
     );
+  }
+
+  private renderSpinner() {
+    return <div class={`spinner ${!this.signInInProgress ? 'hidden' : ''}`}>
+      <slot name="spinner" />
+    </div>
   }
 
   private renderAction() {
     if (this.signInInProgress) {
-      return <ion-spinner color="medium"></ion-spinner>;
+      return undefined;
     }
 
     return (
-      <ion-button shape="round" color="dark" onClick={async () => await this.signUserIn()}>
-        <ion-icon
-          src={`${this.config.globalAssetsUrl}/icons/dfinity.svg`}
-          aria-label=""
-          aria-hidden={true}
-          slot="start"
-          lazy={true}></ion-icon>
-        <ion-label>{this.i18n.sign_in.internet_identity}</ion-label>
-      </ion-button>
+      <button onClick={async () => await this.signUserIn()}>
+        <IconDfinity />
+        {this.i18n?.sign_in.internet_identity}
+      </button>
     );
   }
 
   private renderTerms() {
+    const {terms, privacy} = this.config || {};
+
     return (
-      <p class="ion-text-center ion-margin terms">
+        <p class="terms">
         By continuing, you are indicating that you accept our{' '}
-        <a href="https://deckdeckgo.com/terms" rel="noopener norefferer" target="_blank">
-          <ion-label>{this.i18n.links.terms_of_use}</ion-label>
+        <a href={terms} rel="noopener norefferer" target="_blank">
+          {this.i18n?.links.terms_of_use}
         </a>{' '}
         and{' '}
-        <a href="https://deckdeckgo.com/privacy" rel="noopener norefferer" target="_blank">
-          <ion-label>{this.i18n.links.privacy_policy}</ion-label>
+        <a href={privacy} rel="noopener norefferer" target="_blank">
+          {this.i18n?.links.privacy_policy}
         </a>
         .
       </p>

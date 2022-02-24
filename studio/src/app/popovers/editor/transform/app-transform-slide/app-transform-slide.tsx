@@ -1,10 +1,7 @@
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
-
-import i18n from '../../../../stores/i18n.store';
-
-import {InitTemplate} from '../../../../utils/editor/create-slides.utils';
-
 import {AppTemplatesFixed} from '../../../../components/editor/deck/slide/templates/platform/app-templates-fixed/app-templates-fixed';
+import i18n from '../../../../stores/i18n.store';
+import {InitTemplate} from '../../../../utils/editor/create-slides.utils';
 
 @Component({
   tag: 'app-transform-slide',

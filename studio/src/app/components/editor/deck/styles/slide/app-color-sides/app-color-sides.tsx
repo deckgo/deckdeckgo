@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import i18n from '../../../../../../stores/i18n.store';
-
 import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
@@ -114,7 +112,8 @@ export class AppColorSides {
               onIonChange={($event: CustomEvent) => this.selectApplyType($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               <ion-select-option value={ApplyColorType.FONT}>{i18n.state.editor.font}</ion-select-option>
               <ion-select-option value={ApplyColorType.BACKGROUND}>{i18n.state.editor.background}</ion-select-option>
             </ion-select>
@@ -133,7 +132,8 @@ export class AppColorSides {
               onIonChange={($event: CustomEvent) => this.toggleSide($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               <ion-select-option value={ApplyColorSide.START}>{i18n.state.editor.start}</ion-select-option>
               <ion-select-option value={ApplyColorSide.END}>{i18n.state.editor.end}</ion-select-option>
             </ion-select>
@@ -148,7 +148,8 @@ export class AppColorSides {
           ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           initColor={this.initColor}
           onResetColor={() => this.resetColor()}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
+        ></app-color>
       </app-expansion-panel>
     );
   }

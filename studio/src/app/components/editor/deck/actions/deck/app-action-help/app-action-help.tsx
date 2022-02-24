@@ -1,9 +1,6 @@
-import {Component, h, Element, Prop, Event, EventEmitter} from '@stencil/core';
-
 import {popoverController} from '@ionic/core';
-
+import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
@@ -45,7 +42,8 @@ export class AppActionHelp {
           onTouchStart={($event) => $event.stopPropagation()}
           aria-label={i18n.state.editor.help}
           onClick={($event: UIEvent) => this.openGetHelp($event)}
-          class="get-help-action ion-activatable">
+          class="get-help-action ion-activatable"
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="help" ariaLabel="" ariaHidden={true}></AppIcon>
           <ion-label aria-hidden="true">{i18n.state.editor.help}</ion-label>

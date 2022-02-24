@@ -1,13 +1,10 @@
-import {Component, Element, Event, EventEmitter, Host, h, Prop, State} from '@stencil/core';
-
-import settingsStore from '../../../../stores/settings.store';
+import {Component, Element, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
+import {ImageHelper} from '../../../../helpers/editor/image.helper';
 import i18n from '../../../../stores/i18n.store';
-
-import {TargetElement} from '../../../../types/editor/target-element';
+import settingsStore from '../../../../stores/settings.store';
 import {ImageAction} from '../../../../types/editor/image-action';
 import {SelectedTarget} from '../../../../types/editor/selected-target';
-
-import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import {TargetElement} from '../../../../types/editor/target-element';
 
 @Component({
   tag: 'app-element-style',
@@ -148,7 +145,8 @@ export class AppElementStyle {
         sides={this.selectedTarget.slide?.author || this.selectedTarget.slide?.split}
         wordCloud={this.selectedTarget.element?.wordCloud}
         transition={transition}
-        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
+        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}
+      ></app-select-target-element>
     );
   }
 
@@ -163,14 +161,16 @@ export class AppElementStyle {
       return (
         <app-color-word-cloud
           selectedTarget={this.selectedTarget.target}
-          onWordCloudDidChange={() => this.emitStyleChange()}></app-color-word-cloud>
+          onWordCloudDidChange={() => this.emitStyleChange()}
+        ></app-color-word-cloud>
       );
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (
         <app-color-sides
           selectedTarget={this.selectedTarget.target}
           template={this.selectedTarget.slide?.author ? 'author' : 'split'}
-          onColorChange={() => this.emitStyleChange()}></app-color-sides>
+          onColorChange={() => this.emitStyleChange()}
+        ></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return this.renderBackground();
@@ -180,7 +180,8 @@ export class AppElementStyle {
       return [
         <app-image-style
           selectedTarget={this.selectedTarget.target}
-          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>,
+          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}
+        ></app-image-style>,
         this.renderBlock()
       ];
     } else {
@@ -192,7 +193,8 @@ export class AppElementStyle {
           key={'text'}
           selectedTarget={this.selectedTarget.target}
           slide={this.selectedTarget.type === 'slide'}
-          onColorChange={() => this.emitStyleChange()}></app-color-text-background>
+          onColorChange={() => this.emitStyleChange()}
+        ></app-color-text-background>
       ];
     }
   }
@@ -216,7 +218,8 @@ export class AppElementStyle {
         colorType={'background'}
         slide={this.selectedTarget.type === 'slide'}
         selectedTarget={this.selectedTarget.target}
-        onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
+        onColorChange={() => this.emitStyleChange()}
+      ></app-color-text-background>,
       this.renderImage()
     ];
 
@@ -241,7 +244,8 @@ export class AppElementStyle {
       <app-image-choice
         selectedTarget={this.selectedTarget.target}
         deck={true}
-        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image-choice>
+        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
+      ></app-image-choice>
     );
   }
 
@@ -254,7 +258,8 @@ export class AppElementStyle {
       <app-list
         selectedTarget={this.selectedTarget.target}
         onToggleList={() => this.closePopover()}
-        onListStyleChanged={() => this.emitStyleChange()}></app-list>
+        onListStyleChanged={() => this.emitStyleChange()}
+      ></app-list>
     );
   }
 }

@@ -1,21 +1,16 @@
-import {Component, h, Fragment, Element, Prop} from '@stencil/core';
-
+import {throwError} from '@deckdeckgo/editor';
+import {clearEdit} from '@deckdeckgo/offline';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
-
-import authStore from '../../../../stores/auth.store';
-import userStore from '../../../../stores/user.store';
-import i18n from '../../../../stores/i18n.store';
-import errorStore from '../../../../stores/error.store';
-import syncStore from '../../../../stores/sync.store';
-import offlineStore from '../../../../stores/offline.store';
-
-import {signIn} from '../../../../utils/core/signin.utils';
-
-import {AppIcon} from '../../app-icon/app-icon';
-
+import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
+import authStore from '../../../../stores/auth.store';
+import i18n from '../../../../stores/i18n.store';
+import offlineStore from '../../../../stores/offline.store';
+import syncStore from '../../../../stores/sync.store';
+import userStore from '../../../../stores/user.store';
 import {cloud} from '../../../../utils/core/environment.utils';
+import {signIn} from '../../../../utils/core/signin.utils';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-navigation-end',
@@ -46,7 +41,7 @@ export class AppNavigationEnd {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
   }
 
@@ -68,7 +63,7 @@ export class AppNavigationEnd {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
 
     this.loadInput.value = null;
@@ -104,7 +99,7 @@ export class AppNavigationEnd {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data.';
+      throwError('Something went wrong while cleaning the local data.');
     }
 
     await loading.dismiss();
@@ -150,7 +145,8 @@ export class AppNavigationEnd {
           class="ion-activatable"
           onClick={($event: UIEvent) => this.selectType($event)}
           disabled={disabled}
-          aria-label={i18n.state.tools.new_presentation}>
+          aria-label={i18n.state.tools.new_presentation}
+        >
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -213,7 +209,8 @@ export class AppNavigationEnd {
             key="user-menu-action"
             class="ion-activatable"
             onClick={(e: UIEvent) => this.openMenu(e)}
-            aria-label={i18n.state.nav.menu}>
+            aria-label={i18n.state.nav.menu}
+          >
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
             <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
@@ -253,7 +250,8 @@ export class AppNavigationEnd {
         key="cloud-status-action"
         class={`cloud ion-activatable ${syncStore.state.sync}`}
         aria-label={label}
-        onClick={($event: UIEvent) => this.openSyncInfo($event)}>
+        onClick={($event: UIEvent) => this.openSyncInfo($event)}
+      >
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name={iconName} ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.sync.cloud}</ion-label>

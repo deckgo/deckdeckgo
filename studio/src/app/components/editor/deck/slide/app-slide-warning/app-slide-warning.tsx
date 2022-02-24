@@ -1,18 +1,12 @@
-import {Component, h, Host, Listen, State} from '@stencil/core';
-
-import {popoverController} from '@ionic/core';
-
-import {debounce} from '@deckdeckgo/utils';
 import {selectSlide} from '@deckdeckgo/editor';
-
+import {SlotUtils} from '@deckdeckgo/studio';
+import {debounce} from '@deckdeckgo/utils';
+import {popoverController} from '@ionic/core';
+import {Component, h, Host, Listen, State} from '@stencil/core';
 import i18n from '../../../../../stores/i18n.store';
-
 import settingsStore from '../../../../../stores/settings.store';
-
 import {ContrastUtils} from '../../../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../../../utils/editor/node.utils';
-import {SlotUtils} from '../../../../../utils/editor/slot.utils';
-
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({
@@ -224,7 +218,8 @@ export class AppSlideWarning {
       <Host
         class={{
           warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow
-        }}>
+        }}
+      >
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
           {this.renderMsg()}

@@ -1,6 +1,5 @@
 import undoRedoStore from '../../stores/undo-redo.store';
-
-import {UndoRedoChange, UndoRedoDeckChangeAttribute, UndoRedoDeckInputElement, UndoRedoDeckChangeStyle} from '../../types/editor/undo-redo';
+import {UndoRedoChange, UndoRedoDeckChangeAttribute, UndoRedoDeckChangeStyle, UndoRedoDeckInputElement} from '../../types/editor/undo-redo';
 
 export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoDeckChangeAttribute) => {
   if (!undoRedoStore.state.undo) {

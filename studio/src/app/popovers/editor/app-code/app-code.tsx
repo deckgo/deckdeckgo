@@ -1,15 +1,10 @@
-import {Component, Element, EventEmitter, Prop, State, h, Fragment} from '@stencil/core';
-
 import type {OverlayEventDetail} from '@ionic/core';
 import {alertController, modalController} from '@ionic/core';
-
-import i18n from '../../../stores/i18n.store';
-
-import {getCodeLanguage} from '../../../utils/editor/prism.utils';
-
-import {PrismLanguage} from '../../../types/editor/prism-language';
-
+import {Component, Element, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
+import {PrismLanguage} from '../../../types/editor/prism-language';
+import {getCodeLanguage} from '../../../utils/editor/prism.utils';
 
 @Component({
   tag: 'app-code',
@@ -168,7 +163,8 @@ export class AppCode {
               placeholder={i18n.state.editor.highlight_lines}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={() => this.highlightSelectedLines()}></ion-input>
+              onIonChange={() => this.highlightSelectedLines()}
+            ></ion-input>
           </ion-item>
 
           <ion-item class="ion-margin-top ion-margin-bottom">
@@ -176,7 +172,8 @@ export class AppCode {
             <ion-checkbox
               slot="end"
               checked={this.lineNumbers}
-              onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
+              onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}
+            ></ion-checkbox>
           </ion-item>
         </ion-list>
       </Fragment>

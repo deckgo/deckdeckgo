@@ -1,12 +1,9 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import {SlideChartType} from '@deckdeckgo/editor';
 import {hexToRgb} from '@deckdeckgo/utils';
-
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
-import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 import {ChartUtils} from '../../../../../../utils/editor/chart.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
   FILL,
@@ -157,7 +154,8 @@ export class AppColorDeckSlide {
               onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               {this.renderColorOptions()}
             </ion-select>
           </ion-item>
@@ -176,7 +174,8 @@ export class AppColorDeckSlide {
               onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end">
+              class="ion-padding-start ion-padding-end"
+            >
               {this.renderChartIndexes()}
             </ion-select>
           </ion-item>
@@ -190,7 +189,8 @@ export class AppColorDeckSlide {
           ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           initColor={this.initColor}
           onResetColor={() => this.resetColor()}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
+        ></app-color>
       </app-expansion-panel>
     );
   }

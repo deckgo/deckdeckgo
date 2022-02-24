@@ -1,5 +1,4 @@
-import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
-
+import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 
 @Component({
@@ -73,7 +72,8 @@ export class AppMath {
             maxlength={254}
             placeholder="A collection of custom macros. Property with a name like \\name which maps to a string that describes the expansion."
             onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleMacrosInput($event)}
-            onIonChange={() => this.applyMacrosInput()}></ion-textarea>
+            onIonChange={() => this.applyMacrosInput()}
+          ></ion-textarea>
         </ion-item>
       </ion-list>
     ];

@@ -1,32 +1,21 @@
-import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
-
-import {loadingController} from '@ionic/core';
-
-import {convertStyle} from '@deckdeckgo/editor';
+import {AuthUser, convertStyle, Deck, formatDate, Slide, throwError} from '@deckdeckgo/editor';
+import {getEdit} from '@deckdeckgo/offline';
+import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
-
-import {Deck, Slide, AuthUser, formatDate} from '@deckdeckgo/editor';
-
-import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
-import i18n from '../../../stores/i18n.store';
-import syncStore from '../../../stores/sync.store';
-
-import {Editor} from '../../../types/editor/editor';
-
-import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
-import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
-import {TemplateUtils} from '../../../utils/editor/template.utils';
-import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
-import {getEdit} from '../../../utils/editor/editor.utils';
-
+import {loadingController} from '@ionic/core';
+import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
+import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
-
-import {ImageEvents} from '../../../events/core/image/image.events';
-import {ChartEvents} from '../../../events/core/chart/chart.events';
-import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
+import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
+import syncStore from '../../../stores/sync.store';
+import {Editor} from '../../../types/editor/editor';
+import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
+import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
+import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
+import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -59,7 +48,7 @@ export class AppDecks implements ComponentInterface {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private imageEvents: ImageEvents = new ImageEvents();
+  private imageEvents: ImageLoadEvents = new ImageLoadEvents();
   private chartEvents: ChartEvents = new ChartEvents();
 
   private destroyListener;
@@ -96,7 +85,7 @@ export class AppDecks implements ComponentInterface {
       this.decks = await this.fetchFirstSlides(userDecks);
       this.filterDecks(null);
     } catch (err) {
-      errorStore.state.error = 'Cannot init your dashboard.';
+      throwError('Cannot init your dashboard.');
     }
 
     this.debounceLoading();
@@ -204,7 +193,7 @@ export class AppDecks implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.state.error = err;
+      throwError(err);
     }
 
     await loading.dismiss();
@@ -332,7 +321,8 @@ export class AppDecks implements ComponentInterface {
           data={{deck: deck.deck}}
           disableDelete={deck.deck.id === this.currentDeckId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}
+        ></app-dashboard-actions>
       </aside>
     );
   }
@@ -345,7 +335,8 @@ export class AppDecks implements ComponentInterface {
         direction="horizontal"
         direction-mobile="horizontal"
         style={deck.style}
-        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
+        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}
+      >
         {deck.slide}
         {deck.background}
         {deck.header}

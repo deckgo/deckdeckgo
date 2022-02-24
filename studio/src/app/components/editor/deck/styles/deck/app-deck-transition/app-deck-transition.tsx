@@ -1,10 +1,7 @@
-import {Component, Element, Event, EventEmitter, Prop, h, State} from '@stencil/core';
-
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import editorStore from '../../../../../../stores/editor.store';
 import i18n from '../../../../../../stores/i18n.store';
-
 import {DeckAction} from '../../../../../../types/editor/deck-action';
-
 import {setAttribute} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
@@ -337,7 +334,8 @@ export class AppDeckTransition {
           animation={animation}
           direction={direction}
           directionMobile={directionMobile}
-          class={`showcase-${showcase}`}>
+          class={`showcase-${showcase}`}
+        >
           {this.renderItems(text, showcase === 'direction' ? 4 : 2, selected, showcase)}
         </deckgo-deck>
       </div>
@@ -367,7 +365,8 @@ export class AppDeckTransition {
             '--color': !selected
               ? 'inherit'
               : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`
-          }}>
+          }}
+        >
           <p slot="title">{text}</p>
         </deckgo-slide-title>
       );

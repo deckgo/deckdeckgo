@@ -1,9 +1,13 @@
-import type {ItemReorderEventDetail} from '@ionic/core';
-
-import {debounce} from '@deckdeckgo/utils';
-import {selectSlide, now} from '@deckdeckgo/editor';
-
+import {isSlide} from '@deckdeckgo/deck-utils';
 import {
+  cleanNode,
+  Deck,
+  DeckAttributes,
+  DeckData,
+  elementIndex,
+  isElementNode,
+  now,
+  selectSlide,
   Slide,
   SlideAttributes,
   SlideAttributesYAxisDomain,
@@ -11,34 +15,22 @@ import {
   SlideData,
   SlideScope,
   SlideSplitType,
-  SlideTemplate,
-  Deck,
-  DeckAttributes,
-  DeckData,
-  elementIndex,
-  cleanNode,
-  isElementNode
+  SlideTemplate
 } from '@deckdeckgo/editor';
-
-import {isSlide} from '@deckdeckgo/deck-utils';
-
-import editorStore from '../../../stores/editor.store';
-import errorStore from '../../../stores/error.store';
-import busyStore from '../../../stores/busy.store';
-import authStore from '../../../stores/auth.store';
-
+import {ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
+import {debounce} from '@deckdeckgo/utils';
+import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
-
-import {SlotUtils} from '../../../utils/editor/slot.utils';
-import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
-import {SlideUtils} from '../../../utils/editor/slide.utils';
-import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
-
 import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
 import {publishUrl} from '../../../providers/publish/publish.provider';
-
 import {DeckAction} from '../../../types/editor/deck-action';
+import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
+import {SlideUtils} from '../../../utils/editor/slide.utils';
+import {throwError} from '@deckdeckgo/editor';
+import busyStore from '../../../stores/busy.store';
+import editorStore from '../../../stores/editor.store';
+import authStore from '../../../stores/auth.store';
 
 export class DeckDataEvents {
   private mainRef: HTMLElement;
@@ -230,7 +222,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -355,7 +347,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -394,7 +386,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -430,7 +422,7 @@ export class DeckDataEvents {
 
       busyStore.state.busy = false;
     } catch (err) {
-      errorStore.state.error = err;
+      throwError(err);
       busyStore.state.busy = false;
     }
   }
@@ -444,7 +436,7 @@ export class DeckDataEvents {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.state.error = 'Slide is not defined';
+          throwError('Slide is not defined');
           resolve();
           return;
         }
@@ -478,7 +470,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -494,7 +486,7 @@ export class DeckDataEvents {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.state.error = 'Slide is not defined';
+          throwError('Slide is not defined');
           resolve();
           return;
         }
@@ -526,7 +518,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }

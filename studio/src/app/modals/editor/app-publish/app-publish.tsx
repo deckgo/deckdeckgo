@@ -1,17 +1,12 @@
-import {Component, Element, Listen, h, State} from '@stencil/core';
-
-import {Deck, Doc} from '@deckdeckgo/editor';
-
-import i18n from '../../../stores/i18n.store';
-import editorStore from '../../../stores/editor.store';
-
+import {Deck} from '@deckdeckgo/editor';
+import {snapshotDoc} from '@deckdeckgo/sync';
+import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
-
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
-
-import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
-import {snapshotDoc} from '../../../providers/data/doc/doc.provider';
 import {updatePublishedDeckOffline, updatePublishedDocOffline} from '../../../providers/publish/publish.provider';
+import editorStore from '../../../stores/editor.store';
+import i18n from '../../../stores/i18n.store';
+import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 
 @Component({
   tag: 'app-publish',
@@ -36,10 +31,7 @@ export class AppPublish {
 
   private initSnapshot(): Promise<() => void | undefined> {
     if (editorStore.state.doc !== null) {
-      return snapshotDoc({
-        docId: editorStore.state.doc.id,
-        onNext: (snapshot: Doc) => (editorStore.state.doc = {...snapshot})
-      });
+      return snapshotDoc();
     }
 
     return snapshotDeck({

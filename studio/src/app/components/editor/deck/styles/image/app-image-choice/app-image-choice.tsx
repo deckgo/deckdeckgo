@@ -1,14 +1,10 @@
-import {Component, Element, Prop, h, EventEmitter, Event} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
-import settingsStore from '../../../../../../stores/settings.store';
+import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
+import settingsStore from '../../../../../../stores/settings.store';
+import {Expanded} from '../../../../../../types/core/settings';
 import {EditAction} from '../../../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../../../types/editor/image-action';
-import {Expanded} from '../../../../../../types/core/settings';
-
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {AppAssetChoice} from '../../../../common/app-asset-choice/app-asset-choice';
 
@@ -57,14 +53,16 @@ export class AppImageChoice {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.image}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({image: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({image: $event.detail})}
+      >
         <ion-label slot="title">{i18n.state.editor.images}</ion-label>
 
         <div class="image-actions ion-margin">
           <AppAssetChoice
             selectAction={async (action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile | Waves) =>
               await this.selectAction(action, image)
-            }></AppAssetChoice>
+            }
+          ></AppAssetChoice>
           {this.renderWaves()}
           {this.renderDeleteAction()}
         </div>
@@ -74,7 +72,8 @@ export class AppImageChoice {
           deck={this.deck}
           onSelectImage={async ($event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile | Waves>) =>
             await this.selectImageFromHistory($event)
-          }></app-image-history>
+          }
+        ></app-image-history>
       </app-expansion-panel>
     );
   }

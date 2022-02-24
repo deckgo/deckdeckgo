@@ -1,8 +1,6 @@
 import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil/core';
-
-import i18n from '../../../stores/i18n.store';
-
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-poll-options',
@@ -243,7 +241,8 @@ export class AppPollOptions {
               placeholder={i18n.state.editor.enter_question}
               debounce={500}
               disabled={this.editDisabled}
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleQuestionInput(e)}></ion-input>
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleQuestionInput(e)}
+            ></ion-input>
           </ion-item>
 
           <h2>Answers</h2>
@@ -273,7 +272,8 @@ export class AppPollOptions {
             placeholder={`Enter answer ${i + 1}`}
             debounce={500}
             disabled={this.editDisabled}
-            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAnswerInput(e, i)}></ion-input>
+            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAnswerInput(e, i)}
+          ></ion-input>
         </ion-item>
       );
     });

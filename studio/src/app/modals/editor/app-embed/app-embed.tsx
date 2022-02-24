@@ -1,12 +1,9 @@
+import {throwError} from '@deckdeckgo/editor';
 import {Component, Element, h, Listen, State} from '@stencil/core';
-
-import editorStore from '../../../stores/editor.store';
-import errorStore from '../../../stores/error.store';
-import i18n from '../../../stores/i18n.store';
-
-import {publishUrl} from '../../../providers/publish/publish.provider';
-
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {publishUrl} from '../../../providers/publish/publish.provider';
+import editorStore from '../../../stores/editor.store';
+import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-embed',
@@ -61,7 +58,7 @@ export class AppEmbed {
     try {
       await navigator.clipboard.writeText(this.embedCodeElement.value);
     } catch (err) {
-      errorStore.state.error = "Well it seems that copy isn't supported by this browser";
+      throwError("Well it seems that copy isn't supported by this browser");
     }
   }
 
@@ -88,7 +85,8 @@ export class AppEmbed {
               value={this.embedCode}
               readonly={true}
               ref={(el) => (this.embedCodeElement = el as HTMLIonTextareaElement)}
-              onClick={() => this.selectEmbedCode()}></ion-textarea>
+              onClick={() => this.selectEmbedCode()}
+            ></ion-textarea>
           </ion-item>
         </ion-list>
 

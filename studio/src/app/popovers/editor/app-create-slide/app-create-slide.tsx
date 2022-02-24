@@ -1,19 +1,13 @@
-import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
-
+import {Deck, SlideAttributes, SlideScope, SlideTemplate, Template} from '@deckdeckgo/editor';
+import {SlotType} from '@deckdeckgo/studio';
 import type {SegmentChangeEventDetail} from '@ionic/core';
-
-import {SlideAttributes, SlideTemplate, SlideScope, Deck, Template} from '@deckdeckgo/editor';
-
-import editorStore from '../../../stores/editor.store';
+import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import authStore from '../../../stores/auth.store';
+import editorStore from '../../../stores/editor.store';
 import i18n from '../../../stores/i18n.store';
-
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
-
-import {SlotType} from '../../../types/editor/slot-type';
-
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-create-slide',
@@ -198,7 +192,8 @@ export class AppCreateSlide {
         onIonChange={($event: CustomEvent<SegmentChangeEventDetail>) =>
           (this.templatesCategory = $event?.detail?.value as 'default' | 'community' | 'user')
         }
-        disabled={this.composeTemplate !== undefined}>
+        disabled={this.composeTemplate !== undefined}
+      >
         <ion-segment-button mode="md" value="default">
           <ion-label>{i18n.state.editor.default}</ion-label>
         </ion-segment-button>
@@ -253,7 +248,8 @@ export class AppCreateSlide {
             template: $event.detail,
             scope: SlideScope.COMMUNITY
           })
-        }></app-templates-community>
+        }
+      ></app-templates-community>
     );
   }
 
@@ -270,7 +266,8 @@ export class AppCreateSlide {
       <app-templates-user
         class="container ion-margin-bottom"
         onSelectedTemplate={async ($event: CustomEvent<Template>) => await this.selectTemplateUser($event)}
-        onNavigateSignIn={() => this.closePopoverWithoutResults()}></app-templates-user>
+        onNavigateSignIn={() => this.closePopoverWithoutResults()}
+      ></app-templates-user>
     );
   }
 
@@ -293,7 +290,8 @@ export class AppCreateSlide {
         onAddSlideAuthor={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}
         onAddSlideAspectRatio={() => this.addSlide(SlideTemplate['ASPECT-RATIO'])}
         onComposeTemplate={($event: CustomEvent<InitTemplate>) => (this.composeTemplate = $event.detail)}
-        onSelectCharts={() => (this.composeTemplate = {template: SlideTemplate.CHART})}></app-templates-default>
+        onSelectCharts={() => (this.composeTemplate = {template: SlideTemplate.CHART})}
+      ></app-templates-default>
     );
   }
 
@@ -306,9 +304,8 @@ export class AppCreateSlide {
       return (
         <app-templates-charts
           class="container ion-margin-bottom"
-          onSelectedTemplate={($event: CustomEvent) =>
-            this.closePopover($event.detail?.template, null, $event.detail?.attributes)
-          }></app-templates-charts>
+          onSelectedTemplate={($event: CustomEvent) => this.closePopover($event.detail?.template, null, $event.detail?.attributes)}
+        ></app-templates-charts>
       );
     }
 
@@ -334,7 +331,8 @@ export class AppCreateSlide {
           highlight={true}
           highlightIndex={this.elements?.length}
           {...attr}
-          style={this.composeTemplate.style}></app-templates-content>
+          style={this.composeTemplate.style}
+        ></app-templates-content>
       );
     } else if (slideTemplate === SlideTemplate.SPLIT) {
       return <app-templates-split vertical={this.composeTemplate.attributes !== undefined} {...attr}></app-templates-split>;
@@ -358,7 +356,8 @@ export class AppCreateSlide {
       <app-slot-type
         skip={skip}
         slotTypes={slotTypes}
-        onSelectType={($event: CustomEvent<SlotType>) => this.selectSlideSlottedElements($event.detail)}></app-slot-type>
+        onSelectType={($event: CustomEvent<SlotType>) => this.selectSlideSlottedElements($event.detail)}
+      ></app-slot-type>
     );
   }
 

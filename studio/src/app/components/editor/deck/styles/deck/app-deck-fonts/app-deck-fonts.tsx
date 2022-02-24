@@ -1,9 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
-import i18n from '../../../../../../stores/i18n.store';
-
 import {FontsService} from '../../../../../../services/editor/fonts/fonts.service';
-
+import i18n from '../../../../../../stores/i18n.store';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
@@ -67,7 +64,8 @@ export class AppDeckFonts {
       <app-color-text-background
         selectedTarget={this.deckElement}
         deck={true}
-        onColorChange={() => this.fontsChange.emit()}></app-color-text-background>,
+        onColorChange={() => this.fontsChange.emit()}
+      ></app-color-text-background>,
       this.renderFonts()
     ];
   }

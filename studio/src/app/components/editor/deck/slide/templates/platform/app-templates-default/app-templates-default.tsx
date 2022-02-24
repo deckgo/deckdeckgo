@@ -1,21 +1,15 @@
-import {Component, Element, Event, EventEmitter, Fragment, h} from '@stencil/core';
-
 import {SlideAttributes, SlideSplitType, SlideTemplate, Template} from '@deckdeckgo/editor';
-
-import userStore from '../../../../../../../stores/user.store';
+import {Component, Element, Event, EventEmitter, Fragment, h} from '@stencil/core';
+import {EnvironmentDeckDeckGoConfig} from '../../../../../../../config/environment-config';
+import {EnvironmentConfigService} from '../../../../../../../services/environment/environment-config.service';
 import assetsStore from '../../../../../../../stores/assets.store';
 import i18n from '../../../../../../../stores/i18n.store';
 import offlineStore from '../../../../../../../stores/offline.store';
-
-import {InitTemplate} from '../../../../../../../utils/editor/create-slides.utils';
+import userStore from '../../../../../../../stores/user.store';
 import {tenor} from '../../../../../../../utils/core/environment.utils';
-
-import {EnvironmentConfigService} from '../../../../../../../services/environment/environment-config.service';
-
-import {EnvironmentDeckDeckGoConfig} from '../../../../../../../config/environment-config';
-
-import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
+import {InitTemplate} from '../../../../../../../utils/editor/create-slides.utils';
 import {AppIcon} from '../../../../../../core/app-icon/app-icon';
+import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
 
 @Component({
   tag: 'app-templates-default'
@@ -128,7 +122,8 @@ export class AppTemplatesDefault {
           class="showcase"
           poll-link={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').pollUrl}
           count-answers={3}
-          connectPollSocket={false}>
+          connectPollSocket={false}
+        >
           <p slot="question">{i18n.state.templates.poll}</p>
           <p slot="answer-1">{i18n.state.core.yes}</p>
           <p slot="answer-2">{i18n.state.core.no}</p>
@@ -154,7 +149,8 @@ export class AppTemplatesDefault {
           width={204}
           height={68}
           src={assetsStore.state.chart.lineCompareSrc}
-          custom-loader={true}>
+          custom-loader={true}
+        >
           <p slot="title">{i18n.state.templates.charts}</p>
         </deckgo-slide-chart>
       </div>
@@ -168,35 +164,43 @@ export class AppTemplatesDefault {
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/robot-solid.svg`}
             aria-label={i18n.state.shapes.robot}
-            class="robot"></deckgo-lazy-img>
+            class="robot"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/desktop-solid.svg`}
             aria-label={i18n.state.shapes.desktop}
-            class="desktop"></deckgo-lazy-img>
+            class="desktop"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
             aria-label={i18n.state.shapes.arrow}
-            class="arrow-start"></deckgo-lazy-img>
+            class="arrow-start"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/cloud-solid.svg`}
             aria-label={i18n.state.shapes.cloud}
-            class="cloud"></deckgo-lazy-img>
+            class="cloud"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
             aria-label={i18n.state.shapes.arrow}
-            class="arrow-end-top"></deckgo-lazy-img>
+            class="arrow-end-top"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
             aria-label={i18n.state.shapes.arrow}
-            class="arrow-end-bottom"></deckgo-lazy-img>
+            class="arrow-end-bottom"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/database-solid.svg`}
             aria-label={i18n.state.shapes.database}
-            class="database"></deckgo-lazy-img>
+            class="database"
+          ></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/envelope-solid.svg`}
             aria-label={i18n.state.shapes.envelope}
-            class="envelope"></deckgo-lazy-img>
+            class="envelope"
+          ></deckgo-lazy-img>
           <span>{i18n.state.templates.diagrams}</span>
         </deckgo-slide-aspect-ratio>
       </div>
@@ -276,7 +280,8 @@ export class AppTemplatesDefault {
               ? userStore.state.user.data.photo_url
               : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg'
           }
-          img-alt="Author">
+          img-alt="Author"
+        >
           <p slot="title">{i18n.state.templates.author}</p>
           <p slot="author">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
@@ -297,7 +302,8 @@ export class AppTemplatesDefault {
           content={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').website}
           img-src={`${
             EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
-          }/img/deckdeckgo-logo.svg`}>
+          }/img/deckdeckgo-logo.svg`}
+        >
           <p slot="title">{i18n.state.templates.qr_code}</p>
         </deckgo-slide-qrcode>
       </div>
@@ -309,7 +315,8 @@ export class AppTemplatesDefault {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.SPLIT, attributes: {type: SlideSplitType.DEMO}})}>
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.SPLIT, attributes: {type: SlideSplitType.DEMO}})}
+      >
         <deckgo-slide-split class="showcase" type="demo">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>

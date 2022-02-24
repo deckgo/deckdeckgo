@@ -1,7 +1,5 @@
-import {Component, Fragment, h, State} from '@stencil/core';
-
 import {AuthUser} from '@deckdeckgo/editor';
-
+import {Component, Fragment, h, State} from '@stencil/core';
 import authStore from '../../../stores/auth.store';
 
 @Component({

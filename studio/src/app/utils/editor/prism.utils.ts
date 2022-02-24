@@ -1,5 +1,4 @@
 import {DeckdeckgoHighlightCodeLanguage, deckdeckgoHighlightCodeLanguages} from '@deckdeckgo/highlight-code';
-
 import {PrismLanguage} from '../../types/editor/prism-language';
 
 export const filterCodeLanguages = (filter: string | undefined): PrismLanguage[] => {

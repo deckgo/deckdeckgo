@@ -1,10 +1,6 @@
+import {attributes as getAttributes, convertStyle, SlideTemplate} from '@deckdeckgo/editor';
 import {h, JSX} from '@stencil/core';
-
 import {v4 as uuid} from 'uuid';
-
-import {SlideTemplate, convertStyle} from '@deckdeckgo/editor';
-
-import {getAttributes} from './attributes.utils';
 import {InitTemplate} from './create-slides.utils';
 
 export class CloneSlideUtils {

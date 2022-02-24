@@ -1,15 +1,11 @@
-import {Component, h, Fragment, State, ComponentInterface} from '@stencil/core';
-
+import {ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
-
+import {Component, ComponentInterface, Fragment, h, State} from '@stencil/core';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
-
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
-
-import {ImageEvents} from '../../../events/core/image/image.events';
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-storage',
@@ -24,7 +20,7 @@ export class AppStorage implements ComponentInterface {
 
   private readonly debounceLoading: () => void;
 
-  private imageEvents: ImageEvents = new ImageEvents();
+  private imageEvents: ImageLoadEvents = new ImageLoadEvents();
 
   private storageFilesRef: HTMLAppStorageFilesElement | undefined;
 
@@ -83,7 +79,8 @@ export class AppStorage implements ComponentInterface {
           class="ion-padding-top ion-padding-bottom"
           folder={this.folder}
           admin={true}
-          ref={(el) => (this.storageFilesRef = el as HTMLAppStorageFilesElement)}></app-storage-files>
+          ref={(el) => (this.storageFilesRef = el as HTMLAppStorageFilesElement)}
+        ></app-storage-files>
       </Fragment>
     );
   }
@@ -98,7 +95,8 @@ export class AppStorage implements ComponentInterface {
             onIonChange={($event: CustomEvent) => (this.folder = $event.detail.value)}
             interface="popover"
             mode="md"
-            class="ion-padding-start ion-padding-end">
+            class="ion-padding-start ion-padding-end"
+          >
             <ion-select-option value="images">Images</ion-select-option>
             <ion-select-option value="data">Data</ion-select-option>
           </ion-select>

@@ -1,7 +1,5 @@
-import {del, get, set} from 'idb-keyval';
-
 import {StorageFile} from '@deckdeckgo/editor';
-
+import {del, get, set} from 'idb-keyval';
 import {uploadFile} from '../../providers/storage/storage.firebase';
 
 export const uploadLocalCharts = <T>({element, key, userId}: {element: HTMLElement; key: string; userId: string}): Promise<void> => {
@@ -79,7 +77,11 @@ export const uploadLocalImages = <T>({
 }): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = element.querySelectorAll('deckgo-lazy-img');
+      const childrenImages: NodeListOf<HTMLDeckgoLazyImgElement> = element.querySelectorAll('deckgo-lazy-img');
+      const nodeImage: HTMLDeckgoLazyImgElement | undefined =
+        element.nodeName.toLowerCase() === 'deckgo-lazy-img' ? (element as HTMLDeckgoLazyImgElement) : undefined;
+
+      const imgs: HTMLDeckgoLazyImgElement[] = [...Array.from(childrenImages), ...(nodeImage ? [nodeImage] : [])];
 
       if (!imgs || imgs.length <= 0) {
         resolve();

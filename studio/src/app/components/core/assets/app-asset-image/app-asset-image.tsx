@@ -1,6 +1,5 @@
-import {h, Component, Host, ComponentInterface, Prop, Listen, State, Fragment} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {Component, ComponentInterface, Fragment, h, Host, Listen, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'app-asset-image',
@@ -79,7 +78,8 @@ export class AppAssetImage implements ComponentInterface {
           href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={($event: UIEvent) => $event.stopPropagation()}>
+          onClick={($event: UIEvent) => $event.stopPropagation()}
+        >
           {photo.user.name}
         </a>
       </ion-label>

@@ -1,16 +1,12 @@
-import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-
 import type {RangeChangeEventDetail} from '@ionic/core';
-
-import settingsStore from '../../../../../../stores/settings.store';
+import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
-
-import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
-import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-
+import settingsStore from '../../../../../../stores/settings.store';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 import {SelectedTarget} from '../../../../../../types/editor/selected-target';
+import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-box-shadow'
@@ -255,7 +251,8 @@ export class AppBoxShadow {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.boxShadow}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({boxShadow: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({boxShadow: $event.detail})}
+      >
         <ion-label slot="title">{i18n.state.editor.box_shadow}</ion-label>
 
         <app-color
@@ -263,7 +260,8 @@ export class AppBoxShadow {
           class="ion-margin-top properties"
           initColor={this.initColor}
           onResetColor={() => this.resetBoxShadow()}
-          onColorDidChange={($event: CustomEvent<string>) => this.selectColor($event)}></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.selectColor($event)}
+        ></app-color>
 
         <ion-list class="properties">
           <ion-item-divider class="ion-padding-top">
@@ -279,7 +277,8 @@ export class AppBoxShadow {
               value={this.boxShadowProperties.get('hLength')}
               mode="md"
               disabled={!this.boxShadow}
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'hLength')}></ion-range>
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'hLength')}
+            ></ion-range>
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
@@ -294,7 +293,8 @@ export class AppBoxShadow {
               value={this.boxShadowProperties.get('vLength')}
               mode="md"
               disabled={!this.boxShadow}
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'vLength')}></ion-range>
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'vLength')}
+            ></ion-range>
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
@@ -309,9 +309,8 @@ export class AppBoxShadow {
               value={this.boxShadowProperties.get('blurRadius')}
               mode="md"
               disabled={!this.boxShadow}
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) =>
-                this.updateBoxShadowProperties($event, 'blurRadius')
-              }></ion-range>
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'blurRadius')}
+            ></ion-range>
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
@@ -326,9 +325,8 @@ export class AppBoxShadow {
               value={this.boxShadowProperties.get('spreadRadius')}
               mode="md"
               disabled={!this.boxShadow}
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) =>
-                this.updateBoxShadowProperties($event, 'spreadRadius')
-              }></ion-range>
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'spreadRadius')}
+            ></ion-range>
           </ion-item>
         </ion-list>
 
@@ -339,7 +337,8 @@ export class AppBoxShadow {
               placeholder="box-shadow"
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={async () => await this.updateLetterSpacingCSS()}></ion-input>
+              onIonChange={async () => await this.updateLetterSpacingCSS()}
+            ></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

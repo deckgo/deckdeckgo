@@ -1,9 +1,6 @@
 import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
-
 import i18n from '../../../../stores/i18n.store';
-
 import {EditAction} from '../../../../types/editor/edit-action';
-
 import {SelectedTarget} from '../../../../types/editor/selected-target';
 
 @Component({
@@ -63,14 +60,16 @@ export class AppEditSlide {
         <app-edit-slide-qrcode
           selectedTarget={this.selectedTarget.target}
           slideDidChange={this.slideDidChange}
-          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-qrcode>
+          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}
+        ></app-edit-slide-qrcode>
       );
     } else if (this.selectedTarget.slide?.chart) {
       return (
         <app-edit-slide-chart
           selectedTarget={this.selectedTarget.target}
           slideDidChange={this.slideDidChange}
-          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>
+          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}
+        ></app-edit-slide-chart>
       );
     } else if (this.selectedTarget.slide?.author) {
       return (

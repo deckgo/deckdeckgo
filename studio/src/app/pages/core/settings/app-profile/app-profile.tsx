@@ -1,32 +1,22 @@
-import {Component, Listen, State, h, Element, Fragment} from '@stencil/core';
-
+import {StorageFile, throwError, User} from '@deckdeckgo/editor';
+import {clearEdit} from '@deckdeckgo/offline';
+import {deleteAuth} from '@deckdeckgo/sync';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
-
-import {StorageFile} from '@deckdeckgo/editor';
-
-import {User} from '@deckdeckgo/editor';
-
-import errorStore from '../../../../stores/error.store';
-import navStore, {NavDirection} from '../../../../stores/nav.store';
-import authStore from '../../../../stores/auth.store';
-import userStore from '../../../../stores/user.store';
-import i18n from '../../../../stores/i18n.store';
-
-import {UserUtils} from '../../../../utils/core/user.utils';
-import {signIn} from '../../../../utils/core/signin.utils';
-import {renderI18n} from '../../../../utils/core/i18n.utils';
-import {firebase} from '../../../../utils/core/environment.utils';
-
-import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-
+import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
+import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
 import {updateUser} from '../../../../providers/data/user/user.provider';
 import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
-import {deleteAuth} from '../../../../providers/auth/auth.provider';
-
-import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
+import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
-import {clearEdit} from '../../../../utils/editor/editor.utils';
+import authStore from '../../../../stores/auth.store';
+import i18n from '../../../../stores/i18n.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
+import userStore from '../../../../stores/user.store';
+import {firebase} from '../../../../utils/core/environment.utils';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
+import {signIn} from '../../../../utils/core/signin.utils';
+import {UserUtils} from '../../../../utils/core/user.utils';
 
 @Component({
   tag: 'app-profile',
@@ -266,7 +256,7 @@ export class AppProfile {
 
         this.saving = false;
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         this.saving = false;
       }
 
@@ -389,8 +379,9 @@ export class AppProfile {
 
         resolve();
       } catch (err) {
-        errorStore.state.error =
-          "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
+        throwError(
+          "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email."
+        );
       }
     });
   }
@@ -491,7 +482,8 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
-          onIonChange={() => this.validateNameInput()}></ion-input>
+          onIonChange={() => this.validateNameInput()}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -515,7 +507,8 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
-          onIonChange={() => this.validateEmailInput()}></ion-input>
+          onIonChange={() => this.validateEmailInput()}
+        ></ion-input>
       </ion-item>,
       <div class="newsletter">
         <ion-label>{i18n.state.settings.newsletter}</ion-label>
@@ -524,7 +517,8 @@ export class AppProfile {
           value="pepperoni"
           checked={this.user && this.user.data ? this.user.data.newsletter : false}
           disabled={this.saving}
-          onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
+          onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}
+        ></ion-checkbox>
       </div>
     ];
   }
@@ -548,7 +542,8 @@ export class AppProfile {
           disabled={this.saving || !authStore.state.loggedIn}
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
-          onIonChange={() => this.validateUsernameInput()}></ion-input>
+          onIonChange={() => this.validateUsernameInput()}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -560,7 +555,8 @@ export class AppProfile {
         class="ion-margin-top"
         disabled={!this.valid || this.saving || !this.user || !authStore.state.loggedIn}
         color="primary"
-        shape="round">
+        shape="round"
+      >
         <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
@@ -575,7 +571,8 @@ export class AppProfile {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !authStore.state.authUser || !authStore.state.loggedIn}>
+        disabled={this.saving || !authStore.state.authUser || !authStore.state.loggedIn}
+      >
         <ion-label>{i18n.state.settings.delete_user}</ion-label>
       </ion-button>
     ];
@@ -618,7 +615,8 @@ export class AppProfile {
             disabled={this.saving || !authStore.state.loggedIn}
             maxlength={192}
             placeholder={i18n.state.settings.bio}
-            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSummaryInput(e)}></ion-textarea>
+            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSummaryInput(e)}
+          ></ion-textarea>
         </ion-item>
       </ion-list>
     );
@@ -654,7 +652,8 @@ export class AppProfile {
           maxlength={128}
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -676,7 +675,8 @@ export class AppProfile {
           maxlength={128}
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}></ion-input>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -698,7 +698,8 @@ export class AppProfile {
           maxlength={128}
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}></ion-input>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -720,7 +721,8 @@ export class AppProfile {
           maxlength={128}
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}></ion-input>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -742,7 +744,8 @@ export class AppProfile {
           maxlength={128}
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}></ion-input>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}
+        ></ion-input>
       </ion-item>
     ];
   }
@@ -767,7 +770,8 @@ export class AppProfile {
           maxlength={128}
           input-mode="text"
           disabled={this.saving || !authStore.state.loggedIn}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}
+        ></ion-input>
       </ion-item>,
 
       this.renderCustomLogo()
@@ -784,12 +788,14 @@ export class AppProfile {
           <deckgo-lazy-img
             slot="icon"
             img-src={this.user.data.social.custom_logo_url}
-            aria-label={i18n.state.settings.custom_logo}></deckgo-lazy-img>
+            aria-label={i18n.state.settings.custom_logo}
+          ></deckgo-lazy-img>
         ) : (
           <deckgo-lazy-img
             slot="icon"
             svg-src={`${this.config.globalAssetsUrl}/icons/ionicons/globe.svg`}
-            aria-label={i18n.state.settings.custom_logo}></deckgo-lazy-img>
+            aria-label={i18n.state.settings.custom_logo}
+          ></deckgo-lazy-img>
         )}
         <input
           id="inputCustomLogo"

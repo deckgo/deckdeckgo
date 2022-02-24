@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/ic
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/ic
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/ic
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/ic/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/LICENSE
 
 # DeckDeckGo - Internet Computer
 

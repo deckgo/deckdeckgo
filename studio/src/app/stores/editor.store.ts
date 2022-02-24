@@ -1,8 +1,7 @@
-import {createStore} from '@stencil/store';
-
 import {Deck, Doc} from '@deckdeckgo/editor';
-
-import {setEditDeckId, setEditDocId} from '../utils/editor/editor.utils';
+import {setEditDeckId} from '@deckdeckgo/offline';
+import {docSubscribe} from '@deckdeckgo/sync';
+import {createStore} from '@stencil/store';
 
 interface EditorStore {
   doc: Doc | null;
@@ -16,6 +15,10 @@ const {state, onChange, reset} = createStore<EditorStore>({
   deck: null,
   name: null,
   published: false
+});
+
+docSubscribe((doc: Doc | null) => {
+  state.doc = doc;
 });
 
 onChange('name', (name: string | null) => {
@@ -46,10 +49,6 @@ onChange('doc', (doc: Doc | null) => {
   }
 
   state.deck = null;
-
-  setEditDocId(doc.id).catch((err) => {
-    console.error('Failed to update IDB with new doc id', err);
-  });
 });
 
 export default {state, onChange, reset};

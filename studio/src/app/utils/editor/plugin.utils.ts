@@ -1,11 +1,8 @@
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {SlotType} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
-
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 import {createEmptyElement, StyloPluginCreateParagraphsParams, transformParagraph} from '@papyrs/stylo';
-
-import {SlotType} from '../../types/editor/slot-type';
-
 import {initDeckgoLazyImgAttributes} from './image.utils';
 
 export const createParagraphImage = ({

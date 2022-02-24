@@ -1,13 +1,9 @@
-import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment, Host} from '@stencil/core';
-
 import {isIPad, isMobile} from '@deckdeckgo/utils';
-
-import remoteStore from '../../../stores/remote.store';
-import i18n from '../../../stores/i18n.store';
-
-import {MoreAction} from '../../../types/editor/more-action';
-
+import {Component, Element, Event, EventEmitter, Fragment, h, Host, Prop, State} from '@stencil/core';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
+import i18n from '../../../stores/i18n.store';
+import remoteStore from '../../../stores/remote.store';
+import {MoreAction} from '../../../types/editor/more-action';
 
 @Component({
   tag: 'app-present',
@@ -79,7 +75,8 @@ export class AppRemoteRequest {
               mode="md"
               color="dark"
               checked={remoteStore.state.remote}
-              onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+              onIonChange={() => this.toggleRemoteEnabled()}
+            ></ion-toggle>
           </ion-item>
         </ion-list>
       </Host>
@@ -117,7 +114,8 @@ export class AppRemoteRequest {
           shape="round"
           class="ion-margin-bottom"
           disabled={!remoteStore.state.remote}
-          onClick={() => this.openPresenter()}>
+          onClick={() => this.openPresenter()}
+        >
           <ion-label>{i18n.state.editor.open_presenter_view}</ion-label>
         </ion-button>
       </Fragment>
@@ -138,7 +136,8 @@ export class AppRemoteRequest {
           size="small"
           shape="round"
           disabled={!remoteStore.state.remote}
-          onClick={() => this.closePopover(MoreAction.REMOTE)}>
+          onClick={() => this.closePopover(MoreAction.REMOTE)}
+        >
           <ion-label>{i18n.state.editor.connect}</ion-label>
         </ion-button>
       </Fragment>

@@ -1,6 +1,6 @@
 import {Identity} from '@dfinity/agent';
 
-import {v4 as uuid} from 'uuid';
+import {nanoid} from 'nanoid';
 
 import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
 
@@ -62,7 +62,7 @@ export const uploadFileIC = async ({
     filename: encodeFilename(data.name),
     folder,
     storageActor: actor,
-    token: uuid(),
+    token: nanoid(),
     headers: [['cache-control', 'private, max-age=0']]
   });
 

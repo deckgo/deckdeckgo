@@ -1,6 +1,5 @@
-import {createStore} from '@stencil/store';
-
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
+import {createStore} from '@stencil/store';
 
 interface RemoteStore {
   remote: boolean;

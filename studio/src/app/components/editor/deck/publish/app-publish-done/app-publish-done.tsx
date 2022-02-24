@@ -1,12 +1,9 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
-
-import editorStore from '../../../../../stores/editor.store';
 import authStore from '../../../../../stores/auth.store';
+import editorStore from '../../../../../stores/editor.store';
 import i18n from '../../../../../stores/i18n.store';
-
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 import {share} from '../../../../../utils/core/share.utils';
-
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({

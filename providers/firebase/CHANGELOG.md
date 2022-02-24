@@ -1,3 +1,13 @@
+# 4.0.0 (2022-02-22)
+
+### Features
+
+- update `docSelector` for new `studio` component
+
+### Fix
+
+- update images if paragraphs are themselves `deckgo-lazy-img`
+
 # 3.0.1 (2022-01-04)
 
 ### Fix

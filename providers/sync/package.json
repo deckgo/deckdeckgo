@@ -1,0 +1,32 @@
+{
+  "name": "@deckdeckgo/sync",
+  "version": "0.0.2",
+  "author": "David Dal Busco",
+  "description": "Sync data and auth providers for DeckDeckGo editors.",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git",
+    "directory": "providers/data"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "main": "lib/cjs/index.cjs.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
+  "scripts": {
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib/types",
+    "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration",
+    "format": "prettier . --write"
+  },
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "dependencies": {
+    "@deckdeckgo/offline": "^0.0.1",
+    "nanoid": "^3.3.1"
+  },
+  "devDependencies": {
+    "@deckdeckgo/editor": "^7.3.1"
+  }
+}

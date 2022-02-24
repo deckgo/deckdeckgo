@@ -1,7 +1,5 @@
-import {Component, ComponentInterface, h, Prop} from '@stencil/core';
-
 import {StorageFile} from '@deckdeckgo/editor';
-
+import {Component, ComponentInterface, h, Prop} from '@stencil/core';
 import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({

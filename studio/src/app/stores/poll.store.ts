@@ -1,6 +1,5 @@
-import {createStore} from '@stencil/store';
-
 import {DeckdeckgoPoll} from '@deckdeckgo/types';
+import {createStore} from '@stencil/store';
 
 interface PollStore {
   poll: DeckdeckgoPoll | undefined;

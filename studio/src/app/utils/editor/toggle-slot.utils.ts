@@ -1,6 +1,5 @@
+import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import {RevealSlotUtils} from './reveal-slot.utils';
-import {SlotType} from '../../types/editor/slot-type';
-import {SlotUtils} from './slot.utils';
 
 export class ToggleSlotUtils {
   static toggleSlotType(selectedTarget: HTMLElement, type: SlotType): Promise<HTMLElement> {

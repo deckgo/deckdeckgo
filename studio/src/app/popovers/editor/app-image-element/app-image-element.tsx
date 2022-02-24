@@ -1,7 +1,5 @@
-import {Component, Element, Prop, h} from '@stencil/core';
-
+import {Component, Element, h, Prop} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
-
 import {ImageAction} from '../../../types/editor/image-action';
 
 @Component({
@@ -36,7 +34,8 @@ export class AppImageElement {
       <app-image-choice
         selectedTarget={this.selectedTarget}
         slide={this.slide}
-        onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image-choice>
+        onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}
+      ></app-image-choice>
     ];
   }
 }

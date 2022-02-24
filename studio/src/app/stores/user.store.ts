@@ -1,6 +1,6 @@
-import {createStore} from '@stencil/store';
-
 import {User, UserSocial} from '@deckdeckgo/editor';
+import {userSubscribe} from '@deckdeckgo/sync';
+import {createStore} from '@stencil/store';
 
 interface UserStore {
   user: User | undefined;
@@ -15,6 +15,10 @@ const {state, onChange, reset} = createStore({
   name: undefined,
   social: undefined
 } as UserStore);
+
+userSubscribe((user: User | undefined) => {
+  state.user = user;
+});
 
 onChange('user', (user: User | undefined) => {
   state.photoUrl = user?.data?.photo_url ?? undefined;

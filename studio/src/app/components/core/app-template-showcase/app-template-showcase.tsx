@@ -1,11 +1,7 @@
-import {Component, Prop, h, State, Fragment} from '@stencil/core';
-
 import {Template, TemplateDataSlot} from '@deckdeckgo/editor';
-
+import {Component, Fragment, h, Prop, State} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
-
 import {TemplateUtils} from '../../../utils/editor/template.utils';
-
 import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
@@ -94,7 +90,8 @@ export class AppTemplateShowcase {
           href={this.template.data.author?.url}
           rel="noopener norefferer"
           target="_blank"
-          onClick={($event: UIEvent) => $event.stopPropagation()}>
+          onClick={($event: UIEvent) => $event.stopPropagation()}
+        >
           {this.template.data.author?.name}
         </a>
       </p>

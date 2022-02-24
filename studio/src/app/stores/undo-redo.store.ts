@@ -1,5 +1,4 @@
 import {createStore} from '@stencil/store';
-
 import {UndoRedoChange} from '../types/editor/undo-redo';
 
 interface UndoRedoStore {

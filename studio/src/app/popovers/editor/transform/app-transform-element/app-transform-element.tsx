@@ -1,11 +1,7 @@
-import {Component, Element, h, Prop, State} from '@stencil/core';
-
-import i18n from '../../../../stores/i18n.store';
-
-import {SlotType} from '../../../../types/editor/slot-type';
-
 import {SlideScope, Template, TemplateDataSlot} from '@deckdeckgo/editor';
-
+import {SlotType} from '@deckdeckgo/studio';
+import {Component, Element, h, Prop, State} from '@stencil/core';
+import i18n from '../../../../stores/i18n.store';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
 import {TemplateUtils} from '../../../../utils/editor/template.utils';
 
@@ -62,7 +58,8 @@ export class AppTransformElement {
       <app-slot-type
         selectedTarget={this.selectedTarget}
         slotTypes={this.slotTypes}
-        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>
+        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}
+      ></app-slot-type>
     ];
   }
 }

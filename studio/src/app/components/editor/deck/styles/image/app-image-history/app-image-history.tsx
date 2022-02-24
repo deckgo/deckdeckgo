@@ -1,9 +1,6 @@
-import {Component, EventEmitter, h, Prop, State, Event} from '@stencil/core';
-
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-
+import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import {ImageHistoryService} from '../../../../../../services/editor/image-history/image-history.service';
-
 import i18n from '../../../../../../stores/i18n.store';
 
 @Component({

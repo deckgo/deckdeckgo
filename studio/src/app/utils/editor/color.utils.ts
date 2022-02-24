@@ -1,5 +1,4 @@
 import {StyloPalette, StyloPaletteColor} from '@papyrs/stylo';
-
 import colorStore from '../../stores/color.store';
 
 export interface InitStyleColor {

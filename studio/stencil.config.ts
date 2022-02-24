@@ -1,12 +1,9 @@
+import replace from '@rollup/plugin-replace';
 import {Config} from '@stencil/core';
-
-// @ts-ignore
-import path from 'path';
+import {postcss} from '@stencil/postcss';
+import {sass} from '@stencil/sass';
 
 const autoprefixer = require('autoprefixer');
-import {sass} from '@stencil/sass';
-import {postcss} from '@stencil/postcss';
-import replace from '@rollup/plugin-replace';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;

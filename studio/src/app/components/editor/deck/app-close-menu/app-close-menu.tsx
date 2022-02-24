@@ -1,5 +1,4 @@
-import {Component, EventEmitter, h, Host, Event} from '@stencil/core';
-
+import {Component, Event, EventEmitter, h, Host} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
 import {AppIcon} from '../../../core/app-icon/app-icon';
 

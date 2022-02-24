@@ -1,13 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
-
-import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
-
-import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
-import {SettingsUtils} from '../../../../../utils/core/settings.utils';
-import {setStyle} from '../../../../../utils/editor/undo-redo.deck.utils';
-
+import settingsStore from '../../../../../stores/settings.store';
 import {Expanded} from '../../../../../types/core/settings';
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
+import {setStyle} from '../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-color-text-background'
@@ -119,7 +116,8 @@ export class AppColorTextBackground {
         expanded={this.colorType === 'text' ? settingsStore.state.panels.color : settingsStore.state.panels.background}
         onExpansion={($event: CustomEvent<Expanded>) =>
           SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})
-        }>
+        }
+      >
         <ion-label slot="title">{i18n.state.editor.color}</ion-label>
 
         <app-color
@@ -127,7 +125,8 @@ export class AppColorTextBackground {
           initColor={this.colorType === 'background' ? this.initBackground : this.initColor}
           onResetColor={() => this.resetColor()}
           defaultColor={this.colorType === 'background' ? '#fff' : '#000'}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
+        ></app-color>
       </app-expansion-panel>
     );
   }

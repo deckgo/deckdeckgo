@@ -1,5 +1,4 @@
-import {SlotType} from '../../types/editor/slot-type';
-import {SlotUtils} from './slot.utils';
+import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import {ListStyle} from '../../types/editor/list-style';
 
 export class ListUtils {

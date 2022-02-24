@@ -1,5 +1,4 @@
 import {Component, Element, h} from '@stencil/core';
-
 import i18n from '../../../stores/i18n.store';
 
 @Component({

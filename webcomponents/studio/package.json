@@ -1,0 +1,62 @@
+{
+  "name": "@deckdeckgo/studio",
+  "version": "0.0.4",
+  "description": "The editor(s) of DeckDeckGo.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/studio/studio.esm.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/interface.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/studio/studio.esm.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "COPYING",
+    "GNU-AGPL-3.0"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "format": "prettier . --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "webcomponents/studio"
+  },
+  "author": "David Dal Busco",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "editor",
+    "rich text",
+    "wysiwyg"
+  ],
+  "dependencies": {
+    "@deckdeckgo/deck-utils": "^7.0.0",
+    "@deckdeckgo/editor": "^7.3.1",
+    "@deckdeckgo/offline": "^0.0.2",
+    "@deckdeckgo/styles": "^1.3.0",
+    "@deckdeckgo/sync": "^0.0.2",
+    "@deckdeckgo/utils": "^5.1.0",
+    "idb-keyval": "^6.1.0",
+    "nanoid": "^3.3.1"
+  },
+  "peerDependencies": {
+    "@deckdeckgo/core": "^10.0.1",
+    "@deckdeckgo/lazy-img": "^3.2.0",
+    "@papyrs/stylo": "^0.0.8-2"
+  },
+  "devDependencies": {
+    "@papyrs/stylo": "^0.0.8-2",
+    "@stencil/store": "^1.5.0"
+  }
+}

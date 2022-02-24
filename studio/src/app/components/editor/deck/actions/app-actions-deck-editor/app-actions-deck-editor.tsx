@@ -1,10 +1,7 @@
-import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State, Listen} from '@stencil/core';
-
 import {isSlide} from '@deckdeckgo/deck-utils';
-
+import {Component, Element, Event, EventEmitter, Fragment, h, Host, JSX, Listen, Method, Prop, State, Watch} from '@stencil/core';
 import deckEditorStore from '../../../../../stores/deck-editor.store';
 import undoRedoStore from '../../../../../stores/undo-redo.store';
-
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
 @Component({
@@ -160,7 +157,8 @@ export class AppActionsDeckEditor {
         class={{
           fullscreen: this.fullscreen,
           'hidden-bottom-sheet': this.hideBottomSheet
-        }}>
+        }}
+      >
         {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
       </Host>
     );
@@ -171,7 +169,8 @@ export class AppActionsDeckEditor {
       <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>
         <app-breadcrumbs
           slideNumber={this.slideNumber}
-          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-breadcrumbs>
+          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}
+        ></app-breadcrumbs>
 
         {this.renderActions()}
       </app-bottom-sheet>
@@ -198,7 +197,8 @@ export class AppActionsDeckEditor {
         toggleFullScreen={this.toggleFullScreen}
         deckDidChange={this.deckDidChange}
         onSelectDeck={() => this.selectDeck()}
-        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-actions-deck>
+        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}
+      ></app-actions-deck>
     );
   }
 
@@ -211,7 +211,8 @@ export class AppActionsDeckEditor {
         slideCopy={this.slideCopy}
         slideTransform={this.slideTransform}
         elementFocus={this.elementFocus}
-        onResetted={() => this.selectStepDeck()}></app-actions-element>
+        onResetted={() => this.selectStepDeck()}
+      ></app-actions-element>
     );
   }
 }

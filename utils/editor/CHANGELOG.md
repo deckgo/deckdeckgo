@@ -1,3 +1,27 @@
+# 7.3.0 - 7.3.1 (2022-02-24)
+
+### Features
+
+- throw custom error function on the document
+
+# 7.2.0 - 7.2.1 (2022-02-24)
+
+### Features
+
+- add function `attributes`
+
+# 7.1.0 (2022-02-21)
+
+### Features
+
+- update `docSelector` path
+
+# 7.0.0 (2022-02-20)
+
+### Breaking Changes
+
+- esm and cjs
+
 # 6.0.0 (2021-12-21)
 
 ### Breaking Changes

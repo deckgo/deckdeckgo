@@ -1,5 +1,4 @@
 import settingsStore from '../../stores/settings.store';
-
 import {SettingsPanels} from '../../types/core/settings';
 
 export class SettingsUtils {

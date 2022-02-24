@@ -1,5 +1,4 @@
-import {Component, Prop, h} from '@stencil/core';
-
+import {Component, h, Prop} from '@stencil/core';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
 

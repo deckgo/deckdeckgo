@@ -1,5 +1,4 @@
 import {FunctionalComponent, h} from '@stencil/core';
-
 import {EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
@@ -31,6 +30,7 @@ export const AppIcon: FunctionalComponent<AppIconProps> = ({
       aria-hidden={ariaHidden}
       lazy={lazy}
       {...(slot && {slot})}
-      {...(style && {style})}></ion-icon>
+      {...(style && {style})}
+    ></ion-icon>
   );
 };

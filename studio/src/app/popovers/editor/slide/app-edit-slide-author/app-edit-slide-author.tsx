@@ -1,5 +1,4 @@
-import {Component, Element, Prop, h, EventEmitter, State} from '@stencil/core';
-
+import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
 
 enum ImageMode {
@@ -81,7 +80,8 @@ export class AppEditSlideAuthor {
           onIonChange={(e: CustomEvent) => this.toggleImageMode(e)}
           interface="popover"
           mode="md"
-          class="ion-padding-start ion-padding-end">
+          class="ion-padding-start ion-padding-end"
+        >
           <ion-select-option value={ImageMode.COVER}>{i18n.state.editor.cover}</ion-select-option>
           <ion-select-option value={ImageMode.CIRCLE}>{i18n.state.editor.circle}</ion-select-option>
           <ion-select-option value={ImageMode.NONE}>{i18n.state.editor.none}</ion-select-option>
