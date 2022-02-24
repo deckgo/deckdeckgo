@@ -1,8 +1,7 @@
 import {Deck, DeckData, Doc, DocData, Meta, Paragraph, Slide} from '@deckdeckgo/editor';
+import {deleteDoc, getParagraph} from '@deckdeckgo/sync';
 import {v4 as uuid} from 'uuid';
 import {deleteDeck} from '../../providers/data/deck/deck.provider';
-import {deleteDoc} from '../../providers/data/doc/doc.provider';
-import {getParagraph} from '../../providers/data/paragraph/paragraph.provider';
 import {getSlide} from '../../providers/data/slide/slide.provider';
 import {deleteFile} from '../../providers/storage/storage.provider';
 import navStore, {NavDirection} from '../../stores/nav.store';

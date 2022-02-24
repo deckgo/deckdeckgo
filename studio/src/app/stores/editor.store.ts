@@ -1,5 +1,6 @@
 import {Deck, Doc} from '@deckdeckgo/editor';
 import {setEditDeckId, setEditDocId} from '@deckdeckgo/offline';
+import {docSubscribe} from '@deckdeckgo/sync';
 import {createStore} from '@stencil/store';
 
 interface EditorStore {
@@ -14,6 +15,10 @@ const {state, onChange, reset} = createStore<EditorStore>({
   deck: null,
   name: null,
   published: false
+});
+
+docSubscribe((doc: Doc | null) => {
+  state.doc = doc;
 });
 
 onChange('name', (name: string | null) => {

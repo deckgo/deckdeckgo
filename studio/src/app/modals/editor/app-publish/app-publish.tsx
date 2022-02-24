@@ -1,8 +1,8 @@
-import {Deck, Doc} from '@deckdeckgo/editor';
+import {Deck} from '@deckdeckgo/editor';
+import {snapshotDoc} from '@deckdeckgo/sync';
 import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
-import {snapshotDoc} from '../../../providers/data/doc/doc.provider';
 import {updatePublishedDeckOffline, updatePublishedDocOffline} from '../../../providers/publish/publish.provider';
 import editorStore from '../../../stores/editor.store';
 import i18n from '../../../stores/i18n.store';
@@ -31,10 +31,7 @@ export class AppPublish {
 
   private initSnapshot(): Promise<() => void | undefined> {
     if (editorStore.state.doc !== null) {
-      return snapshotDoc({
-        docId: editorStore.state.doc.id,
-        onNext: (snapshot: Doc) => (editorStore.state.doc = {...snapshot})
-      });
+      return snapshotDoc();
     }
 
     return snapshotDeck({
@@ -91,8 +88,9 @@ export class AppPublish {
       </ion-header>,
       <ion-content class="ion-padding fullscreen-padding">
         <main
-          class={this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'}
-        >
+          class={
+            this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'
+          }>
           {this.renderMain()}
         </main>
       </ion-content>

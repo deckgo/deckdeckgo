@@ -12,6 +12,8 @@ export * from './events/image/image.load.events';
 export * from './events/chart/chart.events';
 export * from './providers/auth.provider';
 export * from './providers/sync.provider';
+export * from './providers/doc.provider';
+export * from './providers/paragraph.provider';
 export * from './types/env.types';
 export * from './utils/sync.utils';
 export * from './utils/before-unload.utils';

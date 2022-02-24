@@ -1,13 +1,11 @@
 import {AuthUser, Doc, formatDate, Paragraph, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
 import {ParseParagraphsUtils} from '@deckdeckgo/studio';
-import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
+import {ChartEvents, docs, getParagraph, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
-import {docs} from '../../../providers/data/doc/doc.provider';
-import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
@@ -286,8 +284,7 @@ export class AppDocs implements ComponentInterface {
           data={{doc: doc.doc}}
           disableDelete={doc.doc.id === this.currentDocId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDoc($event)}
-          onCloned={() => navigateReloadEditor()}
-        ></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
       </aside>
     );
   }
