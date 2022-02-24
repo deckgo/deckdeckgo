@@ -1,5 +1,5 @@
 import {throwError} from '@deckdeckgo/editor';
-import {DocEvents} from '@deckdeckgo/sync';
+import {DocEvents, loadDoc, resetDoc} from '@deckdeckgo/sync';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
@@ -133,7 +133,9 @@ export class AppDocEditor implements ComponentInterface {
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioDocElement)}
               styloConfig={this.styloConfig}
               onDocDidLoad={this.onDocDidLoad}
-              onDocDataEvents={this.onDocDataEvents}></deckgo-studio-doc>
+              onDocDataEvents={this.onDocDataEvents}
+              loadDoc={loadDoc}
+              resetDoc={resetDoc}></deckgo-studio-doc>
 
             <deckgo-doc-indicator busy={busyStore.state.busy}></deckgo-doc-indicator>
           </main>

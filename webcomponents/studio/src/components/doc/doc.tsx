@@ -1,10 +1,10 @@
+import {Doc} from '@deckdeckgo/editor';
 import {Editor, getEdit} from '@deckdeckgo/offline';
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig} from '@papyrs/stylo';
 import {Component, ComponentInterface, Element, Event, EventEmitter, h, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
-import editorStore from '../../stores/editor.store';
 import i18nStore from '../../stores/i18n.store';
 import busyStore from '../../stores/ready.store';
 
@@ -13,7 +13,7 @@ import busyStore from '../../stores/ready.store';
   styleUrl: 'doc.scss',
   shadow: false
 })
-export class Doc implements ComponentInterface {
+export class StudioDoc implements ComponentInterface {
   @Element()
   private el: HTMLElement;
 
@@ -22,6 +22,12 @@ export class Doc implements ComponentInterface {
 
   @Prop()
   styloConfig: Partial<StyloConfig>;
+
+  @Prop()
+  loadDoc: (docId: string | undefined) => Promise<Doc>;
+
+  @Prop()
+  resetDoc: () => void;
 
   @Event()
   docDidLoad: EventEmitter<HTMLElement>;
@@ -70,7 +76,7 @@ export class Doc implements ComponentInterface {
   private destroy() {
     this.docDataEvents.emit('destroy');
 
-    editorStore.reset();
+    this.resetDoc();
   }
 
   @Watch('styloConfig')
@@ -141,7 +147,7 @@ export class Doc implements ComponentInterface {
   }
 
   private async fetchDoc(docId: string) {
-    const paragraphs: JSX.IntrinsicElements[] = await this.paragraphHelper.loadDocAndRetrieveParagraphs(docId);
+    const paragraphs: JSX.IntrinsicElements[] = await this.paragraphHelper.loadDocAndRetrieveParagraphs({docId, loadDoc: this.loadDoc});
     this.paragraphs = paragraphs?.length > 0 ? [...paragraphs] : [];
   }
 

@@ -1,32 +1,22 @@
 import {Doc, Paragraph, throwError} from '@deckdeckgo/editor';
-import {getOfflineDoc, getOfflineParagraph} from '@deckdeckgo/offline';
+import {getOfflineParagraph} from '@deckdeckgo/offline';
 import {JSX} from '@stencil/core';
-import editorStore from '../stores/editor.store';
 import readyStore from '../stores/ready.store';
 import {ParseParagraphsUtils} from '../utils/parse-paragraphs.utils';
 
 export class ParagraphHelper {
-  loadDocAndRetrieveParagraphs(docId: string): Promise<JSX.IntrinsicElements[] | null> {
+  loadDocAndRetrieveParagraphs({
+    docId,
+    loadDoc
+  }: {
+    docId: string;
+    loadDoc: (docId: string | undefined) => Promise<Doc>;
+  }): Promise<JSX.IntrinsicElements[] | null> {
     return new Promise<JSX.IntrinsicElements[] | null>(async (resolve) => {
-      if (!docId) {
-        throwError('Doc is not defined');
-        resolve(null);
-        return;
-      }
-
       readyStore.state.docReady = false;
 
       try {
-        const doc: Doc = await getOfflineDoc(docId);
-
-        if (!doc || !doc.data) {
-          throwError('No doc could be fetched');
-          readyStore.state.docReady = true;
-          resolve(null);
-          return;
-        }
-
-        editorStore.state.doc = {...doc};
+        const doc: Doc = await loadDoc(docId);
 
         if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
           readyStore.state.docReady = true;

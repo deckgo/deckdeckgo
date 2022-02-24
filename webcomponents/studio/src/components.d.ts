@@ -6,12 +6,15 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { StyloConfig } from "@papyrs/stylo";
+import { Doc } from "@deckdeckgo/editor";
 export namespace Components {
     interface DeckgoDocIndicator {
         "busy": boolean;
     }
     interface DeckgoStudioDoc {
         "initNewDoc": () => Promise<void>;
+        "loadDoc": (docId: string | undefined) => Promise<Doc>;
+        "resetDoc": () => void;
         "styloConfig": Partial<StyloConfig>;
     }
 }
@@ -38,8 +41,10 @@ declare namespace LocalJSX {
         "busy"?: boolean;
     }
     interface DeckgoStudioDoc {
+        "loadDoc"?: (docId: string | undefined) => Promise<Doc>;
         "onDocDataEvents"?: (event: CustomEvent<'init' | 'destroy'>) => void;
         "onDocDidLoad"?: (event: CustomEvent<HTMLElement>) => void;
+        "resetDoc"?: () => void;
         "styloConfig"?: Partial<StyloConfig>;
     }
     interface IntrinsicElements {

@@ -17,6 +17,7 @@ export * from './providers/paragraph.provider';
 export * from './types/env.types';
 export * from './utils/sync.utils';
 export * from './utils/before-unload.utils';
+export * from './loaders/doc.loader';
 
 export const authSubscribe = (callback: (authUser: AuthUser | null) => void): (() => void) => AuthStore.getInstance().subscribe(callback);
 export const docSubscribe = (callback: (doc: Doc | null) => void): (() => void) => DocStore.getInstance().subscribe(callback);
