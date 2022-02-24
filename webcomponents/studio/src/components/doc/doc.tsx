@@ -1,15 +1,10 @@
 import {moveCursorToStart} from '@deckdeckgo/utils';
 import {isFirefox} from '@deckdeckgo/utils/lib';
 import {StyloConfig} from '@papyrs/stylo';
-import {Component, ComponentInterface, Element, h, Host, JSX, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, ComponentInterface, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
-import {ChartEvents} from '../../events/chart/chart.events';
-import {DocDataEvents} from '../../events/doc/doc.data.events';
-import {DocImageEvents} from '../../events/doc/doc.image.events';
-import {ImageEvents} from '../../events/image/image.events';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
 import busyStore from '../../stores/busy.store';
-import styloStore from '../../stores/stylo.store';
 import editorStore from '../../stores/editor.store';
 import i18nStore from '../../stores/i18n.store';
 import {Editor} from '../../types/editor';
@@ -30,10 +25,14 @@ export class Doc implements ComponentInterface {
   @Prop()
   styloConfig: Partial<StyloConfig>;
 
-  private readonly imageEvents: ImageEvents = new ImageEvents();
-  private readonly chartEvents: ChartEvents = new ChartEvents();
-  private readonly docDataEvents: DocDataEvents = new DocDataEvents();
-  private readonly docImageEvents: DocImageEvents = new DocImageEvents();
+  @Event()
+  didLoad: EventEmitter<HTMLElement>;
+
+  @Event()
+  docEvents: EventEmitter<'init' | 'destroy'>;
+
+  @State()
+  private config: Partial<StyloConfig> = {};
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
@@ -43,32 +42,18 @@ export class Doc implements ComponentInterface {
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
 
-  // TODO: config including i18n
-
   componentWillLoad() {
     this.applyConfig();
   }
 
   async componentDidLoad() {
-    this.imageEvents.init();
-    this.chartEvents.init();
-    // TODO: code events
-
-    this.docImageEvents.init(this.containerRef);
+    this.didLoad.emit(this.containerRef);
 
     await this.initOrFetch();
   }
 
   async disconnectedCallback() {
-    this.imageEvents.destroy();
-    this.chartEvents.destroy();
-    // TODO: code events
-
-    this.docImageEvents.destroy();
-
     this.destroy();
-
-    // TODO: i18n
   }
 
   async componentDidRender() {
@@ -85,14 +70,14 @@ export class Doc implements ComponentInterface {
    * Destroy global state and listener.
    */
   private destroy() {
-    this.docDataEvents.destroy();
+    this.docEvents.emit('destroy');
 
     editorStore.reset();
   }
 
   @Watch('styloConfig')
   onConfigChange() {
-    styloStore.reset();
+    this.config = {};
 
     this.applyConfig();
   }
@@ -102,7 +87,7 @@ export class Doc implements ComponentInterface {
       return;
     }
 
-    styloStore.state.config = this.styloConfig;
+    this.config = this.styloConfig;
 
     const {i18n} = this.styloConfig;
     i18nStore.state.lang = i18n?.lang || 'en';
@@ -122,7 +107,7 @@ export class Doc implements ComponentInterface {
     await this.initOrFetch();
 
     // Reset config will destroy and init again listener in Stylo. It also reset undo-redo stack.
-    styloStore.state.config = {...styloStore.state.config};
+    this.config = {...this.config};
   }
 
   private async initOrFetch() {
@@ -172,7 +157,7 @@ export class Doc implements ComponentInterface {
 
   // If we init, we observe the default elements. When rendered, we simulate
   private initDocDataEvents(init: boolean) {
-    this.docDataEvents.init();
+    this.docEvents.emit('init');
 
     if (!init) {
       return;
@@ -225,7 +210,7 @@ export class Doc implements ComponentInterface {
             {this.paragraphs}
           </article>
 
-          <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={styloStore.state.config}></stylo-editor>
+          <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={this.config}></stylo-editor>
         </deckgo-doc>
 
         <deckgo-doc-indicator></deckgo-doc-indicator>
