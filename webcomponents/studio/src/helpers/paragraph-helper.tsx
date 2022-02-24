@@ -1,8 +1,7 @@
-import {Doc, Paragraph} from '@deckdeckgo/editor';
+import {Doc, Paragraph, throwError} from '@deckdeckgo/editor';
 import {getOfflineDoc, getOfflineParagraph} from '@deckdeckgo/offline';
 import {JSX} from '@stencil/core';
 import editorStore from '../stores/editor.store';
-import errorStore from '../stores/error.store';
 import readyStore from '../stores/ready.store';
 import {ParseParagraphsUtils} from '../utils/parse-paragraphs.utils';
 
@@ -10,7 +9,7 @@ export class ParagraphHelper {
   loadDocAndRetrieveParagraphs(docId: string): Promise<JSX.IntrinsicElements[] | null> {
     return new Promise<JSX.IntrinsicElements[] | null>(async (resolve) => {
       if (!docId) {
-        errorStore.state.error = 'Doc is not defined';
+        throwError('Doc is not defined');
         resolve(null);
         return;
       }
@@ -21,7 +20,7 @@ export class ParagraphHelper {
         const doc: Doc = await getOfflineDoc(docId);
 
         if (!doc || !doc.data) {
-          errorStore.state.error = 'No doc could be fetched';
+          throwError('No doc could be fetched');
           readyStore.state.docReady = true;
           resolve(null);
           return;
@@ -53,7 +52,7 @@ export class ParagraphHelper {
         readyStore.state.docReady = true;
         resolve(paragraphs);
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         resolve(null);
       }
     });
@@ -73,7 +72,7 @@ export class ParagraphHelper {
 
         resolve(element);
       } catch (err) {
-        errorStore.state.error = 'Something went wrong while loading and parsing a paragraph';
+        throwError('Something went wrong while loading and parsing a paragraph');
         resolve(undefined);
       }
     });

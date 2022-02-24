@@ -5,7 +5,6 @@ import {Component, ComponentInterface, Element, Event, EventEmitter, h, JSX, Met
 import {nanoid} from 'nanoid';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
 import editorStore from '../../stores/editor.store';
-import errorStore from '../../stores/error.store';
 import i18nStore from '../../stores/i18n.store';
 import busyStore from '../../stores/ready.store';
 
@@ -30,9 +29,6 @@ export class Doc implements ComponentInterface {
   @Event()
   docDataEvents: EventEmitter<'init' | 'destroy'>;
 
-  @Event()
-  docError: EventEmitter<string | undefined>;
-
   @State()
   private config: Partial<StyloConfig> = {};
 
@@ -44,12 +40,8 @@ export class Doc implements ComponentInterface {
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
 
-  private errorListener: () => void | undefined = undefined;
-
   componentWillLoad() {
     this.applyConfig();
-
-    this.errorListener = errorStore.onChange('error', (error: string | undefined) => this.docError.emit(error));
   }
 
   async componentDidLoad() {
@@ -60,8 +52,6 @@ export class Doc implements ComponentInterface {
 
   async disconnectedCallback() {
     this.destroy();
-
-    this.errorListener?.();
   }
 
   async componentDidRender() {

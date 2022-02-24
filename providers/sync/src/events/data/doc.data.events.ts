@@ -1,4 +1,15 @@
-import {cleanNode, Doc, DocData, elementIndex, isElementNode, isTextNode, now, Paragraph, ParagraphData} from '@deckdeckgo/editor';
+import {
+  cleanNode,
+  Doc,
+  DocData,
+  elementIndex,
+  isElementNode,
+  isTextNode,
+  now,
+  Paragraph,
+  ParagraphData,
+  throwError
+} from '@deckdeckgo/editor';
 import {
   createOfflineDoc,
   createOfflineParagraph,
@@ -11,7 +22,6 @@ import {excludeAttributes} from '../../constants/doc.constants';
 import {AuthStore} from '../../stores/auth.store';
 import {BusyStore} from '../../stores/busy.store';
 import {DocStore} from '../../stores/doc.store';
-import {ErrorStore} from '../../stores/error.store';
 import {syncDeleteParagraph, syncUpdateDoc, syncUpdateParagraph} from '../../utils/sync.utils';
 
 export class DocDataEvents {
@@ -37,7 +47,7 @@ export class DocDataEvents {
         await this.createParagraph(paragraph);
       }
     } catch (err) {
-      ErrorStore.getInstance().set(err);
+      throwError(err);
     }
 
     BusyStore.getInstance().set(false);
@@ -52,7 +62,7 @@ export class DocDataEvents {
 
       await this.filterDocParagraphList(removedParagraphIds);
     } catch (err) {
-      ErrorStore.getInstance().set(err);
+      throwError(err);
     }
 
     BusyStore.getInstance().set(false);
@@ -69,7 +79,7 @@ export class DocDataEvents {
         .map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
       await Promise.all(promises);
     } catch (err) {
-      ErrorStore.getInstance().set(err);
+      throwError(err);
     }
 
     BusyStore.getInstance().set(false);
@@ -234,14 +244,14 @@ export class DocDataEvents {
     const docId: string = DocStore.getInstance().get().id;
 
     if (!docId || docId === undefined || docId === '') {
-      ErrorStore.getInstance().set('Doc is not defined');
+      throwError('Doc is not defined');
       return;
     }
 
     const paragraphId: string | null = paragraph.getAttribute('paragraph_id');
 
     if (!paragraphId) {
-      ErrorStore.getInstance().set('Paragraph is not defined');
+      throwError('Paragraph is not defined');
       return;
     }
 
