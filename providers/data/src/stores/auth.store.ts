@@ -38,4 +38,8 @@ export class AuthStore extends Store<AuthUser | null | undefined> {
   isLoggedIn(): boolean {
     return this.authUser?.state === 'authenticated';
   }
+
+  reset() {
+    this.authUser = null;
+  }
 }

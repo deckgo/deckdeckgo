@@ -1,5 +1,4 @@
 import {Store} from './store';
-import { EnvironmentCloud } from '../types/env.types';
 
 export class ErrorStore extends Store<string | undefined> {
   private static instance: ErrorStore;

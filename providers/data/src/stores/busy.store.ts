@@ -1,5 +1,4 @@
 import {Store} from './store';
-import { AuthUser } from '@deckdeckgo/editor';
 
 export class BusyStore extends Store<boolean> {
   private static instance: BusyStore;

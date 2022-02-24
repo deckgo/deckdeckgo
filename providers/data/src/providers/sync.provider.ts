@@ -20,13 +20,13 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    if (!EnvStore.getInstance().get()) {
+    if (!EnvStore.getInstance().cloud()) {
       return;
     }
 
     SyncStore.getInstance().set('in_progress');
 
-    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>(EnvStore.getInstance().get());
+    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>();
 
     return sync({
       syncData,

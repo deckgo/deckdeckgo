@@ -1,7 +1,8 @@
+import {EnvStore} from '../stores/env.store';
 import {EnvironmentCloud} from '../types/env.types';
 
-export const cloudProvider = <T>(cloud: EnvironmentCloud): Promise<T> => {
-  const {api}: EnvironmentCloud = cloud;
+export const cloudProvider = <T>(): Promise<T> => {
+  const {api}: EnvironmentCloud = EnvStore.getInstance().get();
 
   const {cdn} = api;
 

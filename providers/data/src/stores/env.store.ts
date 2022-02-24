@@ -1,6 +1,5 @@
 import {EnvironmentCloud} from '../types/env.types';
 import {Store} from './store';
-import { Doc } from '@deckdeckgo/editor';
 
 export class EnvStore extends Store<EnvironmentCloud | undefined> {
   private static instance: EnvStore;
@@ -26,6 +25,10 @@ export class EnvStore extends Store<EnvironmentCloud | undefined> {
 
   get(): EnvironmentCloud | undefined {
     return this.env;
+  }
+
+  cloud(): boolean {
+    return this.env !== undefined;
   }
 
   override subscribe(callback: (data: EnvironmentCloud | undefined) => void): () => void {
