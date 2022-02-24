@@ -11,6 +11,7 @@ import i18n from '../../stores/i18n.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
+import {DocEvents} from '@deckdeckgo/sync';
 
 @Component({
   tag: 'app-doc-editor',
@@ -26,6 +27,8 @@ export class AppDocEditor implements ComponentInterface {
 
   private i18nListener: () => void | undefined;
 
+  private readonly docEvent: DocEvents = DocEvents.getInstance();
+
   componentWillLoad() {
     this.updateEditorConfig();
 
@@ -40,6 +43,20 @@ export class AppDocEditor implements ComponentInterface {
     this.codeEvents.destroy();
 
     this.i18nListener?.();
+  }
+
+  private onDocDidLoad = ({detail: containerRef}: CustomEvent<HTMLElement>) => {
+    this.docEvent.initDomEvents(containerRef);
+    this.docEvent.initDataEvents();
+  }
+
+  private onDocDataEvents = ({detail}: CustomEvent<'destroy' | 'init'>) => {
+    if (detail === 'destroy') {
+      this.docEvent.destroyDataEvents();
+      return;
+    }
+
+    this.docEvent.initDataEvents();
   }
 
   @Listen('actionPublish', {target: 'document'})
@@ -115,6 +132,7 @@ export class AppDocEditor implements ComponentInterface {
             <deckgo-studio-doc
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioDocElement)}
               styloConfig={this.styloConfig}
+              onDocDidLoad={this.onDocDidLoad} onDocDataEvents={this.onDocDataEvents}
             ></deckgo-studio-doc>
           </main>
         </ion-content>

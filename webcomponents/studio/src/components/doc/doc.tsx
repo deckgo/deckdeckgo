@@ -28,7 +28,7 @@ export class Doc implements ComponentInterface {
   docDidLoad: EventEmitter<HTMLElement>;
 
   @Event()
-  docEvents: EventEmitter<'init' | 'destroy'>;
+  docDataEvents: EventEmitter<'init' | 'destroy'>;
 
   @Event()
   docError: EventEmitter<string | undefined>;
@@ -78,7 +78,7 @@ export class Doc implements ComponentInterface {
    * Destroy global state and listener.
    */
   private destroy() {
-    this.docEvents.emit('destroy');
+    this.docDataEvents.emit('destroy');
 
     editorStore.reset();
   }
@@ -165,7 +165,7 @@ export class Doc implements ComponentInterface {
 
   // If we init, we observe the default elements. When rendered, we simulate
   private initDocDataEvents(init: boolean) {
-    this.docEvents.emit('init');
+    this.docDataEvents.emit('init');
 
     if (!init) {
       return;
