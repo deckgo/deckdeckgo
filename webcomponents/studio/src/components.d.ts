@@ -12,9 +12,9 @@ export namespace Components {
         "busy": boolean;
     }
     interface DeckgoStudioDoc {
-        "initNewDoc": () => Promise<void>;
-        "loadDoc": (docId: string | undefined) => Promise<Doc>;
-        "resetDoc": () => void;
+        "init": () => Promise<void>;
+        "loadDoc": (docId: string | undefined) => Promise<Doc> | undefined;
+        "resetDoc": () => void | undefined;
         "styloConfig": Partial<StyloConfig>;
     }
 }
@@ -41,10 +41,10 @@ declare namespace LocalJSX {
         "busy"?: boolean;
     }
     interface DeckgoStudioDoc {
-        "loadDoc"?: (docId: string | undefined) => Promise<Doc>;
+        "loadDoc"?: (docId: string | undefined) => Promise<Doc> | undefined;
         "onDocDataEvents"?: (event: CustomEvent<'init' | 'destroy'>) => void;
         "onDocDidLoad"?: (event: CustomEvent<HTMLElement>) => void;
-        "resetDoc"?: () => void;
+        "resetDoc"?: () => void | undefined;
         "styloConfig"?: Partial<StyloConfig>;
     }
     interface IntrinsicElements {

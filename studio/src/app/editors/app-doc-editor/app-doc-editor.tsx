@@ -119,7 +119,7 @@ export class AppDocEditor implements ComponentInterface {
 
   @Method()
   async initNewDoc() {
-    await this.studioEditorRef?.initNewDoc();
+    await this.studioEditorRef?.init();
   }
 
   render() {

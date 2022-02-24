@@ -1,5 +1,5 @@
 import {Deck, Doc} from '@deckdeckgo/editor';
-import {setEditDeckId, setEditDocId} from '@deckdeckgo/offline';
+import {setEditDeckId} from '@deckdeckgo/offline';
 import {docSubscribe} from '@deckdeckgo/sync';
 import {createStore} from '@stencil/store';
 
@@ -49,10 +49,6 @@ onChange('doc', (doc: Doc | null) => {
   }
 
   state.deck = null;
-
-  setEditDocId(doc.id).catch((err) => {
-    console.error('Failed to update IDB with new doc id', err);
-  });
 });
 
 export default {state, onChange, reset};

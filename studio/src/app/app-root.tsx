@@ -24,7 +24,7 @@ export class AppRoot {
 
   private destroyErrorListener;
   private destroyNavListener;
-  private destroyAuthListener;
+  private destroySyncListeners: (() => void)[];
 
   private readonly errorEvents: ErrorEvents = new ErrorEvents();
   private readonly busyEvents: BusyEvents = new BusyEvents();
@@ -37,7 +37,7 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = initSync({env: EnvironmentConfigService.getInstance().get('cloud')});
+    this.destroySyncListeners = initSync({env: EnvironmentConfigService.getInstance().get('cloud')});
 
     const promises: Promise<void>[] = [
       initAuthProvider(firebaseApiConfig()),
@@ -67,7 +67,7 @@ export class AppRoot {
 
     this.destroyErrorListener?.();
     this.destroyNavListener?.();
-    this.destroyAuthListener?.();
+    this.destroySyncListeners?.forEach((unsubscribe: () => void) => unsubscribe());
   }
 
   @Listen('swUpdate', {target: 'window'})

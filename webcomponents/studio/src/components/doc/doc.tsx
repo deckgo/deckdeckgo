@@ -24,10 +24,10 @@ export class StudioDoc implements ComponentInterface {
   styloConfig: Partial<StyloConfig>;
 
   @Prop()
-  loadDoc: (docId: string | undefined) => Promise<Doc>;
+  loadDoc: (docId: string | undefined) => Promise<Doc> | undefined;
 
   @Prop()
-  resetDoc: () => void;
+  resetDoc: () => void | undefined;
 
   @Event()
   docDidLoad: EventEmitter<HTMLElement>;
@@ -76,7 +76,7 @@ export class StudioDoc implements ComponentInterface {
   private destroy() {
     this.docDataEvents.emit('destroy');
 
-    this.resetDoc();
+    this.resetDoc?.();
   }
 
   @Watch('styloConfig')
@@ -98,7 +98,7 @@ export class StudioDoc implements ComponentInterface {
   }
 
   @Method()
-  async initNewDoc() {
+  async init() {
     this.destroy();
 
     this.resetDOM();
@@ -115,6 +115,11 @@ export class StudioDoc implements ComponentInterface {
   }
 
   private async initOrFetch() {
+    // If not provided then developer will have to call manually init
+    if (!this.loadDoc || !this.resetDoc) {
+      return;
+    }
+
     const editor: Editor | undefined = await getEdit();
     const docId: string | undefined = editor?.id;
 
