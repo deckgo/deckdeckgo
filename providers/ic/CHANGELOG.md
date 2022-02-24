@@ -4,6 +4,10 @@
 
 - rename sign-in events for new login
 
+### Build
+
+- bump dfinity libs v0.10.3
+
 # 5.1.0 (2022-02-22)
 
 ### Features
