@@ -1,5 +1,5 @@
 const esbuild = require('esbuild');
-const {readdirSync, existsSync, mkdirSync, writeFileSync, lstatSync} = require('fs');
+const {readdirSync, lstatSync, writeFileSync, existsSync, mkdirSync } = require('fs');
 const {join} = require('path');
 const path = require('path');
 
@@ -9,14 +9,19 @@ if (!existsSync(lib)) {
   mkdirSync(lib);
 }
 
-const src = join(process.cwd(), 'src');
+const findEntryPoints = (dir, files) => {
+  readdirSync(dir).forEach((file) => {
+    const fullPath = path.join(dir, file);
+    if (lstatSync(fullPath).isDirectory()) {
+      findEntryPoints(fullPath, files);
+    } else if (path.extname(fullPath) === '.ts') {
+      files.push(fullPath);
+    }
+  });
+};
 
-const entryPoints = readdirSync(src)
-  .filter((file) => {
-    const fullPath = path.join(src, file);
-    return !lstatSync(fullPath).isDirectory();
-  })
-  .map((file) => `src/${file}`);
+const entryPoints = [];
+findEntryPoints('src', entryPoints);
 
 esbuild
   .build({
