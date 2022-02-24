@@ -12,6 +12,10 @@
 - firebase: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
 - ic: v5.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
+### Web Components: New
+
+- studio: v0.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
+
 ### Web Components:
 
 - core: v10.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/core/CHANGELOG.md))
