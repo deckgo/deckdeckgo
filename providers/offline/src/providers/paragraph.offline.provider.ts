@@ -1,4 +1,4 @@
-import {Paragraph, ParagraphData} from '@deckdeckgo/editor';
+import type {Paragraph, ParagraphData} from '@deckdeckgo/editor';
 import {del, get, set} from 'idb-keyval';
 
 export const createOfflineParagraph = ({

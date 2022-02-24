@@ -2,6 +2,11 @@
 
 # [6.1.0](https://github.com/deckgo/deckdeckgo/compare/v6.0.0...v6.1.0) (2022-XX-YY)
 
+### Providers: New
+
+- offline: v0.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+- sync: v0.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+
 ### Providers
 
 - firebase: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))

@@ -1,4 +1,4 @@
-import {Doc, DocData} from '@deckdeckgo/editor';
+import type {Doc, DocData} from '@deckdeckgo/editor';
 import {get, set} from 'idb-keyval';
 import {nanoid} from 'nanoid';
 
