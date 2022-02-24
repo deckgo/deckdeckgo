@@ -1,6 +1,6 @@
 import {del, get, set} from 'idb-keyval';
-import {clearSync} from '../providers/sync.provider';
 import {Editor} from '../types/editor';
+import {clearSync} from './sync.provider';
 
 export const getEdit = async (): Promise<Editor | undefined> => {
   let edit: Editor | undefined = await get('deckdeckgo_editor');

@@ -1,7 +1,6 @@
 import {Doc, Paragraph} from '@deckdeckgo/editor';
 import {JSX} from '@stencil/core';
-import {getOfflineDoc} from '../providers/doc.offline.provider';
-import {getOfflineParagraph} from '../providers/paragraph.offline.provider';
+import {getOfflineDoc, getOfflineParagraph} from '@deckdeckgo/offline';
 import busyStore from '../stores/busy.store';
 import editorStore from '../stores/editor.store';
 import errorStore from '../stores/error.store';

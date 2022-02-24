@@ -1,5 +1,5 @@
-import {moveCursorToStart} from '@deckdeckgo/utils';
-import {isFirefox} from '@deckdeckgo/utils/lib';
+import {Editor, getEdit} from '@deckdeckgo/offline';
+import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig} from '@papyrs/stylo';
 import {Component, ComponentInterface, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
@@ -7,8 +7,6 @@ import {ParagraphHelper} from '../../helpers/paragraph-helper';
 import busyStore from '../../stores/busy.store';
 import editorStore from '../../stores/editor.store';
 import i18nStore from '../../stores/i18n.store';
-import {Editor} from '../../types/editor';
-import {getEdit} from '../../utils/editor.utils';
 
 @Component({
   tag: 'deckgo-studio-doc',

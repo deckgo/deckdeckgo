@@ -43,6 +43,7 @@
   "dependencies": {
     "@deckdeckgo/deck-utils": "^7.0.0",
     "@deckdeckgo/editor": "^7.1.0",
+    "@deckdeckgo/offline": "file:providers/offline",
     "@deckdeckgo/styles": "^1.3.0",
     "@deckdeckgo/utils": "^5.1.0",
     "idb-keyval": "^6.1.0",

@@ -20,8 +20,6 @@ export const createOfflineDoc = (docData: DocData): Promise<Doc> => {
 
       await set(`/docs/${docId}`, doc);
 
-      await syncUpdateDoc(docId);
-
       resolve(doc);
     } catch (err) {
       reject(err);
@@ -44,8 +42,6 @@ export const updateOfflineDoc = (doc: Doc): Promise<Doc> => {
       doc.data.updated_at = new Date();
 
       await set(`/docs/${doc.id}`, doc);
-
-      await syncUpdateDoc(doc.id);
 
       resolve(doc);
     } catch (err) {

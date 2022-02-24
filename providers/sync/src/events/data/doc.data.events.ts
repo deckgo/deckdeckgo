@@ -1,12 +1,18 @@
 import {cleanNode, Doc, DocData, elementIndex, isElementNode, isTextNode, now, Paragraph, ParagraphData} from '@deckdeckgo/editor';
+import {
+  createOfflineDoc,
+  createOfflineParagraph,
+  deleteOfflineParagraph,
+  updateOfflineDoc,
+  updateOfflineParagraph
+} from '@deckdeckgo/offline';
 import {nanoid} from 'nanoid';
 import {excludeAttributes} from '../../constants/doc.constants';
-import {createOfflineDoc, updateOfflineDoc} from '../../providers/doc.offline.provider';
-import {createOfflineParagraph, deleteOfflineParagraph, updateOfflineParagraph} from '../../providers/paragraph.offline.provider';
 import {AuthStore} from '../../stores/auth.store';
 import {BusyStore} from '../../stores/busy.store';
 import {DocStore} from '../../stores/doc.store';
 import {ErrorStore} from '../../stores/error.store';
+import {syncDeleteParagraph, syncUpdateDoc, syncUpdateParagraph} from '../../utils/sync.utils';
 
 export class DocDataEvents {
   init() {
@@ -85,6 +91,8 @@ export class DocDataEvents {
         const persistedDoc: Doc = await createOfflineDoc(docData);
         DocStore.getInstance().set({...persistedDoc});
 
+        await syncUpdateDoc(persistedDoc.id);
+
         resolve();
       } catch (err) {
         reject(err);
@@ -105,7 +113,11 @@ export class DocDataEvents {
       return undefined;
     }
 
-    await deleteOfflineParagraph({docId: DocStore.getInstance().get().id, paragraphId: paragraphId});
+    const docId: string = DocStore.getInstance().get().id;
+
+    await deleteOfflineParagraph({docId, paragraphId: paragraphId});
+
+    await syncDeleteParagraph({docId, paragraphId: paragraphId});
 
     return paragraphId;
   }
@@ -128,13 +140,17 @@ export class DocDataEvents {
 
       const paragraphId: string = nanoid();
 
+      const docId: string = DocStore.getInstance().get().id;
+
       const persistedParagraph: Paragraph = await createOfflineParagraph({
-        docId: DocStore.getInstance().get().id,
+        docId,
         paragraphData: paragraphData,
         paragraphId
       });
 
       element.setAttribute('paragraph_id', paragraphId);
+
+      await syncUpdateParagraph({docId, paragraphId: persistedParagraph.id});
 
       resolve(persistedParagraph);
     });
@@ -164,6 +180,8 @@ export class DocDataEvents {
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
         DocStore.getInstance().set({...updatedDoc});
+
+        await syncUpdateDoc(updatedDoc.id);
 
         resolve();
       } catch (err) {
@@ -198,6 +216,8 @@ export class DocDataEvents {
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
         DocStore.getInstance().set({...updatedDoc});
+
+        await syncUpdateDoc(updatedDoc.id);
 
         resolve();
       } catch (err) {
@@ -245,6 +265,8 @@ export class DocDataEvents {
     }
 
     await updateOfflineParagraph({docId, paragraph: paragraphUpdate});
+
+    await syncUpdateParagraph({docId, paragraphId: paragraphUpdate.id});
   }
 
   private paragraphContent(paragraph: HTMLElement): string[] {

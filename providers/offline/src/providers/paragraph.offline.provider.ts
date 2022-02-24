@@ -25,8 +25,6 @@ export const createOfflineParagraph = ({
 
       await set(`/docs/${docId}/paragraphs/${paragraph.id}`, paragraph);
 
-      await syncUpdateParagraph({docId, paragraphId: paragraph.id});
-
       resolve(paragraph);
     } catch (err) {
       reject(err);
@@ -49,8 +47,6 @@ export const updateOfflineParagraph = ({docId, paragraph}: {docId: string; parag
 
       await set(`/docs/${docId}/paragraphs/${paragraph.id}`, paragraph);
 
-      await syncUpdateParagraph({docId, paragraphId: paragraph.id});
-
       resolve(paragraph);
     } catch (err) {
       reject(err);
@@ -62,8 +58,6 @@ export const deleteOfflineParagraph = ({docId, paragraphId}: {docId: string; par
   return new Promise<void>(async (resolve, reject) => {
     try {
       await del(`/docs/${docId}/paragraphs/${paragraphId}`);
-
-      await syncDeleteParagraph({docId, paragraphId: paragraphId});
 
       resolve();
     } catch (err) {
