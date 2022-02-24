@@ -1,12 +1,13 @@
 import {Editor, getEdit} from '@deckdeckgo/offline';
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig} from '@papyrs/stylo';
-import {Component, ComponentInterface, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, ComponentInterface, Element, Event, EventEmitter, h, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
-import busyStore from '../../stores/busy.store';
 import editorStore from '../../stores/editor.store';
+import errorStore from '../../stores/error.store';
 import i18nStore from '../../stores/i18n.store';
+import busyStore from '../../stores/ready.store';
 
 @Component({
   tag: 'deckgo-studio-doc',
@@ -24,10 +25,13 @@ export class Doc implements ComponentInterface {
   styloConfig: Partial<StyloConfig>;
 
   @Event()
-  didLoad: EventEmitter<HTMLElement>;
+  docDidLoad: EventEmitter<HTMLElement>;
 
   @Event()
   docEvents: EventEmitter<'init' | 'destroy'>;
+
+  @Event()
+  docError: EventEmitter<string | undefined>;
 
   @State()
   private config: Partial<StyloConfig> = {};
@@ -40,18 +44,24 @@ export class Doc implements ComponentInterface {
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
 
+  private errorListener: () => void | undefined = undefined;
+
   componentWillLoad() {
     this.applyConfig();
+
+    this.errorListener = errorStore.onChange('error', (error: string | undefined) => this.docError.emit(error));
   }
 
   async componentDidLoad() {
-    this.didLoad.emit(this.containerRef);
+    this.docDidLoad.emit(this.containerRef);
 
     await this.initOrFetch();
   }
 
   async disconnectedCallback() {
     this.destroy();
+
+    this.errorListener?.();
   }
 
   async componentDidRender() {
@@ -202,17 +212,13 @@ export class Doc implements ComponentInterface {
 
   render() {
     return (
-      <Host>
-        <deckgo-doc>
-          <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
-            {this.paragraphs}
-          </article>
+      <deckgo-doc>
+        <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
+          {this.paragraphs}
+        </article>
 
-          <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={this.config}></stylo-editor>
-        </deckgo-doc>
-
-        <deckgo-doc-indicator></deckgo-doc-indicator>
-      </Host>
+        <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={this.config}></stylo-editor>
+      </deckgo-doc>
     );
   }
 }
