@@ -19,7 +19,7 @@ authSubscribe((authUser: AuthUser | null) => {
 });
 
 onChange('authUser', (authUser: AuthUser | null) => {
-  state.loggedIn = authUser && authUser.state === 'authenticated';
+  state.loggedIn = authUser?.state === 'authenticated';
   state.gitHub = authUser ? authUser.gitHub : false;
 });
 

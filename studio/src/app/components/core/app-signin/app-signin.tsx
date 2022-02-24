@@ -1,11 +1,11 @@
 import {injectJS, throwError} from '@deckdeckgo/editor';
+import {removeSyncBeforeUnload} from '@deckdeckgo/sync';
 import {Component, Fragment, h, JSX, Listen, State} from '@stencil/core';
 import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import i18n from '../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import tokenStore from '../../../stores/token.store';
-import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
 import {cloud, firebase} from '../../../utils/core/environment.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {AppIcon} from '../app-icon/app-icon';

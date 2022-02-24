@@ -1,12 +1,11 @@
 import {Deck, DeckData, Doc, DocData, Meta, Paragraph, Slide} from '@deckdeckgo/editor';
-import {deleteDoc, getParagraph} from '@deckdeckgo/sync';
+import {deleteDoc, getParagraph, removeSyncBeforeUnload} from '@deckdeckgo/sync';
 import {v4 as uuid} from 'uuid';
 import {deleteDeck} from '../../providers/data/deck/deck.provider';
 import {getSlide} from '../../providers/data/slide/slide.provider';
 import {deleteFile} from '../../providers/storage/storage.provider';
 import navStore, {NavDirection} from '../../stores/nav.store';
 import {ImportData, importEditorData, importEditorSync} from '../editor/import.utils';
-import {removeSyncBeforeUnload} from './before-unload.utils';
 import {firebase} from './environment.utils';
 
 export type DeckOrDoc = {deck: Deck; doc?: never} | {doc: Doc; deck?: never};

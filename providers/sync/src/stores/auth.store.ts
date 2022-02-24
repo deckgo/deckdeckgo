@@ -1,10 +1,10 @@
 import {AuthUser} from '@deckdeckgo/editor';
 import {Store} from './store';
 
-export class AuthStore extends Store<AuthUser | null | undefined> {
+export class AuthStore extends Store<AuthUser | null> {
   private static instance: AuthStore;
 
-  private authUser: AuthUser | null | undefined = undefined;
+  private authUser: AuthUser | null = null;
 
   private constructor() {
     super();
@@ -17,17 +17,17 @@ export class AuthStore extends Store<AuthUser | null | undefined> {
     return AuthStore.instance;
   }
 
-  set(authUser: AuthUser | null | undefined) {
+  set(authUser: AuthUser | null) {
     this.authUser = authUser;
 
     this.populate(authUser);
   }
 
-  get(): AuthUser | null | undefined {
+  get(): AuthUser | null {
     return this.authUser;
   }
 
-  override subscribe(callback: (data: AuthUser | null | undefined) => void): () => void {
+  override subscribe(callback: (data: AuthUser | null) => void): () => void {
     const unsubscribe: () => void = super.subscribe(callback);
 
     callback(this.authUser);

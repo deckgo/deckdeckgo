@@ -1,6 +1,6 @@
 import {SyncState} from '@deckdeckgo/editor';
+import {syncBeforeUnload, syncSubscribe} from '@deckdeckgo/sync';
 import {createStore} from '@stencil/store';
-import {syncBeforeUnload} from '../utils/core/before-unload.utils';
 
 interface SyncStore {
   sync: SyncState;
@@ -10,6 +10,10 @@ interface SyncStore {
 const {state, onChange} = createStore<SyncStore>({
   sync: 'idle',
   dirty: false
+});
+
+syncSubscribe((syncState: SyncState) => {
+  state.sync = syncState;
 });
 
 onChange('sync', (sync: SyncState) => {
