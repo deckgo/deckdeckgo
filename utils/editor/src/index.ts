@@ -39,3 +39,4 @@ export * from './utils/script.utils';
 export * from './utils/fonts.utils';
 export * from './utils/style.utils';
 export * from './utils/element.utils';
+export * from './utils/error.utils';

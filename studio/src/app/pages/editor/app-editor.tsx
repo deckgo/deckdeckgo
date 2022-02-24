@@ -1,6 +1,6 @@
 import {SyncEvent} from '@deckdeckgo/editor';
-import {initSyncState, sync} from '@deckdeckgo/sync';
 import {getEdit} from '@deckdeckgo/offline';
+import {initSyncState, sync} from '@deckdeckgo/sync';
 import {isIOS} from '@deckdeckgo/utils';
 import {Component, ComponentInterface, Fragment, h, Listen, State} from '@stencil/core';
 import {EnvironmentAppConfig} from '../../config/environment-config';

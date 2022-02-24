@@ -1,10 +1,9 @@
-import {AuthUser, Template} from '@deckdeckgo/editor';
+import {AuthUser, Template, throwError} from '@deckdeckgo/editor';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
 import {Component, Fragment, h, State} from '@stencil/core';
 import {createUserTemplate, initTemplates, updateTemplate} from '../../../../providers/data/template/template.provider';
 import authStore from '../../../../stores/auth.store';
-import errorStore from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
 import templatesStore from '../../../../stores/templates.store';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
@@ -40,7 +39,7 @@ export class AppTemplates {
 
       await initTemplates();
     } catch (err) {
-      errorStore.state.error = 'Templates can not be fetched.';
+      throwError('Templates can not be fetched.');
     }
 
     this.loading = false;
@@ -78,7 +77,7 @@ export class AppTemplates {
         templatesStore.state.user = [createdTemplate, ...templatesStore.state.user];
       }
     } catch (err) {
-      errorStore.state.error = 'Template can not be saved.';
+      throwError('Template can not be saved.');
     }
   }
 

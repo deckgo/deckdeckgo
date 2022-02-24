@@ -1,16 +1,16 @@
+import {throwError} from '@deckdeckgo/editor';
 import {clearEdit} from '@deckdeckgo/offline';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
+import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
+import offlineStore from '../../../../stores/offline.store';
+import syncStore from '../../../../stores/sync.store';
 import userStore from '../../../../stores/user.store';
 import {cloud} from '../../../../utils/core/environment.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {AppIcon} from '../../app-icon/app-icon';
-import errorStore from '../../../../stores/error.store';
-import authStore from '../../../../stores/auth.store';
-import syncStore from '../../../../stores/sync.store';
-import offlineStore from '../../../../stores/offline.store';
 
 @Component({
   tag: 'app-navigation-end',
@@ -41,7 +41,7 @@ export class AppNavigationEnd {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
   }
 
@@ -63,7 +63,7 @@ export class AppNavigationEnd {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
 
     this.loadInput.value = null;
@@ -99,7 +99,7 @@ export class AppNavigationEnd {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data.';
+      throwError('Something went wrong while cleaning the local data.');
     }
 
     await loading.dismiss();

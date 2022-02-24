@@ -1,3 +1,9 @@
+# 7.3.0 - 7.3.1 (2022-02-24)
+
+### Features
+
+- throw custom error function on the document
+
 # 7.2.0 - 7.2.1 (2022-02-24)
 
 ### Features

@@ -1,5 +1,4 @@
-import {MergeToken, Token} from '@deckdeckgo/editor';
-import errorStore from '../../../stores/error.store';
+import {MergeToken, throwError, Token} from '@deckdeckgo/editor';
 import {firebase} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
@@ -19,6 +18,6 @@ export const mergePlatformToken = async (token: Token) => {
 
     await mergeToken(token);
   } catch (err) {
-    errorStore.state.error = 'GitHub platform information not properly set up.';
+    throwError('GitHub platform information not properly set up.');
   }
 };

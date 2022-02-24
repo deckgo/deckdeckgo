@@ -1,9 +1,9 @@
+import {throwError} from '@deckdeckgo/editor';
 import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {publishUrl} from '../../../providers/publish/publish.provider';
-import i18n from '../../../stores/i18n.store';
 import editorStore from '../../../stores/editor.store';
-import errorStore from '../../../stores/error.store';
+import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-embed',
@@ -58,7 +58,7 @@ export class AppEmbed {
     try {
       await navigator.clipboard.writeText(this.embedCodeElement.value);
     } catch (err) {
-      errorStore.state.error = "Well it seems that copy isn't supported by this browser";
+      throwError("Well it seems that copy isn't supported by this browser");
     }
   }
 

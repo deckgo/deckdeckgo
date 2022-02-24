@@ -1,9 +1,8 @@
-import {AuthUser, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+import {AuthUser, StorageFile, StorageFilesList, throwError} from '@deckdeckgo/editor';
 import {Component, ComponentInterface, Event, EventEmitter, h, Host, Method, Prop, State, Watch} from '@stencil/core';
 import {Constants} from '../../../../config/constants';
 import {getFiles} from '../../../../providers/storage/storage.provider';
 import authStore from '../../../../stores/auth.store';
-import errorStore from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
 
 @Component({
@@ -87,7 +86,7 @@ export class AppStorageFiles implements ComponentInterface {
 
       return list;
     } catch (err) {
-      errorStore.state.error = 'Storage files cannot be loaded.';
+      throwError('Storage files cannot be loaded.');
 
       return {
         items: [],

@@ -1,11 +1,10 @@
-import {Deck, Slide} from '@deckdeckgo/editor';
+import {Deck, Slide, throwError} from '@deckdeckgo/editor';
 import {JSX} from '@stencil/core';
 import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 import {initTemplates} from '../../providers/data/template/template.provider';
 import busyStore from '../../stores/busy.store';
 import editorStore from '../../stores/editor.store';
-import errorStore from '../../stores/error.store';
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
@@ -21,7 +20,7 @@ export class SlideHelper {
   loadDeckAndRetrieveSlides(deckId: string): Promise<JSX.IntrinsicElements[]> {
     return new Promise<JSX.IntrinsicElements[]>(async (resolve) => {
       if (!deckId) {
-        errorStore.state.error = 'Deck is not defined';
+        throwError('Deck is not defined');
         resolve(null);
         return;
       }
@@ -32,7 +31,7 @@ export class SlideHelper {
         const deck: Deck = await this.deckOfflineProvider.get(deckId);
 
         if (!deck || !deck.data) {
-          errorStore.state.error = 'No deck could be fetched';
+          throwError('No deck could be fetched');
           resolve(null);
           return;
         }
@@ -65,7 +64,7 @@ export class SlideHelper {
 
         resolve(parsedSlides);
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve(null);
       }
@@ -83,7 +82,7 @@ export class SlideHelper {
 
         resolve(element);
       } catch (err) {
-        errorStore.state.error = 'Something went wrong while loading and parsing a slide';
+        throwError('Something went wrong while loading and parsing a slide');
         resolve(null);
       }
     });
@@ -98,7 +97,7 @@ export class SlideHelper {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.state.error = 'Slide is not defined';
+          throwError('Slide is not defined');
           resolve(null);
           return;
         }
@@ -116,7 +115,7 @@ export class SlideHelper {
 
         resolve(element);
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve(null);
       }

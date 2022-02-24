@@ -27,7 +27,7 @@ import {publishUrl} from '../../../providers/publish/publish.provider';
 import {DeckAction} from '../../../types/editor/deck-action';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
-import errorStore from '../../../stores/error.store';
+import {throwError} from '@deckdeckgo/editor';
 import busyStore from '../../../stores/busy.store';
 import editorStore from '../../../stores/editor.store';
 import authStore from '../../../stores/auth.store';
@@ -222,7 +222,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -347,7 +347,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -386,7 +386,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -422,7 +422,7 @@ export class DeckDataEvents {
 
       busyStore.state.busy = false;
     } catch (err) {
-      errorStore.state.error = err;
+      throwError(err);
       busyStore.state.busy = false;
     }
   }
@@ -436,7 +436,7 @@ export class DeckDataEvents {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.state.error = 'Slide is not defined';
+          throwError('Slide is not defined');
           resolve();
           return;
         }
@@ -470,7 +470,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }
@@ -486,7 +486,7 @@ export class DeckDataEvents {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          errorStore.state.error = 'Slide is not defined';
+          throwError('Slide is not defined');
           resolve();
           return;
         }
@@ -518,7 +518,7 @@ export class DeckDataEvents {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         busyStore.state.busy = false;
         resolve();
       }

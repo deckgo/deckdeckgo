@@ -1,3 +1,5 @@
+import {throwError} from '@deckdeckgo/editor';
+import {DocEvents} from '@deckdeckgo/sync';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
@@ -6,12 +8,10 @@ import {CodeEvents} from '../../events/editor/code/code.events';
 import authStore from '../../stores/auth.store';
 import busyStore from '../../stores/busy.store';
 import colorStore from '../../stores/color.store';
-import errorStore from '../../stores/error.store';
 import i18n from '../../stores/i18n.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
-import {DocEvents} from '@deckdeckgo/sync';
 
 @Component({
   tag: 'app-doc-editor',
@@ -48,7 +48,7 @@ export class AppDocEditor implements ComponentInterface {
   private onDocDidLoad = ({detail: containerRef}: CustomEvent<HTMLElement>) => {
     this.docEvent.initDomEvents(containerRef);
     this.docEvent.initDataEvents();
-  }
+  };
 
   private onDocDataEvents = ({detail}: CustomEvent<'destroy' | 'init'>) => {
     if (detail === 'destroy') {
@@ -57,12 +57,12 @@ export class AppDocEditor implements ComponentInterface {
     }
 
     this.docEvent.initDataEvents();
-  }
+  };
 
   @Listen('actionPublish', {target: 'document'})
   async onActionPublish() {
     if (!cloud()) {
-      errorStore.state.error = 'No cloud provider to publish material.';
+      throwError('No cloud provider to publish material.');
       return;
     }
 
@@ -132,8 +132,8 @@ export class AppDocEditor implements ComponentInterface {
             <deckgo-studio-doc
               ref={(el) => (this.studioEditorRef = el as HTMLDeckgoStudioDocElement)}
               styloConfig={this.styloConfig}
-              onDocDidLoad={this.onDocDidLoad} onDocDataEvents={this.onDocDataEvents}
-            ></deckgo-studio-doc>
+              onDocDidLoad={this.onDocDidLoad}
+              onDocDataEvents={this.onDocDataEvents}></deckgo-studio-doc>
           </main>
         </ion-content>
       </Fragment>

@@ -1,10 +1,9 @@
-import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UserSocial} from '@deckdeckgo/editor';
+import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, throwError, UserSocial} from '@deckdeckgo/editor';
 import {set} from 'idb-keyval';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import authStore from '../../stores/auth.store';
 import editorStore from '../../stores/editor.store';
-import errorStore from '../../stores/error.store';
 import userStore from '../../stores/user.store';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
@@ -199,7 +198,7 @@ export const updatePublishedDocOffline = async (doc: Doc | undefined) => {
   try {
     await set(`/docs/${doc.id}`, doc);
   } catch (err) {
-    errorStore.state.error = err;
+    throwError(err);
   }
 };
 
@@ -211,6 +210,6 @@ export const updatePublishedDeckOffline = async (deck: Deck | undefined) => {
   try {
     await set(`/decks/${deck.id}`, deck);
   } catch (err) {
-    errorStore.state.error = err;
+    throwError(err);
   }
 };

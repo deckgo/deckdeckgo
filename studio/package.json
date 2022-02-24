@@ -27,7 +27,7 @@
     "@deckdeckgo/core": "^10.0.1",
     "@deckdeckgo/deck-utils": "^7.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.1",
-    "@deckdeckgo/editor": "^7.2.1",
+    "@deckdeckgo/editor": "^7.3.1",
     "@deckdeckgo/elements": "^1.0.0",
     "@deckdeckgo/highlight-code": "^4.0.0",
     "@deckdeckgo/laser-pointer": "^1.1.0",

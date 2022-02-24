@@ -1,6 +1,5 @@
-import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+import {StorageFile, StorageFilesList, throwError} from '@deckdeckgo/editor';
 import {keys, set} from 'idb-keyval';
-import errorStore from '../../stores/error.store';
 import {encodeFilename} from '../../utils/editor/image.utils';
 
 export class StorageOfflineProvider {
@@ -21,13 +20,13 @@ export class StorageOfflineProvider {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!data || !data.name) {
-          errorStore.state.error = 'File not valid.';
+          throwError('File not valid.');
           resolve(undefined);
           return;
         }
 
         if (data.size > maxSize) {
-          errorStore.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
+          throwError(`File is too big (max. ${maxSize / 1048576} Mb)`);
           resolve(undefined);
           return;
         }
@@ -42,7 +41,7 @@ export class StorageOfflineProvider {
           name: data.name
         });
       } catch (err) {
-        errorStore.state.error = 'File could not be saved.';
+        throwError('File could not be saved.');
         resolve(undefined);
       }
     });

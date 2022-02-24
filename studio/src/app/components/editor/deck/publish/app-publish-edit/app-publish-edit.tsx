@@ -1,5 +1,5 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {Deck, deckSelector, Doc, Meta} from '@deckdeckgo/editor';
+import {Deck, deckSelector, Doc, Meta, throwError} from '@deckdeckgo/editor';
 import {Component, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
 import {Constants} from '../../../../../config/constants';
 import {EnvironmentDeckDeckGoConfig} from '../../../../../config/environment-config';
@@ -7,7 +7,6 @@ import {publish, publishUrl} from '../../../../../providers/publish/publish.prov
 import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
 import authStore from '../../../../../stores/auth.store';
 import editorStore from '../../../../../stores/editor.store';
-import errorStore from '../../../../../stores/error.store';
 import i18n from '../../../../../stores/i18n.store';
 import {firebase} from '../../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
@@ -149,7 +148,7 @@ export class AppPublishEdit {
         resolve();
       } catch (err) {
         this.publishing = false;
-        errorStore.state.error = err;
+        throwError(err);
         resolve();
       }
     });

@@ -38,9 +38,9 @@ declare namespace LocalJSX {
         "busy"?: boolean;
     }
     interface DeckgoStudioDoc {
+        "onDocDataEvents"?: (event: CustomEvent<'init' | 'destroy'>) => void;
         "onDocDidLoad"?: (event: CustomEvent<HTMLElement>) => void;
         "onDocError"?: (event: CustomEvent<string | undefined>) => void;
-        "onDocEvents"?: (event: CustomEvent<'init' | 'destroy'>) => void;
         "styloConfig"?: Partial<StyloConfig>;
     }
     interface IntrinsicElements {

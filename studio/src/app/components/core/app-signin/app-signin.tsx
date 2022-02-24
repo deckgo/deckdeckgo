@@ -1,8 +1,7 @@
-import {injectJS} from '@deckdeckgo/editor';
+import {injectJS, throwError} from '@deckdeckgo/editor';
 import {Component, Fragment, h, JSX, Listen, State} from '@stencil/core';
 import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import tokenStore from '../../../stores/token.store';
@@ -46,7 +45,7 @@ export class AppSignIn {
   private onSignInError = (err?: string) => {
     console.error(err);
 
-    errorStore.state.error = 'There was an issue sign in with the internet identity.';
+    throwError('There was an issue sign in with the internet identity.');
   };
 
   private navigateRedirect() {

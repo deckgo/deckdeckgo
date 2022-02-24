@@ -1,7 +1,7 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {convertStyle, elementIndex, SlideTemplate} from '@deckdeckgo/editor';
-import {SlotType} from '@deckdeckgo/studio';
+import {convertStyle, elementIndex, SlideTemplate, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
+import {SlotType} from '@deckdeckgo/studio';
 import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
@@ -22,7 +22,6 @@ import authStore from '../../stores/auth.store';
 import busyStore from '../../stores/busy.store';
 import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
-import errorStore from '../../stores/error.store';
 import i18n from '../../stores/i18n.store';
 import undoRedoStore from '../../stores/undo-redo.store';
 import {Editor} from '../../types/editor/editor';
@@ -417,7 +416,7 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     if (!cloud()) {
-      errorStore.state.error = 'No cloud provider to publish material.';
+      throwError('No cloud provider to publish material.');
       return;
     }
 

@@ -1,10 +1,10 @@
 import {Component, h} from '@stencil/core';
 import 'web-social-share';
 import {publishUrl} from '../../../providers/publish/publish.provider';
+import editorStore from '../../../stores/editor.store';
 import shareStore, {ShareData} from '../../../stores/share.store';
 import {getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
 import {AppIcon} from '../app-icon/app-icon';
-import editorStore from '../../../stores/editor.store';
 
 @Component({
   tag: 'app-share',

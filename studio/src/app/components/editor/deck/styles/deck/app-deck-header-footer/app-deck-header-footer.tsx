@@ -1,11 +1,11 @@
 import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from '@stencil/core';
+import authStore from '../../../../../../stores/auth.store';
 import i18n from '../../../../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../../../../stores/nav.store';
 import userStore from '../../../../../../stores/user.store';
 import {renderI18n} from '../../../../../../utils/core/i18n.utils';
 import {HeaderFooterUtils} from '../../../../../../utils/editor/header-footer.utils';
 import {SocialUtils} from '../../../../../../utils/editor/social.utils';
-import authStore from '../../../../../../stores/auth.store';
 
 @Component({
   tag: 'app-deck-header-footer',

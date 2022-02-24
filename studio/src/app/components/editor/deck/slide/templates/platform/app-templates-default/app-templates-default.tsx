@@ -4,12 +4,12 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../../../../config/environme
 import {EnvironmentConfigService} from '../../../../../../../services/environment/environment-config.service';
 import assetsStore from '../../../../../../../stores/assets.store';
 import i18n from '../../../../../../../stores/i18n.store';
+import offlineStore from '../../../../../../../stores/offline.store';
 import userStore from '../../../../../../../stores/user.store';
 import {tenor} from '../../../../../../../utils/core/environment.utils';
 import {InitTemplate} from '../../../../../../../utils/editor/create-slides.utils';
 import {AppIcon} from '../../../../../../core/app-icon/app-icon';
 import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
-import offlineStore from '../../../../../../../stores/offline.store';
 
 @Component({
   tag: 'app-templates-default'

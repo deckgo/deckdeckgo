@@ -1,7 +1,7 @@
-import {AuthUser, Doc, formatDate, Paragraph} from '@deckdeckgo/editor';
+import {AuthUser, Doc, formatDate, Paragraph, throwError} from '@deckdeckgo/editor';
+import {getEdit} from '@deckdeckgo/offline';
 import {ParseParagraphsUtils} from '@deckdeckgo/studio';
 import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
-import {getEdit} from '@deckdeckgo/offline';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -9,7 +9,6 @@ import {AppAnonymousContent} from '../../../components/core/app-anonymous-conten
 import {docs} from '../../../providers/data/doc/doc.provider';
 import {getParagraph} from '../../../providers/data/paragraph/paragraph.provider';
 import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 import {Editor} from '../../../types/editor/editor';
@@ -80,7 +79,7 @@ export class AppDocs implements ComponentInterface {
       this.docs = await this.fetchFirstParagraphs(userDocs);
       this.filterDocs(null);
     } catch (err) {
-      errorStore.state.error = 'Cannot init your dashboard.';
+      throwError('Cannot init your dashboard.');
     }
 
     this.debounceLoading();
@@ -163,7 +162,7 @@ export class AppDocs implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.state.error = err;
+      throwError(err);
     }
 
     await loading.dismiss();

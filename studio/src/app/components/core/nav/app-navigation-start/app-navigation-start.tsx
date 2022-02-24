@@ -1,9 +1,9 @@
+import {throwError} from '@deckdeckgo/editor';
 import {clearEdit} from '@deckdeckgo/offline';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
 import authStore from '../../../../stores/auth.store';
-import errorStore from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
 import syncStore from '../../../../stores/sync.store';
 import {MoreAction} from '../../../../types/editor/more-action';
@@ -26,7 +26,7 @@ export class AppNavigationStart {
     try {
       await FileSystemService.getInstance().exportData();
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
   }
 
@@ -57,7 +57,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
+      throwError(`Something went wrong. ${err}.`);
     }
 
     this.loadInput.value = null;
@@ -108,7 +108,7 @@ export class AppNavigationStart {
 
       this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data.';
+      throwError('Something went wrong while cleaning the local data.');
     }
 
     await loading.dismiss();

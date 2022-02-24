@@ -1,7 +1,7 @@
+import {throwError} from '@deckdeckgo/editor';
 import {get, set} from 'idb-keyval';
 import {EnvironmentTenorConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import errorStore from '../../stores/error.store';
 
 export class TenorProvider {
   private static instance: TenorProvider;
@@ -32,13 +32,13 @@ export class TenorProvider {
         const response: TenorCategoryResponse = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          errorStore.state.error = 'Tenor trending could not be fetched';
+          throwError('Tenor trending could not be fetched');
           return;
         }
 
         resolve(response.tags);
       } catch (err) {
-        errorStore.state.error = err.message;
+        throwError(err.message);
         resolve([]);
       }
     });
@@ -74,14 +74,14 @@ export class TenorProvider {
         const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          errorStore.state.error = 'Tenor trending could not be fetched';
+          throwError('Tenor trending could not be fetched');
           resolve(undefined);
           return;
         }
 
         resolve(response);
       } catch (err) {
-        errorStore.state.error = err.message;
+        throwError(err.message);
         resolve(undefined);
       }
     });
@@ -116,7 +116,7 @@ export class TenorProvider {
         const response: TenorSearchResponse | undefined = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          errorStore.state.error = 'Tenor trending could not be fetched';
+          throwError('Tenor trending could not be fetched');
           resolve(undefined);
           return;
         }

@@ -1,4 +1,6 @@
-import {StorageFile, User} from '@deckdeckgo/editor';
+import {StorageFile, throwError, User} from '@deckdeckgo/editor';
+import {clearEdit} from '@deckdeckgo/offline';
+import {deleteAuth} from '@deckdeckgo/sync';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
@@ -7,6 +9,7 @@ import {updateUser} from '../../../../providers/data/user/user.provider';
 import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
+import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
 import userStore from '../../../../stores/user.store';
@@ -14,10 +17,6 @@ import {firebase} from '../../../../utils/core/environment.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {UserUtils} from '../../../../utils/core/user.utils';
-import errorStore from '../../../../stores/error.store';
-import authStore from '../../../../stores/auth.store';
-import {deleteAuth} from '@deckdeckgo/sync';
-import {clearEdit} from '@deckdeckgo/offline';
 
 @Component({
   tag: 'app-profile',
@@ -257,7 +256,7 @@ export class AppProfile {
 
         this.saving = false;
       } catch (err) {
-        errorStore.state.error = err;
+        throwError(err);
         this.saving = false;
       }
 
@@ -380,8 +379,9 @@ export class AppProfile {
 
         resolve();
       } catch (err) {
-        errorStore.state.error =
-          "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
+        throwError(
+          "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email."
+        );
       }
     });
   }

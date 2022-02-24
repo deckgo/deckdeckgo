@@ -1,12 +1,12 @@
 import {initAuthProvider, initSync} from '@deckdeckgo/sync';
 import {toastController} from '@ionic/core';
 import {Component, Element, h, Listen} from '@stencil/core';
+import {ErrorEvents} from './events/editor/error/error.events';
 import {ColorService} from './services/editor/color/color.service';
 import {EnvironmentConfigService} from './services/environment/environment-config.service';
 import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
-import errorStore from './stores/error.store';
 import navStore, {NavDirection, NavParams} from './stores/nav.store';
 import {firebaseApiConfig} from './utils/core/auth.utils';
 
@@ -24,6 +24,8 @@ export class AppRoot {
   private destroyErrorListener;
   private destroyNavListener;
   private destroyAuthListener;
+
+  private readonly errorEvents: ErrorEvents = new ErrorEvents();
 
   constructor() {
     this.themeService = ThemeService.getInstance();
@@ -49,11 +51,7 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
-    this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
-      if (error && error !== undefined) {
-        this.toastError(error);
-      }
-    });
+    this.errorEvents.init();
 
     this.destroyNavListener = navStore.onChange('nav', async (params: NavParams | undefined) => {
       await this.navigate(params);
@@ -61,6 +59,8 @@ export class AppRoot {
   }
 
   disconnectedCallback() {
+    this.errorEvents.destroy();
+
     this.destroyErrorListener?.();
     this.destroyNavListener?.();
     this.destroyAuthListener?.();
@@ -88,27 +88,6 @@ export class AppRoot {
       ],
       position: 'top',
       color: 'quaternary'
-    });
-
-    await toast.present();
-  }
-
-  private async toastError(error: string) {
-    const toast: HTMLIonToastElement = await toastController.create({
-      message: error,
-      buttons: [
-        {
-          text: 'Close',
-          role: 'cancel'
-        }
-      ],
-      position: 'top',
-      color: 'danger',
-      duration: 6000
-    });
-
-    toast.onDidDismiss().then(() => {
-      errorStore.state.error = undefined;
     });
 
     await toast.present();

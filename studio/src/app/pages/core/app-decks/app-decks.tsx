@@ -1,4 +1,4 @@
-import {AuthUser, convertStyle, Deck, formatDate, Slide} from '@deckdeckgo/editor';
+import {AuthUser, convertStyle, Deck, formatDate, Slide, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
 import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
@@ -9,7 +9,6 @@ import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
 import authStore from '../../../stores/auth.store';
-import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 import {Editor} from '../../../types/editor/editor';
@@ -86,7 +85,7 @@ export class AppDecks implements ComponentInterface {
       this.decks = await this.fetchFirstSlides(userDecks);
       this.filterDecks(null);
     } catch (err) {
-      errorStore.state.error = 'Cannot init your dashboard.';
+      throwError('Cannot init your dashboard.');
     }
 
     this.debounceLoading();
@@ -194,7 +193,7 @@ export class AppDecks implements ComponentInterface {
 
       navigateReloadEditor();
     } catch (err) {
-      errorStore.state.error = err;
+      throwError(err);
     }
 
     await loading.dismiss();
