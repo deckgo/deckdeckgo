@@ -26,17 +26,17 @@ export class IcSignin implements ComponentInterface {
   private signInInProgress: boolean = false;
 
   @Event()
-  success: EventEmitter<void>;
+  ddgSignInSuccess: EventEmitter<void>;
 
   @Event()
-  error: EventEmitter<string | undefined>;
+  ddgSignInError: EventEmitter<string | undefined>;
 
   private async signUserIn() {
     this.inProgress.emit(true);
     this.signInInProgress = true;
 
-    const signInSuccess: () => void = this.signInSuccess || (() => this.success.emit());
-    const signInError: (err?: string) => void = this.signInError || ((err?: string) => this.error.emit(err));
+    const signInSuccess: () => void = this.signInSuccess || (() => this.ddgSignInSuccess.emit());
+    const signInError: (err?: string) => void = this.signInError || ((err?: string) => this.ddgSignInError.emit(err));
 
     await signIn({onSuccess: signInSuccess, onError: signInError});
   }
