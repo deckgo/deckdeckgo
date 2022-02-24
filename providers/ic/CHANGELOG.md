@@ -1,4 +1,10 @@
-# 5.0.0 (2022-02-22)
+# 5.1.0 (2022-02-24)
+
+### Features
+
+- rename sign-in events for new login
+
+# 5.1.0 (2022-02-22)
 
 ### Features
 
