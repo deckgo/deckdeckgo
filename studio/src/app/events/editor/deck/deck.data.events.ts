@@ -21,8 +21,6 @@ import {ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
-import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
-import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
 import {publishUrl} from '../../../providers/publish/publish.provider';
 import {DeckAction} from '../../../types/editor/deck-action';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
@@ -35,16 +33,10 @@ import authStore from '../../../stores/auth.store';
 export class DeckDataEvents {
   private mainRef: HTMLElement;
 
-  private readonly deckOfflineProvider: DeckOfflineProvider;
-  private readonly slideOfflineProvider: SlideOfflineProvider;
-
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
 
   constructor() {
-    this.deckOfflineProvider = DeckOfflineProvider.getInstance();
-    this.slideOfflineProvider = SlideOfflineProvider.getInstance();
-
     this.debounceUpdateSlide = debounce(async (element: HTMLElement) => {
       await this.updateSlide(element);
 
