@@ -21,8 +21,8 @@ import {nanoid} from 'nanoid';
 import {excludeAttributes} from '../../constants/doc.constants';
 import {AuthStore} from '../../stores/auth.store';
 import {DocStore} from '../../stores/doc.store';
+import {throwBusy} from '../../utils/busy.utils';
 import {syncDeleteParagraph, syncUpdateDoc, syncUpdateParagraph} from '../../utils/sync.utils';
-import { throwBusy } from '../../utils/busy.utils';
 
 export class DocDataEvents {
   init() {

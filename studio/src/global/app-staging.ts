@@ -74,5 +74,8 @@ setupDeckGoConfig({
       cdn: 'https://unpkg.com/@deckdeckgo/firebase@4.0.0/dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js',
       tag: 'deckgo-firebase-signin'
     }
+  },
+  jszip: {
+    cdn: 'https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'
   }
 });

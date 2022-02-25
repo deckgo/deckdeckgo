@@ -1,4 +1,5 @@
-import {EnvironmentCloud, EnvironmentUnsplashConfig} from '../../config/environment-config';
+import {EnvironmentCloud} from '@deckdeckgo/sync';
+import {EnvironmentUnsplashConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export const cloudProvider = <T>(): Promise<T> => {

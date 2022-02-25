@@ -1,3 +1,5 @@
+import {EnvironmentCdn, EnvironmentCloud} from '@deckdeckgo/sync';
+
 export interface EnvironmentFirebaseConfig {
   apiKey: string;
   authDomain: string;
@@ -41,24 +43,11 @@ export interface EnvironmentAppConfig {
   features: [EnvironmentAppConfigFeature, ...EnvironmentAppConfigFeature[]];
 }
 
-export interface EnvironmentCloudApi {
-  cdn: string;
-}
-
-export interface EnvironmentCloudSignIn {
-  cdn: string;
-  tag: string;
-}
-
-export interface EnvironmentCloud {
-  api: EnvironmentCloudApi;
-  signIn: EnvironmentCloudSignIn;
-}
-
 export interface EnvironmentConfig {
   app: EnvironmentAppConfig;
   deckdeckgo: EnvironmentDeckDeckGoConfig;
   cloud?: EnvironmentCloud;
+  jszip?: EnvironmentCdn;
   firebase?: EnvironmentFirebaseConfig;
   tenor?: EnvironmentTenorConfig;
   unsplash?: EnvironmentUnsplashConfig;

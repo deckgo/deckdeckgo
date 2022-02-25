@@ -8,6 +8,7 @@ import {UserStore} from './stores/user.store';
 export * from './events/chart/chart.events';
 export * from './events/doc.events';
 export * from './events/image/image.load.events';
+export * from './init/sync.init';
 export * from './loaders/deck.loader';
 export * from './loaders/doc.loader';
 export * from './providers/auth.provider';

@@ -63,6 +63,9 @@ setupDeckGoConfig({
       cdn: 'https://unpkg.com/@deckdeckgo/ic@5.1.0/dist/deckdeckgo-ic/deckdeckgo-ic.esm.js',
       tag: 'deckgo-ic-signin'
     }
+  },
+  jszip: {
+    cdn: 'https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'
   }
 });
 
