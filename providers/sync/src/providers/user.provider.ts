@@ -1,10 +1,10 @@
 import {UpdateUser, User} from '@deckdeckgo/editor';
-import store from '../../../stores/user.store';
-import {cloud} from '../../../utils/core/environment.utils';
-import {cloudProvider} from '../../../utils/core/providers.utils';
+import {EnvStore} from '../stores/env.store';
+import {UserStore} from '../stores/user.store';
+import {cloudProvider} from '../utils/providers.utils';
 
 export const updateUser = async (user: User) => {
-  if (!cloud()) {
+  if (!EnvStore.getInstance().cloud()) {
     return;
   }
 
@@ -12,5 +12,5 @@ export const updateUser = async (user: User) => {
 
   const updatedUser: User = await updateUser(user);
 
-  store.state.user = {...updatedUser};
+  UserStore.getInstance().set({...updatedUser});
 };

@@ -22,4 +22,6 @@ onChange('sync', (sync: SyncState) => {
   syncBeforeUnload(state.dirty);
 });
 
-export default {state, onChange};
+const readonlyState: Readonly<typeof state> = state;
+
+export default {state: readonlyState, onChange};

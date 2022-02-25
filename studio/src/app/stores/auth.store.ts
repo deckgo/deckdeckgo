@@ -23,4 +23,6 @@ onChange('authUser', (authUser: AuthUser | null) => {
   state.gitHub = authUser ? authUser.gitHub : false;
 });
 
-export default {state, onChange, reset};
+const readonlyState: Readonly<typeof state> = state;
+
+export default {state: readonlyState, onChange, reset};

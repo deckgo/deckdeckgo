@@ -1,5 +1,6 @@
 import {Deck, Slide, throwError} from '@deckdeckgo/editor';
-import {getOfflineDeck, getOfflineSlide} from '@deckdeckgo/offline';
+import {getOfflineSlide} from '@deckdeckgo/offline';
+import {loadDeck} from '@deckdeckgo/sync';
 import {JSX} from '@stencil/core';
 import {initTemplates} from '../../providers/data/template/template.provider';
 import busyStore from '../../stores/busy.store';
@@ -10,24 +11,10 @@ import {TemplateUtils} from '../../utils/editor/template.utils';
 export class SlideHelper {
   loadDeckAndRetrieveSlides(deckId: string): Promise<JSX.IntrinsicElements[]> {
     return new Promise<JSX.IntrinsicElements[]>(async (resolve) => {
-      if (!deckId) {
-        throwError('Deck is not defined');
-        resolve(null);
-        return;
-      }
-
       busyStore.state.busy = true;
 
       try {
-        const deck: Deck = await getOfflineDeck(deckId);
-
-        if (!deck || !deck.data) {
-          throwError('No deck could be fetched');
-          resolve(null);
-          return;
-        }
-
-        editorStore.state.deck = {...deck};
+        const deck: Deck = await loadDeck(deckId);
 
         if (!deck.data.slides || deck.data.slides.length <= 0) {
           resolve([]);
