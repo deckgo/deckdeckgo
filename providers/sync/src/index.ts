@@ -17,6 +17,7 @@ export * from './providers/doc.provider';
 export * from './providers/paragraph.provider';
 export * from './providers/slide.provider';
 export * from './providers/sync.provider';
+export * from './providers/user.provider';
 export * from './services/file-system.service';
 export * from './types/env.types';
 export * from './types/import.types';

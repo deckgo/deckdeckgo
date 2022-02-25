@@ -26,4 +26,6 @@ onChange('user', (user: User | undefined) => {
   state.social = user?.data?.social ?? undefined;
 });
 
-export default {state, onChange, reset};
+const readonlyState: Readonly<typeof state> = state;
+
+export default {state: readonlyState, onChange, reset};

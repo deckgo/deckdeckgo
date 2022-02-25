@@ -55,4 +55,6 @@ onChange('doc', (doc: Doc | null) => {
   state.deck = null;
 });
 
-export default {state, onChange, reset};
+const readonlyState: Readonly<typeof state> = state;
+
+export default {state: readonlyState, onChange, reset};
