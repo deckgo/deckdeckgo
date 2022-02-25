@@ -1,20 +1,8 @@
 import {Deck, Doc, Paragraph, Slide} from '@deckdeckgo/editor';
 import {setEditDeckId, setEditDocId} from '@deckdeckgo/offline';
-import {syncUpdateDeck, syncUpdateDoc, syncUpdateParagraph, syncUpdateSlide} from '@deckdeckgo/sync';
 import {set, setMany} from 'idb-keyval';
-
-export interface ImportData {
-  id: string;
-  deck?: Deck;
-  slides?: Slide[];
-  doc?: Doc;
-  paragraphs?: Paragraph[];
-}
-
-export interface ImportAsset {
-  path: string;
-  blob: Blob;
-}
+import { syncUpdateDeck, syncUpdateDoc, syncUpdateParagraph, syncUpdateSlide } from './sync.utils';
+import { ImportAsset, ImportData } from '../types/import.types';
 
 export const importEditorData = async ({id, deck, slides, doc, paragraphs}: ImportData) => {
   if (!deck && !doc) {
@@ -60,4 +48,30 @@ export const importEditorSync = async ({deck, slides, doc, paragraphs}: ImportDa
   for (let {id: paragraphId} of paragraphs) {
     await syncUpdateParagraph({docId: doc.id, paragraphId});
   }
+};
+
+export const cleanDeck = ({deck, cleanMeta}: {deck: Deck; cleanMeta: boolean}): Deck => {
+  const clone: Deck = {...deck};
+
+  if (cleanMeta) {
+    delete clone.data.meta;
+  }
+
+  delete clone.data.api_id;
+  delete clone.data.deploy;
+  delete clone.data.github;
+
+  return clone;
+};
+
+export const cleanDoc = ({doc, cleanMeta}: {doc: Doc; cleanMeta: boolean}): Doc => {
+  const clone: Doc = {...doc};
+
+  if (cleanMeta) {
+    delete clone.data.meta;
+  }
+
+  delete clone.data.deploy;
+
+  return clone;
 };

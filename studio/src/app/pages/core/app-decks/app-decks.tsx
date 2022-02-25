@@ -1,12 +1,10 @@
 import {AuthUser, convertStyle, Deck, formatDate, Slide, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
-import {ChartEvents, ImageLoadEvents} from '@deckdeckgo/sync';
+import {ChartEvents, decks, getSlide, ImageLoadEvents} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
-import {decks} from '../../../providers/data/deck/deck.provider';
-import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
@@ -321,8 +319,7 @@ export class AppDecks implements ComponentInterface {
           data={{deck: deck.deck}}
           disableDelete={deck.deck.id === this.currentDeckId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-          onCloned={() => navigateReloadEditor()}
-        ></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
       </aside>
     );
   }
@@ -335,8 +332,7 @@ export class AppDecks implements ComponentInterface {
         direction="horizontal"
         direction-mobile="horizontal"
         style={deck.style}
-        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}
-      >
+        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
         {deck.slide}
         {deck.background}
         {deck.header}

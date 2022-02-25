@@ -1,8 +1,8 @@
 import {throwError} from '@deckdeckgo/editor';
 import {clearEdit} from '@deckdeckgo/offline';
+import {exportData, importData} from '@deckdeckgo/sync';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h} from '@stencil/core';
-import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
 import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import syncStore from '../../../../stores/sync.store';
@@ -24,7 +24,7 @@ export class AppNavigationStart {
 
   private async exportData() {
     try {
-      await FileSystemService.getInstance().exportData();
+      await exportData();
     } catch (err) {
       throwError(`Something went wrong. ${err}.`);
     }
@@ -53,7 +53,7 @@ export class AppNavigationStart {
     await loading.present();
 
     try {
-      const type: 'doc' | 'deck' = await FileSystemService.getInstance().importData(this.loadInput.files[0]);
+      const type: 'doc' | 'deck' = await importData(this.loadInput.files[0]);
 
       this.emitReloadEditor(type);
     } catch (err) {
@@ -164,8 +164,7 @@ export class AppNavigationStart {
           key="new-select-action"
           class="ion-activatable"
           onClick={async ($event: UIEvent) => await this.selectType($event)}
-          aria-label={i18n.state.tools.new_presentation}
-        >
+          aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -196,8 +195,7 @@ export class AppNavigationStart {
           onTouchStart={($event) => $event.stopPropagation()}
           onClick={async ($event: UIEvent) => await this.openMoreActions($event)}
           color="primary"
-          class="small-devices ion-activatable"
-        >
+          class="small-devices ion-activatable">
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaLabel="" ariaHidden={true}></AppIcon>
           <ion-label aria-hidden="true">{i18n.state.editor.files}</ion-label>

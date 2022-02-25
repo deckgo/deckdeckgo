@@ -44,7 +44,6 @@
     }
   },
   "dependencies": {
-    "@deckdeckgo/offline": "file:providers/offline",
     "@deckdeckgo/utils": "file:utils/utils"
   }
 }

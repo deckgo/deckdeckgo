@@ -1,7 +1,6 @@
 import {Deck, deckSelector, Doc, docSelector, UserAsset} from '@deckdeckgo/editor';
-import {SlotType} from '@deckdeckgo/studio';
 import {get, getMany} from 'idb-keyval';
-import {v4 as uuid} from 'uuid';
+import {nanoid} from 'nanoid';
 
 export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
   return getDeckImage();
@@ -75,7 +74,7 @@ const getDeckImage = async (): Promise<UserAsset | undefined> => {
     return undefined;
   }
 
-  const img: HTMLDeckgoLazyImgElement = backgroundElement.querySelector(SlotType.IMG);
+  const img: HTMLDeckgoLazyImgElement = backgroundElement.querySelector('deckgo-lazy-img');
 
   if (!img) {
     return undefined;
@@ -140,7 +139,7 @@ const getImages = ({selector}: {selector: string}): HTMLDeckgoLazyImgElement[] |
     return undefined;
   }
 
-  const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = element.querySelectorAll(SlotType.IMG);
+  const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = element.querySelectorAll('deckgo-lazy-img');
 
   if (!imgs || imgs.length <= 0) {
     return undefined;
@@ -180,18 +179,18 @@ const getSlideOnlineCharts = async ({selector}: {selector: string}): Promise<Use
   return asset ? [asset] : undefined;
 };
 
-const getChartSrc = ({selector}: {selector: string}): string | undefined => {
+const getChartSrc = ({selector}: {selector: string}): string | null => {
   const slideElement: HTMLElement = document.querySelector(selector);
 
   if (!slideElement) {
-    return undefined;
+    return null;
   }
 
   if (slideElement.tagName && slideElement.tagName.toUpperCase() !== 'deckgo-slide-chart'.toUpperCase()) {
-    return undefined;
+    return null;
   }
 
-  return (slideElement as HTMLDeckgoSlideChartElement).src;
+  return slideElement.getAttribute('src');
 };
 
 const getUserAsset = async ({url, type}: {url: string; type: 'images' | 'data'}): Promise<UserAsset | undefined> => {
@@ -202,7 +201,7 @@ const getUserAsset = async ({url, type}: {url: string; type: 'images' | 'data'})
 
     return {
       url,
-      key: `/assets/online/${type}/${uuid()}`,
+      key: `/assets/online/${type}/${nanoid()}`,
       blob
     };
   } catch (err) {

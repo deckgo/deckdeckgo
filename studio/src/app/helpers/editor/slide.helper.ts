@@ -1,7 +1,6 @@
 import {Deck, Slide, throwError} from '@deckdeckgo/editor';
+import {getOfflineDeck, getOfflineSlide} from '@deckdeckgo/offline';
 import {JSX} from '@stencil/core';
-import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
-import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 import {initTemplates} from '../../providers/data/template/template.provider';
 import busyStore from '../../stores/busy.store';
 import editorStore from '../../stores/editor.store';
@@ -9,14 +8,6 @@ import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
 export class SlideHelper {
-  private deckOfflineProvider: DeckOfflineProvider;
-  private slideOfflineProvider: SlideOfflineProvider;
-
-  constructor() {
-    this.slideOfflineProvider = SlideOfflineProvider.getInstance();
-    this.deckOfflineProvider = DeckOfflineProvider.getInstance();
-  }
-
   loadDeckAndRetrieveSlides(deckId: string): Promise<JSX.IntrinsicElements[]> {
     return new Promise<JSX.IntrinsicElements[]>(async (resolve) => {
       if (!deckId) {
@@ -28,7 +19,7 @@ export class SlideHelper {
       busyStore.state.busy = true;
 
       try {
-        const deck: Deck = await this.deckOfflineProvider.get(deckId);
+        const deck: Deck = await getOfflineDeck(deckId);
 
         if (!deck || !deck.data) {
           throwError('No deck could be fetched');
@@ -74,7 +65,7 @@ export class SlideHelper {
   private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideOfflineProvider.get(deck.id, slideId);
+        const slide: Slide = await getOfflineSlide(deck.id, slideId);
 
         await TemplateUtils.loadSlideTemplate(slide);
 
@@ -107,7 +98,7 @@ export class SlideHelper {
         let element: JSX.IntrinsicElements = null;
 
         if (editorStore.state.deck?.data) {
-          const slide: Slide = await this.slideOfflineProvider.get(editorStore.state.deck.id, slideId);
+          const slide: Slide = await getOfflineSlide(editorStore.state.deck.id, slideId);
           element = await ParseSlidesUtils.parseSlide(slide, true, true);
         }
 

@@ -15,36 +15,37 @@ import {
   SlideData,
   SlideScope,
   SlideSplitType,
-  SlideTemplate
+  SlideTemplate,
+  throwError
 } from '@deckdeckgo/editor';
+import {
+  createOfflineDeck,
+  createOfflineSlide,
+  deleteOfflineSlide,
+  getOfflineSlide,
+  updateOfflineDeck,
+  updateOfflineSlide
+} from '@deckdeckgo/offline';
 import {ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
+import {setDeck, syncDeleteSlide, syncUpdateDeck, syncUpdateSlide} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
 import {Constants} from '../../../config/constants';
-import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
-import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
 import {publishUrl} from '../../../providers/publish/publish.provider';
+import authStore from '../../../stores/auth.store';
+import busyStore from '../../../stores/busy.store';
+import editorStore from '../../../stores/editor.store';
 import {DeckAction} from '../../../types/editor/deck-action';
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
-import {throwError} from '@deckdeckgo/editor';
-import busyStore from '../../../stores/busy.store';
-import editorStore from '../../../stores/editor.store';
-import authStore from '../../../stores/auth.store';
 
 export class DeckDataEvents {
   private mainRef: HTMLElement;
-
-  private readonly deckOfflineProvider: DeckOfflineProvider;
-  private readonly slideOfflineProvider: SlideOfflineProvider;
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
 
   constructor() {
-    this.deckOfflineProvider = DeckOfflineProvider.getInstance();
-    this.slideOfflineProvider = SlideOfflineProvider.getInstance();
-
     this.debounceUpdateSlide = debounce(async (element: HTMLElement) => {
       await this.updateSlide(element);
 
@@ -244,7 +245,9 @@ export class DeckDataEvents {
         slideData.attributes = attributes;
       }
 
-      const persistedSlide: Slide = await this.slideOfflineProvider.create(deck.id, slideData);
+      const persistedSlide: Slide = await createOfflineSlide(deck.id, slideData);
+
+      await syncUpdateSlide({deckId: deck.id, slideId: persistedSlide.id});
 
       if (persistedSlide && persistedSlide.id) {
         slide.setAttribute('slide_id', persistedSlide.id);
@@ -264,8 +267,11 @@ export class DeckDataEvents {
           owner_id: authStore.state.authUser?.uid
         };
 
-        const persistedDeck: Deck = await this.deckOfflineProvider.create(deck);
-        editorStore.state.deck = {...persistedDeck};
+        const persistedDeck: Deck = await createOfflineDeck(deck);
+
+        setDeck({...persistedDeck});
+
+        await syncUpdateDeck(persistedDeck.id);
 
         resolve(persistedDeck);
       } catch (err) {
@@ -294,8 +300,7 @@ export class DeckDataEvents {
         const slideIndex: number = elementIndex(slideElement);
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
-        const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);
-        editorStore.state.deck = {...updatedDeck};
+        await this.updateDeckAndSync(deck);
 
         resolve();
       } catch (err) {
@@ -339,9 +344,7 @@ export class DeckDataEvents {
         // @ts-ignore
         currentDeck.data.footer = footer && footer !== undefined && footer !== '' ? footer : null;
 
-        const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-
-        editorStore.state.deck = {...updatedDeck};
+        await this.updateDeckAndSync(currentDeck);
 
         busyStore.state.busy = false;
 
@@ -379,8 +382,7 @@ export class DeckDataEvents {
 
         currentDeck.data.name = title;
 
-        const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-        editorStore.state.deck = {...updatedDeck};
+        await this.updateDeckAndSync(currentDeck);
 
         busyStore.state.busy = false;
 
@@ -391,6 +393,16 @@ export class DeckDataEvents {
         resolve();
       }
     });
+  }
+
+  private async updateDeckAndSync(deck: Deck) {
+    const updatedDeck: Deck = await updateOfflineDeck(deck);
+
+    // Update store
+    setDeck({...updatedDeck});
+
+    // Sync
+    await syncUpdateDeck(updatedDeck.id);
   }
 
   private async updateDeckAction(action: DeckAction): Promise<void> {
@@ -417,8 +429,7 @@ export class DeckDataEvents {
 
       currentDeck.data.attributes.autoSlide = action.autoSlide;
 
-      const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-      editorStore.state.deck = {...updatedDeck};
+      await this.updateDeckAndSync(currentDeck);
 
       busyStore.state.busy = false;
     } catch (err) {
@@ -463,7 +474,9 @@ export class DeckDataEvents {
         }
 
         if (editorStore.state.deck) {
-          await this.slideOfflineProvider.update(editorStore.state.deck.id, slideUpdate);
+          const updatedSlide: Slide = await updateOfflineSlide(editorStore.state.deck.id, slideUpdate);
+
+          await syncUpdateSlide({deckId: editorStore.state.deck.id, slideId: updatedSlide.id});
         }
 
         busyStore.state.busy = false;
@@ -496,7 +509,7 @@ export class DeckDataEvents {
         const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
-          const slide: Slide = await this.slideOfflineProvider.get(currentDeck.id, slideId);
+          const slide: Slide = await getOfflineSlide(currentDeck.id, slideId);
 
           if (slide && slide.data) {
             // As we cannot, I think, perform following atomically, it is safer to first remove the slide from the list of slides and then remove it effectively.
@@ -505,12 +518,13 @@ export class DeckDataEvents {
             if (currentDeck.data.slides && currentDeck.data.slides.indexOf(slideId) > -1) {
               currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
 
-              const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-              editorStore.state.deck = {...updatedDeck};
+              await this.updateDeckAndSync(currentDeck);
             }
 
             // 2. Delete the slide
-            await this.slideOfflineProvider.delete(currentDeck.id, slideId);
+            await deleteOfflineSlide(currentDeck.id, slideId);
+
+            await syncDeleteSlide({deckId: currentDeck.id, slideId});
           }
         }
 
@@ -876,8 +890,7 @@ export class DeckDataEvents {
         if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
           currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
-          const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-          editorStore.state.deck = {...updatedDeck};
+          await this.updateDeckAndSync(currentDeck);
         }
 
         resolve();

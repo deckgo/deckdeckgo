@@ -1,8 +1,8 @@
 import {throwError} from '@deckdeckgo/editor';
 import {clearEdit} from '@deckdeckgo/offline';
+import {exportData, importData} from '@deckdeckgo/sync';
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
-import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
 import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
 import offlineStore from '../../../../stores/offline.store';
@@ -39,7 +39,7 @@ export class AppNavigationEnd {
 
   private async exportData() {
     try {
-      await FileSystemService.getInstance().exportData();
+      await exportData();
     } catch (err) {
       throwError(`Something went wrong. ${err}.`);
     }
@@ -59,7 +59,7 @@ export class AppNavigationEnd {
     await loading.present();
 
     try {
-      const type: 'doc' | 'deck' = await FileSystemService.getInstance().importData(this.loadInput.files[0]);
+      const type: 'doc' | 'deck' = await importData(this.loadInput.files[0]);
 
       this.emitReloadEditor(type);
     } catch (err) {
@@ -145,8 +145,7 @@ export class AppNavigationEnd {
           class="ion-activatable"
           onClick={($event: UIEvent) => this.selectType($event)}
           disabled={disabled}
-          aria-label={i18n.state.tools.new_presentation}
-        >
+          aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -209,8 +208,7 @@ export class AppNavigationEnd {
             key="user-menu-action"
             class="ion-activatable"
             onClick={(e: UIEvent) => this.openMenu(e)}
-            aria-label={i18n.state.nav.menu}
-          >
+            aria-label={i18n.state.nav.menu}>
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
             <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
@@ -250,8 +248,7 @@ export class AppNavigationEnd {
         key="cloud-status-action"
         class={`cloud ion-activatable ${syncStore.state.sync}`}
         aria-label={label}
-        onClick={($event: UIEvent) => this.openSyncInfo($event)}
-      >
+        onClick={($event: UIEvent) => this.openSyncInfo($event)}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name={iconName} ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.sync.cloud}</ion-label>
