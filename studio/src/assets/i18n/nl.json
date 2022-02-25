@@ -13,7 +13,8 @@
     "add": "Toevoegen",
     "submit": "Versturen",
     "cancel": "Annuleren",
-    "got_it": "Begrepen"
+    "got_it": "Begrepen",
+    "back": "Rug"
   },
   "nav": {
     "menu": "Menu",

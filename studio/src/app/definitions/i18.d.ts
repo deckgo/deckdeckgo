@@ -13,6 +13,7 @@ interface I18nCore {
   submit: string;
   cancel: string;
   got_it: string;
+  back: string;
 }
 
 interface I18nNav {
