@@ -1,3 +1,4 @@
+export * from './providers/deck.offline.provider';
 export * from './providers/doc.offline.provider';
 export * from './providers/paragraph.offline.provider';
 export * from './providers/editor.provider';
