@@ -2,7 +2,8 @@ import {Deck, Doc, FileImportData, Paragraph, Slide, UserAsset} from '@deckdeckg
 import JSZip from 'jszip';
 import {nanoid} from 'nanoid';
 import {AuthStore} from '../stores/auth.store';
-import {cleanDeck, cleanDoc, ImportAsset, ImportData} from './import.utils';
+import {ImportAsset, ImportData} from '../types/import.types';
+import {cleanDeck, cleanDoc} from './import.utils';
 import {isOnline} from './offline.utils';
 
 export const zip = async ({data, assets}: {data: ImportData; assets: UserAsset[]}): Promise<Blob> => {

@@ -35,7 +35,7 @@
     "@deckdeckgo/markdown": "^2.1.1",
     "@deckdeckgo/math": "^2.1.0",
     "@deckdeckgo/monaco-editor": "^1.1.0",
-    "@deckdeckgo/offline": "^0.0.2",
+    "@deckdeckgo/offline": "^0.0.4",
     "@deckdeckgo/remote": "^2.2.0",
     "@deckdeckgo/slide-aspect-ratio": "^3.4.0",
     "@deckdeckgo/slide-author": "^2.4.0",

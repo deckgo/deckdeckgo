@@ -1,8 +1,6 @@
-import {Deck} from '@deckdeckgo/editor';
-import {snapshotDoc} from '@deckdeckgo/sync';
+import {snapshotDeck, snapshotDoc} from '@deckdeckgo/sync';
 import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
-import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
 import {updatePublishedDeckOffline, updatePublishedDocOffline} from '../../../providers/publish/publish.provider';
 import editorStore from '../../../stores/editor.store';
 import i18n from '../../../stores/i18n.store';
@@ -34,10 +32,7 @@ export class AppPublish {
       return snapshotDoc();
     }
 
-    return snapshotDeck({
-      deckId: editorStore.state.deck.id,
-      onNext: (snapshot: Deck) => (editorStore.state.deck = {...snapshot})
-    });
+    return snapshotDeck();
   }
 
   /**
