@@ -1,8 +1,8 @@
 import {Deck, Doc, Paragraph, Slide} from '@deckdeckgo/editor';
 import {setEditDeckId, setEditDocId} from '@deckdeckgo/offline';
 import {set, setMany} from 'idb-keyval';
-import { syncUpdateDeck, syncUpdateDoc, syncUpdateParagraph, syncUpdateSlide } from './sync.utils';
-import { ImportAsset, ImportData } from '../types/import.types';
+import {ImportAsset, ImportData} from '../types/import.types';
+import {syncUpdateDeck, syncUpdateDoc, syncUpdateParagraph, syncUpdateSlide} from './sync.utils';
 
 export const importEditorData = async ({id, deck, slides, doc, paragraphs}: ImportData) => {
   if (!deck && !doc) {

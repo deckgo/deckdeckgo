@@ -24,7 +24,7 @@ const resetAuth = () => {
   AuthStore.getInstance().reset();
 
   UserStore.getInstance().reset();
-}
+};
 
 const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => {
   AuthStore.getInstance().set({...authUser});

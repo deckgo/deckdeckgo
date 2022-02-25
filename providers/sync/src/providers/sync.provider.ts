@@ -1,33 +1,10 @@
-import {AuthUser, Doc, Sync, SyncData, SyncPending, SyncPendingData} from '@deckdeckgo/editor';
-import {setEditDocId} from '@deckdeckgo/offline';
+import {Sync, SyncData, SyncPending, SyncPendingData} from '@deckdeckgo/editor';
 import {get, update} from 'idb-keyval';
 import {AuthStore} from '../stores/auth.store';
-import {DocStore} from '../stores/doc.store';
 import {EnvStore} from '../stores/env.store';
 import {SyncStore} from '../stores/sync.store';
-import {EnvironmentCloud} from '../types/env.types';
 import {isOnline} from '../utils/offline.utils';
 import {cloudProvider} from '../utils/providers.utils';
-
-export const initSync = ({env}: {env: EnvironmentCloud | undefined}): (() => void)[] => {
-  EnvStore.getInstance().set(env);
-
-  const docUnsubscriber: () => void = DocStore.getInstance().subscribe((doc: Doc | null) => {
-    if (!doc) {
-      return;
-    }
-
-    setEditDocId(doc.id).catch((err) => {
-      console.error('Failed to update IDB with new doc id', err);
-    });
-  });
-
-  const authUnsubscriber: () => void = AuthStore.getInstance().subscribe(async (authUser: AuthUser | null | undefined) =>
-    initSyncState().then(() => {})
-  );
-
-  return [docUnsubscriber, authUnsubscriber];
-};
 
 export const sync = async (syncData: SyncData | undefined) => {
   try {

@@ -1,5 +1,5 @@
 const esbuild = require('esbuild');
-const {readdirSync, lstatSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+const {readdirSync, lstatSync, writeFileSync, existsSync, mkdirSync} = require('fs');
 const {join} = require('path');
 const path = require('path');
 

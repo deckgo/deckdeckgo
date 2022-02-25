@@ -1,10 +1,10 @@
-import {EnvironmentCloud} from '../types/env.types';
+import {Environment} from '../types/env.types';
 import {Store} from './store';
 
-export class EnvStore extends Store<EnvironmentCloud | undefined> {
+export class EnvStore extends Store<Environment | undefined> {
   private static instance: EnvStore;
 
-  private env: EnvironmentCloud | undefined;
+  private env: Environment | undefined;
 
   private constructor() {
     super();
@@ -17,21 +17,21 @@ export class EnvStore extends Store<EnvironmentCloud | undefined> {
     return EnvStore.instance;
   }
 
-  set(env: EnvironmentCloud | undefined) {
+  set(env: Environment | undefined) {
     this.env = env;
 
     this.populate(env);
   }
 
-  get(): EnvironmentCloud | undefined {
+  get(): Environment | undefined {
     return this.env;
   }
 
   cloud(): boolean {
-    return this.env !== undefined;
+    return this.env?.cloud !== undefined;
   }
 
-  override subscribe(callback: (data: EnvironmentCloud | undefined) => void): () => void {
+  override subscribe(callback: (data: Environment | undefined) => void): () => void {
     const unsubscribe: () => void = super.subscribe(callback);
 
     callback(this.env);

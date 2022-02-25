@@ -1,13 +1,14 @@
-import {Deck, Doc, FileImportData, Paragraph, Slide, UserAsset} from '@deckdeckgo/editor';
-import JSZip from 'jszip';
+import {Deck, Doc, FileImportData, injectJS, Paragraph, Slide, throwError, UserAsset} from '@deckdeckgo/editor';
 import {nanoid} from 'nanoid';
 import {AuthStore} from '../stores/auth.store';
+import {EnvStore} from '../stores/env.store';
+import {EnvironmentCdn} from '../types/env.types';
 import {ImportAsset, ImportData} from '../types/import.types';
 import {cleanDeck, cleanDoc} from './import.utils';
 import {isOnline} from './offline.utils';
 
 export const zip = async ({data, assets}: {data: ImportData; assets: UserAsset[]}): Promise<Blob> => {
-  const zip = new JSZip();
+  const zip = await initJSZip();
 
   assets.forEach(({key, blob}: UserAsset) =>
     zip.file(key, blob, {
@@ -46,7 +47,7 @@ export const unzip = async (
   data: ImportData;
   assets: ImportAsset[];
 }> => {
-  const zip = new JSZip();
+  const zip = await initJSZip();
 
   const content: JSZip = await zip.loadAsync(file);
 
@@ -81,6 +82,19 @@ export const unzip = async (
     ...resetImportDataIds(data),
     assets
   };
+};
+
+const initJSZip = async (): Promise<JSZip> => {
+  const jszip: EnvironmentCdn | undefined = EnvStore.getInstance().get().jszip;
+
+  if (!jszip?.cdn) {
+    throwError('No CDN provided to load jszip.');
+    return;
+  }
+
+  await injectJS({id: 'jszip-script', src: jszip.cdn, module: false});
+
+  return new JSZip();
 };
 
 const listZipAssets = ({

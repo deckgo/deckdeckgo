@@ -37,7 +37,12 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    this.destroySyncListeners = initSync({env: EnvironmentConfigService.getInstance().get('cloud')});
+    this.destroySyncListeners = initSync({
+      env: {
+        cloud: EnvironmentConfigService.getInstance().get('cloud'),
+        jszip: EnvironmentConfigService.getInstance().get('jszip')
+      }
+    });
 
     const promises: Promise<void>[] = [
       initAuth(firebaseApiConfig()),

@@ -1,13 +1,17 @@
-export interface EnvironmentCloudApi {
+export interface EnvironmentCdn {
   cdn: string;
 }
 
-export interface EnvironmentCloudSignIn {
-  cdn: string;
+export interface EnvironmentComponent extends EnvironmentCdn {
   tag: string;
 }
 
 export interface EnvironmentCloud {
-  api: EnvironmentCloudApi;
-  signIn: EnvironmentCloudSignIn;
+  api: EnvironmentCdn;
+  signIn: EnvironmentComponent;
+}
+
+export interface Environment {
+  cloud: EnvironmentCloud;
+  jszip: EnvironmentCdn;
 }

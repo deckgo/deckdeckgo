@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/sync",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "David Dal Busco",
   "description": "Sync data and auth providers for DeckDeckGo editors.",
   "license": "AGPL-3.0-or-later",
@@ -14,6 +14,7 @@
   "module": "lib/esm/index.js",
   "types": "lib/types/index.d.ts",
   "scripts": {
+    "prebuild": "node ./scripts/jszip.mjs",
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib/types",
     "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration",
     "format": "prettier . --write"
@@ -24,7 +25,6 @@
   ],
   "dependencies": {
     "@deckdeckgo/offline": "^0.0.4",
-    "jszip": "^3.7.1",
     "nanoid": "^3.3.1"
   },
   "devDependencies": {
