@@ -1,3 +1,10 @@
+# 4.1.0 (2022-02-27)
+
+### Build
+
+- bump `primsjs` and list of supported languages
+- replace deprecated `dist-custom-elements-bundle` with `dist-custom-elements`
+
 # 4.0.0 (2022-01-23)
 
 ### Breaking Changes
