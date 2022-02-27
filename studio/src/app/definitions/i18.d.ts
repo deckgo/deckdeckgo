@@ -540,6 +540,7 @@ interface I18nTools {
   new_experimental: string;
   open: string;
   user: string;
+  profile_image: string;
 }
 
 interface I18nSync {

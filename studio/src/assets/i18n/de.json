@@ -522,7 +522,8 @@
     "new_doc": "Dokument",
     "new_experimental": "Experimental",
     "open": "Öffnen",
-    "user": "Benutzer*in"
+    "user": "Benutzer*in",
+    "profile_image": "Profilbild"
   },
   "sync": {
     "cloud": "Cloud",
