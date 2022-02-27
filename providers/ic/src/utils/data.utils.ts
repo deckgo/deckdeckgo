@@ -104,7 +104,7 @@ export const setData = <T, D>({
 }): Promise<T> => {
   return new Promise<T>(async (resolve, reject) => {
     try {
-      log?.({msg: `[set] ${key}: start`});
+      log?.({msg: `[set][start] ${key}`});
       const t0 = performance.now();
 
       const dataActor: DataBucketActor = actor || (await getDataActor());
@@ -119,7 +119,7 @@ export const setData = <T, D>({
       });
 
       const t1 = performance.now();
-      log?.({msg: `[set] ${key}: done`, duration: t1 - t0});
+      log?.({msg: `[set][done] ${key}`, duration: t1 - t0});
 
       const result: T = {
         id,

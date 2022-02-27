@@ -56,13 +56,13 @@ const initUser = async (
   });
 
 const initUserData = async ({actor, log}: {actor: DataBucketActor; log: LogWindow}): Promise<User> => {
-  log({msg: `[get] user: start`});
+  log({msg: `[get][start] user`});
   const t0 = performance.now();
 
   const user: User | undefined = await getData<User, UserData>({key: `/user`, actor});
 
   const t1 = performance.now();
-  log({msg: `[get] user: done`, duration: t1 - t0});
+  log({msg: `[get][done] user`, duration: t1 - t0});
 
   if (!user) {
     const newUser: User = await createUser({actor, log});
