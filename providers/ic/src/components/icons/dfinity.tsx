@@ -8,7 +8,8 @@ export const IconDfinity: FunctionalComponent = () => (
     width="32"
     height="23"
     viewBox="0 0 880 640"
-    style={{enableBackground: 'new 0 0 880 640'}}>
+    style={{enableBackground: 'new 0 0 880 640'}}
+  >
     <style type="text/css">
       {`.st0{fill:none;}
       .st1{fill:url(#SVGID_1_);}
@@ -59,7 +60,8 @@ export const IconDfinity: FunctionalComponent = () => (
         y1="-1122.6819"
         x2="-687.0928"
         y2="-925.7131"
-        gradientTransform="matrix(-1 0 0 -1 -512.5778 -684.6164)">
+        gradientTransform="matrix(-1 0 0 -1 -512.5778 -684.6164)"
+      >
         <stop offset="0.21" style={{stopColor: '#ED1E79'}} />
         <stop offset="0.8929" style={{stopColor: '#522785'}} />
       </linearGradient>

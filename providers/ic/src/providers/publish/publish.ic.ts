@@ -1,13 +1,11 @@
 import {Deck, DeckPublish, Doc, DocPublish, PublishUrl} from '@deckdeckgo/editor';
-
 import {_SERVICE as StorageBucketActor} from '../../canisters/storage/storage.did';
-
 import {BucketActor} from '../../utils/manager.utils';
 import {emitDeckPublished, publishDeck} from '../../utils/publish.deck.utils';
-import {uploadResources} from '../../utils/publish.resources.utils';
-import {publishOverview} from '../../utils/publish.overview.utils';
-import {getStorageActor} from '../../utils/storage.utils';
 import {emitDocPublished, publishDoc} from '../../utils/publish.doc.utils';
+import {publishOverview} from '../../utils/publish.overview.utils';
+import {uploadResources} from '../../utils/publish.resources.utils';
+import {getStorageActor} from '../../utils/storage.utils';
 
 export const deckPublish: DeckPublish = async ({deck}: {deck: Deck; config: Record<string, string>}): Promise<Deck> => {
   await uploadResources({meta: deck.data.meta});

@@ -1,10 +1,8 @@
-import {Meta, PublishData} from '@deckdeckgo/editor';
-
+import {log, Meta, PublishData} from '@deckdeckgo/editor';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
-
 import {BucketActor} from './manager.utils';
-import {encodeFilename, getStorageActor, upload} from './storage.utils';
 import {updateTemplateSocialImage} from './publish.social.utils';
+import {encodeFilename, getStorageActor, upload} from './storage.utils';
 
 export interface StorageUpload {
   actor: StorageBucketActor;
@@ -169,6 +167,7 @@ export const uploadPublishFileIC = async ({
     filename,
     folder,
     storageActor: actor,
-    headers: [['Cache-Control', 'max-age=3600']]
+    headers: [['Cache-Control', 'max-age=3600']],
+    log
   });
 };

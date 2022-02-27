@@ -55,9 +55,11 @@ export class IcSignin implements ComponentInterface {
   }
 
   private renderSpinner() {
-    return <div class={`spinner ${!this.signInInProgress ? 'hidden' : ''}`}>
-      <slot name="spinner" />
-    </div>
+    return (
+      <div class={`spinner ${!this.signInInProgress ? 'hidden' : ''}`}>
+        <slot name="spinner" />
+      </div>
+    );
   }
 
   private renderAction() {
@@ -77,7 +79,7 @@ export class IcSignin implements ComponentInterface {
     const {terms, privacy} = this.config || {};
 
     return (
-        <p class="terms">
+      <p class="terms">
         By continuing, you are indicating that you accept our{' '}
         <a href={terms} rel="noopener norefferer" target="_blank">
           {this.i18n?.links.terms_of_use}

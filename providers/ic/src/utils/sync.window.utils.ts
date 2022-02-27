@@ -1,9 +1,6 @@
-import {get, set} from 'idb-keyval';
-
 import {Deck, deckSelector, Paragraph, Slide, StorageFile} from '@deckdeckgo/editor';
-
+import {get, set} from 'idb-keyval';
 import {SyncWindowData} from '../types/sync.window';
-
 import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from './sync.attributes.utils';
 
 export const syncDeckBackground = async (data: SyncWindowData): Promise<void> => {

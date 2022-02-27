@@ -1,3 +1,9 @@
+# 7.4.0 (2022-02-27)
+
+### Features
+
+- throw custom events "log" to display events that can be also interesting for the users
+
 # 7.3.0 - 7.3.1 (2022-02-24)
 
 ### Features

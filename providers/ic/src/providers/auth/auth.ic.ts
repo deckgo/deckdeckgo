@@ -1,15 +1,10 @@
-import {AuthClient} from '@dfinity/auth-client';
+import {AuthUser, DeleteAuth, InitAuth, log, SignOut, User} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
-
-import {AuthUser, InitAuth, SignOut, User, DeleteAuth} from '@deckdeckgo/editor';
-
+import {AuthClient} from '@dfinity/auth-client';
 import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
-
 import {InternetIdentityAuth} from '../../types/identity';
-
 import {internetIdentityAuth} from '../../utils/identity.utils';
 import {createManagerActor} from '../../utils/manager.utils';
-
 import {initUserWorker} from '../../workers/user.ic.worker';
 
 declare global {
@@ -41,7 +36,7 @@ export const initAuth: InitAuth = async ({
 
   const onInitUserSuccess: (user: User) => Promise<void> = async (user: User) => await authenticatedUser({user, success});
 
-  await initUserWorker({internetIdentity, host: `https://ic0.app`}, onInitUserSuccess);
+  await initUserWorker({internetIdentity, host: `https://ic0.app`}, onInitUserSuccess, log);
 };
 
 // If first sign-in, initializing the canister can take a while therefore we already emit a not fully authenticated user

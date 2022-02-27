@@ -1,5 +1,4 @@
-import {Deck, DeckEntries, DeckData, DeleteDeck, SnapshotDeck} from '@deckdeckgo/editor';
-
+import {Deck, DeckData, DeckEntries, DeleteDeck, SnapshotDeck} from '@deckdeckgo/editor';
 import {deleteData, entries} from '../../utils/data.utils';
 
 export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]> =>
