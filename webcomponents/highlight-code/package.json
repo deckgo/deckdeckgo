@@ -1,9 +1,9 @@
 {
   "name": "@deckdeckgo/highlight-code",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "A Web Component to highlight your code",
   "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
+  "module": "dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js",
   "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@deckdeckgo/utils": "^2.4.0",
-    "prismjs": "^1.25.0"
+    "prismjs": "^1.27.0"
   },
   "devDependencies": {
     "@deckdeckgo/slide-utils": "^4.0.3",
