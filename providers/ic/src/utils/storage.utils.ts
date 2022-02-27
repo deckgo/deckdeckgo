@@ -1,11 +1,8 @@
 import {Identity} from '@dfinity/agent';
-
-import {_SERVICE as StorageBucketActor, HeaderField} from '../canisters/storage/storage.did';
-
-import {toNullable} from './did.utils';
-
+import {HeaderField, _SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 import {getIdentity} from '../providers/auth/auth.ic';
-
+import {LogWindow} from '../types/sync.window';
+import {toNullable} from './did.utils';
 import {BucketActor, getStorageBucket} from './manager.utils';
 
 export const upload = async ({
@@ -15,7 +12,8 @@ export const upload = async ({
   storageActor,
   headers,
   token,
-  fullPath: storagePath
+  fullPath: storagePath,
+  log
 }: {
   data: Blob;
   folder: string;
@@ -24,8 +22,9 @@ export const upload = async ({
   storageActor: StorageBucketActor;
   token?: string;
   fullPath?: string;
+  log: LogWindow;
 }): Promise<{fullPath: string; filename: string; token: string}> => {
-  console.log('About to upload to the IC');
+  log({msg: `[upload] ${filename}: start`});
   const t0 = performance.now();
 
   const fullPath: string = storagePath || `/${folder}/${filename}`;
@@ -38,7 +37,7 @@ export const upload = async ({
   });
 
   const t1 = performance.now();
-  console.log('Upload create_batch', t1 - t0);
+  log({msg: `[upload] ${filename}: create batch`, duration: t1 - t0});
 
   const promises = [];
 
@@ -59,7 +58,7 @@ export const upload = async ({
   const chunkIds: {chunkId: bigint}[] = await Promise.all(promises);
 
   const t2 = performance.now();
-  console.log('Upload upload chunks', t2 - t1);
+  log({msg: `[upload] ${filename}: chunks`, duration: t2 - t1});
 
   await storageActor.commitUpload({
     batchId,
@@ -68,8 +67,8 @@ export const upload = async ({
   });
 
   const t3 = performance.now();
-  console.log('Upload commit_batch', t3 - t2);
-  console.log('Data uploaded', t3 - t0);
+  log({msg: `[upload] ${filename}: commit batch`, duration: t3 - t2});
+  log({msg: `[upload] ${filename}: done`, duration: t3 - t0});
 
   return {
     fullPath,

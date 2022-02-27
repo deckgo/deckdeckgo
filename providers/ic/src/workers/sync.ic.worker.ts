@@ -1,20 +1,16 @@
-import {Identity} from '@dfinity/agent';
-
 import {Deck, Doc, Paragraph, Slide, SyncData, SyncDataDeck, SyncDataDoc, SyncDataParagraph, SyncDataSlide} from '@deckdeckgo/editor';
-
+import {Identity} from '@dfinity/agent';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
-
 import {InternetIdentityAuth} from '../types/identity';
-import {SyncWindow} from '../types/sync.window';
 import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
-
-import {initIdentity} from '../utils/identity.utils';
-import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
-import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
-import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
-import {BucketActor, getDataBucket, getStorageBucket} from '../utils/manager.utils';
+import {LogWindow, SyncWindow} from '../types/sync.window';
 import {deleteData} from '../utils/data.utils';
+import {initIdentity} from '../utils/identity.utils';
+import {BucketActor, getDataBucket, getStorageBucket} from '../utils/manager.utils';
+import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
+import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
+import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
 
 export const uploadWorker = async (
   {
@@ -26,7 +22,8 @@ export const uploadWorker = async (
     syncData: SyncData | undefined;
     host: string;
   },
-  syncWindow: SyncWindow
+  syncWindow: SyncWindow,
+  log: LogWindow
 ) => {
   if (!syncData) {
     return;
@@ -71,17 +68,17 @@ export const uploadWorker = async (
     return;
   }
 
-  await uploadDecks({updateDecks, identity, dataActor: actor, storageBucket, syncWindow});
+  await uploadDecks({updateDecks, identity, dataActor: actor, storageBucket, syncWindow, log});
 
-  await uploadSlides({updateSlides, identity, actor, storageBucket, syncWindow});
+  await uploadSlides({updateSlides, identity, actor, storageBucket, syncWindow, log});
 
-  await deleteSlides({deleteSlides: slidesToDelete, actor});
+  await deleteSlides({deleteSlides: slidesToDelete, actor, log});
 
-  await uploadDocs({updateDocs, actor});
+  await uploadDocs({updateDocs, actor, log});
 
-  await uploadParagraphs({updateParagraphs, identity, actor, storageBucket, syncWindow});
+  await uploadParagraphs({updateParagraphs, identity, actor, storageBucket, syncWindow, log});
 
-  await deleteParagraphs({deleteParagraphs: paragraphsToDelete, actor});
+  await deleteParagraphs({deleteParagraphs: paragraphsToDelete, actor, log});
 };
 
 const uploadDecks = async ({
@@ -89,24 +86,24 @@ const uploadDecks = async ({
   identity,
   dataActor,
   storageBucket,
-  syncWindow
+  syncWindow,
+  log
 }: {
   updateDecks: SyncDataDeck[] | undefined;
   identity: Identity;
   dataActor: DataBucketActor;
   storageBucket: BucketActor<StorageBucketActor>;
   syncWindow: SyncWindow;
+  log: LogWindow;
 }) => {
   if (!updateDecks || updateDecks.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) =>
-    uploadDeck({deck, dataActor, storageBucket, identity, syncWindow})
+    uploadDeck({deck, dataActor, storageBucket, identity, syncWindow, log})
   );
   await Promise.all(promises);
-
-  console.log('Deck IC synced');
 };
 
 const uploadDeck = async ({
@@ -114,26 +111,28 @@ const uploadDeck = async ({
   dataActor,
   storageBucket,
   identity,
-  syncWindow
+  syncWindow,
+  log
 }: {
   deck: Deck;
   dataActor: DataBucketActor;
   storageBucket: BucketActor<StorageBucketActor>;
   identity: Identity;
   syncWindow: SyncWindow;
+  log: LogWindow;
 }) => {
   if (!deck) {
     return;
   }
 
   // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
-  const {src: imgSrc, storageFile}: SyncStorage = await uploadDeckBackgroundAssets({deck, identity, syncWindow, storageBucket});
+  const {src: imgSrc, storageFile}: SyncStorage = await uploadDeckBackgroundAssets({deck, identity, syncWindow, storageBucket, log});
 
   // 2. If we uploaded an asset, its URL has changed (no more local but available online)
   const updateDeck: Deck = updateDeckBackground({deck, imgSrc, storageFile});
 
   // 3. We can update the data in the IC
-  await uploadDeckData({deck: updateDeck, actor: dataActor});
+  await uploadDeckData({deck: updateDeck, actor: dataActor, log});
 };
 
 const uploadSlides = async ({
@@ -141,33 +140,43 @@ const uploadSlides = async ({
   identity,
   actor,
   syncWindow,
-  storageBucket
+  storageBucket,
+  log
 }: {
   updateSlides: SyncDataSlide[] | undefined;
   identity: Identity;
   actor: DataBucketActor;
   syncWindow: SyncWindow;
   storageBucket: BucketActor<StorageBucketActor>;
+  log: LogWindow;
 }) => {
   if (!updateSlides || updateSlides.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) =>
-    uploadSlide({slide, deckId, actor, identity, storageBucket, syncWindow})
+    uploadSlide({slide, deckId, actor, identity, storageBucket, syncWindow, log})
   );
 
   await Promise.all(promises);
 };
 
-const deleteSlides = async ({deleteSlides, actor}: {deleteSlides: SyncDataSlide[] | undefined; actor: DataBucketActor}) => {
+const deleteSlides = async ({
+  deleteSlides,
+  actor,
+  log
+}: {
+  deleteSlides: SyncDataSlide[] | undefined;
+  actor: DataBucketActor;
+  log: LogWindow;
+}) => {
   if (!deleteSlides || deleteSlides.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = deleteSlides
     .filter(({slideId}: SyncDataSlide) => slideId !== undefined)
-    .map(({deckId, slideId}: SyncDataSlide) => deleteData({key: `/decks/${deckId}/slides/${slideId}`, actor}));
+    .map(({deckId, slideId}: SyncDataSlide) => deleteData({key: `/decks/${deckId}/slides/${slideId}`, actor, log}));
 
   await Promise.all(promises);
 };
@@ -178,7 +187,8 @@ const uploadSlide = async ({
   actor,
   identity,
   syncWindow,
-  storageBucket
+  storageBucket,
+  log
 }: {
   slide: Slide;
   deckId: string;
@@ -186,41 +196,38 @@ const uploadSlide = async ({
   identity: Identity;
   syncWindow: SyncWindow;
   storageBucket: BucketActor<StorageBucketActor>;
+  log: LogWindow;
 }) => {
   if (!slide) {
     return;
   }
 
   // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
-  const {images, chart}: SyncStorageSlide = await uploadSlideAssets({slide, deckId, storageBucket, identity, syncWindow});
+  const {images, chart}: SyncStorageSlide = await uploadSlideAssets({slide, deckId, storageBucket, identity, syncWindow, log});
 
   // 2. If we uploaded assets, there URL have changed (no more local but available online)
   const updateChartSlide: Slide = updateSlideChart({slide, chart});
   const updateSlide: Slide = updateSlideImages({slide: updateChartSlide, images});
 
   // 3. We can update the data in the IC
-  await uploadSlideData({deckId, slide: updateSlide, actor});
-
-  console.log(`Slide (${updateSlide.id}) IC synced`);
+  await uploadSlideData({deckId, slide: updateSlide, actor, log});
 };
 
-const uploadDocs = async ({updateDocs, actor}: {updateDocs: SyncDataDoc[] | undefined; actor: DataBucketActor}) => {
+const uploadDocs = async ({updateDocs, actor, log}: {updateDocs: SyncDataDoc[] | undefined; actor: DataBucketActor; log: LogWindow}) => {
   if (!updateDocs || updateDocs.length <= 0) {
     return;
   }
 
-  const promises: Promise<void>[] = updateDocs.map(({doc}: SyncDataDoc) => uploadDoc({doc, actor}));
+  const promises: Promise<void>[] = updateDocs.map(({doc}: SyncDataDoc) => uploadDoc({doc, actor, log}));
   await Promise.all(promises);
-
-  console.log('Doc IC synced');
 };
 
-const uploadDoc = async ({doc, actor}: {doc: Doc; actor: DataBucketActor}) => {
+const uploadDoc = async ({doc, actor, log}: {doc: Doc; actor: DataBucketActor; log: LogWindow}) => {
   if (!doc) {
     return;
   }
 
-  await uploadDocData({doc, actor});
+  await uploadDocData({doc, actor, log});
 };
 
 const uploadParagraphs = async ({
@@ -228,20 +235,22 @@ const uploadParagraphs = async ({
   identity,
   actor,
   syncWindow,
-  storageBucket
+  storageBucket,
+  log
 }: {
   updateParagraphs: SyncDataParagraph[] | undefined;
   identity: Identity;
   actor: DataBucketActor;
   syncWindow: SyncWindow;
   storageBucket: BucketActor<StorageBucketActor>;
+  log: LogWindow;
 }) => {
   if (!updateParagraphs || updateParagraphs.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateParagraphs.map(({paragraph, docId}: SyncDataParagraph) =>
-    uploadParagraph({paragraph, docId, actor, identity, storageBucket, syncWindow})
+    uploadParagraph({paragraph, docId, actor, identity, storageBucket, syncWindow, log})
   );
 
   await Promise.all(promises);
@@ -253,7 +262,8 @@ const uploadParagraph = async ({
   actor,
   identity,
   syncWindow,
-  storageBucket
+  storageBucket,
+  log
 }: {
   paragraph: Paragraph;
   docId: string;
@@ -261,31 +271,38 @@ const uploadParagraph = async ({
   identity: Identity;
   syncWindow: SyncWindow;
   storageBucket: BucketActor<StorageBucketActor>;
+  log: LogWindow;
 }) => {
   if (!paragraph) {
     return;
   }
 
   // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
-  const images: SyncStorage[] | undefined = await uploadParagraphImages({paragraph, docId, storageBucket, identity, syncWindow});
+  const images: SyncStorage[] | undefined = await uploadParagraphImages({paragraph, docId, storageBucket, identity, syncWindow, log});
 
   // 2. If we uploaded assets, there URL have changed (no more local but available online)
   const updateParagraph: Paragraph = updateParagraphImages({paragraph: paragraph, images});
 
   // 3. We can update the data in the IC
-  await uploadParagraphData({docId, paragraph: updateParagraph, actor});
-
-  console.log(`Paragraph (${updateParagraph.id}) IC synced`);
+  await uploadParagraphData({docId, paragraph: updateParagraph, actor, log});
 };
 
-const deleteParagraphs = async ({deleteParagraphs, actor}: {deleteParagraphs: SyncDataParagraph[] | undefined; actor: DataBucketActor}) => {
+const deleteParagraphs = async ({
+  deleteParagraphs,
+  actor,
+  log
+}: {
+  deleteParagraphs: SyncDataParagraph[] | undefined;
+  actor: DataBucketActor;
+  log: LogWindow;
+}) => {
   if (!deleteParagraphs || deleteParagraphs.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = deleteParagraphs
     .filter(({paragraphId}: SyncDataParagraph) => paragraphId !== undefined)
-    .map(({docId, paragraphId}: SyncDataParagraph) => deleteData({key: `/docs/${docId}/paragraphs/${paragraphId}`, actor}));
+    .map(({docId, paragraphId}: SyncDataParagraph) => deleteData({key: `/docs/${docId}/paragraphs/${paragraphId}`, actor, log}));
 
   await Promise.all(promises);
 };

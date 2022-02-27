@@ -1,4 +1,5 @@
 import {StorageFile} from '@deckdeckgo/editor';
+import { Log } from '@deckdeckgo/editor/lib';
 
 export interface SyncWindowData {
   src: string;
@@ -21,3 +22,5 @@ export interface SyncWindowEvent {
 export interface SyncWindow {
   ($event: SyncWindowEvent): Promise<void>;
 }
+
+export type LogWindow = (detail: Log) => void;

@@ -1,16 +1,12 @@
+import {DeleteFile, GetFiles, log, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
-
 import {nanoid} from 'nanoid';
-
-import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
-
-import {getIdentity} from '../auth/auth.ic';
-
-import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/storage.did';
-
+import {AssetKey, _SERVICE as StorageBucketActor} from '../../canisters/storage/storage.did';
+import {LogWindow} from '../../types/sync.window';
 import {toNullable} from '../../utils/did.utils';
 import {BucketActor, getStorageBucket} from '../../utils/manager.utils';
 import {encodeFilename, getStorageActor, upload} from '../../utils/storage.utils';
+import {getIdentity} from '../auth/auth.ic';
 
 export const uploadFile: UploadFile = async ({
   data,
@@ -25,7 +21,7 @@ export const uploadFile: UploadFile = async ({
 }): Promise<StorageFile | undefined> => {
   const identity: Identity | undefined = getIdentity();
 
-  return uploadFileIC({data, folder, maxSize, identity});
+  return uploadFileIC({data, folder, maxSize, identity, log});
 };
 
 export const uploadFileIC = async ({
@@ -34,7 +30,8 @@ export const uploadFileIC = async ({
   host,
   folder,
   identity,
-  storageBucket
+  storageBucket,
+  log
 }: {
   data: File;
   folder: string;
@@ -42,6 +39,7 @@ export const uploadFileIC = async ({
   host?: string;
   identity: Identity;
   storageBucket?: BucketActor<StorageBucketActor>;
+  log: LogWindow;
 }): Promise<StorageFile> => {
   if (!data || !data.name) {
     throw new Error('File not valid.');
@@ -63,7 +61,8 @@ export const uploadFileIC = async ({
     folder,
     storageActor: actor,
     token: nanoid(),
-    headers: [['cache-control', 'private, max-age=0']]
+    headers: [['cache-control', 'private, max-age=0']],
+    log
   });
 
   return {

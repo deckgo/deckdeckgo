@@ -1,9 +1,7 @@
 import {Identity} from '@dfinity/agent';
-
-import {_SERVICE as DataBucketActor, Data, DataFilter} from '../canisters/data/data.did';
-
+import {Data, DataFilter, _SERVICE as DataBucketActor} from '../canisters/data/data.did';
 import {getIdentity} from '../providers/auth/auth.ic';
-
+import {LogWindow} from '../types/sync.window';
 import {fromArray, fromNullable, fromTimestamp, toArray, toNullable, toTimestamp} from './did.utils';
 import {BucketActor, getDataBucket} from './manager.utils';
 
@@ -13,9 +11,6 @@ export const entries = async <T, D>({startsWith, notContains}: {startsWith?: str
   if (!identity) {
     return [];
   }
-
-  console.log('Data IC about to request entries');
-  const t0 = performance.now();
 
   const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity});
 
@@ -32,9 +27,6 @@ export const entries = async <T, D>({startsWith, notContains}: {startsWith?: str
 
   const promises: Promise<T>[] = data.map(([, data]: [string, Data]) => fromData<T, D>({data, identity}));
   const results: T[] = await Promise.all(promises);
-
-  const t1 = performance.now();
-  console.log(`Data IC entries done. ${t1 - t0}`, results);
 
   return results;
 };
@@ -53,12 +45,12 @@ const fromData = async <T, D>({data, identity}: {data: Data; identity: Identity}
   } as unknown as T;
 };
 
-export const deleteData = async ({key, actor}: {key: string; actor?: DataBucketActor}): Promise<void> => {
+export const deleteData = async ({key, actor, log}: {key: string; actor?: DataBucketActor; log?: LogWindow}): Promise<void> => {
   if (!key) {
     return;
   }
 
-  console.log('Data IC about to delete data and its slides');
+  log?.({msg: `[delete] ${key}: start`});
   const t0 = performance.now();
 
   const dataActor: DataBucketActor = actor || (await getDataActor());
@@ -66,7 +58,7 @@ export const deleteData = async ({key, actor}: {key: string; actor?: DataBucketA
   await dataActor.del(key);
 
   const t1 = performance.now();
-  console.log('Data IC delete', t1 - t0);
+  log?.({msg: `[delete] ${key}: done`, duration: t1 - t0});
 };
 
 export const getData = <T, D>({key, actor}: {key: string; actor?: DataBucketActor}): Promise<T | undefined> => {
@@ -101,16 +93,18 @@ export const setData = <T, D>({
   key,
   data,
   id,
-  actor = undefined
+  actor = undefined,
+  log
 }: {
   key: string;
   data: D;
   id: string;
   actor?: DataBucketActor;
+  log?: LogWindow
 }): Promise<T> => {
   return new Promise<T>(async (resolve, reject) => {
     try {
-      console.log(`Data IC (${key}) about to SET`);
+      log?.({msg: `[set] ${key}: start`});
       const t0 = performance.now();
 
       const dataActor: DataBucketActor = actor || (await getDataActor());
@@ -125,7 +119,7 @@ export const setData = <T, D>({
       });
 
       const t1 = performance.now();
-      console.log(`Data IC SET (${key}) done:`, t1 - t0);
+      log?.({msg: `[set] ${key}: done`, duration: t1 - t0});
 
       const result: T = {
         id,
@@ -134,9 +128,6 @@ export const setData = <T, D>({
           updated_at: now
         }
       } as unknown as T;
-
-      const t2 = performance.now();
-      console.log(`Data IC GET (${key}):`, await dataActor.get(key), performance.now() - t2);
 
       resolve(result);
     } catch (err) {

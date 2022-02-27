@@ -1,4 +1,4 @@
-import {Meta, PublishData} from '@deckdeckgo/editor';
+import {Meta, PublishData, log} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
@@ -169,6 +169,7 @@ export const uploadPublishFileIC = async ({
     filename,
     folder,
     storageActor: actor,
-    headers: [['Cache-Control', 'max-age=3600']]
+    headers: [['Cache-Control', 'max-age=3600']],
+    log
   });
 };

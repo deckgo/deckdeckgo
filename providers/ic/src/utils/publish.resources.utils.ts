@@ -1,4 +1,4 @@
-import {Meta} from '@deckdeckgo/editor';
+import {Meta, log} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor, AssetKey, HeaderField} from '../canisters/storage/storage.did';
 
@@ -134,7 +134,8 @@ const uploadKit = async ({
     folder: 'resources',
     storageActor: actor,
     fullPath,
-    headers
+    headers,
+    log
   });
 };
 

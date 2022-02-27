@@ -1,16 +1,12 @@
-import {Identity} from '@dfinity/agent';
-
-import {nanoid} from 'nanoid';
-
 import {User, UserData} from '@deckdeckgo/editor';
-
+import {Identity} from '@dfinity/agent';
+import {nanoid} from 'nanoid';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
-
+import {InternetIdentityAuth} from '../types/identity';
+import {LogWindow} from '../types/sync.window';
+import {getData, setData} from '../utils/data.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {BucketActor, getDataBucket} from '../utils/manager.utils';
-import {getData, setData} from '../utils/data.utils';
-
-import {InternetIdentityAuth} from '../types/identity';
 
 export const initUserWorker = (
   {
@@ -20,8 +16,9 @@ export const initUserWorker = (
     internetIdentity: InternetIdentityAuth;
     host: string;
   },
-  onInitUserSuccess: (user: User) => Promise<void>
-): Promise<void> => initUser({internetIdentity, host}, onInitUserSuccess);
+  onInitUserSuccess: (user: User) => Promise<void>,
+  log: LogWindow
+): Promise<void> => initUser({internetIdentity, host}, onInitUserSuccess, log);
 
 const initUser = async (
   {
@@ -31,7 +28,8 @@ const initUser = async (
     internetIdentity: InternetIdentityAuth;
     host: string;
   },
-  onInitUserSuccess: (user: User) => Promise<void>
+  onInitUserSuccess: (user: User) => Promise<void>,
+  log: LogWindow
 ) =>
   new Promise<void>(async (resolve) => {
     if (!delegationChain || !identityKey) {
@@ -45,36 +43,36 @@ const initUser = async (
 
     if (!actor) {
       setTimeout(async () => {
-        await initUser({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess);
+        await initUser({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess, log);
         resolve();
       }, 2000);
       return;
     }
 
-    const user: User = await initUserData({actor});
+    const user: User = await initUserData({actor, log});
     await onInitUserSuccess(user);
 
     resolve();
   });
 
-const initUserData = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
-  console.log('User IC about to GET');
+const initUserData = async ({actor, log}: {actor: DataBucketActor; log: LogWindow}): Promise<User> => {
+  log({msg: `[get] user: start`});
   const t0 = performance.now();
 
   const user: User | undefined = await getData<User, UserData>({key: `/user`, actor});
 
   const t1 = performance.now();
-  console.log('User IC GET done', t1 - t0, user);
+  log({msg: `[get] user: done`, duration: t1 - t0});
 
   if (!user) {
-    const newUser: User = await createUser({actor});
+    const newUser: User = await createUser({actor, log});
     return newUser;
   }
 
   return user;
 };
 
-const createUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
+const createUser = async ({actor, log}: {actor: DataBucketActor; log: LogWindow}): Promise<User> => {
   const now: Date = new Date();
 
   const id: string = nanoid();
@@ -84,13 +82,6 @@ const createUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
     updated_at: now
   };
 
-  console.log('User IC about to SET');
-  const t0 = performance.now();
-
-  const user: User = await setData<User, UserData>({key: `/user`, id, data, actor});
-
-  const t1 = performance.now();
-  console.log('User IC SET done', t1 - t0);
-
+  const user: User = await setData<User, UserData>({key: `/user`, id, data, actor, log});
   return user;
 };

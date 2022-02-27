@@ -1,4 +1,4 @@
-import {PublishData} from '@deckdeckgo/editor';
+import {PublishData, log} from '@deckdeckgo/editor';
 
 import {StorageUpload} from './publish.utils';
 import {upload} from './storage.utils';
@@ -34,6 +34,7 @@ export const uploadSocialImage = async ({
     filename: `${social_image_name}.${socialImageExtension}`,
     folder: socialImageFolder,
     storageActor: actor,
-    headers: [['Cache-Control', 'max-age=3600']]
+    headers: [['Cache-Control', 'max-age=3600']],
+    log
   });
 };

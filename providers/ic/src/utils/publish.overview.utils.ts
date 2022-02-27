@@ -1,4 +1,4 @@
-import {PublishData} from '@deckdeckgo/editor';
+import {PublishData, log} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
@@ -97,6 +97,7 @@ const uploadOverviewIC = async ({html, actor}: {html: string; actor: StorageBuck
     folder: 'resources',
     storageActor: actor,
     headers: [['Cache-Control', 'max-age=0']],
-    fullPath: '/'
+    fullPath: '/',
+    log
   });
 };
