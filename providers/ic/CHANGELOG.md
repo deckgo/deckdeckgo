@@ -1,3 +1,9 @@
+# 5.2.0 (2022-02-27)
+
+### Features
+
+- emit activity
+
 # 5.1.0 (2022-02-24)
 
 ### Features
