@@ -1,5 +1,4 @@
-import {Doc, DocEntries, DocData, DeleteDoc, SnapshotDoc} from '@deckdeckgo/editor';
-
+import {DeleteDoc, Doc, DocData, DocEntries, SnapshotDoc} from '@deckdeckgo/editor';
 import {deleteData, entries} from '../../utils/data.utils';
 
 export const docEntries: DocEntries = async (_userId: string): Promise<Doc[]> =>

@@ -1,16 +1,12 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 import {IDL} from '@dfinity/candid';
-
-import {idlFactory as ManagerFactory} from '../canisters/manager/manager.utils.did';
-import {_SERVICE as ManagerActor, Bucket} from '../canisters/manager/manager.did';
-
+import {Principal} from '@dfinity/principal';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
 import {idlFactory as DataIdlFactory} from '../canisters/data/data.utils.did';
-
+import {Bucket, _SERVICE as ManagerActor} from '../canisters/manager/manager.did';
+import {idlFactory as ManagerFactory} from '../canisters/manager/manager.utils.did';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 import {idlFactory as StorageIdlFactory} from '../canisters/storage/storage.utils.did';
-
 import {createActor} from './actor.utils';
 import {fromNullable} from './did.utils';
 

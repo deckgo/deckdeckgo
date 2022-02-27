@@ -1,7 +1,6 @@
 import {Identity} from '@dfinity/agent';
-import {DelegationChain, DelegationIdentity, Ed25519KeyIdentity} from '@dfinity/identity';
 import {LocalStorage} from '@dfinity/auth-client';
-
+import {DelegationChain, DelegationIdentity, Ed25519KeyIdentity} from '@dfinity/identity';
 import {InternetIdentityAuth} from '../types/identity';
 
 export const internetIdentityAuth = async (): Promise<InternetIdentityAuth> => {

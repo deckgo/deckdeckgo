@@ -1,8 +1,7 @@
 import {Doc, DocData, docPublishData, DocPublishData, PublishData} from '@deckdeckgo/editor';
-
-import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
 import {setData} from './data.utils';
 import {uploadSocialImage} from './publish.social.utils';
+import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
 
 export const publishDoc = async ({
   doc: docSource

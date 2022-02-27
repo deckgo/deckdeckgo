@@ -1,10 +1,8 @@
-import {Meta, log} from '@deckdeckgo/editor';
-
-import {_SERVICE as StorageBucketActor, AssetKey, HeaderField} from '../canisters/storage/storage.did';
-
+import {log, Meta} from '@deckdeckgo/editor';
+import {AssetKey, HeaderField, _SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 import {toNullable} from './did.utils';
-import {getStorageActor, upload} from './storage.utils';
 import {BucketActor} from './manager.utils';
+import {getStorageActor, upload} from './storage.utils';
 
 type KitMimeType = 'text/javascript' | 'text/plain' | 'application/manifest+json' | 'text/css';
 

@@ -1,4 +1,4 @@
-import {Actor, HttpAgent, ActorMethod, ActorSubclass, Identity} from '@dfinity/agent';
+import {Actor, ActorMethod, ActorSubclass, HttpAgent, Identity} from '@dfinity/agent';
 import {IDL} from '@dfinity/candid';
 import {Principal} from '@dfinity/principal';
 

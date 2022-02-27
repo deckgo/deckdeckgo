@@ -100,7 +100,7 @@ export const setData = <T, D>({
   data: D;
   id: string;
   actor?: DataBucketActor;
-  log?: LogWindow
+  log?: LogWindow;
 }): Promise<T> => {
   return new Promise<T>(async (resolve, reject) => {
     try {

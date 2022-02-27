@@ -1,4 +1,4 @@
-import { log, Sync, SyncData } from '@deckdeckgo/editor';
+import {log, Sync, SyncData} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
 import {InternetIdentityAuth} from '../../types/identity';
 import {SyncWindow, SyncWindowEvent} from '../../types/sync.window';

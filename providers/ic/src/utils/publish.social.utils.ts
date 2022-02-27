@@ -1,5 +1,4 @@
-import {PublishData, log} from '@deckdeckgo/editor';
-
+import {log, PublishData} from '@deckdeckgo/editor';
 import {StorageUpload} from './publish.utils';
 import {upload} from './storage.utils';
 

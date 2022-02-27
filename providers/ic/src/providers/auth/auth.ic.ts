@@ -1,15 +1,10 @@
-import {AuthClient} from '@dfinity/auth-client';
+import {AuthUser, DeleteAuth, InitAuth, log, SignOut, User} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
-
-import { AuthUser, InitAuth, SignOut, User, DeleteAuth, log } from '@deckdeckgo/editor';
-
+import {AuthClient} from '@dfinity/auth-client';
 import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
-
 import {InternetIdentityAuth} from '../../types/identity';
-
 import {internetIdentityAuth} from '../../utils/identity.utils';
 import {createManagerActor} from '../../utils/manager.utils';
-
 import {initUserWorker} from '../../workers/user.ic.worker';
 
 declare global {

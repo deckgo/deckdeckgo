@@ -1,5 +1,4 @@
 import {toDate} from '@deckdeckgo/editor';
-
 import {Time} from '../canisters/data/data.did';
 
 // See following link for a discussion about the format of the nullable values in the did files: https://forum.dfinity.org/t/fail-to-verify-certificate-in-development-update-calls/4078/14

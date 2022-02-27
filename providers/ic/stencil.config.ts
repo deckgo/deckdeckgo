@@ -1,12 +1,10 @@
+import replace from '@rollup/plugin-replace';
 import {Config} from '@stencil/core';
-
-import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
+import {sass} from '@stencil/sass';
 // @ts-ignore
 import autoprefixer from 'autoprefixer';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
-import replace from '@rollup/plugin-replace';
-
 import {canisterEnvIds} from './dfx.config';
 
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
