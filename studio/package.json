@@ -52,7 +52,7 @@
     "@deckdeckgo/social-img": "^1.1.0",
     "@deckdeckgo/studio": "^0.0.4",
     "@deckdeckgo/styles": "^1.3.0",
-    "@deckdeckgo/sync": "^0.0.5",
+    "@deckdeckgo/sync": "^0.0.7",
     "@deckdeckgo/utils": "^5.1.0",
     "@deckdeckgo/word-cloud": "^1.2.0",
     "@ionic/core": "^5.9.1",
