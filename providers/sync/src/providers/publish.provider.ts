@@ -1,45 +1,35 @@
 import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, throwError, UserSocial} from '@deckdeckgo/editor';
 import {set} from 'idb-keyval';
-import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import authStore from '../../stores/auth.store';
-import editorStore from '../../stores/editor.store';
-import userStore from '../../stores/user.store';
-import {cloud} from '../../utils/core/environment.utils';
-import {cloudProvider} from '../../utils/core/providers.utils';
+import {AuthStore} from '../stores/auth.store';
+import {DeckStore} from '../stores/deck.store';
+import {DocStore} from '../stores/doc.store';
+import {EnvStore} from '../stores/env.store';
+import {UserStore} from '../stores/user.store';
+import {PublishInputs, PublishParams} from '../types/publish.types';
+import {cloudProvider} from '../utils/providers.utils';
 
-interface PublishInputs {
-  name: string;
-  description: string;
-  tags: string[];
-  github: boolean;
-  canonical: string | undefined;
-}
-
-// TODO: to sync provider
-
-export const publish = (inputs: PublishInputs): Promise<void> => {
+export const publish = (params: PublishParams): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      if (!cloud()) {
+      if (!EnvStore.getInstance().cloud()) {
         reject('Publish is only available with a compatible cloud provider.');
         return;
       }
 
       if (
-        (!editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data) &&
-        (!editorStore.state.doc || !editorStore.state.doc.id || !editorStore.state.doc.data)
+        (!DeckStore.getInstance().get() || !DeckStore.getInstance().get().id || !DeckStore.getInstance().get().data) &&
+        (!DocStore.getInstance().get() || !DocStore.getInstance().get().id || !DocStore.getInstance().get().data)
       ) {
         reject('No publish data provided.');
         return;
       }
 
-      if (editorStore.state.doc !== null) {
-        await publishDoc(inputs);
+      if (DocStore.getInstance().get() !== null) {
+        await publishDoc(params);
         return;
       }
 
-      await publishDeck(inputs);
+      await publishDeck(params);
 
       resolve();
     } catch (err) {
@@ -48,21 +38,20 @@ export const publish = (inputs: PublishInputs): Promise<void> => {
   });
 };
 
-export const publishUrl = async (meta: Meta | undefined): Promise<string> => {
+export const publishUrl = async (meta: Meta | undefined): Promise<string | undefined> => {
   const {pathname, published} = meta || {};
 
-  if (cloud() && published) {
+  if (EnvStore.getInstance().cloud() && published) {
     const {publishUrl}: {publishUrl: PublishUrl} = await cloudProvider<{publishUrl: PublishUrl}>();
 
     const url: string = await publishUrl();
     return `${url}${pathname}`;
   }
 
-  const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-  return deckDeckGoConfig.website;
+  return undefined;
 };
 
-const publishDoc = async (inputs: PublishInputs): Promise<void> => {
+const publishDoc = async ({inputs}: PublishParams): Promise<void> => {
   const doc: Doc = updateDocMeta(inputs);
 
   const {docPublish}: {docPublish: DocPublish} = await cloudProvider<{docPublish: DocPublish}>();
@@ -70,18 +59,16 @@ const publishDoc = async (inputs: PublishInputs): Promise<void> => {
   await docPublish({doc});
 };
 
-const publishDeck = async (inputs: PublishInputs): Promise<void> => {
+const publishDeck = async ({inputs, config}: PublishParams): Promise<void> => {
   const deck: Deck = updateDeckMeta(inputs);
 
   const {deckPublish}: {deckPublish: DeckPublish} = await cloudProvider<{deckPublish: DeckPublish}>();
 
-  const firebaseConfig: Record<string, string> = EnvironmentConfigService.getInstance().get('firebase');
-
-  await deckPublish({deck, config: firebaseConfig});
+  await deckPublish({deck, config});
 };
 
 const updateDeckMeta = (inputs: PublishInputs): Deck => {
-  const deck: Deck = {...editorStore.state.deck};
+  const deck: Deck = {...DeckStore.getInstance().get()};
 
   const {name, github} = inputs;
 
@@ -90,7 +77,7 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
   deck.data.meta = updateMeta({inputs, meta: deck.data.meta});
 
   // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept
-  if (authStore.state.gitHub) {
+  if (AuthStore.getInstance().get().gitHub) {
     if (deck.data.github) {
       deck.data.github.publish = github;
     } else {
@@ -101,15 +88,15 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
   }
 
   // TODO: FIXME
-  if (deck.data.owner_id === undefined && authStore.state.loggedIn) {
-    deck.data.owner_id = authStore.state.authUser?.uid;
+  if (deck.data.owner_id === undefined && AuthStore.getInstance().isLoggedIn()) {
+    deck.data.owner_id = AuthStore.getInstance().get()?.uid;
   }
 
   return deck;
 };
 
 const updateDocMeta = (inputs: PublishInputs): Doc => {
-  const doc: Doc = {...editorStore.state.doc};
+  const doc: Doc = {...DocStore.getInstance().get()};
 
   const {name} = inputs;
   doc.data.name = name;
@@ -122,7 +109,7 @@ const updateDocMeta = (inputs: PublishInputs): Doc => {
 const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefined}): Meta => {
   const {name, description, tags, canonical} = inputs;
 
-  if (!userStore.state.user || !userStore.state.user.data) {
+  if (!UserStore.getInstance().get() || !UserStore.getInstance().get().data) {
     throw new Error('No user');
   }
 
@@ -151,31 +138,34 @@ const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefin
     updateMeta.tags = tags;
   }
 
-  if (userStore.state.user?.data?.name) {
+  if (UserStore.getInstance().get()?.data?.name) {
     if (!updateMeta.author) {
       updateMeta.author = {
-        name: userStore.state.user.data.name
+        name: UserStore.getInstance().get().data.name
       };
     } else {
-      (updateMeta.author as Author).name = userStore.state.user.data.name;
+      (updateMeta.author as Author).name = UserStore.getInstance().get().data.name;
     }
 
-    if (userStore.state.user.data.bio) {
-      (updateMeta.author as Author).bio = userStore.state.user.data.bio;
+    if (UserStore.getInstance().get().data.bio) {
+      (updateMeta.author as Author).bio = UserStore.getInstance().get().data.bio;
     }
 
-    if (userStore.state.user.data.photo_url) {
-      (updateMeta.author as Author).photo_url = userStore.state.user.data.photo_url;
+    if (UserStore.getInstance().get().data.photo_url) {
+      (updateMeta.author as Author).photo_url = UserStore.getInstance().get().data.photo_url;
     }
 
-    if (userStore.state.user.data.social) {
-      (updateMeta.author as Author).social = Object.keys(userStore.state.user.data.social).reduce((acc: UserSocial, key: string) => {
-        acc[key] =
-          userStore.state.user.data.social[key] !== null && userStore.state.user.data.social[key] !== undefined
-            ? userStore.state.user.data.social[key]
-            : null;
-        return acc;
-      }, {} as UserSocial);
+    if (UserStore.getInstance().get().data.social) {
+      (updateMeta.author as Author).social = Object.keys(UserStore.getInstance().get().data.social).reduce(
+        (acc: UserSocial, key: string) => {
+          acc[key] =
+            UserStore.getInstance().get().data.social[key] !== null && UserStore.getInstance().get().data.social[key] !== undefined
+              ? UserStore.getInstance().get().data.social[key]
+              : null;
+          return acc;
+        },
+        {} as UserSocial
+      );
     } else {
       (updateMeta.author as Author).social = null;
     }

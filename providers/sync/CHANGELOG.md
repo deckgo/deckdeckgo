@@ -1,3 +1,9 @@
+# 0.0.6 (2022-03-02)
+
+### Features
+
+- publish sync provider
+
 # 0.0.5 (2022-02-25)
 
 ### Features
