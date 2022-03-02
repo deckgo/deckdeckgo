@@ -1,3 +1,9 @@
+# 5.3.0 (2022-03-02)
+
+### Features
+
+- use `ic0.app` as `host` for the agent in production (regardless if connection is on the window or web worker side)
+
 # 5.2.0 (2022-02-27)
 
 ### Features
