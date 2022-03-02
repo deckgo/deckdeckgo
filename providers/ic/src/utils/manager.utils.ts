@@ -15,37 +15,23 @@ export interface BucketActor<T> {
   actor: T | undefined;
 }
 
-export const createManagerActor = ({identity, host}: {identity: Identity; host?: string}): Promise<ManagerActor> => {
-  return createActor<ManagerActor>({canisterId: process.env.MANAGER_CANISTER_ID, idlFactory: ManagerFactory, identity, host});
+export const createManagerActor = ({identity}: {identity: Identity}): Promise<ManagerActor> => {
+  return createActor<ManagerActor>({canisterId: process.env.MANAGER_CANISTER_ID, idlFactory: ManagerFactory, identity});
 };
 
-export const getDataBucket = async ({
-  host,
-  identity
-}: {
-  host?: string;
-  identity: Identity | undefined;
-}): Promise<BucketActor<DataBucketActor>> => {
-  return getBucket<DataBucketActor | undefined>({host, identity, idlFactory: DataIdlFactory, initBucket: initDataBucket});
+export const getDataBucket = async ({identity}: {identity: Identity | undefined}): Promise<BucketActor<DataBucketActor>> => {
+  return getBucket<DataBucketActor | undefined>({identity, idlFactory: DataIdlFactory, initBucket: initDataBucket});
 };
 
-export const getStorageBucket = async ({
-  host,
-  identity
-}: {
-  host?: string;
-  identity: Identity | undefined;
-}): Promise<BucketActor<StorageBucketActor>> => {
-  return getBucket<StorageBucketActor>({host, identity, idlFactory: StorageIdlFactory, initBucket: initStorageBucket});
+export const getStorageBucket = async ({identity}: {identity: Identity | undefined}): Promise<BucketActor<StorageBucketActor>> => {
+  return getBucket<StorageBucketActor>({identity, idlFactory: StorageIdlFactory, initBucket: initStorageBucket});
 };
 
 const getBucket = async <T>({
-  host,
   identity,
   idlFactory,
   initBucket
 }: {
-  host?: string;
   identity: Identity | undefined;
   idlFactory: IDL.InterfaceFactory;
   initBucket: ({managerActor}: {managerActor: ManagerActor}) => Promise<Bucket>;
@@ -54,13 +40,13 @@ const getBucket = async <T>({
     throw new Error('Invalid identity.');
   }
 
-  const managerActor: ManagerActor = await createManagerActor({identity, host});
+  const managerActor: ManagerActor = await createManagerActor({identity});
 
   const bucket: Bucket = await initBucket({managerActor});
 
   const bucketId: Principal | undefined = fromNullable<Principal>(bucket.bucketId);
 
-  const actor: T | undefined = bucketId ? await createBucketActor<T>({identity, bucketId, idlFactory, host}) : undefined;
+  const actor: T | undefined = bucketId ? await createBucketActor<T>({identity, bucketId, idlFactory}) : undefined;
 
   return {
     bucketId,
@@ -71,15 +57,13 @@ const getBucket = async <T>({
 const createBucketActor = <T>({
   identity,
   bucketId,
-  idlFactory,
-  host
+  idlFactory
 }: {
   identity: Identity;
   bucketId: Principal;
   idlFactory: IDL.InterfaceFactory;
-  host?: string;
 }): Promise<T> => {
-  return createActor<T>({canisterId: bucketId, idlFactory, identity, host});
+  return createActor<T>({canisterId: bucketId, idlFactory, identity});
 };
 
 const initDataBucket = async ({managerActor}: {managerActor: ManagerActor}): Promise<Bucket> => {

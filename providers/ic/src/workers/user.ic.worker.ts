@@ -10,23 +10,19 @@ import {BucketActor, getDataBucket} from '../utils/manager.utils';
 
 export const initUserWorker = (
   {
-    internetIdentity,
-    host
+    internetIdentity
   }: {
     internetIdentity: InternetIdentityAuth;
-    host: string;
   },
   onInitUserSuccess: (user: User) => Promise<void>,
   log: LogWindow
-): Promise<void> => initUser({internetIdentity, host}, onInitUserSuccess, log);
+): Promise<void> => initUser({internetIdentity}, onInitUserSuccess, log);
 
 const initUser = async (
   {
-    internetIdentity: {delegationChain, identityKey},
-    host
+    internetIdentity: {delegationChain, identityKey}
   }: {
     internetIdentity: InternetIdentityAuth;
-    host: string;
   },
   onInitUserSuccess: (user: User) => Promise<void>,
   log: LogWindow
@@ -39,11 +35,11 @@ const initUser = async (
 
     const identity: Identity = initIdentity({identityKey, delegationChain});
 
-    const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity, host});
+    const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity});
 
     if (!actor) {
       setTimeout(async () => {
-        await initUser({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess, log);
+        await initUser({internetIdentity: {delegationChain, identityKey}}, onInitUserSuccess, log);
         resolve();
       }, 2000);
       return;
