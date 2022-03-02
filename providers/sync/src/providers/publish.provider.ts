@@ -1,5 +1,4 @@
-import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, throwError, UserSocial} from '@deckdeckgo/editor';
-import {set} from 'idb-keyval';
+import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UserSocial} from '@deckdeckgo/editor';
 import {AuthStore} from '../stores/auth.store';
 import {DeckStore} from '../stores/deck.store';
 import {DocStore} from '../stores/doc.store';
@@ -180,28 +179,4 @@ const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefin
   }
 
   return updateMeta;
-};
-
-export const updatePublishedDocOffline = async (doc: Doc | undefined) => {
-  if (!doc) {
-    return;
-  }
-
-  try {
-    await set(`/docs/${doc.id}`, doc);
-  } catch (err) {
-    throwError(err);
-  }
-};
-
-export const updatePublishedDeckOffline = async (deck: Deck | undefined) => {
-  if (!deck) {
-    return;
-  }
-
-  try {
-    await set(`/decks/${deck.id}`, deck);
-  } catch (err) {
-    throwError(err);
-  }
 };

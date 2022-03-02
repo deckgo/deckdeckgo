@@ -1,3 +1,9 @@
+# 0.0.7 (2022-03-02)
+
+### Features
+
+- remove functions that are not part of sync
+
 # 0.0.6 (2022-03-02)
 
 ### Features
