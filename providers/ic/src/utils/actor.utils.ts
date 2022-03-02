@@ -5,15 +5,15 @@ import {Principal} from '@dfinity/principal';
 export const createActor = async <T = Record<string, ActorMethod>>({
   canisterId,
   idlFactory,
-  identity,
-  host
+  identity
 }: {
   canisterId: string | Principal;
   idlFactory: IDL.InterfaceFactory;
   identity: Identity;
-  host?: string;
 }): Promise<ActorSubclass<T>> => {
-  const agent = new HttpAgent({identity, ...(host && {host})});
+  const host: string | undefined = process.env.PRODUCTION ? 'https://ic0.app' : undefined;
+
+  const agent: HttpAgent = new HttpAgent({identity, ...(host && {host})});
 
   if (process.env.LOCAL_IDENTITY) {
     // Fetch root key for certificate validation during development

@@ -15,12 +15,10 @@ import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} fr
 export const uploadWorker = async (
   {
     internetIdentity: {delegationChain, identityKey},
-    syncData,
-    host
+    syncData
   }: {
     internetIdentity: InternetIdentityAuth;
     syncData: SyncData | undefined;
-    host: string;
   },
   syncWindow: SyncWindow,
   log: LogWindow
@@ -45,8 +43,8 @@ export const uploadWorker = async (
   } = syncData;
 
   const promises: [Promise<BucketActor<DataBucketActor>>, Promise<BucketActor<StorageBucketActor>>] = [
-    getDataBucket({host, identity}),
-    getStorageBucket({host, identity})
+    getDataBucket({identity}),
+    getStorageBucket({identity})
   ];
 
   const [dataBucket, storageBucket] = await Promise.all(promises);

@@ -46,8 +46,7 @@ export const sync: Sync = async ({
   await uploadWorker(
     {
       internetIdentity,
-      syncData,
-      host: `https://ic0.app`
+      syncData
     },
     syncWindow,
     log
