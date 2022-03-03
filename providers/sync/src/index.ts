@@ -23,6 +23,7 @@ export * from './providers/slide.provider';
 export * from './providers/sync.provider';
 export * from './providers/user.provider';
 export * from './providers/publish.provider';
+export * from './providers/storage.provider';
 
 export * from './services/file-system.service';
 

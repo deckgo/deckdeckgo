@@ -1,6 +1,6 @@
 import {StorageFile} from '@deckdeckgo/editor';
+import {uploadOfflineFile} from '@deckdeckgo/offline';
 import {StyloPlugin, StyloPluginCreateParagraphsParams} from '@papyrs/stylo';
-import {StorageOfflineProvider} from '../providers/storage/storage.offline.provider';
 import {createParagraphImage} from '../utils/editor/plugin.utils';
 
 export const imgStorage: StyloPlugin = {
@@ -11,7 +11,7 @@ export const imgStorage: StyloPlugin = {
     multiple: false
   },
   createParagraphs: async ({container, paragraph, files}: StyloPluginCreateParagraphsParams) => {
-    const storageFile: StorageFile = await StorageOfflineProvider.getInstance().uploadFile(files[0], 'images', 10485760);
+    const storageFile: StorageFile = await uploadOfflineFile(files[0], 'images', 10485760);
 
     createParagraphImage({
       image: storageFile,

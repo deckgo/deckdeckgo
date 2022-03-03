@@ -1,7 +1,7 @@
 import {StorageFile} from '@deckdeckgo/editor';
+import {uploadOfflineFile} from '@deckdeckgo/offline';
 import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
-import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
 import i18n from '../../../../stores/i18n.store';
 
 @Component({
@@ -11,14 +11,8 @@ import i18n from '../../../../stores/i18n.store';
 export class AppStorageData {
   @Element() el: HTMLElement;
 
-  private storageOfflineProvider: StorageOfflineProvider;
-
   @State()
   private uploading: boolean = false;
-
-  constructor() {
-    this.storageOfflineProvider = StorageOfflineProvider.getInstance();
-  }
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
@@ -68,7 +62,7 @@ export class AppStorageData {
       if (filePicker.files && filePicker.files.length > 0) {
         this.uploading = true;
 
-        const storageFile: StorageFile = await this.storageOfflineProvider.uploadFile(filePicker.files[0], 'data', 10485760);
+        const storageFile: StorageFile = await uploadOfflineFile(filePicker.files[0], 'data', 10485760);
 
         if (storageFile) {
           await this.selectAndClose(storageFile);
@@ -96,8 +90,7 @@ export class AppStorageData {
       <ion-content class="ion-padding">
         <app-storage-files
           folder={'data'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}
-        ></app-storage-files>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-storage-files>
 
         <input type="file" accept=".csv" onChange={() => this.upload()} />
       </ion-content>,

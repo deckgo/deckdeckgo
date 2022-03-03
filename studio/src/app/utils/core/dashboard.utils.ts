@@ -2,6 +2,7 @@ import {Deck, DeckData, Doc, DocData, Meta, Paragraph, Slide} from '@deckdeckgo/
 import {
   deleteDeck,
   deleteDoc,
+  deleteFile,
   getParagraph,
   getSlide,
   ImportData,
@@ -10,7 +11,6 @@ import {
   removeSyncBeforeUnload
 } from '@deckdeckgo/sync';
 import {v4 as uuid} from 'uuid';
-import {deleteFile} from '../../providers/storage/storage.provider';
 import navStore, {NavDirection} from '../../stores/nav.store';
 import {firebase} from './environment.utils';
 

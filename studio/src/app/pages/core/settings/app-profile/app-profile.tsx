@@ -1,11 +1,10 @@
 import {StorageFile, throwError, User} from '@deckdeckgo/editor';
 import {clearEdit} from '@deckdeckgo/offline';
-import {deleteAuth, updateUser} from '@deckdeckgo/sync';
+import { deleteAuth, updateUser, uploadOnlineFile } from '@deckdeckgo/sync';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '@ionic/core';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
-import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 import authStore from '../../../../stores/auth.store';

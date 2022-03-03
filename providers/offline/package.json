@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/offline",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "author": "David Dal Busco",
   "description": "Offline providers for DeckDeckGo editors.",
   "license": "AGPL-3.0-or-later",
