@@ -151,7 +151,6 @@ export class AppShare {
           lazy={true}
           style={{color: '#ff6000', 'font-size': '1.6rem', display: 'block'}}
         ></AppIcon>
-        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter" lazy={true}></AppIcon>
         <svg slot="telegram" style={{color: '#0088cc', width: '1.6rem', display: 'block'}} viewBox="0 0 448 512">
           <path
             fill="currentColor"
