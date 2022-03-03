@@ -28,7 +28,7 @@ export const snapshotDeck: SnapshotDeck = async ({
   onError
 }: {
   deckId: string;
-  onNext: (snapshot: Deck) => void;
+  onNext: (snapshot: Deck) => Promise<void>;
   onError?: (error: string) => void;
 }): Promise<() => void | undefined> => {
   return snapshotEntry<DeckData>({id: deckId, collection: 'decks', onNext, onError});
