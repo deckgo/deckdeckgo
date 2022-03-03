@@ -1,7 +1,8 @@
-import {DeleteDoc, Doc, DocEntries, SnapshotDoc} from '@deckdeckgo/editor';
-import {DocStore} from '../stores/doc.store';
-import {EnvStore} from '../stores/env.store';
-import {cloudProvider} from '../utils/providers.utils';
+import { DeleteDoc,Doc,DocEntries,SnapshotDoc } from '@deckdeckgo/editor';
+import { updateOfflineDoc } from '@deckdeckgo/offline';
+import { DocStore } from '../stores/doc.store';
+import { EnvStore } from '../stores/env.store';
+import { cloudProvider } from '../utils/providers.utils';
 
 export const docs = async (userId: string): Promise<Doc[]> => {
   if (EnvStore.getInstance().cloud()) {
@@ -26,16 +27,16 @@ export const deleteDoc = async (docId: string): Promise<void> => {
 export const snapshotDoc = (): Promise<() => void | undefined> =>
   snapshotUserDoc({
     docId: DocStore.getInstance().get().id,
-    onNext: (snapshot: Doc) => DocStore.getInstance().set({...snapshot})
+    onNext: async (snapshot: Doc) => {
+      const doc: Doc = {...snapshot};
+
+      // Update store and replicate data to local because it has been updated in the publish process
+      DocStore.getInstance().set(doc);
+      await updateOfflineDoc(doc);
+    }
   });
 
-export const snapshotUserDoc = async ({
-  docId,
-  onNext
-}: {
-  docId: string;
-  onNext: (snapshot: Doc) => void;
-}): Promise<() => void | undefined> => {
+const snapshotUserDoc = async ({docId, onNext}: {docId: string; onNext: (snapshot: Doc) => Promise<void>}): Promise<() => void | undefined> => {
   if (EnvStore.getInstance().cloud()) {
     const {snapshotDoc: snapshotUserDoc}: {snapshotDoc: SnapshotDoc} = await cloudProvider<{snapshotDoc: SnapshotDoc}>();
 

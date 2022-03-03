@@ -11,10 +11,10 @@ export const snapshotDeck: SnapshotDeck = async ({
   onNext
 }: {
   deckId: string;
-  onNext: (snapshot: Deck) => void;
+  onNext: (snapshot: Deck) => Promise<void>;
   onError?: (error: string) => void;
 }): Promise<() => void | undefined> => {
-  document.addEventListener('deckPublished', ({detail}: CustomEvent<Deck>) => onNext(detail), {passive: true});
+  document.addEventListener('deckPublished', async ({detail}: CustomEvent<Deck>) => await onNext(detail), {passive: true});
 
   return () => document.removeEventListener('deckPublished', ({detail}: CustomEvent<Deck>) => onNext(detail), false);
 };

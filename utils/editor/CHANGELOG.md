@@ -1,3 +1,9 @@
+# 7.4.1 (2022-03-03)
+
+### Features
+
+- `onNext` callback of snapshot to promise
+
 # 7.4.0 (2022-02-27)
 
 ### Features

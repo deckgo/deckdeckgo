@@ -1,3 +1,9 @@
+# 0.0.9 (2022-03-03)
+
+### Features
+
+- `onNext` of snapshots as promise
+
 # 0.0.8 (2022-03-02)
 
 ### Fix

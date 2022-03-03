@@ -28,7 +28,7 @@ export const snapshotDoc: SnapshotDoc = async ({
   onError
 }: {
   docId: string;
-  onNext: (snapshot: Doc) => void;
+  onNext: (snapshot: Doc) => Promise<void>;
   onError?: (error: string) => void;
 }): Promise<() => void | undefined> => {
   return snapshotEntry<DocData>({id: docId, collection: 'docs', onNext, onError});

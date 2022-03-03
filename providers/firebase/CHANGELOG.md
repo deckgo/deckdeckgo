@@ -1,3 +1,9 @@
+# 4.0.1 (2022-03-03)
+
+### Features
+
+- `onNext` of snapshots as promise
+
 # 4.0.0 (2022-02-22)
 
 ### Features

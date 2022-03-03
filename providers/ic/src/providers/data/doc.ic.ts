@@ -11,10 +11,10 @@ export const snapshotDoc: SnapshotDoc = async ({
   onNext
 }: {
   docId: string;
-  onNext: (snapshot: Doc) => void;
+  onNext: (snapshot: Doc) => Promise<void>;
   onError?: (error: string) => void;
 }): Promise<() => void | undefined> => {
-  document.addEventListener('docPublished', ({detail}: CustomEvent<Doc>) => onNext(detail), {passive: true});
+  document.addEventListener('docPublished', async ({detail}: CustomEvent<Doc>) => await onNext(detail), {passive: true});
 
   return () => document.removeEventListener('docPublished', ({detail}: CustomEvent<Doc>) => onNext(detail), false);
 };

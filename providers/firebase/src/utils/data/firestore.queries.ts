@@ -116,7 +116,7 @@ export const snapshotEntry = async <T>({
 }: {
   id: string;
   collection: string;
-  onNext: (snapshot: {id: string; data: T}) => void;
+  onNext: (snapshot: {id: string; data: T}) => Promise<void>;
   onError?: (error: string) => void;
 }): Promise<() => void | undefined> => {
   if (!id) {
@@ -129,8 +129,8 @@ export const snapshotEntry = async <T>({
     .collection(collection)
     .doc(id)
     .onSnapshot(
-      (deploySnapshot: firebase.firestore.DocumentSnapshot<T>) =>
-        onNext({
+      async (deploySnapshot: firebase.firestore.DocumentSnapshot<T>) =>
+        await onNext({
           id: deploySnapshot.id,
           data: deploySnapshot.data()
         }),

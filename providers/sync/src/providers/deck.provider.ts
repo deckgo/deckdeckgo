@@ -1,4 +1,5 @@
-import {Deck, DeckEntries, DeleteDeck, Doc, SnapshotDeck} from '@deckdeckgo/editor';
+import {Deck, DeckEntries, DeleteDeck, SnapshotDeck} from '@deckdeckgo/editor';
+import {updateOfflineDeck} from '@deckdeckgo/offline';
 import {DeckStore} from '../stores/deck.store';
 import {EnvStore} from '../stores/env.store';
 import {cloudProvider} from '../utils/providers.utils';
@@ -26,10 +27,16 @@ export const deleteDeck = async (deckId: string): Promise<void> => {
 export const snapshotDeck = (): Promise<() => void | undefined> =>
   snapshotDeckUser({
     deckId: DeckStore.getInstance().get().id,
-    onNext: (snapshot: Doc) => DeckStore.getInstance().set({...snapshot})
+    onNext: async (snapshot: Deck) => {
+      const deck: Deck = {...snapshot};
+
+      // Update store and replicate data to local because it has been updated in the publish process
+      DeckStore.getInstance().set(deck);
+      await updateOfflineDeck(deck);
+    }
   });
 
-const snapshotDeckUser = async ({deckId, onNext}: {deckId: string; onNext: (snapshot: Deck) => void}): Promise<() => void | undefined> => {
+const snapshotDeckUser = async ({deckId, onNext}: {deckId: string; onNext: (snapshot: Deck) => Promise<void>}): Promise<() => void | undefined> => {
   if (EnvStore.getInstance().cloud()) {
     const {snapshotDeck: snapshotUserDeck}: {snapshotDeck: SnapshotDeck} = await cloudProvider<{snapshotDeck: SnapshotDeck}>();
 

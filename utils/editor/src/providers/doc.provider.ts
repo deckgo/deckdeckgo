@@ -21,7 +21,7 @@ export interface UpdateDoc {
 }
 
 export interface SnapshotDoc {
-  ({docId, onNext, onError}: {docId: string; onNext: (snapshot: Doc) => void; onError?: (error: string) => void}): Promise<
+  ({docId, onNext, onError}: {docId: string; onNext: (snapshot: Doc) => Promise<void>; onError?: (error: string) => void}): Promise<
     () => void | undefined
   >;
 }

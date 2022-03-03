@@ -21,7 +21,7 @@ export interface UpdateDeck {
 }
 
 export interface SnapshotDeck {
-  ({deckId, onNext, onError}: {deckId: string; onNext: (snapshot: Deck) => void; onError?: (error: string) => void}): Promise<
+  ({deckId, onNext, onError}: {deckId: string; onNext: (snapshot: Deck) => Promise<void>; onError?: (error: string) => void}): Promise<
     () => void | undefined
   >;
 }
