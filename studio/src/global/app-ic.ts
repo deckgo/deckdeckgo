@@ -57,10 +57,10 @@ setupDeckGoConfig({
   },
   cloud: {
     api: {
-      cdn: 'https://unpkg.com/@deckdeckgo/ic@5.3.2/dist/deckdeckgo-ic/index.esm.js'
+      cdn: 'https://unpkg.com/@deckdeckgo/ic@5.3.4/dist/deckdeckgo-ic/index.esm.js'
     },
     signIn: {
-      cdn: 'https://unpkg.com/@deckdeckgo/ic@5.3.2/dist/deckdeckgo-ic/deckdeckgo-ic.esm.js',
+      cdn: 'https://unpkg.com/@deckdeckgo/ic@5.3.4/dist/deckdeckgo-ic/deckdeckgo-ic.esm.js',
       tag: 'deckgo-ic-signin'
     }
   },

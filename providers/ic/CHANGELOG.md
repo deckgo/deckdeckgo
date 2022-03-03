@@ -1,3 +1,9 @@
+# (5.3.3) 5.3.4 (2022-03-03)
+
+### Fix
+
+- `docSelector` match parent `deckgo-studio-doc`
+
 # 5.3.2 (2022-03-03)
 
 ### Fix
