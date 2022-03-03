@@ -1,7 +1,7 @@
 import {StorageFile} from '@deckdeckgo/editor';
+import {uploadOfflineFile} from '@deckdeckgo/offline';
 import {Component, Element, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';
-import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import i18n from '../../../../stores/i18n.store';
 
@@ -12,8 +12,6 @@ import i18n from '../../../../stores/i18n.store';
 export class AppStorageImages {
   @Element() el: HTMLElement;
 
-  private storageOfflineProvider: StorageOfflineProvider;
-
   private imageHistoryService: ImageHistoryService;
 
   @State()
@@ -21,7 +19,6 @@ export class AppStorageImages {
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.storageOfflineProvider = StorageOfflineProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -74,7 +71,7 @@ export class AppStorageImages {
       if (filePicker.files && filePicker.files.length > 0) {
         this.uploading = true;
 
-        const storageFile: StorageFile = await this.storageOfflineProvider.uploadFile(filePicker.files[0], 'images', 10485760);
+        const storageFile: StorageFile = await uploadOfflineFile(filePicker.files[0], 'images', 10485760);
 
         if (storageFile) {
           await this.selectAndClose(storageFile);
@@ -102,8 +99,7 @@ export class AppStorageImages {
       <ion-content class="ion-padding">
         <app-storage-files
           folder={'images'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}
-        ></app-storage-files>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-storage-files>
 
         <input type="file" accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp" onChange={() => this.upload()} />
       </ion-content>,

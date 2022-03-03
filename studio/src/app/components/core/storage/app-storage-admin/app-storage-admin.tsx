@@ -1,8 +1,8 @@
 import {StorageFile, throwError} from '@deckdeckgo/editor';
+import {deleteFile} from '@deckdeckgo/sync';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
 import {Component, ComponentInterface, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
-import {deleteFile} from '../../../../providers/storage/storage.provider';
 import i18n from '../../../../stores/i18n.store';
 import {AppIcon} from '../../app-icon/app-icon';
 
@@ -70,8 +70,7 @@ export class AppStorageAdmin implements ComponentInterface {
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
           disabled={this.actionInProgress}
-          class={this.actionInProgress ? 'disabled' : undefined}
-        >
+          class={this.actionInProgress ? 'disabled' : undefined}>
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>

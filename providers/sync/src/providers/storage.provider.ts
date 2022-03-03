@@ -1,10 +1,10 @@
 import {DeleteFile, GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
-import {Constants} from '../../config/constants';
-import authStore from '../../stores/auth.store';
-import offlineStore from '../../stores/offline.store';
-import {cloud} from '../../utils/core/environment.utils';
-import {cloudProvider} from '../../utils/core/providers.utils';
-import {StorageOfflineProvider} from './storage.offline.provider';
+import {getOfflineFiles} from '@deckdeckgo/offline';
+import {STORAGE_MAX_QUERY_RESULTS} from '../constants/storage.constants';
+import {AuthStore} from '../stores/auth.store';
+import {EnvStore} from '../stores/env.store';
+import {isOnline} from '../utils/offline.utils';
+import {cloudProvider} from '../utils/providers.utils';
 
 export const uploadOnlineFile = async (
   data: File,
@@ -12,7 +12,7 @@ export const uploadOnlineFile = async (
   maxSize: number,
   downloadUrl?: boolean
 ): Promise<StorageFile | undefined> => {
-  if (cloud()) {
+  if (EnvStore.getInstance().cloud()) {
     const {uploadFile}: {uploadFile: UploadFile} = await cloudProvider<{uploadFile: UploadFile}>();
 
     return uploadFile({
@@ -20,7 +20,7 @@ export const uploadOnlineFile = async (
       folder,
       maxSize,
       downloadUrl,
-      userId: authStore.state.authUser.uid
+      userId: AuthStore.getInstance().get().uid
     });
   }
 
@@ -28,26 +28,26 @@ export const uploadOnlineFile = async (
 };
 
 export const getFiles = async ({next, folder}: {next: string | null; folder: string}): Promise<StorageFilesList | null> => {
-  if (!authStore.state.loggedIn || !offlineStore.state.online) {
-    return StorageOfflineProvider.getInstance().getFiles(folder);
+  if (!AuthStore.getInstance().isLoggedIn() || !isOnline()) {
+    return getOfflineFiles(folder);
   }
 
-  if (cloud()) {
+  if (EnvStore.getInstance().cloud()) {
     const {getFiles}: {getFiles: GetFiles} = await cloudProvider<{getFiles: GetFiles}>();
 
     return getFiles({
       next,
-      maxResults: Constants.STORAGE.MAX_QUERY_RESULTS,
+      maxResults: STORAGE_MAX_QUERY_RESULTS,
       folder,
-      userId: authStore.state.authUser.uid
+      userId: AuthStore.getInstance().get().uid
     });
   }
 
-  return StorageOfflineProvider.getInstance().getFiles(folder);
+  return getOfflineFiles(folder);
 };
 
 export const deleteFile = async (storageFile: StorageFile) => {
-  if (cloud()) {
+  if (EnvStore.getInstance().cloud()) {
     const {deleteFile}: {deleteFile: DeleteFile} = await cloudProvider<{deleteFile: DeleteFile}>();
 
     return deleteFile(storageFile);
