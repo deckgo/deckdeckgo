@@ -1,3 +1,9 @@
+# 0.0.8 (2022-03-02)
+
+### Fix
+
+- doc publish promise resolve
+
 # 0.0.7 (2022-03-02)
 
 ### Features

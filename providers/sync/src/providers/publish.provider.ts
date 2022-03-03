@@ -25,6 +25,8 @@ export const publish = (params: PublishParams): Promise<void> => {
 
       if (DocStore.getInstance().get() !== null) {
         await publishDoc(params);
+
+        resolve();
         return;
       }
 
