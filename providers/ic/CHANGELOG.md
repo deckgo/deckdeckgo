@@ -1,3 +1,9 @@
+# 5.3.2 (2022-03-03)
+
+### Fix
+
+- snapshot published data not original data
+
 # 5.3.1 (2022-03-03)
 
 ### Features
