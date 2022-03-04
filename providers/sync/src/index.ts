@@ -1,5 +1,4 @@
 import {AuthUser, Deck, Doc, SyncState, User} from '@deckdeckgo/editor';
-
 import {AuthStore} from './stores/auth.store';
 import {DeckStore} from './stores/deck.store';
 import {DocStore} from './stores/doc.store';
@@ -9,28 +8,23 @@ import {UserStore} from './stores/user.store';
 export * from './events/chart/chart.events';
 export * from './events/doc.events';
 export * from './events/image/image.load.events';
-
 export * from './init/sync.init';
-
 export * from './loaders/deck.loader';
 export * from './loaders/doc.loader';
-
 export * from './providers/auth.provider';
 export * from './providers/deck.provider';
 export * from './providers/doc.provider';
 export * from './providers/paragraph.provider';
+export * from './providers/publish.provider';
 export * from './providers/slide.provider';
+export * from './providers/storage.provider';
 export * from './providers/sync.provider';
 export * from './providers/user.provider';
-export * from './providers/publish.provider';
-export * from './providers/storage.provider';
-
+export * from './services/admin.service';
 export * from './services/file-system.service';
-
 export * from './types/env.types';
 export * from './types/import.types';
 export * from './types/publish.types';
-
 export * from './utils/before-unload.utils';
 export {importEditorData, importEditorSync} from './utils/import.utils';
 // Export sync functions only for deck because deck.data.events remains at the moment in the studio editor

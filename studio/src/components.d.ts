@@ -11,7 +11,7 @@ import { SelectedTarget } from "./app/types/editor/selected-target";
 import { MonacoEditorOptions } from "@deckdeckgo/monaco-editor";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
-import { DeckOrDoc } from "./app/utils/core/dashboard.utils";
+import { DeckOrDoc } from "@deckdeckgo/sync";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";

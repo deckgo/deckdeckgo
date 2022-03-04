@@ -1,6 +1,6 @@
 import {AuthUser, convertStyle, Deck, formatDate, Slide, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
-import {ChartEvents, decks, getSlide, ImageLoadEvents} from '@deckdeckgo/sync';
+import {ChartEvents, decks, getSlide, ImageLoadEvents, loadAndImportDeck} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -10,7 +10,7 @@ import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 import {Editor} from '../../../types/editor/editor';
-import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
+import {navigateReloadEditor} from '../../../utils/core/dashboard.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
