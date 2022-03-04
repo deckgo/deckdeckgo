@@ -1,4 +1,4 @@
-import {SlideAttributes, SlideSplitType, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
+import {SlideAttributes, SlideSplitType, SlideTemplate, StorageFile, TenorGif} from '@deckdeckgo/editor';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
@@ -261,8 +261,7 @@ export class AppActionAddSlide {
       <app-action-busy
         aria-label={i18n.state.editor.add_slide}
         iconName="add"
-        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}
-      >
+        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
         <ion-label aria-hidden="true">{i18n.state.editor.add_slide}</ion-label>
       </app-action-busy>
     );

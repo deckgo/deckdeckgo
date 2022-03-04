@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
-import { SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
+import { SlideAttributes, SlideTemplate, StorageFile, Template, TenorCategory, TenorGif, UnsplashPhoto, Waves } from "@deckdeckgo/editor";
 import { SelectedTarget } from "./app/types/editor/selected-target";
 import { MonacoEditorOptions } from "@deckdeckgo/monaco-editor";
 import { PrismLanguage } from "./app/types/editor/prism-language";

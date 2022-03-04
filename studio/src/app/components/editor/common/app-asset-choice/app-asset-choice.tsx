@@ -1,4 +1,4 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {StorageFile, TenorGif, UnsplashPhoto, Waves} from '@deckdeckgo/editor';
 import {Fragment, FunctionalComponent, h} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
 import offlineStore from '../../../../stores/offline.store';

@@ -1,4 +1,4 @@
-import {DeckgoImgAttributes, extractAttributes, StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {DeckgoImgAttributes, extractAttributes, StorageFile, TenorGif, UnsplashPhoto} from '@deckdeckgo/editor';
 import {SlotType} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';

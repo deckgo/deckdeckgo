@@ -1,3 +1,4 @@
+import {TenorGif, TenorSearchResponse} from '@deckdeckgo/editor';
 import {Component, ComponentInterface, h, Host, Listen, Prop, State} from '@stencil/core';
 import {TenorProvider} from '../../../providers/tenor/tenor.provider';
 
@@ -49,8 +50,7 @@ export class AppRandomGif implements ComponentInterface {
       return (
         <deckgo-lazy-img
           imgSrc={this.gif.media[0].tinygif.url}
-          imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].tinygif.url}
-        ></deckgo-lazy-img>
+          imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].tinygif.url}></deckgo-lazy-img>
       );
     }
 

@@ -1,4 +1,10 @@
-import {throwError} from '@deckdeckgo/editor';
+import {
+  TenorAnonymousResponse,
+  TenorCategory,
+  TenorCategoryResponse,
+  TenorSearchResponse,
+  throwError
+} from '@deckdeckgo/editor';
 import {get, set} from 'idb-keyval';
 import {EnvironmentTenorConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
