@@ -1,9 +1,10 @@
 import {throwError} from '@deckdeckgo/editor';
+import {clone, DeckOrDoc} from '@deckdeckgo/sync';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
 import {Component, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
-import {clone, DeckOrDoc, deleteDeckOrDoc} from '../../../utils/core/dashboard.utils';
+import {deleteDeckOrDoc} from '../../../utils/core/dashboard.utils';
 import {AppIcon} from '../../core/app-icon/app-icon';
 
 @Component({
@@ -114,8 +115,7 @@ export class AppDashboardActions {
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
-          disabled={this.actionInProgress || this.disableDelete}
-        >
+          disabled={this.actionInProgress || this.disableDelete}>
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>

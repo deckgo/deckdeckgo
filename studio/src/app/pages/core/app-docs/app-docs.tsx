@@ -1,7 +1,7 @@
 import {AuthUser, Doc, formatDate, Paragraph, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
 import {ParseParagraphsUtils} from '@deckdeckgo/studio';
-import {ChartEvents, docs, getParagraph, ImageLoadEvents} from '@deckdeckgo/sync';
+import {ChartEvents, docs, getParagraph, ImageLoadEvents, loadAndImportDoc} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
@@ -10,7 +10,7 @@ import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 import {Editor} from '../../../types/editor/editor';
-import {loadAndImportDoc, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
+import {navigateReloadEditor} from '../../../utils/core/dashboard.utils';
 
 interface DocAndParagraphs {
   doc: Doc;
