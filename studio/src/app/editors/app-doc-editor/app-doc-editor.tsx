@@ -135,7 +135,8 @@ export class AppDocEditor implements ComponentInterface {
               onDocDidLoad={this.onDocDidLoad}
               onDocDataEvents={this.onDocDataEvents}
               loadDoc={loadDoc}
-              resetDoc={resetDoc}></deckgo-studio-doc>
+              resetDoc={resetDoc}
+            ></deckgo-studio-doc>
 
             <deckgo-doc-indicator busy={busyStore.state.busy}></deckgo-doc-indicator>
           </main>

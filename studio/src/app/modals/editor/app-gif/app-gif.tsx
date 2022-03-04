@@ -183,7 +183,8 @@ export class AppGif {
             <ion-infinite-scroll
               threshold="100px"
               disabled={this.disableInfiniteScroll}
-              onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}>
+              onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}
+            >
               <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
             </ion-infinite-scroll>
           </main>
@@ -200,7 +201,8 @@ export class AppGif {
               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleInput($event)}
               onIonChange={async () => {
                 await this.search();
-              }}></ion-searchbar>
+              }}
+            ></ion-searchbar>
           </ion-toolbar>
         </ion-footer>
       </Fragment>

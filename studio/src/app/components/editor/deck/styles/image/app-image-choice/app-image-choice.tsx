@@ -53,14 +53,16 @@ export class AppImageChoice {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.image}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({image: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({image: $event.detail})}
+      >
         <ion-label slot="title">{i18n.state.editor.images}</ion-label>
 
         <div class="image-actions ion-margin">
           <AppAssetChoice
             selectAction={async (action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile | Waves) =>
               await this.selectAction(action, image)
-            }></AppAssetChoice>
+            }
+          ></AppAssetChoice>
           {this.renderWaves()}
           {this.renderDeleteAction()}
         </div>
@@ -70,7 +72,8 @@ export class AppImageChoice {
           deck={this.deck}
           onSelectImage={async ($event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile | Waves>) =>
             await this.selectImageFromHistory($event)
-          }></app-image-history>
+          }
+        ></app-image-history>
       </app-expansion-panel>
     );
   }

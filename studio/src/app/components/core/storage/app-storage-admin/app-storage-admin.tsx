@@ -70,7 +70,8 @@ export class AppStorageAdmin implements ComponentInterface {
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
           disabled={this.actionInProgress}
-          class={this.actionInProgress ? 'disabled' : undefined}>
+          class={this.actionInProgress ? 'disabled' : undefined}
+        >
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>

@@ -1,6 +1,6 @@
 import {Deck, Doc} from '@deckdeckgo/editor';
 import {setEditDeckId} from '@deckdeckgo/offline';
-import {docSubscribe, deckSubscribe} from '@deckdeckgo/sync';
+import {deckSubscribe, docSubscribe} from '@deckdeckgo/sync';
 import {createStore} from '@stencil/store';
 
 interface EditorStore {
