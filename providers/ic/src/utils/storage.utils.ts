@@ -43,8 +43,11 @@ export const upload = async ({
 
   const chunkSize = 700000;
 
-  for (let start = 0; start < data.size; start += chunkSize) {
-    const chunk: Blob = data.slice(start, start + chunkSize);
+  // Prevent transforming chunk to arrayBuffer error: The requested file could not be read, typically due to permission problems that have occurred after a reference to a file was acquired.
+  const clone: Blob = new Blob([await data.arrayBuffer()]);
+
+  for (let start = 0; start < clone.size; start += chunkSize) {
+    const chunk: Blob = clone.slice(start, start + chunkSize);
 
     promises.push(
       uploadChunk({

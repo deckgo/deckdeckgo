@@ -1,3 +1,9 @@
+# 5.3.5 (2022-03-04)
+
+### Fix
+
+- prevent transforming chunk to arrayBuffer error
+
 # (5.3.3) 5.3.4 (2022-03-03)
 
 ### Fix
