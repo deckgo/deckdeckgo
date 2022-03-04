@@ -1,3 +1,4 @@
+import {Waves, WavesOrientation} from '@deckdeckgo/editor';
 import type {RangeChangeEventDetail} from '@ionic/core';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';

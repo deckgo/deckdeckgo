@@ -284,7 +284,8 @@ export class AppDocs implements ComponentInterface {
           data={{doc: doc.doc}}
           disableDelete={doc.doc.id === this.currentDocId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDoc($event)}
-          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}
+        ></app-dashboard-actions>
       </aside>
     );
   }

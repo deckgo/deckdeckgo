@@ -1,4 +1,4 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {initDeckgoLazyImgAttributes, StorageFile, TenorGif, UnsplashPhoto, Waves} from '@deckdeckgo/editor';
 import {SlotType, SlotUtils} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
@@ -7,7 +7,6 @@ import authStore from '../../stores/auth.store';
 import busyStore from '../../stores/busy.store';
 import {EditAction} from '../../types/editor/edit-action';
 import {ImageAction} from '../../types/editor/image-action';
-import {initDeckgoLazyImgAttributes} from '../../utils/editor/image.utils';
 
 export class ImageHelper {
   constructor(

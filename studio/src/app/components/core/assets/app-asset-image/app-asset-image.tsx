@@ -1,4 +1,4 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {StorageFile, TenorCategory, TenorGif, UnsplashPhoto, Waves} from '@deckdeckgo/editor';
 import {Component, ComponentInterface, Fragment, h, Host, Listen, Prop, State} from '@stencil/core';
 
 @Component({

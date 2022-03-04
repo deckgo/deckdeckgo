@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "typeRoots": ["../../node_modules/@types"],
-    "types": ["@deckdeckgo/core", "@deckdeckgo/social-img"],
+    "types": ["@deckdeckgo/core", "@deckdeckgo/social-img", "@deckdeckgo/lazy-img"],
     "skipLibCheck": true,
     "outDir": "lib"
   },

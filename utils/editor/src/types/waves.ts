@@ -1,8 +1,8 @@
-interface SvgPath {
+export interface SvgPath {
   d: string;
 }
 
-interface Waves {
+export interface Waves {
   viewBox: string;
   width: string;
   fill: string;
@@ -12,4 +12,4 @@ interface Waves {
   path: SvgPath;
 }
 
-type WavesOrientation = 'upward' | 'downward';
+export type WavesOrientation = 'upward' | 'downward';

@@ -1,3 +1,4 @@
+import {TenorCategory, TenorGif, TenorSearchResponse} from '@deckdeckgo/editor';
 import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {TenorProvider} from '../../../providers/tenor/tenor.provider';

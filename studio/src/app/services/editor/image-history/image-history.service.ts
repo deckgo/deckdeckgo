@@ -1,4 +1,4 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {StorageFile, TenorGif, UnsplashPhoto, Waves} from '@deckdeckgo/editor';
 import {del, get, set} from 'idb-keyval';
 
 export class ImageHistoryService {

@@ -1,4 +1,4 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {StorageFile, TenorGif, UnsplashPhoto, Waves} from '@deckdeckgo/editor';
 import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
 import settingsStore from '../../../../../../stores/settings.store';

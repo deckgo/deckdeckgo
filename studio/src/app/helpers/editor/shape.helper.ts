@@ -1,4 +1,4 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {DeckgoImgAttributes, extractAttributes, StorageFile, TenorGif, UnsplashPhoto} from '@deckdeckgo/editor';
 import {SlotType} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
@@ -7,7 +7,6 @@ import busyStore from '../../stores/busy.store';
 import {EditAction} from '../../types/editor/edit-action';
 import {ImageAction} from '../../types/editor/image-action';
 import {ShapeAction, ShapeActionSVG} from '../../types/editor/shape-action';
-import {DeckgoImgAttributes, extractAttributes} from '../../utils/editor/image.utils';
 
 export class ShapeHelper {
   constructor(private didChange: EventEmitter<HTMLElement>) {}

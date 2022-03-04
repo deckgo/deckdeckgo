@@ -1,3 +1,5 @@
+import {WavesOrientation} from '@deckdeckgo/editor';
+
 export class WavesUtils {
   static generateCoordinates(nodes: number): [string, string][] {
     const unit = 500 / nodes;

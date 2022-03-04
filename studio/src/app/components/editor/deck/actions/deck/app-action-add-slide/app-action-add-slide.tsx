@@ -1,4 +1,4 @@
-import {SlideAttributes, SlideSplitType, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
+import {SlideAttributes, SlideSplitType, SlideTemplate, StorageFile, TenorGif} from '@deckdeckgo/editor';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';

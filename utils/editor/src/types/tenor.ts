@@ -1,11 +1,11 @@
-interface TenorMediaObject {
+export interface TenorMediaObject {
   preview: string;
   url: string;
   dims: number[];
   size: number;
 }
 
-interface TenorMedia {
+export interface TenorMedia {
   gif: TenorMediaObject;
   mediumgif: TenorMediaObject;
   tinygif: TenorMediaObject;
@@ -19,7 +19,7 @@ interface TenorMedia {
   nanowebm: TenorMediaObject;
 }
 
-interface TenorGif {
+export interface TenorGif {
   id: string;
 
   created: number;
@@ -36,26 +36,26 @@ interface TenorGif {
   media: TenorMedia[];
 }
 
-interface TenorSearchResponse {
+export interface TenorSearchResponse {
   results: TenorGif[];
   next: string | number;
 }
 
-interface TenorCategory {
+export interface TenorCategory {
   searchterm: string;
   path: string;
   image: string;
   name: string;
 }
 
-interface TenorCategoryResponse {
+export interface TenorCategoryResponse {
   tags: TenorCategory[];
 }
 
-interface TenorAnonymousResponse {
+export interface TenorAnonymousResponse {
   anon_id: string;
 }
 
-interface TenorRegisterShareResponse {
+export interface TenorRegisterShareResponse {
   status: string;
 }

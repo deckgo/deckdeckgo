@@ -1,3 +1,4 @@
+import {TenorGif, TenorSearchResponse} from '@deckdeckgo/editor';
 import {Component, ComponentInterface, h, Host, Listen, Prop, State} from '@stencil/core';
 import {TenorProvider} from '../../../providers/tenor/tenor.provider';
 
