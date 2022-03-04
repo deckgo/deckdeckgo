@@ -15,6 +15,8 @@ export * from './models/storage/storage';
 
 export * from './types/sync';
 export * from './types/unsplash';
+export * from './types/tenor';
+export * from './types/waves';
 export * from './types/file-system';
 
 export * from './providers/auth.provider';
@@ -39,6 +41,7 @@ export * from './utils/script.utils';
 export * from './utils/fonts.utils';
 export * from './utils/style.utils';
 export * from './utils/element.utils';
+export * from './utils/image.utils';
 
 export * from './events/error.events';
 export * from './events/log.events';

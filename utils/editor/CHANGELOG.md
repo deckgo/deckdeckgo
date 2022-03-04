@@ -1,3 +1,9 @@
+# 7.5.0 (2022-03-04)
+
+### Features
+
+- image utils to handle deckgo-lazy-img attributes
+
 # 7.4.2 (2022-03-03)
 
 ### Fix

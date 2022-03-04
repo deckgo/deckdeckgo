@@ -1,4 +1,7 @@
-import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+import {StorageFile} from '../models/storage/storage';
+import {TenorGif} from '../types/tenor';
+import {UnsplashPhoto} from '../types/unsplash';
+import {Waves} from '../types/waves';
 
 export interface DeckgoImgAttributes {
   src: string;
@@ -36,9 +39,13 @@ export const extractAttributes = (image?: UnsplashPhoto | TenorGif | StorageFile
     // Storage image aka image uploaded by the user
     const storageFile: StorageFile = image as StorageFile;
 
+    if (!storageFile.downloadUrl) {
+      return undefined;
+    }
+
     return {
       src: storageFile.downloadUrl,
-      label: storageFile.downloadUrl
+      label: storageFile.downloadUrl || storageFile.name || ''
     };
   }
 
