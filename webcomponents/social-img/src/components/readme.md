@@ -84,7 +84,7 @@ Transform the rendered svg, the social image, to an image provided as blob (defa
 
 Type: `Promise<Blob>`
 
-
+The image as blob
 
 
 ## Shadow Parts

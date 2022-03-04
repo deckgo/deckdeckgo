@@ -1,3 +1,10 @@
+# 1.2.0 (2022-03-04)
+
+### Build
+
+- bump Stencil
+- set module entry to component .esm.js
+
 # 1.1.0 (2021-12-22)
 
 ### Features

@@ -25,7 +25,7 @@ export const config: Config = {
     }
   ],
   plugins: [
-    replace(canisterEnvIds(prod)),
+    replace(canisterEnvIds(true)),
     sass(),
     postcss({
       plugins: [autoprefixer()]
