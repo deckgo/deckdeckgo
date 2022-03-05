@@ -441,7 +441,7 @@
     "error_previous": "El anterior intento de publicación falló. Puede intentarlo de nuevo. Si el problema persiste, por favor, {0} nos.",
     "contact": "contacto",
     "title": "Título",
-    "publish_now": "Publicar ahora",
+    "publish_now": "Publicar",
     "hang_on_publishing": "Espera, estamos publicando tu contenido",
     "source_push": "¿Subir el código fuente de la presentación a un nuevo repositorio público de tu cuenta de GitHub?",
     "source_submit": "¿Enviar el código fuente de la presentación a su repositorio de GitHub?"

@@ -441,7 +441,7 @@
     "error_previous": "Der letzte Versuch, die Präsentation zu veröffentlichen, ist fehlgeschlagen. Bitte versuche es erneut. Bitte {0} uns, falls das Problem weiter bestehen sollte.",
     "contact": "kontaktiere",
     "title": "Titel",
-    "publish_now": "Jetzt veröffentlichen",
+    "publish_now": "Veröffentlichen",
     "hang_on_publishing": "Warte, dein Inhalt wird veröffentlicht",
     "source_push": "Soll der Quellcode deiner Präsentation in einen neues, öffentliches Repository deines GitHub Accounts geschoben werden?",
     "source_submit": "Soll der Quellcode deiner Präsentation ans GitHub Repository übergeben werden?"
