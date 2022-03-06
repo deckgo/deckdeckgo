@@ -1,6 +1,6 @@
 import {Doc} from '@deckdeckgo/editor';
 import {Editor, getEdit} from '@deckdeckgo/offline';
-import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
+import {moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig} from '@papyrs/stylo';
 import {Component, ComponentInterface, Element, Event, EventEmitter, h, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
@@ -135,18 +135,13 @@ export class StudioDoc implements ComponentInterface {
   }
 
   private async initDoc() {
-    /**
-     * Pragmatic hack for Firefox: we cannot use the css selector :empty in Firefox because if user enter text in a first empty title, the text is not added within the title but before it.
-     */
-    const firefox: boolean = isFirefox();
-
     const Title = 'h1';
-    const title: JSX.IntrinsicElements = <Title key={nanoid()}>{firefox ? '\u200B' : undefined}</Title>;
+    const title: JSX.IntrinsicElements = <Title key={nanoid()}></Title>;
 
     const Div = 'div';
     const div: JSX.IntrinsicElements = <Div key={nanoid()}></Div>;
 
-    this.paragraphs = firefox ? [title] : [title, div];
+    this.paragraphs = [title, div];
 
     busyStore.state.docReady = true;
   }
