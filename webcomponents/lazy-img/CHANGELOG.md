@@ -1,3 +1,11 @@
+# 3.3.0 (2022-03-07)
+
+### Build
+
+- deprecated `dist-custom-elements-bundle` replaced with `dist-custom-elements`
+- point `module` entry to `dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js`
+- bump Stencil
+
 # 3.2.0 (2021-10-16)
 
 ### Features

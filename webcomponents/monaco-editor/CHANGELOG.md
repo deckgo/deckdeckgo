@@ -1,3 +1,11 @@
+# 1.2.0 (2022-03-07)
+
+### Build
+
+- add `dist-custom-elements`
+- point `module` entry to `dist/monaco-editor/monaco-editor.esm.js`
+- bump Stencil
+
 # 1.1.0 (2022-02-18)
 
 ### Features
