@@ -41,6 +41,6 @@
     "vscode"
   ],
   "dependencies": {
-    "monaco-editor": "^0.31.1"
+    "monaco-editor": "^0.32.1"
   }
 }
