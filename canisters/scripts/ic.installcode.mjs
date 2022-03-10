@@ -1,23 +1,19 @@
 #!/usr/bin/env node
 
-import {readFileSync} from 'fs';
-
-import fetch from 'node-fetch';
-
-import crypto from 'crypto';
-
+import pkgAgent from '@dfinity/agent';
+import {IDL} from '@dfinity/candid';
+import pkgIdentity from '@dfinity/identity';
 import pkgPrincipal from '@dfinity/principal';
+import crypto from 'crypto';
+import {readFileSync} from 'fs';
+import fetch from 'node-fetch';
+import {idlFactory} from '../../.dfx/local/canisters/manager/manager.did.mjs';
+
 const {Principal} = pkgPrincipal;
 
-import pkgIdentity from '@dfinity/identity';
 const {Secp256k1KeyIdentity} = pkgIdentity;
 
-import pkgAgent from '@dfinity/agent';
 const {HttpAgent, Actor} = pkgAgent;
-
-import {IDL} from '@dfinity/candid';
-
-import {idlFactory} from '../../.dfx/local/canisters/manager/manager.did.mjs';
 
 const managerPrincipal = () => {
   const buffer = readFileSync('./canister_ids.json');
@@ -49,8 +45,8 @@ const upgradeBucketData = async ({actor, owner, bucketId, wasmModule}) => {
   console.log(`Done: ${bucketId.toText()}`);
 };
 
-const loadWasm = () => {
-  const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
+const loadWasm = (type) => {
+  const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/${type}/${type}.wasm`);
   return [...new Uint8Array(buffer)];
 };
 
@@ -71,7 +67,10 @@ const fromNullable = (value) => {
       canisterId
     });
 
-    const list = await actor.list('data');
+    // data or storage
+    const type = 'storage';
+
+    const list = await actor.list(type);
 
     // bucketId is optional in our backend
     const filterList = list.filter(({bucketId}) => fromNullable(bucketId) !== undefined);
@@ -80,10 +79,12 @@ const fromNullable = (value) => {
       return;
     }
 
-    const wasmModule = loadWasm();
-
     // bucketId[0] -> effective bucketId
     // console.log(bucketId[0].toText());
+
+    // console.log('List buckets:', filterList.map(({bucketId}) => bucketId[0].toText()));
+
+    const wasmModule = loadWasm(type);
 
     const promises = filterList.map(({owner, bucketId}) => upgradeBucketData({actor, wasmModule, bucketId: fromNullable(bucketId), owner}));
     await Promise.all(promises);
