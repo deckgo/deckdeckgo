@@ -6,6 +6,7 @@ import Hash "mo:base/Hash";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
 import Result "mo:base/Result";
+import Buffer "mo:base/Buffer";
 
 import StorageTypes "./storage.types";
 
@@ -212,7 +213,7 @@ module {
                 return {error = ?"Batch did not complete in time. Chunks cannot be commited."};
             };
 
-            var contentChunks : [[Nat8]] = [];
+            let contentChunks: Buffer.Buffer<[Nat8]> = Buffer.Buffer(1);
 
             for (chunkId in chunkIds.vals()) {
                 let chunk: ?Chunk = chunks.get(chunkId);
@@ -223,7 +224,7 @@ module {
                             return {error = ?"Chunk not included in the provided batch"};
                         };
 
-                        contentChunks := Array.append<[Nat8]>(contentChunks, [chunk.content]);
+                        contentChunks.add(chunk.content);
                     };
                     case null {
                         return {error = ?"Chunk does not exist."};
@@ -245,7 +246,7 @@ module {
                 headers;
                 encoding = {
                     modified = Time.now();
-                    contentChunks;
+                    contentChunks = contentChunks.toArray();
                     totalLength
                 };
             });
