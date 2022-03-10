@@ -3,7 +3,7 @@
   "singleQuote": true,
   "arrowParens": "always",
   "bracketSpacing": false,
-  "jsxBracketSameLine": true,
+  "bracketSameLine": true,
   "trailingComma": "none",
   "overrides": [
     {
