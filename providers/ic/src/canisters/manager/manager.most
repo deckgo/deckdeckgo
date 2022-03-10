@@ -1,0 +1,5 @@
+type Bucket = {bucketId : ?BucketId; owner : UserId};
+actor {
+  stable var data : [(Principal, Bucket)];
+  stable var storages : [(Principal, Bucket)]
+};

@@ -37,7 +37,7 @@ const copyFile = async ({srcPath, destPath}) => {
     return;
   }
 
-  if (extname(srcPath) === '.did') {
+  if (['.did', '.most'].includes(extname(srcPath))) {
     copyFileSync(srcPath, destPath);
     return;
   }
