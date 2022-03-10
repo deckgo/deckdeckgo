@@ -1,0 +1,5 @@
+type Data/1 = Data;
+actor {
+  stable var entries : [(Text, Data/1)];
+  stable user : Principal
+};
