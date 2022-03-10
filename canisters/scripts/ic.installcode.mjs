@@ -25,6 +25,11 @@ const managerPrincipal = () => {
   return Principal.fromText(manager.ic);
 };
 
+/**
+ * ! Replicating the dfx identity in a nodejs script is NOT possible at the moment !
+ *
+ * See: https://forum.dfinity.org/t/using-dfinity-agent-in-node-js/6169/41
+ */
 const initIdentity = () => {
   const buffer = readFileSync('/Users/daviddalbusco/.config/dfx/identity/default/identity.pem');
   const key = buffer.toString('utf-8');
