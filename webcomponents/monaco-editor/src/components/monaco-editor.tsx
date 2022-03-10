@@ -51,8 +51,21 @@ export class MonacoEditor implements ComponentInterface {
     this.editorDidLoad.emit();
   }
 
-  disconnectedCallback() {
-    this.editor?.dispose();
+  async disconnectedCallback() {
+    await this.dispose();
+  }
+
+  private dispose(): Promise<void> {
+    if (!this.editor) {
+      return Promise.resolve();
+    }
+
+    return new Promise<void>((resolve) => {
+      this.editor.onDidDispose(() => resolve());
+
+      this.editor.getModel()?.dispose();
+      this.editor.dispose();
+    });
   }
 
   @Method()
