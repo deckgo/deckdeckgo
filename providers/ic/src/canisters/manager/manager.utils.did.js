@@ -12,8 +12,8 @@ export const idlFactory = ({IDL}) => {
     getStorage: IDL.Func([], [IDL.Opt(Bucket)], ['query']),
     initData: IDL.Func([], [Bucket], []),
     initStorage: IDL.Func([], [Bucket], []),
-    installCode: IDL.Func([IDL.Principal, IDL.Vec(IDL.Nat8), IDL.Vec(IDL.Nat8)], [], []),
-    list: IDL.Func([IDL.Text], [IDL.Vec(Bucket)], ['query'])
+    installCode: IDL.Func([IDL.Text, IDL.Principal, IDL.Vec(IDL.Nat8), IDL.Vec(IDL.Nat8)], [], []),
+    list: IDL.Func([IDL.Text, IDL.Text], [IDL.Vec(Bucket)], ['query'])
   });
 };
 export const init = ({IDL}) => {

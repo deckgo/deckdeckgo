@@ -12,6 +12,6 @@ export interface _SERVICE {
   getStorage: () => Promise<[] | [Bucket]>;
   initData: () => Promise<Bucket>;
   initStorage: () => Promise<Bucket>;
-  installCode: (arg_0: Principal, arg_1: Array<number>, arg_2: Array<number>) => Promise<undefined>;
-  list: (arg_0: string) => Promise<Array<Bucket>>;
+  installCode: (arg_0: string, arg_1: Principal, arg_2: Array<number>, arg_3: Array<number>) => Promise<undefined>;
+  list: (arg_0: string, arg_1: string) => Promise<Array<Bucket>>;
 }

@@ -17,6 +17,8 @@ import BucketStore "./bucket.store";
 import DataBucket "../data/data";
 import StorageBucket "../storage/storage";
 
+import Env "../env";
+
 actor Manager {
     private type UserId = Types.UserId;
 
@@ -161,8 +163,11 @@ actor Manager {
      * Admin
      */
 
-    // TODO: protect caller = david
-    public shared query({ caller }) func list(store: Text) : async [Bucket] {
+    public shared query({ caller }) func list(secret: Text, store: Text) : async [Bucket] {
+        if (Text.notEqual(secret, Env.secrets.manager)) {
+            throw Error.reject("Unauthorized access. Invalid secret.");
+        };
+
         if (Text.equal(store, "data")) {
             return dataStore.entries();
         };
@@ -174,8 +179,11 @@ actor Manager {
         throw Error.reject("Type of store not supported");
     };
 
-    // TODO: protect caller = david
-    public shared({ caller }) func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
+    public shared({ caller }) func installCode(secret: Text, canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
+        if (Text.notEqual(secret, Env.secrets.manager)) {
+            throw Error.reject("Unauthorized access. Invalid secret.");
+        };
+
         await canisterUtils.installCode(canisterId, owner, wasmModule);
     };
 
