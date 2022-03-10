@@ -1,3 +1,13 @@
+# 1.2.1 (2022-03-10)
+
+### Features
+
+- async dispose editor on disconnect
+
+### Build
+
+- bump monaco-editor
+
 # 1.2.0 (2022-03-07)
 
 ### Build
