@@ -55,6 +55,13 @@ const fromNullable = (value) => {
 };
 
 (async () => {
+  const help = process.argv.find((arg) => arg.indexOf('--help') > -1)
+
+  if (help !== undefined) {
+    console.log('Run command line with optional --type=data|storage');
+    return;
+  }
+
   try {
     const canisterId = managerPrincipal();
 
@@ -68,7 +75,7 @@ const fromNullable = (value) => {
     });
 
     // data or storage
-    const type = process.argv.find((arg) => arg.indexOf('type=') > -1)?.replace('type=', '') ?? 'data';
+    const type = process.argv.find((arg) => arg.indexOf('--type=') > -1)?.replace('--type=', '') ?? 'data';
 
     const list = await actor.list(type);
 
