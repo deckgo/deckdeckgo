@@ -58,7 +58,9 @@ const fromNullable = (value) => {
   const help = process.argv.find((arg) => arg.indexOf('--help') > -1)
 
   if (help !== undefined) {
-    console.log('Run command line with optional --type=data|storage');
+    console.log('Options:');
+    console.log('--type=data|storage');
+    console.log('--list-only');
     return;
   }
 
@@ -83,13 +85,20 @@ const fromNullable = (value) => {
     const filterList = list.filter(({bucketId}) => fromNullable(bucketId) !== undefined);
 
     if (filterList.length <= 0) {
+      console.log("No buckets found.");
       return;
     }
 
+    const listOnly = process.argv.find((arg) => arg.indexOf('--list-only') > -1) !== undefined;
+
+    if (listOnly) {
+      console.log('List buckets:', filterList.map(({bucketId}) => bucketId[0].toText()));
+      return;
+    }
+
+
     // bucketId[0] -> effective bucketId
     // console.log(bucketId[0].toText());
-
-    // console.log('List buckets:', filterList.map(({bucketId}) => bucketId[0].toText()));
 
     const wasmModule = loadWasm(type);
 
