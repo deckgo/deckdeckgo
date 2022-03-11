@@ -228,10 +228,11 @@ actor class StorageBucket(owner: Types.UserId) = this {
     * Canister mgmt
     */
 
-    // TODO: inter-canister call secure caller === manager canister !!!
-    // Or as only controllers can execute following is enough security?
-
     public shared({ caller }) func transferCycles(): async() {
+        if (not Utils.isManager(caller)) {
+            throw Error.reject("Unauthorized access. Caller is not a manager.");
+        };
+
         await walletUtils.transferCycles(caller);
     };
 
