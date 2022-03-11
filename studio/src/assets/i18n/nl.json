@@ -394,7 +394,8 @@
     "transform_slide": "Transformeer slide",
     "add_element": "Voeg een afbeelding, code of nieuw element toe",
     "saving": "Bezig met opslaan...",
-    "edit_code": "Code bewerken"
+    "edit_code": "Code bewerken",
+    "search_term": "Zoekterm"
   },
   "offline": {
     "editing": "U bent offline aan het bewerken.",

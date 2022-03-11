@@ -394,7 +394,8 @@
     "transform_slide": "Ändere Folie",
     "add_element": "Fügen Sie ein Bild, Code oder ein neues Element hinzu",
     "saving": "Wird gespeichert...",
-    "edit_code": "Code bearbeiten"
+    "edit_code": "Code bearbeiten",
+    "search_term": "Suchbegriff"
   },
   "offline": {
     "editing": "Du bearbeitest gerade offline.",

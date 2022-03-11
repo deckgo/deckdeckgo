@@ -176,7 +176,7 @@ export class AppUnsplash {
           <ion-toolbar>
             <ion-searchbar
               debounce={500}
-              placeholder="Search"
+              placeholder={i18n.state.editor.search_term}
               value={this.searchTerm}
               ref={(el) => (this.input = el as HTMLIonSearchbarElement)}
               onIonClear={() => this.clear()}

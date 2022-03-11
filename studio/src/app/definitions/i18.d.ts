@@ -403,6 +403,7 @@ interface I18nEditor {
   add_element: string;
   saving: string;
   edit_code: string;
+  search_term: string;
 }
 
 interface I18nOffline {
