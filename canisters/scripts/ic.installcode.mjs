@@ -86,9 +86,7 @@ const fromNullable = (value) => {
 
     const wasmModule = loadWasm(type);
 
-    const promises = filterList.map(({owner, bucketId}) =>
-      upgradeBucketData({actor, wasmModule, bucketId: fromNullable(bucketId), owner})
-    );
+    const promises = filterList.map(({owner, bucketId}) => upgradeBucketData({actor, wasmModule, bucketId: fromNullable(bucketId), owner}));
     await Promise.all(promises);
   } catch (e) {
     console.error(e);
