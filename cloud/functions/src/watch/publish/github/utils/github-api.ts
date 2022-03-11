@@ -3,9 +3,7 @@
 // https://developer.github.com/v4/explorer/
 
 import * as functions from 'firebase-functions';
-
 import fetch, {Response} from 'node-fetch';
-
 import {DeckGitHubRepo} from '../../../../model/data/deck';
 
 export interface GitHubUser {

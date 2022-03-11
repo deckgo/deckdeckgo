@@ -1,10 +1,8 @@
 import * as admin from 'firebase-admin';
-
-import {Slide} from '../../../model/data/slide';
 import {Deck} from '../../../model/data/deck';
-
-import {findSlide} from '../../../utils/data/slide-utils';
+import {Slide} from '../../../model/data/slide';
 import {findDeck} from '../../../utils/data/deck-utils';
+import {findSlide} from '../../../utils/data/slide-utils';
 
 export function cloneSlides(deckIdTo: string, deckIdFrom: string): Promise<string[] | undefined> {
   return new Promise<string[] | undefined>(async (resolve, reject) => {

@@ -1,14 +1,9 @@
-import * as functions from 'firebase-functions';
-
 import * as admin from 'firebase-admin';
-
+import * as functions from 'firebase-functions';
 import * as puppeteer from 'puppeteer';
-
-import {Resources} from '../../../utils/resources/resources';
-
 import {Deck, DeckData} from '../../../model/data/deck';
-
 import {findDeck} from '../../../utils/data/deck-utils';
+import {Resources} from '../../../utils/resources/resources';
 
 export async function generateDeckScreenshot(deckId: string) {
   const apiSkip: string = functions.config().deckdeckgo.api.skip;

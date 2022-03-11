@@ -1,5 +1,4 @@
 import * as admin from 'firebase-admin';
-
 import {DeckData} from '../../model/data/deck';
 
 export function successfulDeploy(deckId: string, type: 'github' | 'api'): Promise<void> {

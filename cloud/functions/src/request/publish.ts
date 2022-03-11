@@ -1,10 +1,7 @@
-import * as functions from 'firebase-functions';
-
 import * as cors from 'cors';
-
-import {verifyToken} from './utils/request-utils';
-
+import * as functions from 'firebase-functions';
 import {ScheduledPublishTask, schedulePublish} from './publish/schedule-publish-task';
+import {verifyToken} from './utils/request-utils';
 
 export async function publishTask(request: functions.Request, response: functions.Response<any>) {
   const corsHandler = cors({origin: true});

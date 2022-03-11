@@ -1,7 +1,5 @@
-import * as admin from 'firebase-admin';
-
 import {format} from 'date-fns';
-
+import * as admin from 'firebase-admin';
 import {Deck, DeckData} from '../../model/data/deck';
 import {fonts, GoogleFont} from '../../request/utils/google-fonts-utils';
 

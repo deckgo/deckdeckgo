@@ -1,7 +1,5 @@
 import * as admin from 'firebase-admin';
-
 import {Deck, DeckData} from '../../model/data/deck';
-
 import {DeckSlides, deleteSlides, findSlides} from './utils/delete-slides-utils';
 
 export async function deleteDecksSlides(userRecord: admin.auth.UserRecord) {

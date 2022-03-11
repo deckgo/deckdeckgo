@@ -1,7 +1,5 @@
 import * as functions from 'firebase-functions';
-
 import simpleGit, {SimpleGit} from 'simple-git';
-
 import {deleteDir, getLocalFilePath, getLocalPath} from './github-fs';
 
 interface GitHubDeckGoUser {

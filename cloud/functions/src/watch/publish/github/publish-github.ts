@@ -1,13 +1,11 @@
 import * as functions from 'firebase-functions';
-
 import {DeckData, DeckGitHubRepo} from '../../../model/data/deck';
 import {Token} from '../../../model/data/token';
-
+import {failureDeploy, successfulDeploy} from '../../../utils/data/deck-deploy-utils';
 import {getUser, GitHubUser} from './utils/github-api';
 import {clone} from './utils/github-cmd';
 import {findToken} from './utils/github-db';
 import {getRepo, updateGitHubDeck, updateProject} from './utils/github-utils';
-import {failureDeploy, successfulDeploy} from '../../../utils/data/deck-deploy-utils';
 
 export async function publishToGitHub(deckId: string, deckData: DeckData): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {

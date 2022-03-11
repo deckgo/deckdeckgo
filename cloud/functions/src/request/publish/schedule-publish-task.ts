@@ -1,10 +1,8 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-
+import {DeckData, DeckDeployData} from '../../model/data/deck';
 import {scheduleTask} from '../../utils/data/task-utils';
 import {getToken} from '../utils/request-utils';
-
-import {DeckData, DeckDeployData} from '../../model/data/deck';
 
 export interface ScheduledPublishTask {
   deckId: string;

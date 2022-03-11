@@ -1,8 +1,6 @@
-import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-
+import * as functions from 'firebase-functions';
 import {Deck, DeckMeta, DeckMetaAuthor} from '../model/data/deck';
-
 import {findPublishedDecks} from '../utils/data/deck-utils';
 import {getDateObj} from '../utils/utils';
 

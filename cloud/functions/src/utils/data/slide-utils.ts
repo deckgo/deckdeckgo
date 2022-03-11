@@ -1,5 +1,4 @@
 import * as admin from 'firebase-admin';
-
 import {Slide, SlideData} from '../../model/data/slide';
 
 export function findSlide(deckId: string, slideId: string): Promise<Slide> {

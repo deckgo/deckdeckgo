@@ -1,14 +1,10 @@
+import * as admin from 'firebase-admin';
 import {Change, EventContext} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-
-import * as admin from 'firebase-admin';
-
 import {deleteDecksSlides} from './delete/delete-decks-slides';
-import {deleteUserStorage} from './delete/delete-user-storage';
 import {deleteToken} from './delete/delete-token';
-
+import {deleteUserStorage} from './delete/delete-user-storage';
 import {createMailchimpMember, deleteMailchimpMember, updateMailchimpMember} from './mailchimp/mailchimp-member';
-
 import {updateDeckMeta} from './update/update-deck-meta';
 
 export async function applyWatchUserDelete(userRecord: admin.auth.UserRecord, _context: EventContext) {

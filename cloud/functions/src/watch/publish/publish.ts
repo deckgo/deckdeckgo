@@ -1,12 +1,9 @@
 import {EventContext} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-
 import {Deck} from '../../model/data/deck';
 import {TaskData} from '../../model/data/task';
-
 import {findDeck} from '../../utils/data/deck-utils';
 import {failureTask, successfulTask} from '../../utils/data/task-utils';
-
 import {publishToApi} from './api/publish-api';
 import {publishToGitHub} from './github/publish-github';
 import {generateDeckScreenshot} from './screenshot/generate-deck-screenshot';

@@ -1,21 +1,17 @@
-import * as functions from 'firebase-functions';
-
-import 'firebase-functions/lib/logger/compat';
-
 import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import 'firebase-functions/lib/logger/compat';
+import {feedDecks} from './request/feed';
+import {publishTask} from './request/publish';
+import {applyWatchImportDeck} from './watch/deck/deck-import';
+import {applyWatchDeckCreate, applyWatchDeckDelete} from './watch/watch-deck';
+import {applyWatchTaskCreate} from './watch/watch-task';
+import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
 
 if (!admin.apps.length) {
   const app: admin.app.App = admin.initializeApp();
   app.firestore().settings({timestampsInSnapshots: true});
 }
-
-import {applyWatchDeckCreate, applyWatchDeckDelete} from './watch/watch-deck';
-import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
-import {applyWatchTaskCreate} from './watch/watch-task';
-import {applyWatchImportDeck} from './watch/deck/deck-import';
-
-import {publishTask} from './request/publish';
-import {feedDecks} from './request/feed';
 
 const runtimePublishOpts = {
   timeoutSeconds: 120,

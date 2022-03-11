@@ -1,14 +1,11 @@
 import * as admin from 'firebase-admin';
-
-import {Deck, DeckData, DeckMeta} from '../../../model/data/deck';
 import {ApiDeck} from '../../../model/api/api.deck';
 import {ApiPresentation} from '../../../model/api/api.presentation';
-
-import {convertDeck} from '../../../request/utils/convert-deck-utils';
+import {Deck, DeckData, DeckMeta} from '../../../model/data/deck';
 import {publishDeckApi} from '../../../request/utils/api-utils';
-import {updateDeck} from '../../../utils/data/deck-utils';
+import {convertDeck} from '../../../request/utils/convert-deck-utils';
 import {failureDeploy, successfulDeploy} from '../../../utils/data/deck-deploy-utils';
-
+import {updateDeck} from '../../../utils/data/deck-utils';
 import {Resources} from '../../../utils/resources/resources';
 
 export function publishToApi(deck: Deck, token: string): Promise<void> {

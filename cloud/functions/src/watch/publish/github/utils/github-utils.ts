@@ -1,11 +1,9 @@
 import * as functions from 'firebase-functions';
-
 import {DeckData, DeckGitHubRepo, DeckMeta} from '../../../../model/data/deck';
-
 import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
+import {checkoutBranch, commit, commitDeck, pull, push} from './github-cmd';
 import {updateDeckGitHub} from './github-db';
 import {parseDeck, parseInfo, shouldUpdate} from './github-fs';
-import {checkoutBranch, commitDeck, commit, pull, push} from './github-cmd';
 
 export async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckData: DeckData): Promise<DeckGitHubRepo | undefined> {
   if (!deckData || !deckData.meta) {

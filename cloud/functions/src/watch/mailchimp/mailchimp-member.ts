@@ -2,15 +2,12 @@
 
 // Mailchimp API: // https://mailchimp.com/developer/reference/lists/list-members/
 
+import * as crypto from 'crypto';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-
-import * as crypto from 'crypto';
-
 // @ts-ignore incorrect typescript typings
 import * as Mailchimp from 'mailchimp-api-v3';
-
 import {UserData} from '../../model/data/user';
 
 export async function createMailchimpMember(userRecord: admin.auth.UserRecord) {

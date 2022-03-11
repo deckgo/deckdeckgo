@@ -1,14 +1,12 @@
 import * as functions from 'firebase-functions';
-
-import {Deck} from '../../model/data/deck';
 import {ApiDeck, ApiDeckAttributes} from '../../model/api/api.deck';
 import {ApiSlide} from '../../model/api/api.slide';
+import {Deck} from '../../model/data/deck';
 import {Slide, SlideAttributes, SlideTemplate} from '../../model/data/slide';
 import {Template} from '../../model/data/template';
-
 import {findSlide} from '../../utils/data/slide-utils';
-import {getGoogleFontScript} from './google-fonts-utils';
 import {findTemplates, getTemplate} from '../../utils/data/template-utils';
+import {getGoogleFontScript} from './google-fonts-utils';
 
 interface SlideAndTemplate {
   apiSlide: ApiSlide;

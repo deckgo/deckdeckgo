@@ -1,6 +1,5 @@
-import {Deck} from '../../model/data/deck';
-
 import {JSDOM} from 'jsdom';
+import {Deck} from '../../model/data/deck';
 
 // TODO: Extract to utilities because it is also use in studio
 

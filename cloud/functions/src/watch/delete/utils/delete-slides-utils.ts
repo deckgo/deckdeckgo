@@ -1,5 +1,4 @@
 import * as admin from 'firebase-admin';
-
 import {Slide} from '../../../model/data/slide';
 
 export interface DeckSlides {

@@ -1,10 +1,8 @@
 import * as functions from 'firebase-functions';
-
 import fetch, {Response} from 'node-fetch';
-
-import {Deck} from '../../model/data/deck';
 import {ApiDeck} from '../../model/api/api.deck';
 import {ApiPresentation} from '../../model/api/api.presentation';
+import {Deck} from '../../model/data/deck';
 
 export function publishDeckApi(deck: Deck, apiDeck: ApiDeck, token: string): Promise<ApiPresentation> {
   return new Promise<ApiPresentation>(async (resolve, reject) => {

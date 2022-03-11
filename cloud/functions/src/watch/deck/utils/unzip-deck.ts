@@ -1,11 +1,8 @@
-import * as admin from 'firebase-admin';
-
-import {v4 as uuid} from 'uuid';
-import {Entry, Parse} from 'unzipper';
-
-import {Metadata, MetadataSlide} from '../types/metadata';
-
 import {File} from '@google-cloud/storage';
+import * as admin from 'firebase-admin';
+import {Entry, Parse} from 'unzipper';
+import {v4 as uuid} from 'uuid';
+import {Metadata, MetadataSlide} from '../types/metadata';
 
 export async function unzipDeck(objName: string) {
   const bucket = admin.storage().bucket();

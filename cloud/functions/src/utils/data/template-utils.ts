@@ -1,9 +1,7 @@
 import * as admin from 'firebase-admin';
-
-import {Template} from '../../model/data/template';
-import {SlideScope} from '../../model/data/slide';
-
 import * as communityTemplates from '../../assets/templates.json';
+import {SlideScope} from '../../model/data/slide';
+import {Template} from '../../model/data/template';
 
 export function findTemplates(ownerId: string): Promise<Template[]> {
   return new Promise<Template[]>(async (resolve, reject) => {

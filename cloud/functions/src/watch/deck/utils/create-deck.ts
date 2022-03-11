@@ -1,14 +1,10 @@
 import * as admin from 'firebase-admin';
-
 import {v4 as uuid} from 'uuid';
-
 import {Deck} from '../../../model/data/deck';
 import {Slide, SlideData} from '../../../model/data/slide';
-
-import {Metadata, MetadataSlide} from '../types/metadata';
-
 import {createDeck as createDeckUtils, updateDeck} from '../../../utils/data/deck-utils';
 import {createSlide as createSlideUtils} from '../../../utils/data/slide-utils';
+import {Metadata, MetadataSlide} from '../types/metadata';
 
 const readFile = (filePath: string): Promise<string> => {
   const bucket = admin.storage().bucket();

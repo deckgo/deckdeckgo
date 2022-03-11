@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-
 import {createDeck} from './utils/create-deck';
 import {unzipDeck} from './utils/unzip-deck';
 

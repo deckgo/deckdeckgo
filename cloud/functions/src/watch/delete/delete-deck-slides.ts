@@ -1,6 +1,5 @@
 import {EventContext} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-
 import {DeckSlides, deleteSlides, findSlides} from './utils/delete-slides-utils';
 
 export async function deleteDeckSlides(snap: DocumentSnapshot, context: EventContext) {

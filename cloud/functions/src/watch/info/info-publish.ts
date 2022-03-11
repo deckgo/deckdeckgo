@@ -1,12 +1,9 @@
-import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 import * as functions from 'firebase-functions';
-
+import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 import * as nodemailer from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
-
 import {Deck, DeckData} from '../../model/data/deck';
 import {TaskData} from '../../model/data/task';
-
 import {findDeck} from '../../utils/data/deck-utils';
 import {getDateObj} from '../../utils/utils';
 

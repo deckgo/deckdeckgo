@@ -1,15 +1,11 @@
 // https://cloud.google.com/functions/docs/concepts/exec#file_system
 
-import fetch, {Response} from 'node-fetch';
-
-import * as rimraf from 'rimraf';
-
-import {html_beautify} from 'js-beautify';
-
 import {promises as fs} from 'fs';
+import {html_beautify} from 'js-beautify';
+import fetch, {Response} from 'node-fetch';
 import * as os from 'os';
 import * as path from 'path';
-
+import * as rimraf from 'rimraf';
 import {DeckMeta} from '../../../../model/data/deck';
 
 export function deleteDir(localPath: string): Promise<void> {

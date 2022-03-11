@@ -1,5 +1,4 @@
 import {firestore} from 'firebase-admin';
-
 import {UserSocial} from './user';
 
 export interface DeckDeployData {

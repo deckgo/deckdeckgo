@@ -1,5 +1,4 @@
 import * as admin from 'firebase-admin';
-
 import {TaskData} from '../../model/data/task';
 
 export function scheduleTask(data: Partial<TaskData>): Promise<void> {

@@ -1,9 +1,7 @@
 import {EventContext} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-
-import {cloneSlides, updateCloneData} from './utils/clone-slides-utils';
-
 import {DeckData} from '../../model/data/deck';
+import {cloneSlides, updateCloneData} from './utils/clone-slides-utils';
 
 export async function cloneDeckSlides(snap: DocumentSnapshot, context: EventContext) {
   const deck: DeckData = snap.data() as DeckData;
