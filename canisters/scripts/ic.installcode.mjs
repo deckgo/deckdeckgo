@@ -55,13 +55,6 @@ const fromNullable = (value) => {
 };
 
 (async () => {
-  const help = process.argv.find((arg) => arg.indexOf('--help') > -1)
-
-  if (help !== undefined) {
-    console.log('Run command line with --secret=the_secret and --type=data|storage (optional, data per default)');
-    return;
-  }
-
   try {
     const canisterId = managerPrincipal();
 
