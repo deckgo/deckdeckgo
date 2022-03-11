@@ -37,7 +37,7 @@ const copyFile = async ({srcPath, destPath}) => {
     return;
   }
 
-  if (['.old.did', '.old.most'].includes(extname(srcPath))) {
+  if (basename(srcPath).indexOf('.old.') > -1) {
     return;
   }
 

@@ -17,6 +17,8 @@ import BucketStore "./bucket.store";
 import DataBucket "../data/data";
 import StorageBucket "../storage/storage";
 
+import Utils "../utils/utils";
+
 actor Manager {
     private type UserId = Types.UserId;
 
@@ -161,8 +163,11 @@ actor Manager {
      * Admin
      */
 
-    // TODO: protect caller = david
     public shared query({ caller }) func list(store: Text) : async [Bucket] {
+        if (not Utils.isAdmin(caller)) {
+            throw Error.reject("Unauthorized access. Caller is not an admin." # Principal.toText(caller));
+        };
+
         if (Text.equal(store, "data")) {
             return dataStore.entries();
         };
@@ -174,8 +179,11 @@ actor Manager {
         throw Error.reject("Type of store not supported");
     };
 
-    // TODO: protect caller = david
     public shared({ caller }) func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
+        if (not Utils.isAdmin(caller)) {
+            throw Error.reject("Unauthorized access. Caller is not an admin.");
+        };
+
         await canisterUtils.installCode(canisterId, owner, wasmModule);
     };
 

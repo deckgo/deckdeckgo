@@ -68,7 +68,7 @@ const fromNullable = (value) => {
     });
 
     // data or storage
-    const type = 'storage';
+    const type = process.argv.find((arg) => arg.indexOf('type=') > -1)?.replace('type=', '') ?? 'data';
 
     const list = await actor.list(type);
 
