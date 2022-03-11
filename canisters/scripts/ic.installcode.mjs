@@ -35,12 +35,12 @@ const initIdentity = () => {
   return Secp256k1KeyIdentity.fromSecretKey(Buffer.from(privateKey, 'base64'));
 };
 
-const upgradeBucketData = async ({secret, actor, owner, bucketId, wasmModule}) => {
+const upgradeBucketData = async ({actor, owner, bucketId, wasmModule}) => {
   console.log(`Upgrading: ${bucketId.toText()}`);
 
   const arg = IDL.encode([IDL.Principal], [owner]);
 
-  await actor.installCode(secret, bucketId, [...arg], wasmModule);
+  await actor.installCode(bucketId, [...arg], wasmModule);
 
   console.log(`Done: ${bucketId.toText()}`);
 };
@@ -74,12 +74,10 @@ const fromNullable = (value) => {
       canisterId
     });
 
-    const secret = process.argv.find((arg) => arg.indexOf('secret=') > -1)?.replace('secret=', '') ?? '';
-
     // data or storage
     const type = process.argv.find((arg) => arg.indexOf('type=') > -1)?.replace('type=', '') ?? 'data';
 
-    const list = await actor.list(secret, type);
+    const list = await actor.list(type);
 
     // bucketId is optional in our backend
     const filterList = list.filter(({bucketId}) => fromNullable(bucketId) !== undefined);
@@ -96,7 +94,7 @@ const fromNullable = (value) => {
     const wasmModule = loadWasm(type);
 
     const promises = filterList.map(({owner, bucketId}) =>
-      upgradeBucketData({secret, actor, wasmModule, bucketId: fromNullable(bucketId), owner})
+      upgradeBucketData({actor, wasmModule, bucketId: fromNullable(bucketId), owner})
     );
     await Promise.all(promises);
   } catch (e) {

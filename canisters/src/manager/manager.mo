@@ -17,7 +17,7 @@ import BucketStore "./bucket.store";
 import DataBucket "../data/data";
 import StorageBucket "../storage/storage";
 
-import Env "../env";
+import Utils "../utils/utils";
 
 actor Manager {
     private type UserId = Types.UserId;
@@ -163,9 +163,9 @@ actor Manager {
      * Admin
      */
 
-    public shared query({ caller }) func list(secret: Text, store: Text) : async [Bucket] {
-        if (Text.notEqual(secret, Env.secrets.manager)) {
-            throw Error.reject("Unauthorized access. Invalid secret.");
+    public shared query({ caller }) func list(store: Text) : async [Bucket] {
+        if (not Utils.isAdmin(caller)) {
+            throw Error.reject("Unauthorized access. Caller is not an admin." # Principal.toText(caller));
         };
 
         if (Text.equal(store, "data")) {
@@ -179,9 +179,9 @@ actor Manager {
         throw Error.reject("Type of store not supported");
     };
 
-    public shared({ caller }) func installCode(secret: Text, canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
-        if (Text.notEqual(secret, Env.secrets.manager)) {
-            throw Error.reject("Unauthorized access. Invalid secret.");
+    public shared({ caller }) func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
+        if (not Utils.isAdmin(caller)) {
+            throw Error.reject("Unauthorized access. Caller is not an admin.");
         };
 
         await canisterUtils.installCode(canisterId, owner, wasmModule);

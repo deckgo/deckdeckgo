@@ -12,6 +12,6 @@ service : {
   getStorage: () -> (opt Bucket) query;
   initData: () -> (Bucket);
   initStorage: () -> (Bucket);
-  installCode: (text, principal, blob, blob) -> ();
-  list: (text, text) -> (vec Bucket) query;
+  installCode: (principal, blob, blob) -> ();
+  list: (text) -> (vec Bucket) query;
 }
