@@ -12,9 +12,8 @@ module {
         public func transferCycles(caller: Principal): async () {
             let balance: Nat = Cycles.balance();
 
-            // TODO: find the smallet amount of cycles to retain
             // We have to retain some cycles to be able to transfer some
-            let cycles: Nat = balance - 100_000_000_000;
+            let cycles: Nat = balance - 4_100_000;
 
             if (cycles > 0) {
                 Cycles.add(cycles);
