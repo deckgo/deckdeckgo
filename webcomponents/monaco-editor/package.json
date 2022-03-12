@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/monaco-editor",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A Monaco Editor web component",
   "main": "dist/index.cjs.js",
   "module": "dist/monaco-editor/monaco-editor.esm.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/interface.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/monado-editor/monado-editor.esm.js",
+  "unpkg": "dist/monaco-editor/monaco-editor.esm.js",
   "files": [
     "dist/",
     "workers/",

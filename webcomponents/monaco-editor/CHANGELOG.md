@@ -1,3 +1,9 @@
+# 1.2.2 (2022-03-12)
+
+### Build
+
+- unpkg default url typo
+
 # 1.2.1 (2022-03-10)
 
 ### Features
