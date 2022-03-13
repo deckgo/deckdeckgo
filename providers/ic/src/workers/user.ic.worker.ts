@@ -2,21 +2,30 @@ import {User, UserData} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
 import {nanoid} from 'nanoid';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
+import {EnvironmentIC} from '../types/env.types';
 import {InternetIdentityAuth} from '../types/identity';
 import {LogWindow} from '../types/sync.window';
 import {getData, setData} from '../utils/data.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {BucketActor, getDataBucket} from '../utils/manager.utils';
+import { EnvStore } from '../stores/env.store';
 
 export const initUserWorker = (
   {
-    internetIdentity
+    internetIdentity,
+    env
   }: {
     internetIdentity: InternetIdentityAuth;
+    env: EnvironmentIC;
   },
   onInitUserSuccess: (user: User) => Promise<void>,
   log: LogWindow
-): Promise<void> => initUser({internetIdentity}, onInitUserSuccess, log);
+): Promise<void> => {
+  // Web worker do not share window
+  EnvStore.getInstance().set(env);
+
+  return initUser({internetIdentity}, onInitUserSuccess, log)
+};
 
 const initUser = async (
   {

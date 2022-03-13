@@ -43,8 +43,7 @@ export const canisterEnvIds = (prod: boolean): Record<string, string> => {
     },
     {
       ...canisterLocalInternetId(network),
-      'process.env.LOCAL_IDENTITY': `${network === 'local'}`,
-      'process.env.PRODUCTION': `${prod}`
+      'process.env.LOCAL_IDENTITY': `${network === 'local'}`
     }
   );
 };

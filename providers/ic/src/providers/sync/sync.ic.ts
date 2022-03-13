@@ -1,5 +1,6 @@
 import {log, Sync, SyncData} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
+import {EnvStore} from '../../stores/env.store';
 import {InternetIdentityAuth} from '../../types/identity';
 import {SyncWindow, SyncWindowEvent} from '../../types/sync.window';
 import {internetIdentityAuth} from '../../utils/identity.utils';
@@ -46,7 +47,8 @@ export const sync: Sync = async ({
   await uploadWorker(
     {
       internetIdentity,
-      syncData
+      syncData,
+      env: EnvStore.getInstance().get()
     },
     syncWindow,
     log

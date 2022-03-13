@@ -9,7 +9,7 @@ import {LangService} from './services/lang/lang.service';
 import {SettingsService} from './services/settings/settings.service';
 import {ThemeService} from './services/theme/theme.service';
 import navStore, {NavDirection, NavParams} from './stores/nav.store';
-import {firebaseApiConfig} from './utils/core/auth.utils';
+import {authConfig} from './utils/core/auth.utils';
 
 @Component({
   tag: 'app-root'
@@ -45,7 +45,7 @@ export class AppRoot {
     });
 
     const promises: Promise<void>[] = [
-      initAuth(firebaseApiConfig()),
+      initAuth(authConfig()),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),

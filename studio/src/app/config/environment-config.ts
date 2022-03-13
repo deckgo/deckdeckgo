@@ -12,6 +12,10 @@ export interface EnvironmentFirebaseConfig {
   appId: string;
 }
 
+export interface EnvironmentICConfig {
+  managerCanisterId: string;
+}
+
 export interface EnvironmentTenorConfig {
   url: string;
   key: string;
@@ -52,6 +56,7 @@ export interface EnvironmentConfig {
   tenor?: EnvironmentTenorConfig;
   unsplash?: EnvironmentUnsplashConfig;
   google: EnvironmentGoogleConfig;
+  ic?: EnvironmentICConfig;
 }
 
 export function setupConfig(config: EnvironmentConfig) {

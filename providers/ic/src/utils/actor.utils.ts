@@ -11,7 +11,7 @@ export const createActor = async <T = Record<string, ActorMethod>>({
   idlFactory: IDL.InterfaceFactory;
   identity: Identity;
 }): Promise<ActorSubclass<T>> => {
-  const host: string | undefined = process.env.PRODUCTION ? 'https://ic0.app' : undefined;
+  const host: string | undefined = process.env.LOCAL_IDENTITY ? undefined : 'https://ic0.app';
 
   const agent: HttpAgent = new HttpAgent({identity, ...(host && {host})});
 
