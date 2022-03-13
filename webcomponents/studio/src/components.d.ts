@@ -44,6 +44,7 @@ declare namespace LocalJSX {
         "loadDoc"?: (docId: string | undefined) => Promise<Doc> | undefined;
         "onDocDataEvents"?: (event: CustomEvent<'init' | 'destroy'>) => void;
         "onDocDidLoad"?: (event: CustomEvent<HTMLElement>) => void;
+        "onDocReady"?: (event: CustomEvent<boolean>) => void;
         "resetDoc"?: () => void | undefined;
         "styloConfig"?: Partial<StyloConfig>;
     }

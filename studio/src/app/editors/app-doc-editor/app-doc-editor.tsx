@@ -21,6 +21,9 @@ export class AppDocEditor implements ComponentInterface {
   @State()
   private styloConfig: Partial<StyloConfig> | undefined;
 
+  @State()
+  private docReady: boolean = false;
+
   private readonly codeEvents: CodeEvents = new CodeEvents();
 
   private studioEditorRef!: HTMLDeckgoStudioDocElement;
@@ -48,6 +51,10 @@ export class AppDocEditor implements ComponentInterface {
   private onDocDidLoad = ({detail: containerRef}: CustomEvent<HTMLElement>) => {
     this.docEvent.initDomEvents(containerRef);
     this.docEvent.initDataEvents();
+  };
+
+  private onDocReady = ({detail}: CustomEvent<boolean>) => {
+    this.docReady = detail;
   };
 
   private onDocDataEvents = ({detail}: CustomEvent<'destroy' | 'init'>) => {
@@ -134,9 +141,9 @@ export class AppDocEditor implements ComponentInterface {
               styloConfig={this.styloConfig}
               onDocDidLoad={this.onDocDidLoad}
               onDocDataEvents={this.onDocDataEvents}
+              onDocReady={this.onDocReady}
               loadDoc={loadDoc}
-              resetDoc={resetDoc}
-            ></deckgo-studio-doc>
+              resetDoc={resetDoc}></deckgo-studio-doc>
 
             <deckgo-doc-indicator busy={busyStore.state.busy}></deckgo-doc-indicator>
           </main>
@@ -146,7 +153,7 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private renderLoading() {
-    if (busyStore.state.docReady) {
+    if (this.docReady) {
       return undefined;
     }
 

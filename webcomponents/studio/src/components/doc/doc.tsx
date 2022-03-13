@@ -33,6 +33,9 @@ export class StudioDoc implements ComponentInterface {
   docDidLoad: EventEmitter<HTMLElement>;
 
   @Event()
+  docReady: EventEmitter<boolean>;
+
+  @Event()
   docDataEvents: EventEmitter<'init' | 'destroy'>;
 
   @State()
@@ -46,8 +49,12 @@ export class StudioDoc implements ComponentInterface {
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
 
+  private unsubscribe: () => void | undefined;
+
   componentWillLoad() {
     this.applyConfig();
+
+    this.unsubscribe = busyStore.onChange('docReady', (docReady: boolean) => this.docReady.emit(docReady));
   }
 
   async componentDidLoad() {
@@ -58,6 +65,8 @@ export class StudioDoc implements ComponentInterface {
 
   async disconnectedCallback() {
     this.destroy();
+
+    this.unsubscribe?.();
   }
 
   async componentDidRender() {
