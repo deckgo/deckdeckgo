@@ -1,14 +1,9 @@
-import replace from '@rollup/plugin-replace';
 import {Config} from '@stencil/core';
 import {postcss} from '@stencil/postcss';
 import {sass} from '@stencil/sass';
 // @ts-ignore
 import autoprefixer from 'autoprefixer';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
-import {canisterEnvIds} from './dfx.config';
-
-const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
-const prod = !dev;
 
 export const config: Config = {
   namespace: 'deckdeckgo-ic',
@@ -25,7 +20,6 @@ export const config: Config = {
     }
   ],
   plugins: [
-    replace(canisterEnvIds(prod)),
     sass(),
     postcss({
       plugins: [autoprefixer()]

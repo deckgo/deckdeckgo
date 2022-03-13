@@ -1,21 +1,22 @@
-// @ts-ignore
-import {resolve} from 'path';
+#!/usr/bin/env node
 
-const config = (...pathSegments: string[]): Record<string, {ic?: string; local?: string}> => {
+const {resolve} = require('path');
+
+const config = (...pathSegments) => {
   try {
-    return require(resolve('../', '../', ...pathSegments));
+    return require(resolve('../', ...pathSegments));
   } catch (err) {
     return {};
   }
 };
 
-const canisterLocalInternetId = (network: 'local' | string): Record<string, string> => {
+const canisterLocalInternetId = (network) => {
   if (network !== 'local') {
     return {};
   }
 
   try {
-    const wallets: {identities: {default: {local: string}}} = require(resolve('../', '../', '.dfx', 'local', 'wallets.json'));
+    const wallets = require(resolve('../', '.dfx', 'local', 'wallets.json'));
 
     return {'process.env.LOCAL_IDENTITY_CANISTER_ID': JSON.stringify(wallets.identities.default.local)};
   } catch (err) {
@@ -23,7 +24,7 @@ const canisterLocalInternetId = (network: 'local' | string): Record<string, stri
   }
 };
 
-export const canisterEnvIds = (prod: boolean): Record<string, string> => {
+const canisterEnvIds = (prod) => {
   const localCanisters = config('.dfx', 'local', 'canister_ids.json');
   const prodCanisters = config('canister_ids.json');
 
@@ -33,7 +34,7 @@ export const canisterEnvIds = (prod: boolean): Record<string, string> => {
 
   return Object.entries(canisters).reduce(
     (acc, [name, value]) => {
-      const entry: Record<string, string> = {};
+      const entry = {};
       entry[`process.env.${name.toUpperCase()}_CANISTER_ID`] = JSON.stringify(value[network]);
 
       return {
@@ -43,8 +44,10 @@ export const canisterEnvIds = (prod: boolean): Record<string, string> => {
     },
     {
       ...canisterLocalInternetId(network),
-      'process.env.LOCAL_IDENTITY': `${network === 'local'}`,
-      'process.env.PRODUCTION': `${prod}`
+      'process.env.LOCAL_IDENTITY': `${network === 'local'}`
     }
   );
 };
+
+console.log('Local canister IDs:', canisterEnvIds(false));
+console.log('Prod canister IDs:', canisterEnvIds(true));

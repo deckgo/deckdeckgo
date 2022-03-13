@@ -11,14 +11,18 @@ import {BucketActor, getDataBucket, getStorageBucket} from '../utils/manager.uti
 import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
 import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
 import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
+import { EnvironmentIC } from '../types/env.types';
+import { EnvStore } from '../stores/env.store';
 
 export const uploadWorker = async (
   {
     internetIdentity: {delegationChain, identityKey},
-    syncData
+    syncData,
+    env
   }: {
     internetIdentity: InternetIdentityAuth;
     syncData: SyncData | undefined;
+    env: EnvironmentIC;
   },
   syncWindow: SyncWindow,
   log: LogWindow
@@ -30,6 +34,8 @@ export const uploadWorker = async (
   if (!delegationChain || !identityKey) {
     return;
   }
+
+  EnvStore.getInstance().set(env);
 
   const identity: Identity = initIdentity({identityKey, delegationChain});
 

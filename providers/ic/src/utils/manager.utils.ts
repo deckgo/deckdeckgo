@@ -9,6 +9,7 @@ import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 import {idlFactory as StorageIdlFactory} from '../canisters/storage/storage.utils.did';
 import {createActor} from './actor.utils';
 import {fromNullable} from './did.utils';
+import { EnvStore } from '../stores/env.store';
 
 export interface BucketActor<T> {
   bucketId: Principal | undefined;
@@ -16,7 +17,7 @@ export interface BucketActor<T> {
 }
 
 export const createManagerActor = ({identity}: {identity: Identity}): Promise<ManagerActor> => {
-  return createActor<ManagerActor>({canisterId: process.env.MANAGER_CANISTER_ID, idlFactory: ManagerFactory, identity});
+  return createActor<ManagerActor>({canisterId: EnvStore.getInstance().get().managerCanisterId, idlFactory: ManagerFactory, identity});
 };
 
 export const getDataBucket = async ({identity}: {identity: Identity | undefined}): Promise<BucketActor<DataBucketActor>> => {
