@@ -12,8 +12,11 @@ export interface EnvironmentFirebaseConfig {
   appId: string;
 }
 
+// Duplicate EnvironmentIC in @deckdeckgo/ic
 export interface EnvironmentICConfig {
   managerCanisterId: string;
+  localIdentityCanisterId?: string;
+  kitPath: string;
 }
 
 export interface EnvironmentTenorConfig {

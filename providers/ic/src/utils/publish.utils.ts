@@ -3,6 +3,7 @@ import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 import {BucketActor} from './manager.utils';
 import {updateTemplateSocialImage} from './publish.social.utils';
 import {encodeFilename, getStorageActor, upload} from './storage.utils';
+import { EnvStore } from '../stores/env.store';
 
 export interface StorageUpload {
   actor: StorageBucketActor;
@@ -120,7 +121,7 @@ export const initIndexHTML = async ({
 };
 
 const htmlTemplate = async (sourceFolder: 'p' | 'd'): Promise<string> => {
-  const htmlTemplate: Response = await fetch(`https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/${sourceFolder}/index.html`);
+  const htmlTemplate: Response = await fetch(`${EnvStore.getInstance().get().kitPath}/${sourceFolder}/index.html`);
   return htmlTemplate.text();
 };
 

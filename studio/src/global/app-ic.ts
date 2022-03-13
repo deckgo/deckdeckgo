@@ -68,7 +68,8 @@ setupDeckGoConfig({
     cdn: 'https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'
   },
   ic: {
-    managerCanisterId: 'jkpvl-ziaaa-aaaai-aaafq-cai'
+    managerCanisterId: 'jkpvl-ziaaa-aaaai-aaafq-cai',
+    kitPath: 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist'
   }
 });
 
