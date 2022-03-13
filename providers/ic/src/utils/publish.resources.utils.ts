@@ -1,5 +1,6 @@
 import {log, Meta} from '@deckdeckgo/editor';
 import {AssetKey, HeaderField, _SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {EnvStore} from '../stores/env.store';
 import {toNullable} from './did.utils';
 import {BucketActor} from './manager.utils';
 import {getStorageActor, upload} from './storage.utils';
@@ -14,7 +15,7 @@ interface Kit {
   updateContent?: ({content, meta}: {meta: Meta | undefined; content: string}) => string;
 }
 
-const kitPath: string = 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist';
+const kitPath: string = EnvStore.getInstance().get().kitPath;
 
 const kit: Kit[] = [
   {

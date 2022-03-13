@@ -1,5 +1,6 @@
 import {log, PublishData} from '@deckdeckgo/editor';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {EnvStore} from '../stores/env.store';
 import {StorageUpload, updateTemplate} from './publish.utils';
 import {upload} from './storage.utils';
 
@@ -27,7 +28,7 @@ export const publishOverview = async ({
 };
 
 const htmlTemplate = async (): Promise<string> => {
-  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/index.html');
+  const htmlTemplate: Response = await fetch(`${EnvStore.getInstance().get().kitPath}/index.html`);
   return htmlTemplate.text();
 };
 
