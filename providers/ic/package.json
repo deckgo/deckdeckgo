@@ -27,7 +27,6 @@
   "devDependencies": {
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/slide-chart": "^2.5.0",
-    "@rollup/plugin-replace": "^3.0.0",
     "rollup-plugin-node-polyfills": "^0.2.1"
   },
   "repository": {

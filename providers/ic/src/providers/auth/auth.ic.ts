@@ -85,8 +85,8 @@ export const signIn = async ({onSuccess, onError}: {onSuccess: () => void; onErr
   await authClient.login({
     onSuccess,
     onError,
-    ...(process.env.LOCAL_IDENTITY && {
-      identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`
+    ...(EnvStore.getInstance().localIdentity() && {
+      identityProvider: `http://localhost:8000?canisterId=${EnvStore.getInstance().get().localIdentityCanisterId}#authorize`
     })
   });
 };

@@ -25,4 +25,8 @@ export class EnvStore {
 
     return this.env;
   }
+
+  localIdentity(): boolean {
+    return this.get().localIdentityCanisterId !== undefined;
+  }
 }
