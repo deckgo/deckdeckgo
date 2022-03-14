@@ -1,3 +1,13 @@
+# 6.0.1 (2022-03-14)
+
+### Features
+
+- test delegation valid before sync
+
+### Fix
+
+- env `kitPath` is set only after init
+
 # 6.0.0 (2022-03-13)
 
 ### Features

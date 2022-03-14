@@ -5,12 +5,12 @@
 ### Providers: New
 
 - offline: v0.0.6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
-- sync: v0.0.12 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+- sync: v0.0.13 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
 
 ### Providers
 
 - firebase: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
-- ic: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+- ic: v6.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
 ### Web Components: New
 

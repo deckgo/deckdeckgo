@@ -1,3 +1,9 @@
+# 0.0.13 (2022-03-14)
+
+### Fix
+
+- catch sync errors and update status accordingly
+
 # 0.0.12 (2022-03-04)
 
 ### Features
