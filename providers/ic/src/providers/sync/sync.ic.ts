@@ -1,5 +1,7 @@
 import {log, Sync, SyncData} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
+import {isDelegationValid} from '@dfinity/authentication';
+import {DelegationChain} from '@dfinity/identity';
 import {EnvStore} from '../../stores/env.store';
 import {InternetIdentityAuth} from '../../types/identity';
 import {SyncWindow, SyncWindowEvent} from '../../types/sync.window';
@@ -43,6 +45,10 @@ export const sync: Sync = async ({
   }
 
   const internetIdentity: InternetIdentityAuth = await internetIdentityAuth();
+
+  if (!isDelegationValid(DelegationChain.fromJSON(internetIdentity.delegationChain))) {
+    throw new Error('Internet identity has expired. Please login again.');
+  }
 
   await uploadWorker(
     {
