@@ -28,7 +28,7 @@ export const sync = async (syncData: SyncData | undefined) => {
 
     const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>();
 
-    return sync({
+    await sync({
       syncData,
       userId: AuthStore.getInstance().get().uid,
       clean: cleanSync
