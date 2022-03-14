@@ -15,55 +15,59 @@ interface Kit {
   updateContent?: ({content, meta}: {meta: Meta | undefined; content: string}) => string;
 }
 
-const kitPath: string = EnvStore.getInstance().get().kitPath;
+const getKitPath = (): string => EnvStore.getInstance().get().kitPath;
 
-const kit: Kit[] = [
-  {
-    src: `${kitPath}/workbox-c837f436.js`,
-    mimeType: 'text/javascript'
-  },
-  {
-    src: `${kitPath}/service-worker.js`,
-    mimeType: 'text/javascript'
-  },
-  {
-    src: `${kitPath}/robots.txt`,
-    mimeType: 'text/plain'
-  },
-  {
-    src: `${kitPath}/manifest.webmanifest`,
-    mimeType: 'application/manifest+json',
-    updateContent: ({content, meta}: {meta: Meta | undefined; content: string}) =>
-      content.replace('{{DECKDECKGO_AUTHOR}}', meta?.author?.name || 'DeckDeckGo')
-  },
-  {
-    src: `${kitPath}/build/index-M763JKRZ.css`,
-    mimeType: 'text/css'
-  },
-  {
-    src: `${kitPath}/build/index-55VE2P7H.js`,
-    mimeType: 'text/javascript'
-  },
-  {
-    src: `${kitPath}/build/deck/index-ELSPH57U.js`,
-    mimeType: 'text/javascript'
-  },
-  {
-    src: `${kitPath}/build/deck/index-HPLMJ2FO.css`,
-    mimeType: 'text/css'
-  },
-  {
-    src: `${kitPath}/build/doc/index-RZB27UR5.css`,
-    mimeType: 'text/css'
-  }
-].map((resource: {src: string; mimeType: KitMimeType}) => {
-  const {pathname}: URL = new URL(resource.src);
-  return {
-    ...resource,
-    filename: pathname.split('/').pop(),
-    headers: [['Cache-Control', 'max-age=31536000']]
-  } as Kit;
-});
+const kit = (): Kit[] => {
+  const kitPath: string = getKitPath();
+
+  return [
+    {
+      src: `${kitPath}/workbox-c837f436.js`,
+      mimeType: 'text/javascript'
+    },
+    {
+      src: `${kitPath}/service-worker.js`,
+      mimeType: 'text/javascript'
+    },
+    {
+      src: `${kitPath}/robots.txt`,
+      mimeType: 'text/plain'
+    },
+    {
+      src: `${kitPath}/manifest.webmanifest`,
+      mimeType: 'application/manifest+json',
+      updateContent: ({content, meta}: {meta: Meta | undefined; content: string}) =>
+        content.replace('{{DECKDECKGO_AUTHOR}}', meta?.author?.name || 'DeckDeckGo')
+    },
+    {
+      src: `${kitPath}/build/index-M763JKRZ.css`,
+      mimeType: 'text/css'
+    },
+    {
+      src: `${kitPath}/build/index-55VE2P7H.js`,
+      mimeType: 'text/javascript'
+    },
+    {
+      src: `${kitPath}/build/deck/index-ELSPH57U.js`,
+      mimeType: 'text/javascript'
+    },
+    {
+      src: `${kitPath}/build/deck/index-HPLMJ2FO.css`,
+      mimeType: 'text/css'
+    },
+    {
+      src: `${kitPath}/build/doc/index-RZB27UR5.css`,
+      mimeType: 'text/css'
+    }
+  ].map((resource: {src: string; mimeType: KitMimeType}) => {
+    const {pathname}: URL = new URL(resource.src);
+    return {
+      ...resource,
+      filename: pathname.split('/').pop(),
+      headers: [['Cache-Control', 'max-age=31536000']]
+    } as Kit;
+  });
+};
 
 export const uploadResources = async ({meta}: {meta: Meta | undefined}) => {
   // 1. Get actor
@@ -73,7 +77,7 @@ export const uploadResources = async ({meta}: {meta: Meta | undefined}) => {
   const keys: string[] = assetKeys.map(({name}: AssetKey) => name);
 
   // We only upload resources that have not been yet uploaded. In other words: we upload the resources the first time or if hashes are modified.
-  const kitFiles: Kit[] = kit.filter(({filename}: Kit) => !keys.includes(filename));
+  const kitFiles: Kit[] = kit().filter(({filename}: Kit) => !keys.includes(filename));
 
   if (!kitFiles || kitFiles.length <= 0) {
     return;
@@ -93,7 +97,7 @@ const addKitIC = async ({kit, actor, meta}: {kit: Kit; actor: StorageBucketActor
 
   const updatedContent: string = updateContent ? updateContent({content, meta}) : content;
 
-  await uploadKit({filename, content: updatedContent, actor, mimeType, headers, fullPath: src.replace(kitPath, '')});
+  await uploadKit({filename, content: updatedContent, actor, mimeType, headers, fullPath: src.replace(getKitPath(), '')});
 };
 
 const addSwKitIC = async ({kitFiles, actor, meta}: {kitFiles: Kit[]; actor: StorageBucketActor; meta: Meta | undefined}) => {
@@ -103,7 +107,7 @@ const addSwKitIC = async ({kitFiles, actor, meta}: {kitFiles: Kit[]; actor: Stor
     return;
   }
 
-  const swKit: Kit | undefined = kit.find(({filename}: Kit) => filename === 'service-worker.js');
+  const swKit: Kit | undefined = kit().find(({filename}: Kit) => filename === 'service-worker.js');
 
   if (!swKit !== undefined) {
     return;
