@@ -1,29 +1,24 @@
-deckgo-doc {
+article.deckgo-doc {
   background: white;
   box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
 
   margin: 32px auto;
+  padding: 4rem;
+
+  width: calc(100% - 32px);
+  max-width: 960px;
+  aspect-ratio: 210 / 297;
+
+  outline: none;
 
   @media screen and (max-width: 768px) {
     margin: 16px auto;
-
-    --doc-padding: 20;
-
-    /* On mobile device display with max size and not A4 */
-    width: calc(var(--doc-size) - 32px);
+    padding: 2rem;
   }
 
-  @media screen and (max-width: 576px) {
-    /* In addition to width, we also increase the base font size on small devices */
-    --font-size: calc(var(--doc-size) / 32);
-  }
+  white-space: pre-wrap;
 
-  article {
-    background: white;
-    white-space: pre-wrap;
-
-    deckgo-lazy-img {
-      display: block;
-    }
+  deckgo-lazy-img {
+    display: block;
   }
 }

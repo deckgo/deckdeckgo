@@ -6,4 +6,12 @@ app-doc-editor {
   deckgo-studio {
     --studio-color: rgba(var(--ion-color-medium-rgb), 0.6);
   }
+
+  stylo-editor {
+    --stylo-add-left: 1.4rem;
+
+    @media (min-width: 768px) {
+      --stylo-add-left: 2.2rem;
+    }
+  }
 }

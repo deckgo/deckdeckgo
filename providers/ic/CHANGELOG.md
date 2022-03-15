@@ -1,3 +1,21 @@
+# 6.1.2 (2022-03-15)
+
+### Fix
+
+- `docSelector` match only parent `deckgo-studio-doc`
+
+# 6.1.1 (2022-03-15)
+
+### Fix
+
+- use native `article` HTML element instead of `deckgo-doc` as container for publish
+
+# 6.1.0 (2022-03-15)
+
+### Features
+
+- `docSelector` match parent `deckgo-studio-doc > article.deckgo-doc`
+
 # 6.0.1 (2022-03-14)
 
 ### Features
@@ -15,7 +33,7 @@
 - runtime variables replace static configuration:
 
 a. manager and (optional) identity canister IDs
-b. kit path 
+b. kit path
 
 # 5.3.5 (2022-03-04)
 

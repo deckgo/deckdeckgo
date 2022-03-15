@@ -2,6 +2,8 @@ import {Deck, Doc, Paragraph, Slide, SyncData, SyncDataDeck, SyncDataDoc, SyncDa
 import {Identity} from '@dfinity/agent';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {EnvStore} from '../stores/env.store';
+import {EnvironmentIC} from '../types/env.types';
 import {InternetIdentityAuth} from '../types/identity';
 import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
 import {LogWindow, SyncWindow} from '../types/sync.window';
@@ -11,8 +13,6 @@ import {BucketActor, getDataBucket, getStorageBucket} from '../utils/manager.uti
 import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
 import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
 import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
-import { EnvironmentIC } from '../types/env.types';
-import { EnvStore } from '../stores/env.store';
 
 export const uploadWorker = async (
   {

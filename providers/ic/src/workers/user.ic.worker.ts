@@ -2,13 +2,13 @@ import {User, UserData} from '@deckdeckgo/editor';
 import {Identity} from '@dfinity/agent';
 import {nanoid} from 'nanoid';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
+import {EnvStore} from '../stores/env.store';
 import {EnvironmentIC} from '../types/env.types';
 import {InternetIdentityAuth} from '../types/identity';
 import {LogWindow} from '../types/sync.window';
 import {getData, setData} from '../utils/data.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {BucketActor, getDataBucket} from '../utils/manager.utils';
-import { EnvStore } from '../stores/env.store';
 
 export const initUserWorker = (
   {
@@ -24,7 +24,7 @@ export const initUserWorker = (
   // Web worker do not share window
   EnvStore.getInstance().set(env);
 
-  return initUser({internetIdentity}, onInitUserSuccess, log)
+  return initUser({internetIdentity}, onInitUserSuccess, log);
 };
 
 const initUser = async (

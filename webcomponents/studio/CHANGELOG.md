@@ -1,3 +1,21 @@
+# 0.0.9 (2022-03-15)
+
+### Styles
+
+- host fit width and margin auto as well
+
+# 0.0.8 (2022-03-15)
+
+### Styles
+
+- consumer should style Stylo
+
+# 0.0.7 (2022-03-15)
+
+### Features
+
+- drop usage of `deckgo-doc` to native HTML
+
 # 0.0.6 (2022-03-13)
 
 ### Features
