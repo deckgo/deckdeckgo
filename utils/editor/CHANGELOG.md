@@ -1,3 +1,9 @@
+# 7.6.1 (2022-03-15)
+
+### Fix
+
+- `docSelector` match only parent `deckgo-studio-doc`
+
 # 7.6.0 (2022-03-15)
 
 ### Features

@@ -1,4 +1,10 @@
-#0.0.14 (2022-03-15)
+# 0.0.15 (2022-03-15)
+
+### Fix
+
+- `docSelector` match only parent `deckgo-studio-doc`
+
+# 0.0.14 (2022-03-15)
 
 ### Features
 

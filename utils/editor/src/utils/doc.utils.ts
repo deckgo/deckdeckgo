@@ -1,1 +1,1 @@
-export const docSelector: string = 'deckgo-studio-doc > article.deckgo-doc';
+export const docSelector: string = 'deckgo-studio-doc';
