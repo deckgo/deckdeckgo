@@ -1,3 +1,9 @@
+# 1.4.1 (2022-03-15)
+
+### Fix
+
+- doc font size in pixels
+
 # 1.4.0 (2022-03-15)
 
 ### Features

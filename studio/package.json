@@ -51,7 +51,7 @@
     "@deckdeckgo/slide-youtube": "^2.4.0",
     "@deckdeckgo/social-img": "^1.1.0",
     "@deckdeckgo/studio": "file:../webcomponents/studio",
-    "@deckdeckgo/styles": "^1.4.0",
+    "@deckdeckgo/styles": "^1.4.1",
     "@deckdeckgo/sync": "^0.0.14",
     "@deckdeckgo/utils": "^5.1.0",
     "@deckdeckgo/word-cloud": "^1.2.0",
