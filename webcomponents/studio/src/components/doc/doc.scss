@@ -1,7 +1,12 @@
 deckgo-studio-doc {
+  position: relative;
+
+  display: block;
+
+  width: fit-content;
   height: 100%;
 
-  position: relative;
+  margin: 0 auto;
 
   article {
     h1:nth-child(1):empty:not(:focus):after {

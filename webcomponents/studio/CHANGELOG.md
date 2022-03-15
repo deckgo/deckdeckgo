@@ -1,3 +1,9 @@
+# 0.0.9 (2022-03-15)
+
+### Styles
+
+- host fit width and margin auto as well
+
 # 0.0.8 (2022-03-15)
 
 ### Styles

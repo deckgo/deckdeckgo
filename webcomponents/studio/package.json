@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/studio",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "The editor(s) of DeckDeckGo.",
   "main": "dist/index.cjs.js",
   "module": "dist/studio/studio.esm.js",
