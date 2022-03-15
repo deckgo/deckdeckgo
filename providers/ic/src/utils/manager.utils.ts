@@ -7,9 +7,9 @@ import {Bucket, _SERVICE as ManagerActor} from '../canisters/manager/manager.did
 import {idlFactory as ManagerFactory} from '../canisters/manager/manager.utils.did';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 import {idlFactory as StorageIdlFactory} from '../canisters/storage/storage.utils.did';
+import {EnvStore} from '../stores/env.store';
 import {createActor} from './actor.utils';
 import {fromNullable} from './did.utils';
-import { EnvStore } from '../stores/env.store';
 
 export interface BucketActor<T> {
   bucketId: Principal | undefined;

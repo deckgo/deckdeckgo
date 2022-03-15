@@ -27,7 +27,7 @@
 - runtime variables replace static configuration:
 
 a. manager and (optional) identity canister IDs
-b. kit path 
+b. kit path
 
 # 5.3.5 (2022-03-04)
 
