@@ -1,31 +1,31 @@
 // Font weight
 
-deckgo-doc h1,
-deckgo-doc h2,
-deckgo-doc h3 {
+article.deckgo-doc h1,
+article.deckgo-doc h2,
+article.deckgo-doc h3 {
   font-weight: 700;
 }
 
-deckgo-doc h4,
-deckgo-doc h5,
-deckgo-doc h6,
-deckgo-doc strong {
+article.deckgo-doc h4,
+article.deckgo-doc h5,
+article.deckgo-doc h6,
+article.deckgo-doc strong {
   font-weight: 500;
 }
 
-deckgo-doc h1,
-deckgo-doc h2,
-deckgo-doc h3,
-deckgo-doc h4,
-deckgo-doc h5,
-deckgo-doc h6,
-deckgo-doc strong {
+article.deckgo-doc h1,
+article.deckgo-doc h2,
+article.deckgo-doc h3,
+article.deckgo-doc h4,
+article.deckgo-doc h5,
+article.deckgo-doc h6,
+article.deckgo-doc strong {
   * {
     font-weight: inherit;
   }
 }
 
-deckgo-doc a {
+article.deckgo-doc a {
   font-weight: inherit;
   font-size: inherit;
   color: inherit;
@@ -34,38 +34,46 @@ deckgo-doc a {
 
 // Font size
 
-deckgo-doc h1 {
+article.deckgo-doc {
+  font-size: 14px;
+
+  @media (min-width: 768px) {
+    font-size: 18%;
+  }
+}
+
+article.deckgo-doc h1 {
   font-size: 3em;
 }
 
-deckgo-doc h2 {
+article.deckgo-doc h2 {
   font-size: 2em;
 }
 
-deckgo-doc h3 {
+article.deckgo-doc h3 {
   font-size: 1.4em;
 }
 
-deckgo-doc * {
+article.deckgo-doc * {
   font-size: 1em;
 }
 
-deckgo-doc li {
+article.deckgo-doc li {
   font-size: inherit;
 }
 
 @media screen and (max-width: 768px) {
-  deckgo-doc div,
-  deckgo-doc section,
-  deckgo-doc ol,
-  deckgo-doc ul {
+  article.deckgo-doc div,
+  article.deckgo-doc section,
+  article.deckgo-doc ol,
+  article.deckgo-doc ul {
     font-size: 1.4em;
   }
 }
 
 // Code
 
-deckgo-doc deckgo-highlight-code {
+article.deckgo-doc deckgo-highlight-code {
   --deckgo-highlight-code-font-family: Menlo, monospace;
   --deckgo-highlight-code-scroll: auto;
   --deckgo-highlight-code-font-size: 0.8em;
@@ -73,7 +81,7 @@ deckgo-doc deckgo-highlight-code {
 
 // Mark
 
-deckgo-doc mark {
+article.deckgo-doc mark {
   font-family: Menlo, monospace;
   background: rgba(0, 0, 0, 0.05);
   padding: 0.5px 4px;
@@ -81,7 +89,7 @@ deckgo-doc mark {
 
 // Font size if user modify sizes inside elements
 
-deckgo-doc font {
+article.deckgo-doc font {
   display: inline-block;
   max-width: 100%;
 
@@ -128,7 +136,7 @@ deckgo-doc font {
   }
 }
 
-deckgo-doc {
+article.deckgo-doc {
   span[style*="font-size: x-small"] {
     font-size: 0.25em !important;
   }

@@ -1,30 +1,20 @@
 deckgo-studio-doc {
   height: 100%;
 
-  deckgo-doc {
-    position: relative;
+  position: relative;
 
-    article {
-      h1:nth-child(1):empty:not(:focus):after {
-        content: "Title";
-        color: var(--studio-color);
-        white-space: pre;
-        position: relative;
-      }
-
-      div:nth-child(2):empty:last-child:not(:focus):after {
-        content: "Write your document...";
-        color: var(--studio-color);
-        position: relative;
-      }
+  article {
+    h1:nth-child(1):empty:not(:focus):after {
+      content: var(--studio-title, "Title");
+      color: var(--studio-color);
+      white-space: pre;
+      position: relative;
     }
-  }
 
-  stylo-editor {
-    --stylo-add-left: 8px;
-
-    @media (min-width: 768px) {
-      --stylo-add-left: 32px;
+    div:nth-child(2):empty:last-child:not(:focus):after {
+      content: var(--studio-sub-title, "Write your document...");
+      color: var(--studio-color);
+      position: relative;
     }
   }
 }

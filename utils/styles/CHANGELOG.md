@@ -1,3 +1,16 @@
+# 1.4.0 (2022-03-15)
+
+### Features
+
+- doc selector with class `article.deckgo-doc`
+- style doc size and fonts
+
+# 1.3.0 (2022-02-22)
+
+### Build
+
+- esm
+
 # 1.2.2 (2021-12-24)
 
 ### Features

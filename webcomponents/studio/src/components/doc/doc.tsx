@@ -2,7 +2,20 @@ import {Doc} from '@deckdeckgo/editor';
 import {Editor, getEdit} from '@deckdeckgo/offline';
 import {moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig} from '@papyrs/stylo';
-import {Component, ComponentInterface, Element, Event, EventEmitter, h, JSX, Method, Prop, State, Watch} from '@stencil/core';
+import {
+  Component,
+  ComponentInterface,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  JSX,
+  Method,
+  Prop,
+  State,
+  Watch
+} from '@stencil/core';
 import {nanoid} from 'nanoid';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
 import i18nStore from '../../stores/i18n.store';
@@ -217,13 +230,13 @@ export class StudioDoc implements ComponentInterface {
 
   render() {
     return (
-      <deckgo-doc>
-        <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
+      <Host>
+        <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)} class="deckgo-doc">
           {this.paragraphs}
         </article>
 
         <stylo-editor ref={(el) => (this.styloEditorRef = el as HTMLStyloEditorElement)} config={this.config}></stylo-editor>
-      </deckgo-doc>
+      </Host>
     );
   }
 }

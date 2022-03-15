@@ -1,3 +1,9 @@
+# 6.1.0 (2022-03-15)
+
+### Features
+
+- `docSelector` match parent `deckgo-studio-doc > article.deckgo-doc`
+
 # 6.0.1 (2022-03-14)
 
 ### Features

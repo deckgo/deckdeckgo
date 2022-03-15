@@ -1,3 +1,9 @@
+# 7.6.0 (2022-03-15)
+
+### Features
+
+- remove `deckgo-doc` from `docSelector` and replace with css based selector
+
 # 7.5.0 (2022-03-04)
 
 ### Features
