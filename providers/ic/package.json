@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

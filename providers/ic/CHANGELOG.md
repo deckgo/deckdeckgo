@@ -1,3 +1,9 @@
+# 6.1.1 (2022-03-15)
+
+### Fix
+
+- use native `article` HTML element instead of `deckgo-doc` as container for publish
+
 # 6.1.0 (2022-03-15)
 
 ### Features
