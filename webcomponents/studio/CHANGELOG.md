@@ -1,3 +1,9 @@
+# 0.0.10 (2022-03-15)
+
+### Styles
+
+- `overflow: hidden` to hide Stylo when hidden
+
 # 0.0.9 (2022-03-15)
 
 ### Styles

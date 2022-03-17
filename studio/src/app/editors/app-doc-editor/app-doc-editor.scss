@@ -8,10 +8,10 @@ app-doc-editor {
   }
 
   stylo-editor {
-    --stylo-add-left: 1.4rem;
+    --stylo-add-left: 8px;
 
     @media (min-width: 768px) {
-      --stylo-add-left: 2.2rem;
+      --stylo-add-left: 20px;
     }
   }
 }
