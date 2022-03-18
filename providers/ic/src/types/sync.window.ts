@@ -24,3 +24,5 @@ export interface SyncWindow {
 }
 
 export type LogWindow = (detail: Log) => void;
+
+export type SignOutWindow = () => void;
