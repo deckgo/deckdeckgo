@@ -5,8 +5,10 @@ import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
 import {EnvStore} from '../../stores/env.store';
 import {EnvironmentIC} from '../../types/env.types';
 import {InternetIdentityAuth} from '../../types/identity';
+import {SignOutWindow} from '../../types/sync.window';
 import {internetIdentityAuth} from '../../utils/identity.utils';
 import {createManagerActor} from '../../utils/manager.utils';
+import {startIdleTime, stopIdleTimer} from '../../workers/idle.ic.worker';
 import {initUserWorker} from '../../workers/user.ic.worker';
 
 declare global {
@@ -42,6 +44,13 @@ export const initAuth: InitAuth = async ({
   const onInitUserSuccess: (user: User) => Promise<void> = async (user: User) => await authenticatedUser({user, success});
 
   await initUserWorker({internetIdentity, env: EnvStore.getInstance().get()}, onInitUserSuccess, log);
+
+  const onSignOut: SignOutWindow = (): void => {
+    const $event: CustomEvent<void> = new CustomEvent<void>('ddgSignOut', {bubbles: true});
+    document.dispatchEvent($event);
+  };
+
+  await startIdleTime({internetIdentity}, onSignOut);
 };
 
 // If first sign-in, initializing the canister can take a while therefore we already emit a not fully authenticated user
@@ -75,8 +84,10 @@ const authenticatedUser = async ({
   await success({authUser, user});
 };
 
-export const signOut: SignOut = (): Promise<void> => {
-  return authClient?.logout();
+export const signOut: SignOut = async (): Promise<void> => {
+  await stopIdleTimer();
+
+  await authClient?.logout();
 };
 
 export const signIn = async ({onSuccess, onError}: {onSuccess: () => void; onError: (err?: string) => void}) => {
