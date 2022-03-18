@@ -1,3 +1,14 @@
+# 4.2.0 (2022-03-18)
+
+### Features
+
+- init and add new `terminal` style "Papyrs"
+- update list of supported languages
+
+### Build
+
+- bump dependencies
+
 # 4.1.0 (2022-02-27)
 
 ### Build
