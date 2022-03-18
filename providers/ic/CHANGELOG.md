@@ -1,3 +1,9 @@
+# 6.2.0 (2022-03-18)
+
+### Features
+
+- new timer that checks if the identity delegation is valid
+
 # 6.1.2 (2022-03-15)
 
 ### Fix
