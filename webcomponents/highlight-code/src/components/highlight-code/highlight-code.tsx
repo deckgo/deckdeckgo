@@ -386,7 +386,8 @@ export class HighlightCode implements DeckDeckGoRevealComponent {
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
-      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU
+      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
+      'deckgo-highlight-code-papyrs': this.terminal === DeckdeckgoHighlightCodeTerminal.PAPYRS
     };
 
     if (this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON) {

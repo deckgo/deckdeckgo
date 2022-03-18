@@ -666,3 +666,32 @@ div.ubuntu {
     margin: var(--deckgo-highlight-code-ubuntu-header-user-margin, 0 0 1px 4px);
   }
 }
+
+:host(.deckgo-highlight-code-papyrs) {
+  display: block;
+  overflow: auto;
+  border-radius: 0;
+  background: #172121;
+  color: white;
+  border: 1px solid black;
+  box-shadow: 3px 3px black;
+  margin: 1.25rem 0;
+
+  div.container {
+    margin: 0.75rem 0;
+  }
+
+  --deckgo-highlight-code-token-atrule: #fde74c;
+  --deckgo-highlight-code-token-comment: #ef476f;
+  --deckgo-highlight-code-token-comment-rgb: 92, 158, 173;
+  --deckgo-highlight-code-token-function: white;
+  --deckgo-highlight-code-token-operator: #fde74c;
+  --deckgo-highlight-code-token-property: #ef476f;
+  --deckgo-highlight-code-token-punctuation: #ef476f;
+  --deckgo-highlight-code-token-selector: #7dbbc3;
+  --deckgo-highlight-code-token-regex: #fff6bc;
+}
+
+:host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {
+  color: white;
+}
