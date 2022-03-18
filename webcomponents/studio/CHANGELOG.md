@@ -1,3 +1,9 @@
+# 0.0.11 (2022-03-18)
+
+### Styles
+
+- remove `overflow: hidden` (height ultimately solve in next version of Stylo)
+
 # 0.0.10 (2022-03-15)
 
 ### Styles
