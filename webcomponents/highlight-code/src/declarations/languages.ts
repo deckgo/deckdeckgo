@@ -52,6 +52,8 @@ export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages 
   avs: {title: 'avs', main: 'avisynth'},
   'avro-idl': {title: 'Avro IDL'},
   avdl: {title: 'avdl', main: 'avro-idl'},
+  awk: {title: 'AWK'},
+  gawk: {title: 'GAWK', main: 'awk'},
   bash: {title: 'Bash'},
   shell: {title: 'Shell', main: 'bash'},
   basic: {title: 'BASIC'},
