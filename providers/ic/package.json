@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "6.2.1",
+  "version": "6.3.0",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -56,12 +56,12 @@
   ],
   "dependencies": {
     "@deckdeckgo/editor": "^7.6.1",
-    "@dfinity/agent": "^0.10.0",
-    "@dfinity/auth-client": "^0.10.0",
-    "@dfinity/authentication": "^0.10.0",
-    "@dfinity/candid": "^0.10.0",
-    "@dfinity/identity": "^0.10.0",
-    "@dfinity/principal": "^0.10.0",
+    "@dfinity/agent": "^0.10.4",
+    "@dfinity/auth-client": "^0.10.4",
+    "@dfinity/authentication": "^0.10.4",
+    "@dfinity/candid": "^0.10.4",
+    "@dfinity/identity": "^0.10.4",
+    "@dfinity/principal": "^0.10.4",
     "idb-keyval": "^6.1.0",
     "nanoid": "^3.3.1"
   }
