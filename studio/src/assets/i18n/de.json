@@ -424,7 +424,8 @@
     "applause": "Applaus",
     "thumbs_up": "Daumen hoch",
     "published": "Deine Präsentation wurde veröffentlicht.",
-    "share": "{0} es mit der Welt, deinen Kollegen, Freunden und der Community.",
+    "post_published": "Dein Beitrag wurde veröffentlicht.",
+    "share": "{0} es mit der Welt!",
     "source_processing": "Der Quellcode der Präsentation wird verarbeitet {0}",
     "source_submitted": "Der Quellcode der Präsentation wurde an ein {0} auf GitHub übermittelt",
     "repository": "Repository"

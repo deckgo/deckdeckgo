@@ -434,6 +434,7 @@ interface I18nPublish_done {
   applause: string;
   thumbs_up: string;
   published: string;
+  post_published: string;
   share: string;
   source_processing: string;
   source_submitted: string;

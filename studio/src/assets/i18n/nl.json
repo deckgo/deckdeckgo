@@ -424,7 +424,8 @@
     "applause": "Applaus",
     "thumbs_up": "Duimen omhoog",
     "published": "Uw presentatie is gepubliceerd.",
-    "share": "{0} met de wereld, uw collega's, vrienden en de community.",
+    "post_published": "Uw artikel is gepubliceerd.",
+    "share": "{0} met de wereld!",
     "source_processing": "De broncode van de presentatie wordt verwerkt {0}",
     "source_submitted": "De broncode van de presentatie is verzonden naar een {0} op GitHub",
     "repository": "repository"

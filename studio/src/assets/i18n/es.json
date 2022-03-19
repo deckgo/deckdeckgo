@@ -424,7 +424,8 @@
     "applause": "Aplausos",
     "thumbs_up": "Pulgares arriba",
     "published": "Su presentación ha sido publicada.",
-    "share": "{0} con el mundo, tus colegas, amigos y comunidad.",
+    "post_published": "Su blog post ha sido publicada.",
+    "share": "{0} con el mundo!",
     "source_processing": "El código fuente de la presentación está procesando {0}",
     "source_submitted": "El código fuente de la presentación ha sido enviado a un {0} en GitHub",
     "repository": "repositorio"
