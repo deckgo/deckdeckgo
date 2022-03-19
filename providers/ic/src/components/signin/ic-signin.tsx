@@ -38,7 +38,14 @@ export class IcSignin implements ComponentInterface {
     const signInSuccess: () => void = this.signInSuccess || (() => this.ddgSignInSuccess.emit());
     const signInError: (err?: string) => void = this.signInError || ((err?: string) => this.ddgSignInError.emit(err));
 
-    await signIn({onSuccess: signInSuccess, onError: signInError});
+    await signIn({
+      onSuccess: signInSuccess,
+      onError: (err?: string) => {
+        this.signInInProgress = false;
+
+        signInError(err);
+      }
+    });
   }
 
   render() {

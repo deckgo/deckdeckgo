@@ -1,3 +1,9 @@
+# 6.2.1 (2022-03-19)
+
+### Features
+
+- sign in css and display button on error
+
 # 6.2.0 (2022-03-18)
 
 ### Features
