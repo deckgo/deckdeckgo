@@ -50,7 +50,7 @@ export const deleteData = async ({key, actor, log}: {key: string; actor?: DataBu
     return;
   }
 
-  log?.({msg: `[delete] ${key}: start`});
+  log?.({msg: `[delete][start] ${key}`});
   const t0 = performance.now();
 
   const dataActor: DataBucketActor = actor || (await getDataActor());
@@ -58,7 +58,7 @@ export const deleteData = async ({key, actor, log}: {key: string; actor?: DataBu
   await dataActor.del(key);
 
   const t1 = performance.now();
-  log?.({msg: `[delete] ${key}: done`, duration: t1 - t0});
+  log?.({msg: `[delete][done] ${key}`, duration: t1 - t0});
 };
 
 export const getData = <T, D>({key, actor}: {key: string; actor?: DataBucketActor}): Promise<T | undefined> => {

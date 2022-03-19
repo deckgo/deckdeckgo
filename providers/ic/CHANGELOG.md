@@ -1,3 +1,9 @@
+# 6.3.1 (2022-03-19)
+
+### Features
+
+- log delete format
+
 # 6.3.0 (2022-03-19)
 
 ### Features
