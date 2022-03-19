@@ -20,6 +20,7 @@ import {nanoid} from 'nanoid';
 import {ParagraphHelper} from '../../helpers/paragraph-helper';
 import i18nStore from '../../stores/i18n.store';
 import busyStore from '../../stores/ready.store';
+import readyStore from '../../stores/ready.store';
 
 @Component({
   tag: 'deckgo-studio-doc',
@@ -97,6 +98,8 @@ export class StudioDoc implements ComponentInterface {
    */
   private destroy() {
     this.docDataEvents.emit('destroy');
+
+    readyStore.reset();
 
     this.resetDoc?.();
   }

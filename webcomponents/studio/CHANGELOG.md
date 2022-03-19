@@ -1,3 +1,9 @@
+# 0.0.12 (2022-03-19)
+
+### Fix
+
+- reset ready store on detroy
+
 # 0.0.11 (2022-03-18)
 
 ### Styles

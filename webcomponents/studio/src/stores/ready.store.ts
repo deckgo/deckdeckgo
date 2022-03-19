@@ -6,10 +6,10 @@ interface ReadyStore {
   docReady: boolean;
 }
 
-const {state, onChange} = createStore<ReadyStore>({
+const {state, onChange, reset} = createStore<ReadyStore>({
   slideReady: false,
   deckReady: false,
   docReady: false
 });
 
-export default {state, onChange};
+export default {state, onChange, reset};

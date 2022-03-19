@@ -50,7 +50,7 @@
     "@deckdeckgo/slide-utils": "^4.0.3",
     "@deckdeckgo/slide-youtube": "^2.4.0",
     "@deckdeckgo/social-img": "^1.1.0",
-    "@deckdeckgo/studio": "^0.0.11",
+    "@deckdeckgo/studio": "^0.0.12",
     "@deckdeckgo/styles": "^1.4.2",
     "@deckdeckgo/sync": "^0.0.15",
     "@deckdeckgo/utils": "^5.1.0",
