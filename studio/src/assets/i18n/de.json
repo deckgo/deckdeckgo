@@ -130,7 +130,9 @@
     "copy": "Kopiere die Präsentation",
     "delete": "Lösche die Präsentation",
     "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deine Präsentation dauerhaft gelöscht.",
-    "understand": "Ich verstehe, lösche meine Präsentation."
+    "understand": "Ich verstehe, lösche meine Präsentation.",
+    "published": "Veröffentlicht am",
+    "edited": "Bearbeitet am"
   },
   "editor": {
     "loading": "Halt dich fest! Der Editor lädt...",

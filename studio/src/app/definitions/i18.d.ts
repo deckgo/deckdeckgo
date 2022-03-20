@@ -138,6 +138,8 @@ interface I18nDashboard {
   delete: string;
   cannot_undone: string;
   understand: string;
+  published: string;
+  edited: string;
 }
 
 interface I18nEditor {

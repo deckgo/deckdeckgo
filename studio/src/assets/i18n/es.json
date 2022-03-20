@@ -130,7 +130,9 @@
     "copy": "Copiar presentación",
     "delete": "Eliminar presentación",
     "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación.",
-    "understand": "Comprendo, elimina mi presentación"
+    "understand": "Comprendo, elimina mi presentación",
+    "published": "Publicado",
+    "edited": "Editado"
   },
   "editor": {
     "loading": "El editor se está cargando ... ",

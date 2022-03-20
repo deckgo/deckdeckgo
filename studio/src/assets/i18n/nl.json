@@ -130,7 +130,9 @@
     "copy": "Kopieer presentatie",
     "delete": "Verwijder presentatie",
     "cannot_undone": "Deze actie kan niet ongedaan gemaakt worden. Hiermee wordt uw presentatie permanent verwijderd.",
-    "understand": "Ik begrijp het, verwijder mijn presentatie"
+    "understand": "Ik begrijp het, verwijder mijn presentatie",
+    "published": "Gepubliceerd",
+    "edited": "Bewerkt"
   },
   "editor": {
     "loading": "Hou u vast! De editor is aan het laden...",

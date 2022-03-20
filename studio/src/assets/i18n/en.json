@@ -130,7 +130,9 @@
     "copy": "Copy presentation",
     "delete": "Delete presentation",
     "cannot_undone": "This action cannot be undone. This will permanently delete your presentation.",
-    "understand": "I understand, delete my presentation"
+    "understand": "I understand, delete my presentation",
+    "published": "Published",
+    "edited": "Edited"
   },
   "editor": {
     "loading": "Hold tight! The editor is loading...",
