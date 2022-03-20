@@ -17,6 +17,7 @@ export interface EnvironmentICConfig {
   managerCanisterId: string;
   localIdentityCanisterId?: string;
   kitPath: string;
+  author: string;
 }
 
 export interface EnvironmentTenorConfig {
