@@ -2,6 +2,7 @@ import {Deck, DeckData, DeckPublishData, deckPublishData, PublishData} from '@de
 import {setData} from './data.utils';
 import {uploadSocialImage} from './publish.social.utils';
 import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
+import { EnvStore } from '../stores/env.store';
 
 export const publishDeck = async ({
   deck: deckSource
@@ -35,7 +36,7 @@ export const publishDeck = async ({
 };
 
 const initDeckIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; publishData: DeckPublishData}> => {
-  const publishData: DeckPublishData = await deckPublishData({deck});
+  const publishData: DeckPublishData = await deckPublishData({deck, fallbackAuthor: EnvStore.getInstance().get().author});
 
   const {slides} = publishData;
 

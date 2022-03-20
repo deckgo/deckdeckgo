@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -55,7 +55,7 @@
     "canister"
   ],
   "dependencies": {
-    "@deckdeckgo/editor": "^7.6.1",
+    "@deckdeckgo/editor": "^7.7.0",
     "@dfinity/agent": "^0.10.4",
     "@dfinity/auth-client": "^0.10.4",
     "@dfinity/authentication": "^0.10.4",

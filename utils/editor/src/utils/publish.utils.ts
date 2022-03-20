@@ -1,7 +1,6 @@
 import {Deck} from '../models/data/deck';
 import {Doc} from '../models/data/doc';
 import {Meta} from '../models/data/meta';
-
 import {deckSelector} from './deck.utils';
 import {docSelector} from './doc.utils';
 import {getGoogleFontUrl, GoogleFont, googleFonts} from './fonts.utils';
@@ -30,12 +29,12 @@ export interface DocPublishData extends PublishData {
   paragraphs: string[];
 }
 
-export const deckPublishData = async ({deck}: {deck: Deck}): Promise<DeckPublishData> => {
+export const deckPublishData = async ({deck, fallbackAuthor}: {deck: Deck; fallbackAuthor: string}): Promise<DeckPublishData> => {
   const {data} = deck;
   const {meta, background, footer, header} = data;
 
   return {
-    ...(await publishData({meta, selector: deckSelector, fallbackName: data.name})),
+    ...(await publishData({meta, selector: deckSelector, fallbackName: data.name, fallbackAuthor})),
     slides: getSlides(),
     background: background ? `<div slot="background">${background}</div>` : undefined,
     header: background ? `<div slot="header">${header}</div>` : undefined,
@@ -43,12 +42,12 @@ export const deckPublishData = async ({deck}: {deck: Deck}): Promise<DeckPublish
   };
 };
 
-export const docPublishData = async ({doc}: {doc: Doc}): Promise<DocPublishData> => {
+export const docPublishData = async ({doc, fallbackAuthor}: {doc: Doc; fallbackAuthor: string}): Promise<DocPublishData> => {
   const {data} = doc;
   const {meta} = data;
 
   return {
-    ...(await publishData({meta, selector: docSelector, fallbackName: data.name})),
+    ...(await publishData({meta, selector: docSelector, fallbackName: data.name, fallbackAuthor})),
     paragraphs: getParagraphs()
   };
 };
@@ -56,10 +55,12 @@ export const docPublishData = async ({doc}: {doc: Doc}): Promise<DocPublishData>
 const publishData = async ({
   meta,
   fallbackName,
+  fallbackAuthor,
   selector
 }: {
   meta: Meta | undefined;
   fallbackName: string;
+  fallbackAuthor: string;
   selector: string;
 }): Promise<PublishData> => {
   const googleFontLink: string | undefined = getGoogleFontLink();
@@ -76,7 +77,7 @@ const publishData = async ({
   return {
     title,
     description: (meta?.description || fallbackName)?.trim(),
-    author: meta?.author?.name || 'DeckDeckGo',
+    author: meta?.author?.name || fallbackAuthor,
     bio: meta?.author?.bio,
     photo_url: meta?.author?.photo_url,
     head_extra: head_extra.length > 0 ? head_extra.join('') : undefined,

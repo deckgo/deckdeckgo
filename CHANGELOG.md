@@ -9,8 +9,8 @@
 
 ### Providers
 
-- firebase: v4.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
-- ic: v7.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+- firebase: v4.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+- ic: v7.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
 ### Web Components: New
 
@@ -27,7 +27,7 @@
 ### Others
 
 - deck-utils: v7.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
-- editor: v7.6.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v7.7.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - styles: v1.4.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/styles/CHANGELOG.md))
 
 <a name="6.0.0"></a>

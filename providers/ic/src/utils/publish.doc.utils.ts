@@ -1,4 +1,5 @@
 import {Doc, DocData, docPublishData, DocPublishData, PublishData} from '@deckdeckgo/editor';
+import {EnvStore} from '../stores/env.store';
 import {setData} from './data.utils';
 import {uploadSocialImage} from './publish.social.utils';
 import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
@@ -35,7 +36,7 @@ export const publishDoc = async ({
 };
 
 const initDocIndexHTML = async ({doc}: {doc: Doc}): Promise<{html: string; publishData: DocPublishData}> => {
-  const publishData: DocPublishData = await docPublishData({doc});
+  const publishData: DocPublishData = await docPublishData({doc, fallbackAuthor: EnvStore.getInstance().get().author});
 
   const {paragraphs} = publishData;
 
