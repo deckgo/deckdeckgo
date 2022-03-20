@@ -1,8 +1,8 @@
 import {Deck, DeckData, DeckPublishData, deckPublishData, PublishData} from '@deckdeckgo/editor';
+import {EnvStore} from '../stores/env.store';
 import {setData} from './data.utils';
 import {uploadSocialImage} from './publish.social.utils';
 import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
-import { EnvStore } from '../stores/env.store';
 
 export const publishDeck = async ({
   deck: deckSource

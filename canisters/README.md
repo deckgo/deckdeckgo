@@ -5,7 +5,7 @@
 
 # DeckDeckGo - Canisters
 
-The canisters on the Internet Computer of [DeckDeckGo].
+Deploy script and environment variables of the (backend) canisters on the Internet Computer of [DeckDeckGo].
 
 ## License
 
