@@ -50,3 +50,5 @@ config.prod.json
 storybook-static/
 
 webcomponents/monaco-editor/workers
+
+canisters/canisters

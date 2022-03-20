@@ -10,7 +10,10 @@
 ### Providers
 
 - firebase: v4.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
-- ic: v7.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+
+### Providers: Deprecated and integrated into `papyrs`
+
+- ic
 
 ### Web Components: New
 

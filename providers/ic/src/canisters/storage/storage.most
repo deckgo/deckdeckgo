@@ -1,5 +1,0 @@
-type Asset/2 = Asset;
-actor {
-  stable var entries : [(Text, Asset/2)];
-  stable user : Principal
-};

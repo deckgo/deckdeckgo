@@ -1,7 +1,7 @@
 {
   "canisters": {
     "manager": {
-      "main": "canisters/src/manager/manager.mo",
+      "main": "canisters/canisters/src/manager/manager.mo",
       "type": "motoko"
     },
     "assets": {
