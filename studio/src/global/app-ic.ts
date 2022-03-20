@@ -57,10 +57,10 @@ setupDeckGoConfig({
   },
   cloud: {
     api: {
-      cdn: 'https://unpkg.com/@deckdeckgo/ic@6.3.0/dist/deckdeckgo-ic/index.esm.js'
+      cdn: 'https://unpkg.com/@deckdeckgo/ic@7.0.0/dist/deckdeckgo-ic/index.esm.js'
     },
     signIn: {
-      cdn: 'https://unpkg.com/@deckdeckgo/ic@6.3.0/dist/deckdeckgo-ic/deckdeckgo-ic.esm.js',
+      cdn: 'https://unpkg.com/@deckdeckgo/ic@7.0.0/dist/deckdeckgo-ic/deckdeckgo-ic.esm.js',
       tag: 'deckgo-ic-signin'
     }
   },
@@ -69,7 +69,8 @@ setupDeckGoConfig({
   },
   ic: {
     managerCanisterId: 'jkpvl-ziaaa-aaaai-aaafq-cai',
-    kitPath: 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist'
+    kitPath: 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist',
+    author: 'DeckDeckGo'
   }
 });
 
