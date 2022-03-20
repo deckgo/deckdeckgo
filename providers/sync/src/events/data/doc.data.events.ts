@@ -21,7 +21,7 @@ import {nanoid} from 'nanoid';
 import {excludeAttributes} from '../../constants/doc.constants';
 import {AuthStore} from '../../stores/auth.store';
 import {DocStore} from '../../stores/doc.store';
-import {throwBusy} from '../../utils/busy.utils';
+import {busy} from '../../utils/busy.utils';
 import {syncDeleteParagraph, syncUpdateDoc, syncUpdateParagraph} from '../../utils/sync.utils';
 
 export class DocDataEvents {
@@ -39,7 +39,7 @@ export class DocDataEvents {
 
   private onAddParagraphs = async ({detail: addedParagraphs}: CustomEvent<HTMLElement[]>) => {
     try {
-      throwBusy(true);
+      busy(true);
 
       await this.createDoc();
 
@@ -50,12 +50,12 @@ export class DocDataEvents {
       throwError(err);
     }
 
-    throwBusy(false);
+    busy(false);
   };
 
   private onDeleteParagraphs = async ({detail: removedParagraphs}: CustomEvent<HTMLElement[]>) => {
     try {
-      throwBusy(true);
+      busy(true);
 
       const promises: Promise<string | undefined>[] = removedParagraphs.map((paragraph: HTMLElement) => this.deleteParagraph(paragraph));
       const removedParagraphIds: (string | undefined)[] = await Promise.all(promises);
@@ -65,12 +65,12 @@ export class DocDataEvents {
       throwError(err);
     }
 
-    throwBusy(false);
+    busy(false);
   };
 
   private onUpdateParagraphs = async ({detail: updatedParagraphs}: CustomEvent<HTMLElement[]>) => {
     try {
-      throwBusy(true);
+      busy(true);
 
       // In case of copy-paste, the browser might proceed with a delete-update for which we do not get paragraph_id.
       // It might copy a <p/> within a <div/> instead of creating a child of the container for the new <p/>
@@ -82,7 +82,7 @@ export class DocDataEvents {
       throwError(err);
     }
 
-    throwBusy(false);
+    busy(false);
   };
 
   private createDoc(): Promise<void> {

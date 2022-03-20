@@ -1,3 +1,9 @@
+# 0.0.16 (2022-03-15)
+
+### Features
+
+- attach before unload window on busy
+
 # 0.0.15 (2022-03-15)
 
 ### Fix
