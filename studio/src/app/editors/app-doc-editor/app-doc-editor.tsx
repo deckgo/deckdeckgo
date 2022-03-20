@@ -1,5 +1,5 @@
 import {throwError} from '@deckdeckgo/editor';
-import {DocEvents, loadDoc, resetDoc} from '@deckdeckgo/sync';
+import {busyBeforeUnload, DocEvents, loadDoc, resetDoc} from '@deckdeckgo/sync';
 import {modalController} from '@ionic/core';
 import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 import {Component, ComponentInterface, Fragment, h, Listen, Method, State} from '@stencil/core';
@@ -29,6 +29,7 @@ export class AppDocEditor implements ComponentInterface {
   private studioEditorRef!: HTMLDeckgoStudioDocElement;
 
   private i18nListener: () => void | undefined;
+  private busyListener: () => void | undefined;
 
   private readonly docEvent: DocEvents = DocEvents.getInstance();
 
@@ -36,6 +37,9 @@ export class AppDocEditor implements ComponentInterface {
     this.updateEditorConfig();
 
     this.i18nListener = i18n.onChange('lang', () => this.updateEditorConfig());
+
+    this.busyListener = busyStore.onChange('busy', (busy: boolean) => busyBeforeUnload(busy));
+    busyBeforeUnload(busyStore.state.busy);
   }
 
   async componentDidLoad() {
@@ -46,6 +50,7 @@ export class AppDocEditor implements ComponentInterface {
     this.codeEvents.destroy();
 
     this.i18nListener?.();
+    this.busyListener?.();
   }
 
   private onDocDidLoad = ({detail: containerRef}: CustomEvent<HTMLElement>) => {
