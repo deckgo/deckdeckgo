@@ -4,6 +4,7 @@ export const svgToCanvas = ({svg, style}: {svg: SVGGraphicsElement; style: CSSSt
 
     const clone: SVGGraphicsElement = svg.cloneNode(true) as SVGGraphicsElement;
 
+    escapeText({clone});
     inlineStyle({clone, style});
 
     const base64SVG: string = window.btoa(new XMLSerializer().serializeToString(clone));
@@ -54,4 +55,15 @@ const inlineStyle = ({clone, style}: {clone: SVGGraphicsElement; style: CSSStyle
   for (const key of Object.keys(style)) {
     text.style.setProperty(key, style[key]);
   }
+};
+
+// escape text to support emoji
+const escapeText = ({clone}: {clone: SVGGraphicsElement;}) => {
+  const text: HTMLParagraphElement | null = clone.querySelector('foreignObject > p');
+
+  if (!text) {
+    return;
+  }
+
+  text.innerText = unescape(encodeURIComponent(text.innerText))
 };

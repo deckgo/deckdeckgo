@@ -1,3 +1,9 @@
+# 1.3.0 (2022-03-24)
+
+### Features
+
+- support for emoji
+
 # 1.2.0 (2022-03-04)
 
 ### Build

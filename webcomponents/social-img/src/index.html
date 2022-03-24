@@ -7,22 +7,26 @@
 
     <script type="module" src="/build/social-img.esm.js"></script>
     <script nomodule src="/build/social-img.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500;700&display=swap" rel="stylesheet" />
+
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+    </style>
   </head>
   <body>
-    <deckgo-social-img
-      text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae ornare purus. Fusce lacinia dolor vitae aliquet faucibus.
-       Cras fermentum viverra odio. Nunc erat ex, tempor vel sem elementum, volutpat tempus mauris. Duis vel laoreet nisl, et cursus
-        ex. Maecenas rutrum lorem purus, in auctor orci euismod non."
-      img-src="https://deckdeckgo-studio-staging.web.app/assets/icons/deckdeckgo.svg"
-    >
-    </deckgo-social-img>
+    <deckgo-social-img text="Blog on web3 👉 Papy.rs" rect-color="#ef476f" style="--text-font-size: 152px;"> </deckgo-social-img>
 
     <button>To image</button>
 
     <script>
       const toBlob = async () => {
         const socialImg = document.querySelector('deckgo-social-img');
-        const blob = await socialImg?.toBlob();
+        const blob = await socialImg?.toBlob('image/jpg');
 
         download(blob);
       };
@@ -32,7 +36,7 @@
 
         const link = document.createElement('a');
         link.href = blobURL;
-        link.download = `deckdeckgo.webp`;
+        link.download = `deckdeckgo.jpg`;
         link.click();
 
         window.URL.revokeObjectURL(blobURL);
