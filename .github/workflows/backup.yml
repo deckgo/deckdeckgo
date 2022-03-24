@@ -12,7 +12,7 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/setup-gcloud@master
+      - uses: google-github-actions/setup-gcloud@v0
         with:
           service_account_key: ${{ secrets.FIRESTORE_BACKUP_TOKEN }}
           export_default_credentials: true
