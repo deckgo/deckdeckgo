@@ -1,9 +1,6 @@
-import {Component, h, ComponentInterface, Host, Method, Prop, Element, EventEmitter, Event} from '@stencil/core';
-
+import {Component, ComponentInterface, Element, Event, EventEmitter, h, Host, Method, Prop, Watch} from '@stencil/core';
 import * as monaco from 'monaco-editor';
-
 import {MonacoEditorOptions} from '../types/options';
-
 import {escapeCode, unescapeCode} from '../utils/code.utils';
 
 @Component({
@@ -44,8 +41,7 @@ export class MonacoEditor implements ComponentInterface {
 
     this.editor = monaco.editor.create(this.div, {
       value: unescapeCode(slottedCode?.innerHTML.trim() || ''),
-      ...this.defaultOptions,
-      ...(this.options || {})
+      ...this.mergeOptions()
     });
 
     this.editorDidLoad.emit();
@@ -68,6 +64,11 @@ export class MonacoEditor implements ComponentInterface {
     });
   }
 
+  @Watch('options')
+  onOptionsChange() {
+    this.editor?.updateOptions(this.mergeOptions());
+  }
+
   @Method()
   async setFocus() {
     this.editor?.focus();
@@ -81,6 +82,13 @@ export class MonacoEditor implements ComponentInterface {
   @Method()
   async save(): Promise<string | undefined> {
     return escapeCode(this.editor?.getValue());
+  }
+
+  private mergeOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
+    return {
+      ...this.defaultOptions,
+      ...(this.options || {})
+    };
   }
 
   render() {

@@ -24,7 +24,7 @@
 - core: v10.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/core/CHANGELOG.md))
 - highlight-code: v4.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/highlight-code/CHANGELOG.md))
 - lazy-img: v3.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
-- monaco-editor: v1.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
+- monaco-editor: v1.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
 - social-img: v1.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md))
 
 ### Others

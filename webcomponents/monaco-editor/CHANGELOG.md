@@ -1,3 +1,9 @@
+# 1.4.0 (2022-03-25)
+
+### Features
+
+- update the monaco editor options on `options` change
+
 # 1.3.0 (2022-03-25)
 
 ### Features
