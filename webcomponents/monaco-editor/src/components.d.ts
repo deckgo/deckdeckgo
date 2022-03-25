@@ -11,6 +11,7 @@ export namespace Components {
         "options": MonacoEditorOptions;
         "save": () => Promise<string | undefined>;
         "setFocus": () => Promise<void>;
+        "updateLanguage": (languageId: string) => Promise<void>;
     }
 }
 declare global {

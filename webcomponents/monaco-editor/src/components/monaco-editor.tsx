@@ -74,6 +74,11 @@ export class MonacoEditor implements ComponentInterface {
   }
 
   @Method()
+  async updateLanguage(languageId: string) {
+    monaco.editor.setModelLanguage(this.editor?.getModel(), languageId);
+  }
+
+  @Method()
   async save(): Promise<string | undefined> {
     return escapeCode(this.editor?.getValue());
   }
