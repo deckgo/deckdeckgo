@@ -1,86 +1,76 @@
-import {convertStyle, attributes as getAttributes} from '@deckdeckgo/editor';
-import {h} from '@stencil/core';
+import {attributes as getAttributes, convertStyle, isTextNode} from '@deckdeckgo/editor';
+import {h, JSX} from '@stencil/core';
 import {SlotType} from '../types/slot-type';
-import {SlotUtils} from './slot.utils';
+import {isNodeReveal} from './slot.utils';
 
-export class ParseElementsUtils {
-  static parseElements(element: HTMLElement, root: boolean, contentEditable: boolean): Promise<any> {
-    return new Promise<any>(async (resolve) => {
-      if (!element) {
-        resolve(undefined);
-        return;
-      }
+type AttrType = Record<string, string | Record<string, string> | undefined>;
 
-      if (element.nodeType === 3) {
-        resolve(element.textContent);
-        return;
-      }
-
-      if (element.hasChildNodes()) {
-        const results = [];
-
-        const elements: HTMLElement[] = Array.prototype.slice.call(element.childNodes);
-
-        for (const elem of elements) {
-          const result = await this.parseElements(elem, false, contentEditable);
-          results.push(result);
-        }
-
-        resolve(root ? results : await this.parseElement(element, results, contentEditable));
-      } else {
-        resolve(await this.parseElement(element, element.textContent, contentEditable));
-      }
-    });
+export const parseElements = (element: Node, root: boolean, contentEditable: boolean): JSX.IntrinsicElements | JSX.IntrinsicElements[] | string | undefined => {
+  if (!element) {
+    return undefined;
   }
 
-  private static parseElement(element: HTMLElement, content: any, contentEditable: boolean): Promise<any> {
-    return new Promise<any>(async (resolve) => {
-      const Elem: string = element.nodeName.toLowerCase();
-
-      const attributes: Record<string, string | Record<string, string> | undefined> = getAttributes(element);
-      if (attributes.style) {
-        attributes.style = convertStyle(attributes.style as string);
-      }
-
-      if (contentEditable && this.isContentEditable(element, attributes)) {
-        if (contentEditable && SlotUtils.isNodeReveal(element) && element.firstElementChild) {
-          element.firstElementChild.setAttribute('contenteditable', `${true}`);
-        } else {
-          attributes['contenteditable'] = `${true}`;
-        }
-      }
-
-      if (element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
-        attributes['custom-loader'] = `${true}`;
-      }
-
-      resolve(<Elem {...attributes}>{content}</Elem>);
-    });
+  if (isTextNode(element)) {
+    return element.textContent;
   }
 
-  private static isContentEditable(element: HTMLElement, attributes: any): boolean {
-    return attributes.slot !== undefined && attributes.slot !== 'background' && this.isElementContentEditable(element);
+  if (element.hasChildNodes()) {
+    const results = [];
+
+    for (const elem of Array.from(element.childNodes)) {
+      const result = parseElements(elem, false, contentEditable);
+      results.push(result);
+    }
+
+    return root ? results : parseElement(element as HTMLElement, results, contentEditable);
   }
 
-  static isElementContentEditable(element: HTMLElement): boolean {
-    return (
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.MATH)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.WORD_CLOUD)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'div' && element.nodeName.toLowerCase() !== SlotType.MARKDOWN)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-social' && element.nodeName.toLowerCase() !== SlotType.SOCIAL)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-lazy-img' && element.nodeName.toLowerCase() !== SlotType.IMG)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-demo' && element.nodeName.toLowerCase() !== SlotType.DEMO)) &&
-      (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-reveal' && element.nodeName.toLowerCase() !== SlotType.REVEAL)) &&
-      (!element.nodeName ||
-        (element.nodeName.toLowerCase() !== 'deckgo-drr' && element.nodeName.toLowerCase() !== SlotType.DRAG_RESIZE_ROTATE)) &&
-      this.isElementPollSlotEditable(element)
-    );
+  return parseElement(element as HTMLElement, element.textContent, contentEditable);
+};
+
+const parseElement = (element: HTMLElement, content: JSX.IntrinsicElements[] | string, contentEditable: boolean): JSX.IntrinsicElements => {
+  const Elem: string = element.nodeName.toLowerCase();
+
+  const attributes: AttrType = getAttributes(element);
+  if (attributes.style) {
+    attributes.style = convertStyle(attributes.style as string);
   }
 
-  private static isElementPollSlotEditable(element: HTMLElement): boolean {
-    return (
-      !element.hasAttribute('slot') || (element.getAttribute('slot') !== 'awaiting-votes' && element.getAttribute('slot') !== 'how-to')
-    );
+  if (contentEditable && isContentEditable(element, attributes)) {
+    if (contentEditable && isNodeReveal(element) && element.firstElementChild) {
+      element.firstElementChild.setAttribute('contenteditable', `${true}`);
+    } else {
+      attributes['contenteditable'] = `${true}`;
+    }
   }
-}
+
+  if (element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+    attributes['custom-loader'] = `${true}`;
+  }
+
+  return <Elem {...attributes}>{content}</Elem>;
+};
+
+const isContentEditable = (element: HTMLElement, attributes: AttrType): boolean => {
+  return attributes.slot !== undefined && attributes.slot !== 'background' && isElementContentEditable(element);
+};
+
+export const isElementContentEditable = (element: HTMLElement): boolean => {
+  return (
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.MATH)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.WORD_CLOUD)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'div' && element.nodeName.toLowerCase() !== SlotType.MARKDOWN)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-social' && element.nodeName.toLowerCase() !== SlotType.SOCIAL)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-lazy-img' && element.nodeName.toLowerCase() !== SlotType.IMG)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-demo' && element.nodeName.toLowerCase() !== SlotType.DEMO)) &&
+    (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-reveal' && element.nodeName.toLowerCase() !== SlotType.REVEAL)) &&
+    (!element.nodeName ||
+      (element.nodeName.toLowerCase() !== 'deckgo-drr' && element.nodeName.toLowerCase() !== SlotType.DRAG_RESIZE_ROTATE)) &&
+    isElementPollSlotEditable(element)
+  );
+};
+
+const isElementPollSlotEditable = (element: HTMLElement): boolean => {
+  return !element.hasAttribute('slot') || (element.getAttribute('slot') !== 'awaiting-votes' && element.getAttribute('slot') !== 'how-to');
+};

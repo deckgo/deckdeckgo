@@ -2,22 +2,9 @@ import {Doc} from '@deckdeckgo/editor';
 import {Editor, getEdit} from '@deckdeckgo/offline';
 import {moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig} from '@papyrs/stylo';
-import {
-  Component,
-  ComponentInterface,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Host,
-  JSX,
-  Method,
-  Prop,
-  State,
-  Watch
-} from '@stencil/core';
+import {Component, ComponentInterface, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State, Watch} from '@stencil/core';
 import {nanoid} from 'nanoid';
-import {ParagraphHelper} from '../../helpers/paragraph-helper';
+import {loadDocAndRetrieveParagraphs} from '../../helpers/paragraph-helper';
 import i18nStore from '../../stores/i18n.store';
 import busyStore from '../../stores/ready.store';
 import readyStore from '../../stores/ready.store';
@@ -54,8 +41,6 @@ export class StudioDoc implements ComponentInterface {
 
   @State()
   private config: Partial<StyloConfig> = {};
-
-  private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
   private containerRef!: HTMLElement;
   private styloEditorRef!: HTMLStyloEditorElement;
@@ -172,7 +157,7 @@ export class StudioDoc implements ComponentInterface {
   }
 
   private async fetchDoc(docId: string) {
-    const paragraphs: JSX.IntrinsicElements[] = await this.paragraphHelper.loadDocAndRetrieveParagraphs({docId, loadDoc: this.loadDoc});
+    const paragraphs: JSX.IntrinsicElements[] = await loadDocAndRetrieveParagraphs({docId, loadDoc: this.loadDoc});
     this.paragraphs = paragraphs?.length > 0 ? [...paragraphs] : [];
   }
 
