@@ -6,7 +6,6 @@ import {Component, ComponentInterface, Element, Event, EventEmitter, h, Host, JS
 import {nanoid} from 'nanoid';
 import {loadDocAndRetrieveParagraphs} from '../../helpers/paragraph-helper';
 import i18nStore from '../../stores/i18n.store';
-import busyStore from '../../stores/ready.store';
 import readyStore from '../../stores/ready.store';
 
 @Component({
@@ -53,7 +52,7 @@ export class StudioDoc implements ComponentInterface {
   componentWillLoad() {
     this.applyConfig();
 
-    this.unsubscribe = busyStore.onChange('docReady', (docReady: boolean) => this.docReady.emit(docReady));
+    this.unsubscribe = readyStore.onChange('docReady', (docReady: boolean) => this.docReady.emit(docReady));
   }
 
   async componentDidLoad() {
@@ -153,7 +152,7 @@ export class StudioDoc implements ComponentInterface {
 
     this.paragraphs = [title, div];
 
-    busyStore.state.docReady = true;
+    readyStore.state.docReady = true;
   }
 
   private async fetchDoc(docId: string) {
