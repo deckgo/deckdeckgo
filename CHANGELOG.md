@@ -5,7 +5,7 @@
 ### Providers: New
 
 - offline: v0.0.6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
-- sync: v0.0.16 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+- sync: v0.0.17 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
 
 ### Providers
 

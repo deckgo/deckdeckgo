@@ -1,5 +1,6 @@
 import {
   cleanNode,
+  dirtyAttributes,
   Doc,
   DocData,
   elementIndex,
@@ -18,7 +19,6 @@ import {
   updateOfflineParagraph
 } from '@deckdeckgo/offline';
 import {nanoid} from 'nanoid';
-import {excludeAttributes} from '../../constants/doc.constants';
 import {AuthStore} from '../../stores/auth.store';
 import {DocStore} from '../../stores/doc.store';
 import {busy} from '../../utils/busy.utils';
@@ -299,8 +299,7 @@ export class DocDataEvents {
 
   private paragraphAttributes(paragraph: HTMLElement): Record<string, string | number | boolean | undefined> | null {
     const attrs: Attr[] = Array.from(paragraph.attributes).filter(
-      ({nodeName}: Attr) =>
-        !['placeholder', 'data-gramm', 'class', 'spellcheck', 'contenteditable', ...excludeAttributes].includes(nodeName)
+      ({nodeName}: Attr) => !['paragraph_id', ...dirtyAttributes].includes(nodeName)
     );
 
     return attrs.length > 0
