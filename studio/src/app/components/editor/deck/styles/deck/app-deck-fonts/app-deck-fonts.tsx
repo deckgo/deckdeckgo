@@ -64,8 +64,7 @@ export class AppDeckFonts {
       <app-color-text-background
         selectedTarget={this.deckElement}
         deck={true}
-        onColorChange={() => this.fontsChange.emit()}
-      ></app-color-text-background>,
+        onColorChange={() => this.fontsChange.emit()}></app-color-text-background>,
       this.renderFonts()
     ];
   }

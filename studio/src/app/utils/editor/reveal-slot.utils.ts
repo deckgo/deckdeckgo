@@ -1,4 +1,4 @@
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeImage, isNodeList, isNodeReveal, isNodeRevealList, SlotType} from '@deckdeckgo/studio';
 
 export class RevealSlotUtils {
   static toggleReveal(selectedTarget: HTMLElement, reveal: boolean): Promise<HTMLElement> {
@@ -13,8 +13,8 @@ export class RevealSlotUtils {
         return;
       }
 
-      const sameReveal: boolean = SlotUtils.isNodeReveal(selectedTarget) === reveal;
-      const sameRevealList: boolean = SlotUtils.isNodeRevealList(selectedTarget) === reveal;
+      const sameReveal: boolean = isNodeReveal(selectedTarget) === reveal;
+      const sameRevealList: boolean = isNodeRevealList(selectedTarget) === reveal;
 
       if ((sameReveal && sameRevealList) || (sameReveal && sameRevealList)) {
         resolve(null);
@@ -23,7 +23,7 @@ export class RevealSlotUtils {
 
       let element: HTMLElement;
 
-      if (SlotUtils.isNodeList(selectedTarget)) {
+      if (isNodeList(selectedTarget)) {
         element = await this.toggleRevealList(reveal, selectedTarget);
       } else {
         element = await this.toggleRevealElement(reveal, selectedTarget);
@@ -48,7 +48,7 @@ export class RevealSlotUtils {
       }
 
       // For styling purpose, we need to identify reveal element with images
-      if (SlotUtils.isNodeImage(selectedTarget)) {
+      if (isNodeImage(selectedTarget)) {
         element.setAttribute('img', '');
       } else {
         element.removeAttribute('img');

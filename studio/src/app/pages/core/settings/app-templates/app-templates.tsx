@@ -150,8 +150,7 @@ export class AppTemplates {
           template={template}
           editable={true}
           key={template.id}
-          onClick={() => this.editTemplate(template)}
-        ></app-template-showcase>
+          onClick={() => this.editTemplate(template)}></app-template-showcase>
       );
     });
   }

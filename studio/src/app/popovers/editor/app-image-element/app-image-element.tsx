@@ -34,8 +34,7 @@ export class AppImageElement {
       <app-image-choice
         selectedTarget={this.selectedTarget}
         slide={this.slide}
-        onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}
-      ></app-image-choice>
+        onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image-choice>
     ];
   }
 }

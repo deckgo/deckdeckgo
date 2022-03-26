@@ -157,8 +157,7 @@ export class AppActionsDeckEditor {
         class={{
           fullscreen: this.fullscreen,
           'hidden-bottom-sheet': this.hideBottomSheet
-        }}
-      >
+        }}>
         {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
       </Host>
     );
@@ -169,8 +168,7 @@ export class AppActionsDeckEditor {
       <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>
         <app-breadcrumbs
           slideNumber={this.slideNumber}
-          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}
-        ></app-breadcrumbs>
+          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-breadcrumbs>
 
         {this.renderActions()}
       </app-bottom-sheet>
@@ -197,8 +195,7 @@ export class AppActionsDeckEditor {
         toggleFullScreen={this.toggleFullScreen}
         deckDidChange={this.deckDidChange}
         onSelectDeck={() => this.selectDeck()}
-        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}
-      ></app-actions-deck>
+        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-actions-deck>
     );
   }
 
@@ -211,8 +208,7 @@ export class AppActionsDeckEditor {
         slideCopy={this.slideCopy}
         slideTransform={this.slideTransform}
         elementFocus={this.elementFocus}
-        onResetted={() => this.selectStepDeck()}
-      ></app-actions-element>
+        onResetted={() => this.selectStepDeck()}></app-actions-element>
     );
   }
 }

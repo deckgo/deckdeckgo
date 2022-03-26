@@ -60,16 +60,14 @@ export class AppEditSlide {
         <app-edit-slide-qrcode
           selectedTarget={this.selectedTarget.target}
           slideDidChange={this.slideDidChange}
-          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}
-        ></app-edit-slide-qrcode>
+          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-qrcode>
       );
     } else if (this.selectedTarget.slide?.chart) {
       return (
         <app-edit-slide-chart
           selectedTarget={this.selectedTarget.target}
           slideDidChange={this.slideDidChange}
-          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}
-        ></app-edit-slide-chart>
+          onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>
       );
     } else if (this.selectedTarget.slide?.author) {
       return (

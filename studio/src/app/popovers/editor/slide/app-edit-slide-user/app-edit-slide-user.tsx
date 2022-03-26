@@ -71,8 +71,7 @@ export class AppEditSlideUser {
             <ion-input
               value={prop.value}
               debounce={500}
-              onIonChange={($event: CustomEvent<InputChangeEventDetail>) => this.onInputCustomUrlChange($event, prop.prop)}
-            ></ion-input>
+              onIonChange={($event: CustomEvent<InputChangeEventDetail>) => this.onInputCustomUrlChange($event, prop.prop)}></ion-input>
           </ion-item>
         </Fragment>
       );

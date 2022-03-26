@@ -1,6 +1,6 @@
 import {AuthUser, Doc, formatDate, Paragraph, throwError} from '@deckdeckgo/editor';
 import {getEdit} from '@deckdeckgo/offline';
-import {ParseParagraphsUtils} from '@deckdeckgo/studio';
+import {parseParagraph} from '@deckdeckgo/studio';
 import {ChartEvents, docs, getParagraph, ImageLoadEvents, loadAndImportDoc} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import {loadingController} from '@ionic/core';
@@ -110,7 +110,7 @@ export class AppDocs implements ComponentInterface {
     const parsedParagraphs: JSX.IntrinsicElements[] = await Promise.all(
       paragraphs
         .filter((paragraph: Paragraph | undefined) => paragraph !== undefined)
-        .map((paragraph: Paragraph) => ParseParagraphsUtils.parseParagraph({paragraph}) as Promise<JSX.IntrinsicElements>)
+        .map((paragraph: Paragraph) => parseParagraph({paragraph}) as Promise<JSX.IntrinsicElements>)
     );
 
     return {
@@ -284,8 +284,7 @@ export class AppDocs implements ComponentInterface {
           data={{doc: doc.doc}}
           disableDelete={doc.doc.id === this.currentDocId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDoc($event)}
-          onCloned={() => navigateReloadEditor()}
-        ></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
       </aside>
     );
   }

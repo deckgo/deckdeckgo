@@ -1,5 +1,5 @@
 import {selectSlide} from '@deckdeckgo/editor';
-import {SlotUtils} from '@deckdeckgo/studio';
+import {isNodeEditable, isNodeMarkdown} from '@deckdeckgo/studio';
 import {debounce} from '@deckdeckgo/utils';
 import {popoverController} from '@ionic/core';
 import {Component, h, Host, Listen, State} from '@stencil/core';
@@ -79,7 +79,7 @@ export class AppSlideWarning {
     }
 
     const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
-      return !SlotUtils.isNodeEditable(element) || SlotUtils.isNodeMarkdown(element);
+      return !isNodeEditable(element) || isNodeMarkdown(element);
     });
 
     if (!filteredSlots || filteredSlots.length <= 0) {
@@ -115,7 +115,7 @@ export class AppSlideWarning {
     }
 
     const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
-      return !SlotUtils.isNodeEditable(element);
+      return !isNodeEditable(element);
     });
 
     if (!filteredSlots || filteredSlots.length <= 0) {
@@ -218,8 +218,7 @@ export class AppSlideWarning {
       <Host
         class={{
           warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow
-        }}
-      >
+        }}>
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
           {this.renderMsg()}

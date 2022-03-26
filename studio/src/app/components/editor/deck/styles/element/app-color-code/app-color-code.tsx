@@ -220,8 +220,7 @@ export class AppColorCode {
               onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end"
-            >
+              class="ion-padding-start ion-padding-end">
               <ion-select-option value={CodeColorType.COMMENTS}>{i18n.state.editor.comments}</ion-select-option>
               <ion-select-option value={CodeColorType.FUNCTION}>{i18n.state.editor.functions}</ion-select-option>
               <ion-select-option value={CodeColorType.KEYWORD}>{i18n.state.editor.keywords}</ion-select-option>
@@ -240,8 +239,7 @@ export class AppColorCode {
           ref={(el) => (this.colorCodeRef = el as HTMLAppColorElement)}
           initColor={this.initCodeColor}
           onResetColor={() => this.resetCodeColor()}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyCodeColor($event)}
-        ></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyCodeColor($event)}></app-color>
       </app-expansion-panel>
     );
   }
@@ -261,8 +259,7 @@ export class AppColorCode {
               onIonChange={($event: CustomEvent) => this.toggle($event, 'terminal')}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end ion-text-capitalize"
-            >
+              class="ion-padding-start ion-padding-end ion-text-capitalize">
               {Object.keys(DeckdeckgoHighlightCodeTerminal).map((key: string) => {
                 return (
                   <ion-select-option value={DeckdeckgoHighlightCodeTerminal[key]}>
@@ -293,8 +290,7 @@ export class AppColorCode {
               onIonChange={($event: CustomEvent) => this.toggle($event, 'theme')}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end ion-text-capitalize"
-            >
+              class="ion-padding-start ion-padding-end ion-text-capitalize">
               {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: string) => {
                 return (
                   <ion-select-option value={DeckdeckgoHighlightCodeCarbonTheme[key]}>
@@ -312,8 +308,7 @@ export class AppColorCode {
               slot="end"
               color="dark"
               checked={this.toolbar}
-              onIonChange={() => this.toggleToolbar()}
-            ></ion-checkbox>
+              onIonChange={() => this.toggleToolbar()}></ion-checkbox>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

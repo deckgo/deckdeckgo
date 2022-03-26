@@ -79,8 +79,7 @@ export class AppStorage implements ComponentInterface {
           class="ion-padding-top ion-padding-bottom"
           folder={this.folder}
           admin={true}
-          ref={(el) => (this.storageFilesRef = el as HTMLAppStorageFilesElement)}
-        ></app-storage-files>
+          ref={(el) => (this.storageFilesRef = el as HTMLAppStorageFilesElement)}></app-storage-files>
       </Fragment>
     );
   }
@@ -95,8 +94,7 @@ export class AppStorage implements ComponentInterface {
             onIonChange={($event: CustomEvent) => (this.folder = $event.detail.value)}
             interface="popover"
             mode="md"
-            class="ion-padding-start ion-padding-end"
-          >
+            class="ion-padding-start ion-padding-end">
             <ion-select-option value="images">Images</ion-select-option>
             <ion-select-option value="data">Data</ion-select-option>
           </ion-select>

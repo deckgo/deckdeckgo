@@ -1,4 +1,4 @@
-import {ParseElementsUtils} from '@deckdeckgo/studio';
+import {parseElements} from '@deckdeckgo/studio';
 import {h, JSX} from '@stencil/core';
 
 export class ParseDeckSlotsUtils {
@@ -11,7 +11,7 @@ export class ParseDeckSlotsUtils {
     div.setAttribute('slot', slotName);
     div.innerHTML = htmlContent;
 
-    const content = await ParseElementsUtils.parseElements(div, true, false);
+    const content = await parseElements({element: div, root: true, contentEditable: false, type: 'deck'});
 
     return (
       <div slot={slotName} contentEditable={false}>

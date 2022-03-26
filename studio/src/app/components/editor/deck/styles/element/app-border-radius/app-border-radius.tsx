@@ -171,8 +171,7 @@ export class AppBorderRadius {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.borderRadius}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({borderRadius: $event.detail})}
-      >
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({borderRadius: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.border_radius}</ion-label>
         <ion-list class="properties">
           <ion-item class="select">
@@ -181,8 +180,7 @@ export class AppBorderRadius {
               onIonChange={($event: CustomEvent) => this.selectCornersToShow($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end"
-            >
+              class="ion-padding-start ion-padding-end">
               <ion-select-option value={false}>{i18n.state.editor.all_corners}</ion-select-option>
               <ion-select-option value={true}>{i18n.state.editor.individual_corners}</ion-select-option>
             </ion-select>
@@ -205,8 +203,7 @@ export class AppBorderRadius {
               placeholder={i18n.state.editor.border_radius}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={async () => await this.updateBorderRadiusCSS()}
-            ></ion-input>
+              onIonChange={async () => await this.updateBorderRadiusCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>
@@ -229,8 +226,7 @@ export class AppBorderRadius {
           max={this.maxBorderRadius}
           value={this.borderRadiuses.get(option)}
           mode="md"
-          onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBorderRadius($event, option)}
-        ></ion-range>
+          onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBorderRadius($event, option)}></ion-range>
       </ion-item>
     ];
   }

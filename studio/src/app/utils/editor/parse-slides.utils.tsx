@@ -1,5 +1,5 @@
 import {convertStyle, Slide, SlideScope, SlideTemplate} from '@deckdeckgo/editor';
-import {ParseElementsUtils} from '@deckdeckgo/studio';
+import {parseElements} from '@deckdeckgo/studio';
 import {h, JSX} from '@stencil/core';
 import {v4 as uuid} from 'uuid';
 import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
@@ -31,7 +31,7 @@ export class ParseSlidesUtils {
 
       if (slide.data.content && slide.data.content !== undefined) {
         div.innerHTML = slide.data.content;
-        content = await ParseElementsUtils.parseElements(div, true, contentEditable);
+        content = await parseElements({element: div, root: true, type: 'deck', contentEditable});
       }
 
       const userAttributes = slide.data.attributes

@@ -126,8 +126,7 @@ export class AppCodeLanguages {
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
             onIonChange={() => {
               this.search();
-            }}
-          ></ion-searchbar>
+            }}></ion-searchbar>
         </ion-toolbar>
       </ion-footer>
     ];

@@ -26,7 +26,8 @@ import {
   updateOfflineDeck,
   updateOfflineSlide
 } from '@deckdeckgo/offline';
-import {ParseElementsUtils, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeDragDropResize, isNodeEditable, isNodeReveal, isNodeTitle} from '@deckdeckgo/studio';
+import {isElementContentEditable} from '@deckdeckgo/studio/dist/types/utils/parse-deck-elements.utils';
 import {setDeck, syncDeleteSlide, syncUpdateDeck, syncUpdateSlide} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';
@@ -149,7 +150,7 @@ export class DeckDataEvents {
 
     let parent: HTMLElement = element.parentElement;
 
-    if (SlotUtils.isNodeReveal(parent) || SlotUtils.isNodeDragDropResize(parent)) {
+    if (isNodeReveal(parent) || isNodeDragDropResize(parent)) {
       parent = parent.parentElement;
     }
 
@@ -169,7 +170,7 @@ export class DeckDataEvents {
 
     let parent: HTMLElement = element.parentElement;
 
-    if (SlotUtils.isNodeReveal(parent) || SlotUtils.isNodeDragDropResize(parent)) {
+    if (isNodeReveal(parent) || isNodeDragDropResize(parent)) {
       parent = parent.parentElement;
     }
 
@@ -180,7 +181,7 @@ export class DeckDataEvents {
     this.debounceUpdateSlide(parent);
 
     // The first content editable element on the first slide is the title of the presentation (if the slot used is a title 😉)
-    if (parent && !parent.previousElementSibling && !element.previousElementSibling && SlotUtils.isNodeTitle(element)) {
+    if (parent && !parent.previousElementSibling && !element.previousElementSibling && isNodeTitle(element)) {
       this.debounceUpdateDeckTitle(element.textContent);
     }
   };
@@ -939,15 +940,15 @@ export class DeckDataEvents {
 
     elements.forEach((e: HTMLElement) => {
       if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-        if (SlotUtils.isNodeEditable(e)) {
+        if (isNodeEditable(e)) {
           e.setAttribute('editable', attrEditableValue);
-        } else if (ParseElementsUtils.isElementContentEditable(e)) {
+        } else if (isElementContentEditable(e)) {
           e.setAttribute('contentEditable', attrEditableValue);
           e.setAttribute('spellcheck', attrEditableValue);
-        } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
+        } else if (isNodeReveal(e) && e.firstElementChild) {
           e.firstElementChild.setAttribute('contentEditable', attrEditableValue);
           e.firstElementChild.setAttribute('spellcheck', attrEditableValue);
-        } else if (SlotUtils.isNodeDragDropResize(e) && e.firstElementChild) {
+        } else if (isNodeDragDropResize(e) && e.firstElementChild) {
           e.setAttribute('resize', attrEditableValue);
           e.setAttribute('rotation', attrEditableValue);
           e.setAttribute('drag', editable ? 'all' : 'none');

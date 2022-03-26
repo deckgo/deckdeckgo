@@ -30,7 +30,6 @@ export const AppIcon: FunctionalComponent<AppIconProps> = ({
       aria-hidden={ariaHidden}
       lazy={lazy}
       {...(slot && {slot})}
-      {...(style && {style})}
-    ></ion-icon>
+      {...(style && {style})}></ion-icon>
   );
 };

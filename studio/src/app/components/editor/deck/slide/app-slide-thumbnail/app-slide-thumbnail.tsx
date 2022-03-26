@@ -118,8 +118,7 @@ export class AppSlideThumbnail {
         keyboard={false}
         ref={(el) => (this.deckPreviewRef = el as HTMLDeckgoDeckElement)}
         onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}
-        onDeckDidLoad={($event: CustomEvent) => $event.stopPropagation()}
-      ></deckgo-deck>
+        onDeckDidLoad={($event: CustomEvent) => $event.stopPropagation()}></deckgo-deck>
     );
   }
 }

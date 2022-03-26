@@ -242,8 +242,7 @@ export class AppColor {
               placeholder={i18n.state.editor.color}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={async () => await this.updateColorCSS()}
-            ></ion-input>
+              onIonChange={async () => await this.updateColorCSS()}></ion-input>
           </ion-item>
         </ion-list>
 
@@ -263,8 +262,7 @@ export class AppColor {
           slot="start"
           arial-label={i18n.state.editor.color_picker}
           value={colorValue}
-          onChange={($event) => this.onColorPickerChange($event)}
-        ></input>
+          onChange={($event) => this.onColorPickerChange($event)}></input>
         {this.renderColorInput()}
         <button slot="end" class="reset" arial-label={i18n.state.core.reset} onClick={($event: UIEvent) => this.emitReset($event)}>
           <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
@@ -287,8 +285,7 @@ export class AppColor {
           value={this.color?.hex}
           name="color"
           placeholder="#000000"
-          arial-label={i18n.state.editor.color}
-        ></ion-input>
+          arial-label={i18n.state.editor.color}></ion-input>
       );
     } else {
       return (
@@ -303,8 +300,7 @@ export class AppColor {
             max={'255'}
             name="r"
             placeholder="R"
-            arial-label={i18n.state.editor.rgb_red}
-          ></ion-input>
+            arial-label={i18n.state.editor.rgb_red}></ion-input>
           <ion-input
             input-mode="tel"
             value={this.color?.rgb?.g}
@@ -315,8 +311,7 @@ export class AppColor {
             max={'255'}
             name="g"
             placeholder="G"
-            arial-label={i18n.state.editor.rgb_green}
-          ></ion-input>
+            arial-label={i18n.state.editor.rgb_green}></ion-input>
           <ion-input
             input-mode="tel"
             value={this.color?.rgb?.b}
@@ -327,8 +322,7 @@ export class AppColor {
             max={'255'}
             name="b"
             placeholder="B"
-            arial-label={i18n.state.editor.rgb_blue}
-          ></ion-input>
+            arial-label={i18n.state.editor.rgb_blue}></ion-input>
         </div>
       );
     }
@@ -359,8 +353,7 @@ export class AppColor {
             value={this.opacity}
             mode="md"
             style={{'--bar-background-active': this.color.hex}}
-            onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}
-          ></ion-range>
+            onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
         </ion-item>
       </Fragment>
     );
@@ -376,8 +369,7 @@ export class AppColor {
         <ion-fab-button
           size="small"
           style={{'--background': palette.color.hex, '--background-hover': palette.color.hex, '--background-activated': palette.color.hex}}
-          onClick={($event: UIEvent) => this.selectColor($event, palette.color)}
-        ></ion-fab-button>
+          onClick={($event: UIEvent) => this.selectColor($event, palette.color)}></ion-fab-button>
       );
     });
   }

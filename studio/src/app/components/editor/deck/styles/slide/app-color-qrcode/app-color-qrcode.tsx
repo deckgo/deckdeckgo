@@ -89,8 +89,7 @@ export class AppColorQRCode {
               onIonChange={($event: CustomEvent) => this.selectApplyType($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end"
-            >
+              class="ion-padding-start ion-padding-end">
               <ion-select-option value={ApplyColorType.QR_CODE}>{i18n.state.editor.fill}</ion-select-option>,
               <ion-select-option value={ApplyColorType.BACKDROP}>{i18n.state.editor.backdrop}</ion-select-option>,
             </ion-select>
@@ -101,8 +100,7 @@ export class AppColorQRCode {
           ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           initColor={this.initColor}
           onResetColor={() => this.resetColor()}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
-        ></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
       </app-expansion-panel>
     );
   }

@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {SlideSplitType} from '@deckdeckgo/editor';
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeReveal, SlotType} from '@deckdeckgo/studio';
 import {SelectedTarget} from '../../types/editor/selected-target';
 import {ListUtils} from './list.utils';
 import {SlideUtils} from './slide.utils';
@@ -49,11 +49,11 @@ export class SelectedElementUtils {
       return {
         type,
         element: {
-          math: this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-          wordCloud: this.isElementWordCloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-          markdown: this.isElementMarkdown(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-          code: this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-          image: this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          math: this.isElementMath(isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          wordCloud: this.isElementWordCloud(isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          markdown: this.isElementMarkdown(isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          code: this.isElementCode(isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          image: this.isElementImage(isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
           shape: this.isElementShape(element),
           demo: this.isElementDemo(element),
           list: ListUtils.isElementList(element)

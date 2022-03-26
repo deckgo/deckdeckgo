@@ -85,8 +85,7 @@ export class AppEmbed {
               value={this.embedCode}
               readonly={true}
               ref={(el) => (this.embedCodeElement = el as HTMLIonTextareaElement)}
-              onClick={() => this.selectEmbedCode()}
-            ></ion-textarea>
+              onClick={() => this.selectEmbedCode()}></ion-textarea>
           </ion-item>
         </ion-list>
 

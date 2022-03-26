@@ -66,8 +66,7 @@ export class AppCustomization {
           checked={themeStore.state.darkTheme}
           mode="md"
           color="medium"
-          onIonChange={async () => await this.toggleTheme()}
-        ></ion-toggle>
+          onIonChange={async () => await this.toggleTheme()}></ion-toggle>
       </ion-item>
     );
   }
@@ -82,8 +81,7 @@ export class AppCustomization {
           onIonChange={($event: CustomEvent) => this.toggleLang($event)}
           interface="popover"
           mode="md"
-          class="ion-padding-start ion-padding-end"
-        >
+          class="ion-padding-start ion-padding-end">
           <ion-select-option value="de">Deutsch</ion-select-option>
           <ion-select-option value="en">English</ion-select-option>
           <ion-select-option value="es">Español</ion-select-option>
@@ -104,8 +102,7 @@ export class AppCustomization {
           onIonChange={() => this.toggleEditMode()}
           interface="popover"
           mode="md"
-          class="ion-padding-start ion-padding-end"
-        >
+          class="ion-padding-start ion-padding-end">
           <ion-select-option value="properties">{i18n.state.settings.properties}</ion-select-option>
           <ion-select-option value="css">CSS</ion-select-option>
         </ion-select>
@@ -122,8 +119,7 @@ export class AppCustomization {
           checked={settingsStore.state.contrastWarning}
           mode="md"
           color="medium"
-          onIonChange={() => this.toggleContrastWarning()}
-        ></ion-toggle>
+          onIonChange={() => this.toggleContrastWarning()}></ion-toggle>
       </ion-item>
     );
   }
