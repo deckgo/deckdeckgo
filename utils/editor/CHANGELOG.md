@@ -1,3 +1,10 @@
+# 7.8.0 (2022-03-19)
+
+### Features
+
+- `cleanNode` extended to clean HTML element children too
+- expose list of `dirtyAttributes`
+
 # 7.7.0 (2022-03-19)
 
 ### Features

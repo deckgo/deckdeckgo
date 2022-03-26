@@ -1,3 +1,16 @@
+export const dirtyAttributes: string[] = [
+  'id',
+  'hydrated',
+  'contenteditable',
+  'editable',
+  'spellcheck',
+  'highlighted',
+  'custom-loader',
+  'class',
+  'placeholder',
+  'data-gramm'
+];
+
 export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): Node | null => {
   if (isTextNode(node)) {
     return node;
@@ -5,17 +18,23 @@ export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): No
 
   if (isElementNode(node)) {
     const clone: HTMLElement = node.cloneNode(deep) as HTMLElement;
-    clone.removeAttribute('contenteditable');
-    clone.removeAttribute('editable');
-    clone.removeAttribute('spellcheck');
-    clone.removeAttribute('highlighted');
-    clone.removeAttribute('custom-loader');
-    clone.removeAttribute('class');
+    cleanAttributes(clone);
+
+    const children: NodeListOf<HTMLElement> = clone.querySelectorAll(dirtyAttributes.join(','));
+    for (const child of Array.from(children)) {
+      cleanAttributes(child);
+    }
 
     return clone;
   }
 
   return null;
+};
+
+const cleanAttributes = (element: HTMLElement) => {
+  for (const attr of dirtyAttributes) {
+    element.removeAttribute(attr);
+  }
 };
 
 export const isTextNode = (element: Node | undefined): boolean => {
