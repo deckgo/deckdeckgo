@@ -1,3 +1,9 @@
+# 7.8.1 (2022-03-19)
+
+### Fix
+
+- clean code attributes selector
+
 # 7.8.0 (2022-03-19)
 
 ### Features

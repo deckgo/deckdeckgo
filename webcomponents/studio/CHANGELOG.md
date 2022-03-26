@@ -1,3 +1,13 @@
+# 0.0.12 (2022-03-26)
+
+### Features
+
+- support for special paragraphs and children editable or not (`figure` and `figurecaption`)
+
+### Refactor
+
+- functions instead of stateless class
+
 # 0.0.12 (2022-03-19)
 
 ### Fix

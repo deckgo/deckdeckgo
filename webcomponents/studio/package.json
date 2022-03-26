@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/studio",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "The editor(s) of DeckDeckGo.",
   "main": "dist/index.cjs.js",
   "module": "dist/studio/studio.esm.js",
@@ -42,9 +42,8 @@
   ],
   "dependencies": {
     "@deckdeckgo/deck-utils": "^7.0.0",
-    "@deckdeckgo/editor": "^7.8.0",
+    "@deckdeckgo/editor": "^7.8.1",
     "@deckdeckgo/offline": "^0.0.6",
-    "@deckdeckgo/sync": "^0.0.17",
     "@deckdeckgo/utils": "^5.1.0",
     "idb-keyval": "^6.1.0",
     "nanoid": "^3.3.1"

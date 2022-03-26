@@ -20,7 +20,7 @@ export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): No
     const clone: HTMLElement = node.cloneNode(deep) as HTMLElement;
     cleanAttributes(clone);
 
-    const children: NodeListOf<HTMLElement> = clone.querySelectorAll(dirtyAttributes.join(','));
+    const children: NodeListOf<HTMLElement> = clone.querySelectorAll(dirtyAttributes.map((attr: string) => `[${attr}]`).join(','));
     for (const child of Array.from(children)) {
       cleanAttributes(child);
     }
