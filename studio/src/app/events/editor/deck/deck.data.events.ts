@@ -26,8 +26,7 @@ import {
   updateOfflineDeck,
   updateOfflineSlide
 } from '@deckdeckgo/offline';
-import {isNodeDragDropResize, isNodeEditable, isNodeReveal, isNodeTitle} from '@deckdeckgo/studio';
-import {isElementContentEditable} from '@deckdeckgo/studio/dist/types/utils/parse-deck-elements.utils';
+import {isElementContentEditable, isNodeDragDropResize, isNodeEditable, isNodeReveal, isNodeTitle} from '@deckdeckgo/studio';
 import {setDeck, syncDeleteSlide, syncUpdateDeck, syncUpdateSlide} from '@deckdeckgo/sync';
 import {debounce} from '@deckdeckgo/utils';
 import type {ItemReorderEventDetail} from '@ionic/core';

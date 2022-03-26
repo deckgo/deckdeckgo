@@ -1,4 +1,4 @@
-# 0.0.12 (2022-03-26)
+# 0.0.13-0.0.14 (2022-03-26)
 
 ### Features
 
@@ -12,7 +12,7 @@
 
 ### Fix
 
-- reset ready store on detroy
+- reset ready store on destroy
 
 # 0.0.11 (2022-03-18)
 
