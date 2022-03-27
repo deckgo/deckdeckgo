@@ -1,3 +1,9 @@
+# 0.0.15 (2022-03-27)
+
+### Fix
+
+- typo `figcaption` is a valid html element not `figurecaption`
+
 # 0.0.13-0.0.14 (2022-03-26)
 
 ### Features
