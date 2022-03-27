@@ -145,8 +145,7 @@ export class AppNavigationEnd {
           class="ion-activatable"
           onClick={($event: UIEvent) => this.selectType($event)}
           disabled={disabled}
-          aria-label={i18n.state.tools.new_presentation}
-        >
+          aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -209,8 +208,7 @@ export class AppNavigationEnd {
             key="user-menu-action"
             class="ion-activatable"
             onClick={(e: UIEvent) => this.openMenu(e)}
-            aria-label={i18n.state.nav.menu}
-          >
+            aria-label={i18n.state.nav.menu}>
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
             <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
@@ -250,8 +248,7 @@ export class AppNavigationEnd {
         key="cloud-status-action"
         class={`cloud ion-activatable ${syncStore.state.sync}`}
         aria-label={label}
-        onClick={($event: UIEvent) => this.openSyncInfo($event)}
-      >
+        onClick={($event: UIEvent) => this.openSyncInfo($event)}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name={iconName} ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.sync.cloud}</ion-label>

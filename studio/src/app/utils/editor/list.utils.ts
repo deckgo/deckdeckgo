@@ -1,13 +1,13 @@
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeList, isNodeRevealList, SlotType} from '@deckdeckgo/studio';
 import {ListStyle} from '../../types/editor/list-style';
 
 export class ListUtils {
   static isElementList(element: HTMLElement): SlotType.OL | SlotType.UL | undefined {
-    if (!SlotUtils.isNodeList(element)) {
+    if (!isNodeList(element)) {
       return undefined;
     }
 
-    if (SlotUtils.isNodeRevealList(element)) {
+    if (isNodeRevealList(element)) {
       return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
     } else {
       return element?.nodeName?.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
@@ -15,7 +15,7 @@ export class ListUtils {
   }
 
   static getListElementType(element: HTMLElement): ListStyle | undefined {
-    if (!SlotUtils.isNodeList(element)) {
+    if (!isNodeList(element)) {
       return undefined;
     }
 

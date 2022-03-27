@@ -116,8 +116,7 @@ export class AppColorTextBackground {
         expanded={this.colorType === 'text' ? settingsStore.state.panels.color : settingsStore.state.panels.background}
         onExpansion={($event: CustomEvent<Expanded>) =>
           SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})
-        }
-      >
+        }>
         <ion-label slot="title">{i18n.state.editor.color}</ion-label>
 
         <app-color
@@ -125,8 +124,7 @@ export class AppColorTextBackground {
           initColor={this.colorType === 'background' ? this.initBackground : this.initColor}
           onResetColor={() => this.resetColor()}
           defaultColor={this.colorType === 'background' ? '#fff' : '#000'}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}
-        ></app-color>
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
       </app-expansion-panel>
     );
   }

@@ -1,4 +1,4 @@
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeImage, isNodeList, isNodeReveal, isNodeRevealList, isNodeSocial, isSlotTypeEditable, SlotType} from '@deckdeckgo/studio';
 import {RevealSlotUtils} from './reveal-slot.utils';
 
 export class ToggleSlotUtils {
@@ -16,7 +16,7 @@ export class ToggleSlotUtils {
 
       const element: HTMLElement = document.createElement(type.toString());
 
-      const reveal: boolean = SlotUtils.isNodeReveal(selectedTarget);
+      const reveal: boolean = isNodeReveal(selectedTarget);
 
       await this.copyAttributes(selectedTarget, element);
       await this.cleanAttributes(element, type);
@@ -86,7 +86,7 @@ export class ToggleSlotUtils {
 
   private static updateContentEditable(selectedTarget: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!SlotUtils.isSlotTypeEditable(type)) {
+      if (!isSlotTypeEditable(type)) {
         selectedTarget.removeAttribute('editable');
         selectedTarget.removeAttribute('contenteditable');
       } else if (type === SlotType.CODE || type == SlotType.MATH || type == SlotType.WORD_CLOUD || type === SlotType.MARKDOWN) {
@@ -103,7 +103,7 @@ export class ToggleSlotUtils {
 
   private static cleanAttributes(selectedTarget: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (SlotUtils.isSlotTypeEditable(type)) {
+      if (isSlotTypeEditable(type)) {
         selectedTarget.removeAttribute('img-src');
         selectedTarget.removeAttribute('img-alt');
         selectedTarget.style.removeProperty('justify-content');
@@ -117,19 +117,19 @@ export class ToggleSlotUtils {
   private static copyContent(selectedTarget: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const currentContainer: HTMLElement = this.getSlotContainer(
-        reveal && !SlotUtils.isNodeRevealList(selectedTarget) ? (selectedTarget.firstElementChild as HTMLElement) : selectedTarget
+        reveal && !isNodeRevealList(selectedTarget) ? (selectedTarget.firstElementChild as HTMLElement) : selectedTarget
       );
 
       const container: HTMLElement = await this.createSlotContainer(element, type);
 
       // We don't copy content if the source or the destination is an image
-      if (SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer) || !SlotUtils.isSlotTypeEditable(type)) {
+      if (isNodeImage(currentContainer) || isNodeSocial(currentContainer) || !isSlotTypeEditable(type)) {
         resolve();
         return;
       }
 
       if (type === SlotType.OL || type === SlotType.UL) {
-        if (SlotUtils.isNodeList(currentContainer)) {
+        if (isNodeList(currentContainer)) {
           await this.copyContentChildren(container, currentContainer);
         } else {
           await this.copyContentToList(container, currentContainer);
@@ -139,7 +139,7 @@ export class ToggleSlotUtils {
         return;
       }
 
-      if (SlotUtils.isNodeList(currentContainer)) {
+      if (isNodeList(currentContainer)) {
         await this.copyContentFromList(container, currentContainer);
 
         resolve();

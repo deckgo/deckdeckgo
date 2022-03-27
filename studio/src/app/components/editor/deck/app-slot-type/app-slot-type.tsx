@@ -1,4 +1,4 @@
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeReveal, isNodeRevealList, SlotType} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, Fragment, h, JSX, Prop, State} from '@stencil/core';
 import i18n from '../../../../stores/i18n.store';
 import {AppIcon} from '../../../core/app-icon/app-icon';
@@ -30,7 +30,7 @@ export class AppSlotType {
       return;
     }
 
-    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+    if (isNodeRevealList(this.selectedTarget)) {
       this.initCurrentTypeList();
     } else {
       this.initCurrentType();
@@ -41,7 +41,7 @@ export class AppSlotType {
 
   private initCurrentType() {
     // prettier-ignore
-    const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedTarget) ? this.selectedTarget.firstElementChild as HTMLElement : this.selectedTarget;
+    const element: HTMLElement = isNodeReveal(this.selectedTarget) ? this.selectedTarget.firstElementChild as HTMLElement : this.selectedTarget;
 
     if (element.nodeName && element.nodeName !== '') {
       this.currentType = this.initSlotType(element.nodeName.toLowerCase());

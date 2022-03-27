@@ -183,8 +183,7 @@ export class AppTemplate {
                     required={true}
                     input-mode="text"
                     onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}
-                    onIonChange={() => this.validateCDNInput()}
-                  ></ion-input>
+                    onIonChange={() => this.validateCDNInput()}></ion-input>
                 </ion-item>
 
                 <ion-item class={`item-title ${errorTag}`}>
@@ -201,8 +200,7 @@ export class AppTemplate {
                     required={true}
                     input-mode="text"
                     onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}
-                    onIonChange={() => this.validateTag()}
-                  ></ion-input>
+                    onIonChange={() => this.validateTag()}></ion-input>
                 </ion-item>
 
                 <ion-item class="item-title">

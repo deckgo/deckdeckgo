@@ -1,4 +1,4 @@
-import {SlotUtils} from '@deckdeckgo/studio';
+import {isNodeReveal, isNodeRevealList} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
 
@@ -16,7 +16,7 @@ export class AppReveal {
   @Event() toggleReveal: EventEmitter<boolean>;
 
   componentWillLoad() {
-    this.reveal = SlotUtils.isNodeReveal(this.selectedTarget) || SlotUtils.isNodeRevealList(this.selectedTarget);
+    this.reveal = isNodeReveal(this.selectedTarget) || isNodeRevealList(this.selectedTarget);
   }
 
   private toggle() {

@@ -195,8 +195,7 @@ export class AppActionsDeck {
             onTouchStart={($event) => $event.stopPropagation()}
             aria-label={i18n.state.editor.previous}
             onClick={() => this.animatePrevNextSlide.emit(false)}
-            class="ion-activatable"
-          >
+            class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="arrow-back" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.previous}</ion-label>
@@ -207,8 +206,7 @@ export class AppActionsDeck {
             onTouchStart={($event) => $event.stopPropagation()}
             aria-label={i18n.state.editor.next}
             onClick={() => this.animatePrevNextSlide.emit(true)}
-            class="ion-activatable"
-          >
+            class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="arrow-forward" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.next}</ion-label>
@@ -220,8 +218,7 @@ export class AppActionsDeck {
             aria-label={i18n.state.editor.slides}
             onClick={() => this.openSlideNavigate()}
             color="primary"
-            class={`ion-activatable wider-devices ${!this.mobile ? 'hide-slide-navigate' : ''}`}
-          >
+            class={`ion-activatable wider-devices ${!this.mobile ? 'hide-slide-navigate' : ''}`}>
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="md-list" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.slides}</ion-label>
@@ -241,8 +238,7 @@ export class AppActionsDeck {
             aria-label={i18n.state.editor.present}
             onClick={() => this.openPresent()}
             color="primary"
-            class="wider-devices open-remote ion-activatable"
-          >
+            class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="play" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.present}</ion-label>
@@ -255,8 +251,7 @@ export class AppActionsDeck {
             onTouchStart={($event) => $event.stopPropagation()}
             onClick={async ($event: UIEvent) => await this.openMoreActions($event)}
             color="primary"
-            class="small-devices ion-activatable"
-          >
+            class="small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="ellipsis-vertical" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.more}</ion-label>
@@ -277,8 +272,7 @@ export class AppActionsDeck {
         onTouchStart={($event) => $event.stopPropagation()}
         onClick={() => this.toggleFullScreenMode()}
         color="primary"
-        class="wider-devices ion-activatable"
-      >
+        class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="contract" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.exit_fullscreen}</ion-label>

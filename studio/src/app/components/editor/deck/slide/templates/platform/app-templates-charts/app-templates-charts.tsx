@@ -64,8 +64,7 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE}})}
-      >
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE}})}>
         {/* Pie */}
         <deckgo-slide-chart
           class="showcase"
@@ -77,8 +76,7 @@ export class AppTemplatesCharts {
           width={68}
           height={68}
           src={assetsStore.state.chart.pieSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.pie}</p>
         </deckgo-slide-chart>
       </div>,
@@ -88,8 +86,7 @@ export class AppTemplatesCharts {
         custom-tappable
         onClick={() =>
           this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, innerRadius: 100}})
-        }
-      >
+        }>
         {/* Donut */}
         <deckgo-slide-chart
           class="showcase"
@@ -102,8 +99,7 @@ export class AppTemplatesCharts {
           height={68}
           inner-radius={16}
           src={assetsStore.state.chart.pieSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.donut}</p>
         </deckgo-slide-chart>
       </div>,
@@ -111,8 +107,9 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, animation: true}})}
-      >
+        onClick={() =>
+          this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, animation: true}})
+        }>
         {/* Animated Pie */}
         <deckgo-slide-chart
           class="showcase"
@@ -125,8 +122,7 @@ export class AppTemplatesCharts {
           width={68}
           height={68}
           src={assetsStore.state.chart.barCompareSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.pie_comparison}</p>
         </deckgo-slide-chart>
       </div>,
@@ -134,8 +130,7 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE}})}
-      >
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE}})}>
         {/* Area */}
         <deckgo-slide-chart
           class="showcase"
@@ -149,8 +144,7 @@ export class AppTemplatesCharts {
           y-axis-domain="extent"
           date-pattern="dd.MM.yyyy"
           src={assetsStore.state.chart.lineCompareSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.area}</p>
         </deckgo-slide-chart>
       </div>,
@@ -158,8 +152,7 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, smooth: false}})}
-      >
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, smooth: false}})}>
         {/* Sharp area */}
         <deckgo-slide-chart
           class="showcase"
@@ -174,8 +167,7 @@ export class AppTemplatesCharts {
           date-pattern="dd.MM.yyyy"
           smooth={'false'}
           src={assetsStore.state.chart.lineSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.sharp_area}</p>
         </deckgo-slide-chart>
       </div>,
@@ -183,8 +175,7 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, area: false}})}
-      >
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, area: false}})}>
         {/* Lines */}
         <deckgo-slide-chart
           class="showcase"
@@ -197,8 +188,7 @@ export class AppTemplatesCharts {
           height={68}
           area={'false'}
           src={assetsStore.state.chart.lineNoDatesSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.lines}</p>
         </deckgo-slide-chart>
       </div>,
@@ -208,8 +198,7 @@ export class AppTemplatesCharts {
         custom-tappable
         onClick={() =>
           this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, animation: true}})
-        }
-      >
+        }>
         {/* Animated area */}
         <deckgo-slide-chart
           class="showcase"
@@ -224,8 +213,7 @@ export class AppTemplatesCharts {
           date-pattern="dd.MM.yyyy"
           animation={true}
           src={assetsStore.state.chart.lineMultipleSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.line_graph_comparison}</p>
         </deckgo-slide-chart>
       </div>,
@@ -233,8 +221,7 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}
-      >
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}>
         {/* Bar */}
         <deckgo-slide-chart
           class="showcase"
@@ -246,8 +233,7 @@ export class AppTemplatesCharts {
           width={88}
           height={68}
           src={assetsStore.state.chart.pieSrc}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.bar}</p>
         </deckgo-slide-chart>
       </div>,
@@ -255,8 +241,7 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}
-      >
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}>
         {/* Grouped bars */}
         <deckgo-slide-chart
           class="showcase"
@@ -273,8 +258,7 @@ export class AppTemplatesCharts {
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
             '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
           }}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.grouped_bars}</p>
         </deckgo-slide-chart>
       </div>,
@@ -282,8 +266,9 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR, animation: true}})}
-      >
+        onClick={() =>
+          this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR, animation: true}})
+        }>
         {/* Animation bars */}
         <deckgo-slide-chart
           class="showcase"
@@ -301,8 +286,7 @@ export class AppTemplatesCharts {
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
             '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
           }}
-          custom-loader={true}
-        >
+          custom-loader={true}>
           <p slot="title">{i18n.state.templates.bar_comparison}</p>
         </deckgo-slide-chart>
       </div>

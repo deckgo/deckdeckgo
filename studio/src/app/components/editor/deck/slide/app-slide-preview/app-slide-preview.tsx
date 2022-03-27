@@ -1,6 +1,6 @@
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {selectSlide} from '@deckdeckgo/editor';
-import {SlotUtils} from '@deckdeckgo/studio';
+import {isNodeCode, isNodeEditable, isNodeWordCloud} from '@deckdeckgo/studio';
 import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 import {Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State} from '@stencil/core';
 
@@ -66,9 +66,9 @@ export class AppSlidePreview {
 
     this.preview =
       isSlide(selectedTarget?.parentElement) &&
-      SlotUtils.isNodeEditable(selectedTarget) &&
-      !SlotUtils.isNodeCode(selectedTarget) &&
-      !SlotUtils.isNodeWordCloud(selectedTarget);
+      isNodeEditable(selectedTarget) &&
+      !isNodeCode(selectedTarget) &&
+      !isNodeWordCloud(selectedTarget);
 
     if (this.preview) {
       this.el.addEventListener('previewAttached', async () => await this.updateSlide(selectedTarget.parentElement), {once: true});
@@ -111,8 +111,7 @@ export class AppSlidePreview {
         style={style}
         class={{
           preview: this.preview
-        }}
-      >
+        }}>
         {this.renderPreview()}
       </Host>
     );

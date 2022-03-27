@@ -1,4 +1,4 @@
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeRevealList, SlotType} from '@deckdeckgo/studio';
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
 import settingsStore from '../../../../../../stores/settings.store';
@@ -61,7 +61,7 @@ export class AppList {
   }
 
   private async initListStyleCSS() {
-    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+    if (isNodeRevealList(this.selectedTarget)) {
       this.listStyleCSS = this.selectedTarget.style['--reveal-list-style'];
     } else {
       this.listStyleCSS = this.selectedTarget.style.listStyleType;
@@ -76,7 +76,7 @@ export class AppList {
     this.listType = $event.detail.value;
 
     // Remove style with undo redo as we are going to replace the element in the dom
-    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+    if (isNodeRevealList(this.selectedTarget)) {
       this.selectedTarget.style['--reveal-list-style'] = '';
     } else {
       this.selectedTarget.style.listStyleType = '';
@@ -100,7 +100,7 @@ export class AppList {
     this.selectedStyle = style;
 
     this.updateStyle({
-      property: SlotUtils.isNodeRevealList(this.selectedTarget) ? '--reveal-list-style' : 'list-style-type',
+      property: isNodeRevealList(this.selectedTarget) ? '--reveal-list-style' : 'list-style-type',
       value: this.selectedStyle
     });
 
@@ -112,7 +112,7 @@ export class AppList {
   }
 
   private async updateLetterSpacingCSS() {
-    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+    if (isNodeRevealList(this.selectedTarget)) {
       this.selectedTarget.style['--reveal-list-style'] = this.listStyleCSS;
     } else {
       this.selectedTarget.style.listStyleType = this.listStyleCSS;
@@ -121,7 +121,7 @@ export class AppList {
     this.listStyleChanged.emit();
 
     this.updateStyle({
-      property: SlotUtils.isNodeRevealList(this.selectedTarget) ? '--reveal-list-style' : 'list-style-type',
+      property: isNodeRevealList(this.selectedTarget) ? '--reveal-list-style' : 'list-style-type',
       value: this.listStyleCSS
     });
 
@@ -155,8 +155,7 @@ export class AppList {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.list}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({list: $event.detail})}
-      >
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({list: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.list}</ion-label>
 
         <ion-list>
@@ -169,8 +168,7 @@ export class AppList {
               onIonChange={($event: CustomEvent) => this.setListType($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end"
-            >
+              class="ion-padding-start ion-padding-end">
               <ion-select-option value={SlotType.OL}>{i18n.state.editor.ordered}</ion-select-option>
               <ion-select-option value={SlotType.UL}>{i18n.state.editor.unordered}</ion-select-option>
             </ion-select>
@@ -186,8 +184,7 @@ export class AppList {
               onIonChange={($event: CustomEvent) => this.setListStyle($event)}
               interface="popover"
               mode="md"
-              class="ion-padding-start ion-padding-end"
-            >
+              class="ion-padding-start ion-padding-end">
               {this.listType === SlotType.OL ? this.renderOrderedStyles() : this.renderUnorderedStyles()}
             </ion-select>
           </ion-item>
@@ -198,8 +195,7 @@ export class AppList {
               placeholder="list-style-type"
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={() => this.updateLetterSpacingCSS()}
-            ></ion-input>
+              onIonChange={() => this.updateLetterSpacingCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

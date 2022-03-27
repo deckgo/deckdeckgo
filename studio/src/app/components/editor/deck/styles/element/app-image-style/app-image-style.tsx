@@ -230,8 +230,7 @@ export class AppImageStyle {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.imageStyle}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({imageStyle: $event.detail})}
-      >
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({imageStyle: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.image}</ion-label>
         <ion-list>
           {this.renderImageSize()}
@@ -256,8 +255,7 @@ export class AppImageStyle {
           onIonChange={($event: CustomEvent) => this.toggleImageSize($event)}
           interface="popover"
           mode="md"
-          class="ion-padding-start ion-padding-end"
-        >
+          class="ion-padding-start ion-padding-end">
           <ion-select-option value={ImageSize.SMALL}>{i18n.state.editor.small}</ion-select-option>
           <ion-select-option value={ImageSize.MEDIUM}>{i18n.state.editor.medium}</ion-select-option>
           <ion-select-option value={ImageSize.LARGE}>{i18n.state.editor.large}</ion-select-option>
@@ -271,8 +269,7 @@ export class AppImageStyle {
           placeholder="height"
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleImageHeightInput(e)}
-          onIonChange={async () => await this.updateImageHeightCSS()}
-        ></ion-input>
+          onIonChange={async () => await this.updateImageHeightCSS()}></ion-input>
       </ion-item>
     ];
   }
@@ -292,8 +289,7 @@ export class AppImageStyle {
           onIonChange={($event: CustomEvent) => this.toggleImageAlignment($event)}
           interface="popover"
           mode="md"
-          class="ion-padding-start ion-padding-end"
-        >
+          class="ion-padding-start ion-padding-end">
           <ion-select-option value={ImageAlignment.START}>{i18n.state.editor.start}</ion-select-option>
           <ion-select-option value={ImageAlignment.CENTER}>{i18n.state.editor.center}</ion-select-option>
           <ion-select-option value={ImageAlignment.END}>{i18n.state.editor.end}</ion-select-option>
@@ -306,8 +302,7 @@ export class AppImageStyle {
           placeholder="justify-content"
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleImageJustifyContentInput(e)}
-          onIonChange={async () => await this.updateImageJustifyContentCSS()}
-        ></ion-input>
+          onIonChange={async () => await this.updateImageJustifyContentCSS()}></ion-input>
       </ion-item>
     ];
   }

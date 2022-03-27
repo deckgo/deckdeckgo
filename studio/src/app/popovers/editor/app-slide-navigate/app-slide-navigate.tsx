@@ -38,8 +38,7 @@ export class AppSlideNavigate {
       <Host>
         <ion-reorder-group
           onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)}
-          disabled={!this.slides || this.slides.length <= 1}
-        >
+          disabled={!this.slides || this.slides.length <= 1}>
           {this.renderSlides()}
         </ion-reorder-group>
       </Host>

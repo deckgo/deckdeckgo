@@ -201,8 +201,7 @@ export class CreateSlidesUtils {
           content={url}
           img-src={`${
             EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
-          }/img/deckdeckgo-logo.svg`}
-        >
+          }/img/deckdeckgo-logo.svg`}>
           {title}
         </deckgo-slide-qrcode>
       );

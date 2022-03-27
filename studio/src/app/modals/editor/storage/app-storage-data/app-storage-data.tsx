@@ -90,8 +90,7 @@ export class AppStorageData {
       <ion-content class="ion-padding">
         <app-storage-files
           folder={'data'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}
-        ></app-storage-files>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-storage-files>
 
         <input type="file" accept=".csv" onChange={() => this.upload()} />
       </ion-content>,

@@ -334,8 +334,7 @@ export class AppDeckTransition {
           animation={animation}
           direction={direction}
           directionMobile={directionMobile}
-          class={`showcase-${showcase}`}
-        >
+          class={`showcase-${showcase}`}>
           {this.renderItems(text, showcase === 'direction' ? 4 : 2, selected, showcase)}
         </deckgo-deck>
       </div>
@@ -365,8 +364,7 @@ export class AppDeckTransition {
             '--color': !selected
               ? 'inherit'
               : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`
-          }}
-        >
+          }}>
           <p slot="title">{text}</p>
         </deckgo-slide-title>
       );

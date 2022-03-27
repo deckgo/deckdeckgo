@@ -94,8 +94,7 @@ export class SocialUtils {
         <deckgo-lazy-img
           slot="icon"
           svg-src={`${config.globalAssetsUrl}/icons/ionicons/linkedin.svg`}
-          aria-label="LinkedIn"
-        ></deckgo-lazy-img>
+          aria-label="LinkedIn"></deckgo-lazy-img>
       </deckgo-social>
     );
   }
@@ -108,8 +107,7 @@ export class SocialUtils {
         <deckgo-lazy-img
           slot="icon"
           svg-src={`${config.globalAssetsUrl}/icons/ionicons/twitter.svg`}
-          aria-label="Twitter"
-        ></deckgo-lazy-img>
+          aria-label="Twitter"></deckgo-lazy-img>
       </deckgo-social>
     );
   }

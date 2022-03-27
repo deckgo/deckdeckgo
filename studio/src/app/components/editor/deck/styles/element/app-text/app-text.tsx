@@ -256,8 +256,7 @@ export class AppText {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.text}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({text: $event.detail})}
-      >
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({text: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.text}</ion-label>
         <ion-list>
           {this.renderFontSize()}
@@ -284,8 +283,7 @@ export class AppText {
             onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
             interface="popover"
             mode="md"
-            class="ion-padding-start ion-padding-end"
-          >
+            class="ion-padding-start ion-padding-end">
             <ion-select-option value={FontSize.VERY_SMALL}>{i18n.state.editor.very_small}</ion-select-option>
             <ion-select-option value={FontSize.SMALL}>{i18n.state.editor.small}</ion-select-option>
             <ion-select-option value={FontSize.NORMAL}>{i18n.state.editor.normal}</ion-select-option>
@@ -303,8 +301,7 @@ export class AppText {
             placeholder="font-size"
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-            onIonChange={() => this.updateFontSizeCSS(this.fontSizeCSS)}
-          ></ion-input>
+            onIonChange={() => this.updateFontSizeCSS(this.fontSizeCSS)}></ion-input>
         </ion-item>
       </Fragment>
     );
@@ -325,8 +322,7 @@ export class AppText {
             onIonChange={($event: CustomEvent) => this.updateLetterSpacing($event)}
             interface="popover"
             mode="md"
-            class="ion-padding-start ion-padding-end"
-          >
+            class="ion-padding-start ion-padding-end">
             <ion-select-option value={LetterSpacing.TIGHTER}>{i18n.state.editor.tighter}</ion-select-option>
             <ion-select-option value={LetterSpacing.TIGHT}>{i18n.state.editor.tight}</ion-select-option>
             <ion-select-option value={LetterSpacing.NORMAL}>{i18n.state.editor.normal}</ion-select-option>
@@ -343,8 +339,7 @@ export class AppText {
             placeholder={i18n.state.editor.letter_spacing}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleLetterSpacingInput(e)}
-            onIonChange={() => this.updateLetterSpacingCSS(this.letterSpacingCSS)}
-          ></ion-input>
+            onIonChange={() => this.updateLetterSpacingCSS(this.letterSpacingCSS)}></ion-input>
         </ion-item>
       </Fragment>
     );
@@ -370,8 +365,7 @@ export class AppText {
             onIonChange={($event: CustomEvent) => this.updateAlign($event)}
             interface="popover"
             mode="md"
-            class="ion-padding-start ion-padding-end"
-          >
+            class="ion-padding-start ion-padding-end">
             <ion-select-option value={TextAlign.LEFT}>{i18n.state.editor.left}</ion-select-option>
             <ion-select-option value={TextAlign.CENTER}>{i18n.state.editor.center}</ion-select-option>
             <ion-select-option value={TextAlign.RIGHT}>{i18n.state.editor.right}</ion-select-option>
@@ -384,8 +378,7 @@ export class AppText {
             placeholder={i18n.state.editor.text_align}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAlignInput(e)}
-            onIonChange={() => this.updateAlignCSS(this.alignCSS)}
-          ></ion-input>
+            onIonChange={() => this.updateAlignCSS(this.alignCSS)}></ion-input>
         </ion-item>
       </Fragment>
     );

@@ -319,8 +319,7 @@ export class AppDecks implements ComponentInterface {
           data={{deck: deck.deck}}
           disableDelete={deck.deck.id === this.currentDeckId}
           onDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-          onCloned={() => navigateReloadEditor()}
-        ></app-dashboard-actions>
+          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
       </aside>
     );
   }
@@ -333,8 +332,7 @@ export class AppDecks implements ComponentInterface {
         direction="horizontal"
         direction-mobile="horizontal"
         style={deck.style}
-        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}
-      >
+        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
         {deck.slide}
         {deck.background}
         {deck.header}

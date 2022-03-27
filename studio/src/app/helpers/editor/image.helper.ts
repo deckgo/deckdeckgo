@@ -1,5 +1,5 @@
 import {initDeckgoLazyImgAttributes, StorageFile, TenorGif, UnsplashPhoto, Waves} from '@deckdeckgo/editor';
-import {SlotType, SlotUtils} from '@deckdeckgo/studio';
+import {isNodeReveal, SlotType} from '@deckdeckgo/studio';
 import type {OverlayEventDetail} from '@ionic/core';
 import {modalController} from '@ionic/core';
 import {EventEmitter} from '@stencil/core';
@@ -131,7 +131,7 @@ export class ImageHelper {
 
   private appendContentImg(selectedTarget: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
     return new Promise<void>((resolve) => {
-      let element: HTMLDeckgoLazyImgElement = SlotUtils.isNodeReveal(selectedTarget)
+      let element: HTMLDeckgoLazyImgElement = isNodeReveal(selectedTarget)
         ? (selectedTarget.firstElementChild as HTMLDeckgoLazyImgElement)
         : (selectedTarget as HTMLDeckgoLazyImgElement);
 
@@ -147,7 +147,7 @@ export class ImageHelper {
 
       let parent: HTMLElement = element.parentElement;
 
-      if (SlotUtils.isNodeReveal(parent)) {
+      if (isNodeReveal(parent)) {
         parent = parent.parentElement;
       }
 
