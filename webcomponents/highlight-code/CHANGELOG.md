@@ -1,3 +1,9 @@
+# 4.3.0 (2022-03-18)
+
+### Features
+
+- use `.min.js` files to load addition languages at runtime
+
 # 4.2.0 (2022-03-18)
 
 ### Features
