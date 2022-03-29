@@ -1,5 +1,4 @@
-import {EventEmitter} from '@stencil/core';
-
+import {Build, EventEmitter} from '@stencil/core';
 import {deckdeckgoHighlightCodeLanguages} from '../declarations/languages';
 
 export type StateRequiredJS = 'loaded' | 'attached' | 'error' | 'abort';
@@ -93,5 +92,6 @@ export const loadMainScript = ({
 };
 
 const scriptSrc = (language: string): string => {
-  return 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
+  const {prismjs_cdn} = Build.isBrowser ? (window as unknown as {prismjs_cdn: string | undefined}) : undefined;
+  return `${prismjs_cdn ?? 'https://unpkg.com/prismjs@latest'}/components/prism-${language}.min.js`;
 };
