@@ -3,6 +3,7 @@
 ### Features
 
 - use `.min.js` files to load addition languages at runtime
+- an optional CDN can be provided instead of `https://unpkg.com/prismjs@latest` through a global variable `window.prismjs_cdn` to fetch additional languages
 
 # 4.2.0 (2022-03-18)
 
