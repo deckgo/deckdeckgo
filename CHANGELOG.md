@@ -9,7 +9,7 @@
 
 ### Providers
 
-- firebase: v4.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+- firebase: v4.1.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
 
 ### Providers: Deprecated and integrated into `papyrs`
 

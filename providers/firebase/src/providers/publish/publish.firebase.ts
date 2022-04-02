@@ -18,7 +18,7 @@ export const deckPublish: DeckPublish = async ({deck: deckSource, config}: {deck
   return deck;
 };
 
-export const docPublish: DocPublish = async (_params: {doc: Doc}): Promise<Doc> => {
+export const docPublish: DocPublish = async (_params: {doc: Doc; config: Record<string, string>}): Promise<Doc> => {
   throw new Error('Publish operation not supported.');
 };
 
