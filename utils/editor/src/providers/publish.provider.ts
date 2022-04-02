@@ -6,7 +6,7 @@ export interface DeckPublish {
 }
 
 export interface DocPublish {
-  ({doc}: {doc: Doc}): Promise<Doc>;
+  ({doc, config}: {doc: Doc; config: Record<string, string>}): Promise<Doc>;
 }
 
 export interface PublishUrl {

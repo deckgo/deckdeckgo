@@ -27,6 +27,7 @@ export interface DeckPublishData extends PublishData {
 
 export interface DocPublishData extends PublishData {
   paragraphs: string[];
+  theme: string | undefined;
 }
 
 export const deckPublishData = async ({deck, fallbackAuthor}: {deck: Deck; fallbackAuthor: string}): Promise<DeckPublishData> => {
@@ -42,13 +43,22 @@ export const deckPublishData = async ({deck, fallbackAuthor}: {deck: Deck; fallb
   };
 };
 
-export const docPublishData = async ({doc, fallbackAuthor}: {doc: Doc; fallbackAuthor: string}): Promise<DocPublishData> => {
+export const docPublishData = async ({
+  doc,
+  fallbackAuthor,
+  theme
+}: {
+  doc: Doc;
+  fallbackAuthor: string;
+  theme: string | undefined;
+}): Promise<DocPublishData> => {
   const {data} = doc;
   const {meta} = data;
 
   return {
     ...(await publishData({meta, selector: docSelector, fallbackName: data.name, fallbackAuthor})),
-    paragraphs: getParagraphs()
+    paragraphs: getParagraphs(),
+    theme
   };
 };
 
