@@ -52,12 +52,12 @@ export const publishUrl = async (meta: Meta | undefined): Promise<string | undef
   return undefined;
 };
 
-const publishDoc = async ({inputs}: PublishParams): Promise<void> => {
+const publishDoc = async ({inputs, config}: PublishParams): Promise<void> => {
   const doc: Doc = updateDocMeta(inputs);
 
   const {docPublish}: {docPublish: DocPublish} = await cloudProvider<{docPublish: DocPublish}>();
 
-  await docPublish({doc});
+  await docPublish({doc, config});
 };
 
 const publishDeck = async ({inputs, config}: PublishParams): Promise<void> => {

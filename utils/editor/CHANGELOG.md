@@ -1,3 +1,10 @@
+# 7.9.0 (2022-04-02)
+
+### Features
+
+- add `config` to `DocPublish`
+- add `theme` to `docPublishData`
+
 # 7.8.1 (2022-03-19)
 
 ### Fix
