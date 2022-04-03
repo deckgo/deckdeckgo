@@ -17,7 +17,7 @@
 
 ### Web Components: New
 
-- studio: v0.0.15 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
+- studio: v0.0.16 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
 
 ### Web Components:
 

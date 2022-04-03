@@ -1,3 +1,9 @@
+# 0.0.16 (2022-04-03)
+
+### Build
+
+- wildcard Stylo peer dependency
+
 # 0.0.15 (2022-03-27)
 
 ### Fix

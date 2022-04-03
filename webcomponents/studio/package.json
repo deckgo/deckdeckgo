@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/studio",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "The editor(s) of DeckDeckGo.",
   "main": "dist/index.cjs.js",
   "module": "dist/studio/studio.esm.js",
@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "@deckdeckgo/lazy-img": "^3.2.0",
-    "@papyrs/stylo": "^0.0.9"
+    "@papyrs/stylo": "*"
   },
   "devDependencies": {
     "@papyrs/stylo": "^0.0.8-2",
