@@ -9,14 +9,14 @@ deckgo-studio-doc {
   margin: 0 auto;
 
   article {
-    h1:nth-child(1):empty:not(:focus):after {
+    h1:nth-child(1):empty:not(:focus):before {
       content: var(--studio-title, "Title");
       color: var(--studio-color);
       white-space: pre;
       position: relative;
     }
 
-    div:nth-child(2):empty:last-child:not(:focus):after {
+    div:nth-child(2):empty:last-child:not(:focus):before {
       content: var(--studio-sub-title, "Write your document...");
       color: var(--studio-color);
       position: relative;

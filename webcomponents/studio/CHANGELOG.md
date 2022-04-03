@@ -1,3 +1,9 @@
+# 0.0.17 (2022-04-03)
+
+### Features
+
+- placeholder empty titles use `::before`
+
 # 0.0.16 (2022-04-03)
 
 ### Build
