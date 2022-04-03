@@ -30,18 +30,7 @@ export const importData = async (file: File): Promise<'doc' | 'deck'> => {
   return result;
 };
 
-export const exportData = async ({
-  types = [
-    {
-      description: 'DeckDeckGo Files',
-      accept: {
-        'application/octet-stream': ['.ddg']
-      }
-    }
-  ]
-}: {
-  types: FilePickerAcceptType[];
-}) => {
+export const exportData = async ({types}: {types: FilePickerAcceptType[]}) => {
   if (!isDeckEdited() && !isDocEdited()) {
     throw new Error('No deck or doc found');
   }

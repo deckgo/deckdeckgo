@@ -39,7 +39,16 @@ export class AppNavigationEnd {
 
   private async exportData() {
     try {
-      await exportData();
+      await exportData({
+        types: [
+          {
+            description: 'DeckDeckGo Files',
+            accept: {
+              'application/octet-stream': ['.ddg']
+            }
+          }
+        ]
+      });
     } catch (err) {
       throwError(`Something went wrong. ${err}.`);
     }
