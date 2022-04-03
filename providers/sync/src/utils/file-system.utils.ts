@@ -1,4 +1,4 @@
-export const save = (data: {filename: string | undefined; blob: Blob}): Promise<void> => {
+export const save = (data: {filename: string | undefined; blob: Blob; types: FilePickerAcceptType[]}): Promise<void> => {
   if ('showSaveFilePicker' in window) {
     return exportNativeFileSystem(data);
   }
@@ -6,8 +6,8 @@ export const save = (data: {filename: string | undefined; blob: Blob}): Promise<
   return download(data);
 };
 
-const exportNativeFileSystem = async ({blob, filename}: {blob: Blob; filename: string}) => {
-  const fileHandle: FileSystemFileHandle = await getNewFileHandle({filename});
+const exportNativeFileSystem = async ({blob, filename, types}: {blob: Blob; filename: string; types: FilePickerAcceptType[]}) => {
+  const fileHandle: FileSystemFileHandle = await getNewFileHandle({filename, types});
 
   if (!fileHandle) {
     throw new Error('Cannot access filesystem');
@@ -16,17 +16,10 @@ const exportNativeFileSystem = async ({blob, filename}: {blob: Blob; filename: s
   await writeFile({fileHandle, blob});
 };
 
-const getNewFileHandle = ({filename}: {filename: string}): Promise<FileSystemFileHandle> => {
+const getNewFileHandle = ({filename, types}: {filename: string; types: FilePickerAcceptType[]}): Promise<FileSystemFileHandle> => {
   const opts: SaveFilePickerOptions = {
     suggestedName: filename,
-    types: [
-      {
-        description: 'DeckDeckGo Files',
-        accept: {
-          'application/octet-stream': ['.ddg']
-        }
-      }
-    ]
+    types
   };
 
   return showSaveFilePicker(opts);

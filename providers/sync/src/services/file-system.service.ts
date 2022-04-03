@@ -30,7 +30,18 @@ export const importData = async (file: File): Promise<'doc' | 'deck'> => {
   return result;
 };
 
-export const exportData = async () => {
+export const exportData = async ({
+  types = [
+    {
+      description: 'DeckDeckGo Files',
+      accept: {
+        'application/octet-stream': ['.ddg']
+      }
+    }
+  ]
+}: {
+  types: FilePickerAcceptType[];
+}) => {
   if (!isDeckEdited() && !isDocEdited()) {
     throw new Error('No deck or doc found');
   }
@@ -73,7 +84,8 @@ export const exportData = async () => {
 
   await save({
     filename: DeckStore.getInstance().get()?.data?.name || DocStore.getInstance().get()?.data?.name,
-    blob
+    blob,
+    types
   });
 };
 

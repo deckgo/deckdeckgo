@@ -1,3 +1,9 @@
+# 0.0.20 (2022-04-03)
+
+### Features
+
+- export file type
+
 # 0.0.19 (2022-04-02)
 
 ### Features
