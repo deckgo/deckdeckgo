@@ -61,7 +61,7 @@ setupDeckGoConfig({
     },
     signIn: {
       cdn: 'https://unpkg.com/@papyrs/ic@latest/dist/papyrs-ic/papyrs-ic.esm.js',
-      tag: 'deckgo-ic-signin'
+      tag: 'ic-signin'
     }
   },
   jszip: {

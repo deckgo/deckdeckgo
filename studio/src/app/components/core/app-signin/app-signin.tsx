@@ -105,7 +105,7 @@ export class AppSignIn {
 
     this.signIn = (
       <Element config={this.deckDeckGoConfig} signInSuccess={this.onSignInSuccess} signInError={this.onSignInError} i18n={i18n.state}>
-        {tag === 'deckgo-ic-signin' ? <ion-spinner color="medium" slot="spinner"></ion-spinner> : undefined}
+        {tag === 'ic-signin' ? <ion-spinner color="medium" slot="spinner"></ion-spinner> : undefined}
       </Element>
     );
   }
