@@ -8,7 +8,10 @@ export const dirtyAttributes: string[] = [
   'custom-loader',
   'class',
   'placeholder',
-  'data-gramm'
+  'data-gramm',
+  'data-gramm_id',
+  'data-gramm_editor',
+  'data-gr-id'
 ];
 
 export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): Node | null => {
