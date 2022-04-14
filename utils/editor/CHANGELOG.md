@@ -1,3 +1,9 @@
+# 7.9.1 (2022-04-14)
+
+### Features
+
+- clean some more grammarly attributes
+
 # 7.9.0 (2022-04-02)
 
 ### Features

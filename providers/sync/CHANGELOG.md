@@ -1,3 +1,9 @@
+# 0.0.22 (2022-04-14)
+
+### Features
+
+- clean more grammarly attributes
+
 # 0.0.20 - 0.0.21 (2022-04-03)
 
 ### Features

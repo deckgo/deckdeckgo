@@ -15,6 +15,14 @@ interface JSZipSupport {
 
 type Compression = 'STORE' | 'DEFLATE';
 
+/**
+ * Depends on the compression type. With `STORE` (no compression), these options are ignored. With
+ * `DEFLATE`, you can give the compression level between 1 (best speed) and 9 (best compression).
+ */
+interface CompressionOptions {
+    level: number;
+}
+
 interface Metadata  {
     percent: number;
     currentFile: string;
@@ -56,7 +64,7 @@ interface OutputByType {
 //     compressedContent: string|ArrayBuffer|Uint8Array|Buffer;
 // }
 
-type InputFileFormat = InputByType[keyof InputByType];
+type InputFileFormat = InputByType[keyof InputByType] | Promise<InputByType[keyof InputByType]>;
 
 declare namespace JSZip {
     type InputType = keyof InputByType;
@@ -101,7 +109,14 @@ declare namespace JSZip {
          * The last modification date, defaults to the current date.
          */
         date?: Date;
-        compression?: string;
+        /**
+         * Sets per file compression. The `compressionOptions` parameter depends on the compression type.
+         */
+        compression?: Compression;
+        /**
+         * Sets per file compression level for `DEFLATE` compression.
+         */
+        compressionOptions?: null | CompressionOptions;
         comment?: string;
         /** Set to `true` if (and only if) the input is a "binary string" and has already been prepared with a `0xFF` mask. */
         optimizedBinaryString?: boolean;
@@ -124,10 +139,14 @@ declare namespace JSZip {
     }
 
     interface JSZipGeneratorOptions<T extends OutputType = OutputType> {
+        /**
+         * Sets compression option for all entries that have not specified their own `compression` option
+         */
         compression?: Compression;
-        compressionOptions?: null | {
-            level: number;
-        };
+        /**
+         * Sets compression level for `DEFLATE` compression.
+         */
+        compressionOptions?: null | CompressionOptions;
         type?: T;
         comment?: string;
         /**
@@ -149,6 +168,46 @@ declare namespace JSZip {
         optimizedBinaryString?: boolean;
         createFolders?: boolean;
         decodeFileName?: (bytes: string[] | Uint8Array | Buffer) => string;
+    }
+
+    interface JSZipMetadata {
+        percent: number;
+        currentFile: string;
+    }
+
+    type DataEventCallback<T> = (dataChunk: T, metadata: JSZipMetadata) => void
+    type EndEventCallback = () => void
+    type ErrorEventCallback = (error: Error) => void
+
+    interface JSZipStreamHelper<T> {
+        /**
+         * Register a listener on an event
+         */
+        on(event: 'data', callback: DataEventCallback<T>): this;
+        on(event: 'end', callback: EndEventCallback): this;
+        on(event: 'error', callback: ErrorEventCallback): this;
+
+        /**
+         * Read the whole stream and call a callback with the complete content
+         *
+         * @param updateCallback The function called every time the stream updates
+         * @return A Promise of the full content
+         */
+        accumulate(updateCallback?: (metadata: JSZipMetadata) => void): Promise<T>;
+
+        /**
+         * Resume the stream if the stream is paused. Once resumed, the stream starts sending data events again
+         *
+         * @return The current StreamHelper object, for chaining
+         */
+        resume(): this;
+
+        /**
+         * Pause the stream if the stream is running. Once paused, the stream stops sending data events
+         *
+         * @return The current StreamHelper object, for chaining
+         */
+        pause(): this;
     }
 }
 
@@ -240,6 +299,14 @@ interface JSZip {
     generateNodeStream(options?: JSZip.JSZipGeneratorOptions<'nodebuffer'>, onUpdate?: OnUpdateCallback): NodeJS.ReadableStream;
 
     /**
+     * Generates the complete zip file with the internal stream implementation
+     *
+     * @param options Optional options for the generator
+     * @return a StreamHelper
+     */
+    generateInternalStream<T extends JSZip.OutputType>(options?: JSZip.JSZipGeneratorOptions<T>): JSZip.JSZipStreamHelper<OutputByType[T]>;
+
+    /**
      * Deserialize zip file asynchronously
      *
      * @param data Serialized zip file
@@ -251,15 +318,7 @@ interface JSZip {
     /**
      * Create JSZip instance
      */
-
-    /**
-     * Create JSZip instance
-     * If no parameters given an empty zip archive will be created
-     *
-     * @param data Serialized zip archive
-     * @param options Description of the serialized zip archive
-     */
-    new (data?: InputFileFormat, options?: JSZip.JSZipLoadOptions): this;
+    new(): this;
 
     (): JSZip;
 
