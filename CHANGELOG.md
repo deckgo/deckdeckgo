@@ -1,6 +1,10 @@
-<a name="6.1.0"></a>
+<a name="7.0.0"></a>
 
-# [6.1.0](https://github.com/deckgo/deckdeckgo/compare/v6.0.0...v6.1.0) (2022-XX-YY)
+# [7.0.0](https://github.com/deckgo/deckdeckgo/compare/v6.0.0...v7.0.0) (2022-04-15)
+
+### Applications
+
+- studio: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
 
 ### Providers: New
 

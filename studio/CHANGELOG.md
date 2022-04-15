@@ -1,3 +1,9 @@
+# 6.0.0 (2022-04-15)
+
+### Features
+
+- extract architecture to create [Papyrs](https://papy.rs)
+
 # 5.3.0 (2022-02-04)
 
 ### Features
