@@ -14,18 +14,18 @@ export const dirtyAttributes: string[] = [
   'data-gr-id'
 ];
 
-export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): Node | null => {
+export const cleanNode = ({node, deep = true, attributes = dirtyAttributes}: {node: Node; deep?: boolean, attributes?: string[]}): Node | null => {
   if (isTextNode(node)) {
     return node;
   }
 
   if (isElementNode(node)) {
     const clone: HTMLElement = node.cloneNode(deep) as HTMLElement;
-    cleanAttributes(clone);
+    cleanAttributes({element: clone, attributes});
 
-    const children: NodeListOf<HTMLElement> = clone.querySelectorAll(dirtyAttributes.map((attr: string) => `[${attr}]`).join(','));
+    const children: NodeListOf<HTMLElement> = clone.querySelectorAll(attributes.map((attr: string) => `[${attr}]`).join(','));
     for (const child of Array.from(children)) {
-      cleanAttributes(child);
+      cleanAttributes({element: child, attributes});
     }
 
     return clone;
@@ -34,8 +34,8 @@ export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): No
   return null;
 };
 
-const cleanAttributes = (element: HTMLElement) => {
-  for (const attr of dirtyAttributes) {
+const cleanAttributes = ({element, attributes}: {element: HTMLElement, attributes: string[]}) => {
+  for (const attr of attributes) {
     element.removeAttribute(attr);
   }
 };

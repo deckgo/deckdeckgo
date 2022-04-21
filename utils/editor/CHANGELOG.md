@@ -1,3 +1,9 @@
+# 7.10.0 (2022-04-21)
+
+### Features
+
+- add optional `attributes` param to `cleanNode`
+
 # 7.9.1 (2022-04-14)
 
 ### Features

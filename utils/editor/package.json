@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/editor",
-  "version": "7.9.1",
+  "version": "7.10.0",
   "author": "David Dal Busco",
   "description": "Types for the DeckDeckGo editor",
   "license": "AGPL-3.0-or-later",
