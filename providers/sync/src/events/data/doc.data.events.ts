@@ -76,7 +76,8 @@ export class DocDataEvents {
       // It might copy a <p/> within a <div/> instead of creating a child of the container for the new <p/>
       const promises: Promise<void>[] = updatedParagraphs
         .filter((paragraph: HTMLElement) => paragraph.hasAttribute('paragraph_id'))
-        .map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
+        .map((paragraph: HTMLElement) => this.updateParagraphAndDoc(paragraph));
+
       await Promise.all(promises);
     } catch (err) {
       throwError(err);
@@ -236,7 +237,7 @@ export class DocDataEvents {
     });
   }
 
-  private async updateParagraph(paragraph: HTMLElement) {
+  private async updateParagraphAndDoc(paragraph: HTMLElement) {
     if (!paragraph || !paragraph.nodeName) {
       return;
     }
@@ -248,6 +249,10 @@ export class DocDataEvents {
       return;
     }
 
+    await Promise.all([this.updateParagraph({docId, paragraph}), this.updateDocTitle(paragraph)]);
+  }
+
+  private async updateParagraph({docId, paragraph}: {paragraph: HTMLElement; docId: string}) {
     const paragraphId: string | null = paragraph.getAttribute('paragraph_id');
 
     if (!paragraphId) {
@@ -277,6 +282,48 @@ export class DocDataEvents {
     await updateOfflineParagraph({docId, paragraph: paragraphUpdate});
 
     await syncUpdateParagraph({docId, paragraphId: paragraphUpdate.id});
+  }
+
+  private updateDocTitle(paragraph: HTMLElement) {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (elementIndex(paragraph) !== 0) {
+          resolve();
+          return;
+        }
+
+        const {textContent: title} = paragraph;
+
+        if (title === '' || (title.length === 1 && title.charAt(0) === '\u200B')) {
+          resolve();
+          return;
+        }
+
+        const doc: Doc = {...DocStore.getInstance().get()};
+
+        if (!doc && !doc.data) {
+          reject('Missing doc to update the title');
+          return;
+        }
+
+        // Update name only if doc has never been published. If it has been, then the name will be updated on next publish to keep data.name and data.meta.title in sync.
+        if (doc.data.meta !== undefined) {
+          resolve();
+          return;
+        }
+
+        doc.data.name = title;
+
+        const updatedDoc: Doc = await updateOfflineDoc(doc);
+        DocStore.getInstance().set({...updatedDoc});
+
+        await syncUpdateDoc(updatedDoc.id);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   private paragraphContent(paragraph: HTMLElement): string[] {
