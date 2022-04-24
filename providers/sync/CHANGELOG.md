@@ -1,3 +1,9 @@
+# 0.0.23 (2022-04-24)
+
+### Features
+
+- set doc name on update of first paragraph
+
 # 0.0.22 (2022-04-14)
 
 ### Features

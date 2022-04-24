@@ -2,6 +2,10 @@
 
 # [7.1.0](https://github.com/deckgo/deckdeckgo/compare/v7.0.0...v7.1.0) (2022-XX-YY)
 
+### Providers
+
+- sync: v0.0.23 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+
 ### Others
 
 - editor: v7.10.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
