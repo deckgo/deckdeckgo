@@ -9,7 +9,7 @@ interface UserStore {
   social: UserSocial | undefined;
 }
 
-const {state, onChange, reset} = createStore({
+const {state, onChange} = createStore({
   user: undefined,
   photoUrl: undefined,
   name: undefined,
@@ -28,4 +28,4 @@ onChange('user', (user: User | undefined) => {
 
 const readonlyState: Readonly<typeof state> = state;
 
-export default {state: readonlyState, onChange, reset};
+export default {state: readonlyState, onChange};

@@ -8,7 +8,7 @@ interface AuthStore {
   gitHub: boolean;
 }
 
-const {state, onChange, reset} = createStore<AuthStore>({
+const {state, onChange} = createStore<AuthStore>({
   authUser: null,
   loggedIn: false,
   gitHub: false
@@ -25,4 +25,4 @@ onChange('authUser', (authUser: AuthUser | null) => {
 
 const readonlyState: Readonly<typeof state> = state;
 
-export default {state: readonlyState, onChange, reset};
+export default {state: readonlyState, onChange};
