@@ -115,7 +115,14 @@ const listZipAssets = ({
 };
 
 const parseImportData = async (content: JSZip): Promise<FileImportData> => {
-  let data: string = await content.file('data.json').async('text');
+  // deck.json for backwards compatibility with Figma plugin
+  const dataFile: JSZip.JSZipObject | null = content.file('data.json') || content.file('deck.json');
+
+  if (!dataFile) {
+    throw new Error('No data entry in zip file to import');
+  }
+
+  let data: string = await dataFile.async('text');
 
   // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
   if (!isOnline()) {
