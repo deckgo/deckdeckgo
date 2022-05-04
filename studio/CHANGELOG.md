@@ -1,3 +1,9 @@
+# 6.0.0 (2022-05-04)
+
+### Fix
+
+- Figma backwards compatibility
+
 # 6.0.0 (2022-04-15)
 
 ### Features

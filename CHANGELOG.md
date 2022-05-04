@@ -1,6 +1,6 @@
-<a name="7.1.0"></a>
+<a name="7.0.1"></a>
 
-# [7.1.0](https://github.com/deckgo/deckdeckgo/compare/v7.0.0...v7.1.0) (2022-XX-YY)
+# [7.0.1](https://github.com/deckgo/deckdeckgo/compare/v7.0.0...v7.0.1) (2022-05-04)
 
 ### Providers
 
