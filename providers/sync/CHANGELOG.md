@@ -1,3 +1,9 @@
+# 0.0.24 (2022-05-04)
+
+### Fix
+
+- import Figma files backward compatibility
+
 # 0.0.23 (2022-04-24)
 
 ### Features
