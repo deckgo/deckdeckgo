@@ -71,6 +71,11 @@ svg {
   padding: var(--deckgo-lazy-img-padding);
 
   /**
+   * @prop --deckgo-lazy-img-margin: Image margin
+   */
+  margin: var(--deckgo-lazy-img-margin);
+
+  /**
    * @prop --deckgo-lazy-img-vertical-align: Image vertical alignment
    */
   vertical-align: var(--deckgo-lazy-img-vertical-align);
