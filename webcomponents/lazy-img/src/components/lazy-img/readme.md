@@ -101,6 +101,13 @@ Type: `Promise<void>`
 
 
 
+## Shadow Parts
+
+| Part    | Description                               |
+| ------- | ----------------------------------------- |
+| `"img"` | A CSS :part to access the slotted <img /> |
+
+
 ## CSS Custom Properties
 
 | Name                                   | Description                                                                                                     |
@@ -110,6 +117,7 @@ Type: `Promise<void>`
 | `--deckgo-lazy-img-display`            | The display property of the image                                                                               |
 | `--deckgo-lazy-img-float`              | Image float                                                                                                     |
 | `--deckgo-lazy-img-height`             | Image max height                                                                                                |
+| `--deckgo-lazy-img-margin`             | Image margin                                                                                                    |
 | `--deckgo-lazy-img-max-height`         | Image max height                                                                                                |
 | `--deckgo-lazy-img-max-width`          | Image max width @default 100%                                                                                   |
 | `--deckgo-lazy-img-min-height`         | Image min height                                                                                                |

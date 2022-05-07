@@ -4,6 +4,9 @@ import {getSvgContent} from '../utils/request';
 
 import {DeckDeckGoCustomLoad} from '../interfaces/custom-load';
 
+/**
+ * @part img - A CSS :part to access the slotted <img />
+ */
 @Component({
   tag: 'deckgo-lazy-img',
   styleUrl: 'deckdeckgo-lazy-img.scss',
@@ -294,7 +297,7 @@ export class DeckdeckgoLazyImg {
     // prettier-ignore
     // @ts-ignore
     return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading={this.loading} sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
-                width={this.imgWidth} height={this.imgHeight}
+                width={this.imgWidth} height={this.imgHeight} part="img"
                 onLoad={() => this.onImgDidLoad()} onError={() => this.loadError()}/>
   }
 }

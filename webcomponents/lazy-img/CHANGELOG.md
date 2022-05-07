@@ -1,3 +1,10 @@
+# 3.4.0 (2022-05-07)
+
+### Style
+
+- expose CSS :part `img` to access the slotted `<img />` for styling purpose
+- add style variable `--deckgo-lazy-img-margin`
+
 # 3.3.0 (2022-03-07)
 
 ### Build
