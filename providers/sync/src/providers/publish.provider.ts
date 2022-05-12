@@ -23,7 +23,7 @@ export const publish = (params: PublishParams): Promise<void> => {
         return;
       }
 
-      if (DocStore.getInstance().get() !== null) {
+      if (DocStore.getInstance().get() !== null && DocStore.getInstance().get() !== undefined) {
         await publishDoc(params);
 
         resolve();

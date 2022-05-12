@@ -1,3 +1,9 @@
+# 0.0.25 (2022-05-12)
+
+### Fix
+
+- at runtime the store can contains `undefined` (resolve publish issue in DeckDeckGo `TypeError: Cannot set properties of undefined (setting 'name')`) 
+
 # 0.0.24 (2022-05-04)
 
 ### Fix
