@@ -1,3 +1,9 @@
+# 0.0.26 (2022-05-17)
+
+### Fix
+
+- preserve case sensitive keys when exporting local assets
+
 # 0.0.25 (2022-05-12)
 
 ### Fix
