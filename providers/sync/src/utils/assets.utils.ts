@@ -1,5 +1,5 @@
 import {Deck, deckSelector, Doc, docSelector, UserAsset} from '@deckdeckgo/editor';
-import {get, getMany} from 'idb-keyval';
+import {get} from 'idb-keyval';
 import {nanoid} from 'nanoid';
 
 export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
@@ -104,10 +104,20 @@ const getLocalImages = async ({selector}: {selector: string}): Promise<UserAsset
     return isLocalImage(img);
   });
 
-  const files: File[] = await getMany<File>(list.map(({imgSrc}: HTMLDeckgoLazyImgElement) => imgSrc));
+  // Read files from idb - preserve keys (the file name might not match the key since we `encodeFilename` with offline providers when we upload the images)
+  const files: {key: string; blob: File}[] = await Promise.all(
+    list.map(async ({imgSrc}: HTMLDeckgoLazyImgElement) => {
+      const blob: File = await get<File>(imgSrc);
 
-  return files.map((blob: File) => ({
-    key: `/assets/local/images/${blob.name}`,
+      return {
+        key: imgSrc,
+        blob
+      };
+    })
+  );
+
+  return files.map(({key, blob}: {key: string; blob: File}) => ({
+    key,
     blob,
     type: 'local'
   }));
