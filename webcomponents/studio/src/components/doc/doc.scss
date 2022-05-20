@@ -17,7 +17,7 @@ deckgo-studio-doc {
     }
 
     div:nth-child(2):empty:last-child:not(:focus):before {
-      content: var(--studio-sub-title, "Write your document...");
+      content: var(--studio-sub-title, "Write your story...");
       color: var(--studio-color);
       position: relative;
     }
