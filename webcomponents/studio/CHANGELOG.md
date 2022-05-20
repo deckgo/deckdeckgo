@@ -1,3 +1,10 @@
+# 0.0.18 (2022-05-20)
+
+### Features
+
+- "Write a story..." instead of "Write a document..."
+- display placeholders according Stylo detection of empty paragraphs
+
 # 0.0.17 (2022-04-03)
 
 ### Features
