@@ -312,7 +312,7 @@ export class DocDataEvents {
           return;
         }
 
-        doc.data.name = title;
+        doc.data.name = title.replace(/\u200B/g,'');
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
         DocStore.getInstance().set({...updatedDoc});

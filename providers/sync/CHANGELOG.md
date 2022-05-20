@@ -1,3 +1,9 @@
+# 0.0.27 (2022-05-20)
+
+### Features
+
+- clean zero width space before updating doc title
+
 # 0.0.26 (2022-05-17)
 
 ### Fix
