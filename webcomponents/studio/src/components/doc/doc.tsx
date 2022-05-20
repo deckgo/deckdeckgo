@@ -145,10 +145,10 @@ export class StudioDoc implements ComponentInterface {
 
   private async initDoc() {
     const Title = 'h1';
-    const title: JSX.IntrinsicElements = <Title key={nanoid()}></Title>;
+    const title: JSX.IntrinsicElements = <Title key={nanoid()}>{'\u200B'}</Title>;
 
     const Div = 'div';
-    const div: JSX.IntrinsicElements = <Div key={nanoid()}></Div>;
+    const div: JSX.IntrinsicElements = <Div key={nanoid()}>{'\u200B'}</Div>;
 
     this.paragraphs = [title, div];
 

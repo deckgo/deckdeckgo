@@ -9,17 +9,26 @@ deckgo-studio-doc {
   margin: 0 auto;
 
   article {
-    h1:nth-child(1):empty:not(:focus):before {
+    /** Before is needed to preserve the height of the paragraphs */
+    *:nth-child(1).stylo-empty:before {
+      content: "\200b";
+    }
+
+    *:nth-child(2).stylo-empty:before {
+      content: "\200b";
+    }
+
+    *:nth-child(1).stylo-empty:after {
       content: var(--studio-title, "Title");
       color: var(--studio-color);
       white-space: pre;
-      position: relative;
+      pointer-events: none;
     }
 
-    div:nth-child(2):empty:last-child:not(:focus):before {
+    *:nth-child(2).stylo-empty:after {
       content: var(--studio-sub-title, "Write your story...");
       color: var(--studio-color);
-      position: relative;
+      pointer-events: none;
     }
   }
 }
