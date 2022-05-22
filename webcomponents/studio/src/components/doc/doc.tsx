@@ -208,7 +208,13 @@ export class StudioDoc implements ComponentInterface {
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
-      moveCursorToStart(this.containerRef?.firstChild?.firstChild);
+      // Click to select paragraph and attach listener to remove "empty" style class on key press
+      // setTimeout because otherwise click is ignored
+      setTimeout(() => {
+        (this.containerRef?.firstChild as HTMLElement | undefined)?.click();
+
+        moveCursorToStart(this.containerRef?.firstChild?.firstChild);
+      }, 0)
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);

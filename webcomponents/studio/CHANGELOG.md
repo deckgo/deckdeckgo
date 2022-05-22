@@ -1,3 +1,9 @@
+# 0.0.18-1 (2022-05-22)
+
+### Fix
+
+- attach placeholders listener on load
+
 # 0.0.18 (2022-05-20)
 
 ### Features
