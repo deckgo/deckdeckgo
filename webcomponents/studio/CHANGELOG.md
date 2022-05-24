@@ -1,3 +1,9 @@
+# 0.0.19 (202205-24)
+
+### Features
+
+- set focus on second child of the container on load
+
 # 0.0.18-1 (2022-05-22)
 
 ### Fix
