@@ -211,9 +211,12 @@ export class StudioDoc implements ComponentInterface {
       // Click to select paragraph and attach listener to remove "empty" style class on key press
       // setTimeout because otherwise click is ignored
       setTimeout(() => {
-        (this.containerRef?.firstChild as HTMLElement | undefined)?.click();
+        // Settings focus on title can have weird effects, like creating another if user hits enter instead of a div
+        const secondElement: HTMLElement | undefined = this.containerRef?.firstElementChild?.nextElementSibling as HTMLElement | undefined;
 
-        moveCursorToStart(this.containerRef?.firstChild?.firstChild);
+        secondElement?.click();
+
+        moveCursorToStart(secondElement);
       }, 0)
     };
 
