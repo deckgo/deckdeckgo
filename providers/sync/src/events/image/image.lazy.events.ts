@@ -1,3 +1,5 @@
+import {isElementNode} from '@deckdeckgo/editor';
+
 export class ImageLazyEvents {
   private treeObserver: MutationObserver | undefined;
 
@@ -13,14 +15,22 @@ export class ImageLazyEvents {
   private onTreeMutation = async (mutations: MutationRecord[]) => {
     const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
 
-    const imgNode: Node | undefined = addedNodes.find((node: Node) => node.nodeName?.toLowerCase() === 'deckgo-lazy-img');
+    const images: HTMLDeckgoLazyImgElement[] = addedNodes.reduce((acc: HTMLDeckgoLazyImgElement[], node: Node) => {
+      if (!isElementNode(node)) {
+        return acc;
+      }
 
-    if (!imgNode) {
-      return;
+      if (node.nodeName?.toLowerCase() === 'deckgo-lazy-img') {
+        return [...acc, node as HTMLDeckgoLazyImgElement];
+      }
+
+      const img: NodeListOf<HTMLDeckgoLazyImgElement> = (node as HTMLElement).querySelectorAll('deckgo-lazy-img');
+      return [...acc, ...Array.from(img)];
+    }, []);
+
+    for (const element of images) {
+      element.customLoader = true;
+      await element.lazyLoad();
     }
-
-    const element: HTMLDeckgoLazyImgElement = imgNode as HTMLDeckgoLazyImgElement;
-    element.customLoader = true;
-    await element.lazyLoad();
   };
 }
