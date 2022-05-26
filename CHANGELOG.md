@@ -4,7 +4,7 @@
 
 ### Providers
 
-- sync: v0.0.27 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+- sync: v0.0.28 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
 
 ### Web Components:
 

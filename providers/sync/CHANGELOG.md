@@ -1,3 +1,9 @@
+# 0.0.28 (2022-05-26)
+
+### Features
+
+- lazy load sub-images on tree mutation
+
 # 0.0.27 (2022-05-20)
 
 ### Features
