@@ -214,6 +214,21 @@ export class StudioDoc implements ComponentInterface {
         // Settings focus on title can have weird effects, like creating another if user hits enter instead of a div
         const secondElement: HTMLElement | undefined = this.containerRef?.firstElementChild?.nextElementSibling as HTMLElement | undefined;
 
+        // if second element does not exist or is not what we consider as a text paragraph, set no focus
+        if (!secondElement || !['h1', 'h2', 'h3', 'div', 'p'].includes(secondElement.nodeName.toLowerCase())) {
+          return;
+        }
+
+        // likewise if not empty
+        const {textContent} = secondElement;
+
+        const empty: boolean =
+          textContent === '' || (textContent.charAt(0) === '\u200B' && textContent.length === 1);
+
+        if (!empty) {
+          return;
+        }
+
         secondElement?.click();
 
         moveCursorToStart(secondElement);
