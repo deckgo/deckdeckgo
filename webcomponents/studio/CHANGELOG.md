@@ -1,4 +1,10 @@
-# 0.0.19 (202205-24)
+# 0.0.20 (2022-05-26)
+
+### Style
+
+- update `stylo-placeholder-empty` selector to match Stylo
+
+# 0.0.19 (2022-05-24)
 
 ### Features
 
