@@ -1,3 +1,9 @@
+# 0.0.21 (2022-05-26)
+
+### Features
+
+- set focus on select content editable child element only if not empty and if text paragraph
+
 # 0.0.20 (2022-05-26)
 
 ### Style
