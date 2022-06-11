@@ -21,6 +21,7 @@ export * from './providers/storage.provider';
 export * from './providers/sync.provider';
 export * from './providers/user.provider';
 export * from './services/admin.service';
+export * from './services/assets.service';
 export * from './services/file-system.service';
 export * from './types/env.types';
 export * from './types/import.types';
