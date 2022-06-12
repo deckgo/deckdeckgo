@@ -105,18 +105,28 @@ const getLocalImages = async ({selector}: {selector: string}): Promise<UserAsset
   });
 
   // Read files from idb - preserve keys (the file name might not match the key since we `encodeFilename` with offline providers when we upload the images)
-  const files: {key: string; blob: File}[] = await Promise.all(
-    list.map(async ({imgSrc}: HTMLDeckgoLazyImgElement) => {
-      const blob: File = await get<File>(imgSrc);
+  const toFile = async ({img, attr}: {img: HTMLDeckgoLazyImgElement; attr: 'img-src' | 'data-src'}) => {
+    const key: string = img.getAttribute(attr);
 
-      return {
-        key: imgSrc,
-        blob
-      };
-    })
+    const blob: File = await get<File>(key);
+
+    return {
+      key,
+      blob
+    };
+  };
+
+  const imgFiles: {key: string; blob: File}[] = await Promise.all(
+    list.map((img: HTMLDeckgoLazyImgElement) => toFile({img, attr: 'img-src'}))
   );
 
-  return files.map(({key, blob}: {key: string; blob: File}) => ({
+  const dataFiles: {key: string; blob: File}[] = await Promise.all(
+    list
+      .filter((element: HTMLDeckgoLazyImgElement) => element.hasAttribute('data-src'))
+      .map((img: HTMLDeckgoLazyImgElement) => toFile({img, attr: 'data-src'}))
+  );
+
+  return [...imgFiles, ...dataFiles].map(({key, blob}: {key: string; blob: File}) => ({
     key,
     blob,
     type: 'local'
@@ -135,11 +145,19 @@ const getOnlineImages = async ({selector}: {selector: string}): Promise<UserAsse
     return !isLocalImage(img);
   });
 
-  const promises: Promise<UserAsset | undefined>[] = list.map(({imgSrc}: HTMLDeckgoLazyImgElement) =>
-    getUserAsset({url: imgSrc, type: 'images'})
+  const toFile = ({img, attr}: {img: HTMLDeckgoLazyImgElement; attr: 'img-src' | 'data-src'}) =>
+    getUserAsset({url: img.getAttribute(attr), type: 'images'});
+
+  const imgFiles: (UserAsset | undefined)[] = await Promise.all(
+    list.map((img: HTMLDeckgoLazyImgElement) => toFile({img, attr: 'img-src'}))
+  );
+  const dataFiles: (UserAsset | undefined)[] = await Promise.all(
+    list
+      .filter((element: HTMLDeckgoLazyImgElement) => element.hasAttribute('data-src'))
+      .map((img: HTMLDeckgoLazyImgElement) => toFile({img, attr: 'data-src'}))
   );
 
-  return (await Promise.all(promises)).filter((asset: UserAsset | undefined) => asset !== undefined);
+  return [...imgFiles, ...dataFiles].filter((asset: UserAsset | undefined) => asset !== undefined);
 };
 
 const getImages = ({selector}: {selector: string}): HTMLDeckgoLazyImgElement[] | undefined => {
