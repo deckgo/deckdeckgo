@@ -4,7 +4,7 @@ import {Meta} from '../models/data/meta';
 import {deckSelector} from './deck.utils';
 import {docSelector} from './doc.utils';
 import {getGoogleFontUrl, GoogleFont, googleFonts} from './fonts.utils';
-import {cleanNode, isElementNode} from './node.utils';
+import { cleanNode, dirtyPublishAttributes, isElementNode } from './node.utils';
 
 export interface PublishData {
   title: string;
@@ -160,12 +160,12 @@ const getSlides = (): string[] => {
   };
 
   const cloneSlides: HTMLElement[] = Array.from(slides).map((slide: HTMLElement) => {
-    const cloneSlide: HTMLElement = cleanNode({node: slide, deep: false}) as HTMLElement;
+    const cloneSlide: HTMLElement = cleanNode({node: slide, deep: false, attributes: dirtyPublishAttributes}) as HTMLElement;
 
     const nodes: Node[] = Array.from(slide.childNodes);
     nodes.forEach((node: Node) => {
       if (isElementNode(node) && (node as HTMLElement).hasAttribute('slot')) {
-        cloneSlide.appendChild(cleanNode({node}) as Node);
+        cloneSlide.appendChild(cleanNode({node, attributes: dirtyPublishAttributes}) as Node);
 
         removeCustomSlot({slide: cloneSlide, custom: 'background'});
         removeCustomSlot({slide: cloneSlide, custom: 'header'});
@@ -183,7 +183,7 @@ const getParagraphs = (): string[] => {
   const paragraphs: NodeListOf<HTMLElement> = document.querySelectorAll(`${docSelector} > article *[paragraph_id]`);
 
   const cloneParagraphs: HTMLElement[] = Array.from(paragraphs).map(
-    (paragraph: HTMLElement) => cleanNode({node: paragraph, deep: true}) as HTMLElement
+    (paragraph: HTMLElement) => cleanNode({node: paragraph, attributes: dirtyPublishAttributes}) as HTMLElement
   );
 
   return cloneParagraphs.map((clone: HTMLElement) => clone.outerHTML);

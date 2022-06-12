@@ -14,7 +14,17 @@ export const dirtyAttributes: string[] = [
   'data-gr-id'
 ];
 
-export const cleanNode = ({node, deep = true, attributes = dirtyAttributes}: {node: Node; deep?: boolean, attributes?: string[]}): Node | null => {
+export const dirtyPublishAttributes: string[] = ['paragraph_id', 'data-src', ...dirtyAttributes];
+
+export const cleanNode = ({
+  node,
+  deep = true,
+  attributes = dirtyAttributes
+}: {
+  node: Node;
+  deep?: boolean;
+  attributes?: string[];
+}): Node | null => {
   if (isTextNode(node)) {
     return node;
   }
@@ -34,7 +44,7 @@ export const cleanNode = ({node, deep = true, attributes = dirtyAttributes}: {no
   return null;
 };
 
-const cleanAttributes = ({element, attributes}: {element: HTMLElement, attributes: string[]}) => {
+const cleanAttributes = ({element, attributes}: {element: HTMLElement; attributes: string[]}) => {
   for (const attr of attributes) {
     element.removeAttribute(attr);
   }

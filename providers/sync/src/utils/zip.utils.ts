@@ -132,9 +132,9 @@ const parseImportData = async (content: JSZip): Promise<FileImportData> => {
     assets
       .filter(({url}) => url !== undefined)
       .forEach(({url, key}: UserAsset) => {
-        // deckgo-img img-src="" and slide src=""
-        data = data.replaceAll(`src=\\"${url}\\"`, `src=\\"${key}\\"`);
-        data = data.replaceAll(`src=\\"${url.replaceAll('&', '&amp;')}\\"`, `src=\\"${key}\\"`);
+        // deckgo-img img-src="", data-src="" and slide src=""
+        data = data.replaceAll(`src":"${url}"`, `src":"${key}"`);
+        data = data.replaceAll(`src":"${url.replaceAll('&', '&amp;')}"`, `src":"${key}"`);
       });
   }
 
