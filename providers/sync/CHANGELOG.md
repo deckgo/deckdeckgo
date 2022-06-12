@@ -1,3 +1,13 @@
+# 0.0.29 (2022-06-12)
+
+### Features
+
+- `fetchAsset` from online and offline storage
+
+### Fix
+
+- import online assets in offline context
+
 # 0.0.28 (2022-05-26)
 
 ### Features
