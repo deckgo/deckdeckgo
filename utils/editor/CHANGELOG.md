@@ -1,3 +1,9 @@
+# 7.11.1 (2022-06-12)
+
+### Features
+
+- clean `paragraph_id` on publish as well
+
 # 7.11.0 (2022-06-12)
 
 ### Features

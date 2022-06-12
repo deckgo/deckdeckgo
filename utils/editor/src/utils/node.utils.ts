@@ -14,7 +14,7 @@ export const dirtyAttributes: string[] = [
   'data-gr-id'
 ];
 
-export const dirtyPublishAttributes: string[] = ['data-src', ...dirtyAttributes];
+export const dirtyPublishAttributes: string[] = ['paragraph_id', 'data-src', ...dirtyAttributes];
 
 export const cleanNode = ({
   node,

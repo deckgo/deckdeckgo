@@ -13,7 +13,7 @@
 
 ### Others
 
-- editor: v7.11.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v7.11.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 
 <a name="7.0.1"></a>
 
