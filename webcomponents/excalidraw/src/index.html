@@ -9,40 +9,52 @@
     <script nomodule src="/build/excalidraw.js"></script>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100vh;
-        }
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+      }
 
-        body > button {
-            position: absolute;
-            inset: auto 0 0 auto;
-            background: red;
-            z-index: 1000;
-        }
+      div.actions {
+        position: absolute;
+        inset: auto 0 0 auto;
+        background: red;
+        z-index: 1000;
+        display: flex;
+        padding: 10px;
+      }
     </style>
   </head>
   <body>
-    <my-component ></my-component>
+    <deckgo-excalidraw></deckgo-excalidraw>
 
-    <button>To image</button>
+    <div class="actions">
+      <button>To image</button>
+      <button>Export scene</button>
+    </div>
 
     <script>
       const toBlob = async () => {
-        const socialImg = document.querySelector('my-component');
-        const blob = await socialImg?.toBlob();
+        const excalidraw = document.querySelector('deckgo-excalidraw');
+        const blob = await excalidraw?.toBlob();
 
-        download(blob);
+        download({blob, filename: 'yolo.webp'});
       };
 
-      const download = (blob) => {
+      const exportScene = async () => {
+        const excalidraw = document.querySelector('deckgo-excalidraw');
+        const blob = await excalidraw?.exportScene();
+
+        download({blob, filename: 'scene.json'});
+      };
+
+      const download = ({blob, filename}) => {
         const blobURL = window.URL.createObjectURL(blob);
 
         const link = document.createElement('a');
         link.href = blobURL;
-        link.download = `yolo.webp`;
+        link.download = filename;
         link.click();
 
         window.URL.revokeObjectURL(blobURL);
@@ -51,8 +63,10 @@
       document.addEventListener(
         'DOMContentLoaded',
         () => {
-          const btn = document.querySelector('button');
-          btn?.addEventListener('click', toBlob);
+          const btn1 = document.querySelector('div.actions button:first-of-type');
+          btn1?.addEventListener('click', toBlob);
+          const btn2 = document.querySelector('div.actions button:last-of-type');
+          btn2?.addEventListener('click', exportScene);
         },
         {once: true}
       );

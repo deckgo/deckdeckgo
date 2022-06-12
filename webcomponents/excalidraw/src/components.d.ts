@@ -5,38 +5,51 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ExcalidrawScene } from "./components/excalidraw";
+import { ExcalidrawScene } from "./excalidraw/excalidraw.app";
 export namespace Components {
-    interface MyComponent {
+    interface DeckgoExcalidraw {
+        /**
+          * Export Excalidraw scene data to blob
+         */
         "exportScene": () => Promise<Blob | null>;
+        /**
+          * An Excalidraw scene that contains app state and elements. On change, Excalidraw will be updated.
+         */
         "scene": ExcalidrawScene;
+        /**
+          * Export Excalidraw scene to blob - i.e. to image
+          * @param type The mime type of the image. Default: image/webp
+         */
         "toBlob": (type?: string) => Promise<Blob>;
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLDeckgoExcalidrawElement extends Components.DeckgoExcalidraw, HTMLStencilElement {
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    var HTMLDeckgoExcalidrawElement: {
+        prototype: HTMLDeckgoExcalidrawElement;
+        new (): HTMLDeckgoExcalidrawElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "deckgo-excalidraw": HTMLDeckgoExcalidrawElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
+    interface DeckgoExcalidraw {
+        /**
+          * An Excalidraw scene that contains app state and elements. On change, Excalidraw will be updated.
+         */
         "scene"?: ExcalidrawScene;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "deckgo-excalidraw": DeckgoExcalidraw;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "deckgo-excalidraw": LocalJSX.DeckgoExcalidraw & JSXBase.HTMLAttributes<HTMLDeckgoExcalidrawElement>;
         }
     }
 }
