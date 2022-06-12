@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/excalidraw.esm.js"></script>
+    <script nomodule src="/build/excalidraw.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+        }
+
+        body > button {
+            position: absolute;
+            inset: auto 0 0 auto;
+            background: red;
+            z-index: 1000;
+        }
+    </style>
+  </head>
+  <body>
+    <my-component ></my-component>
+
+    <button>To image</button>
+
+    <script>
+      const toBlob = async () => {
+        const socialImg = document.querySelector('my-component');
+        const blob = await socialImg?.toBlob();
+
+        download(blob);
+      };
+
+      const download = (blob) => {
+        const blobURL = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = `yolo.webp`;
+        link.click();
+
+        window.URL.revokeObjectURL(blobURL);
+      };
+
+      document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+          const btn = document.querySelector('button');
+          btn?.addEventListener('click', toBlob);
+        },
+        {once: true}
+      );
+    </script>
+  </body>
+</html>
