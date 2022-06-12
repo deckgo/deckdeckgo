@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/excalidraw",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A custom element that wraps the Excalidraw component written in React.",
   "main": "dist/index.cjs.js",
   "module": "dist/excalidraw/excalidraw.esm.js",

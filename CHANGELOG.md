@@ -8,7 +8,7 @@
 
 ### Web Components: New
 
-- excalidraw: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/excalidraw/CHANGELOG.md))
+- excalidraw: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/excalidraw/CHANGELOG.md))
 
 ### Web Components:
 
