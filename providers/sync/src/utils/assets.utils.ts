@@ -15,7 +15,7 @@ export const getSlidesLocalImages = async ({deck}: {deck: Deck | undefined}): Pr
 };
 
 export const getSlidesOnlineImages = async ({deck}: {deck: Deck | undefined}): Promise<UserAsset[]> => {
-  return getAssets<UserAsset>({elementIds: deck?.data?.slides, assets: getSlideOnlineImages, selector: slideSelector});
+  return getAssets<UserAsset>({elementIds: deck?.data?.slides, assets: getOnlineImages, selector: slideSelector});
 };
 
 export const getSlidesLocalCharts = async ({deck}: {deck: Deck | undefined}): Promise<UserAsset[]> => {
@@ -35,7 +35,7 @@ export const getParagraphsLocalImages = async ({doc}: {doc: Doc | undefined}): P
 };
 
 export const getParagraphsOnlineImages = async ({doc}: {doc: Doc | undefined}): Promise<UserAsset[]> => {
-  return getAssets<UserAsset>({elementIds: doc?.data?.paragraphs, assets: getSlideOnlineImages, selector: paragraphSelector});
+  return getAssets<UserAsset>({elementIds: doc?.data?.paragraphs, assets: getOnlineImages, selector: paragraphSelector});
 };
 
 const slideSelector = (id: string) => {
@@ -123,7 +123,7 @@ const getLocalImages = async ({selector}: {selector: string}): Promise<UserAsset
   }));
 };
 
-const getSlideOnlineImages = async ({selector}: {selector: string}): Promise<UserAsset[] | undefined> => {
+const getOnlineImages = async ({selector}: {selector: string}): Promise<UserAsset[] | undefined> => {
   const imgs: HTMLDeckgoLazyImgElement[] | undefined = getImages({selector});
 
   if (!imgs || imgs.length <= 0) {
