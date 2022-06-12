@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/excalidraw.esm.js"></script>
+    <script nomodule src="/build/excalidraw.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+      }
+
+      div.actions {
+        position: absolute;
+        inset: auto 0 0 auto;
+        background: red;
+        z-index: 1000;
+        display: flex;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <deckgo-excalidraw></deckgo-excalidraw>
+
+    <div class="actions">
+      <button>To image</button>
+      <button>Export scene</button>
+    </div>
+
+    <script>
+      const toBlob = async () => {
+        const excalidraw = document.querySelector('deckgo-excalidraw');
+        const blob = await excalidraw?.toBlob();
+
+        download({blob, filename: 'yolo.webp'});
+      };
+
+      const exportScene = async () => {
+        const excalidraw = document.querySelector('deckgo-excalidraw');
+        const blob = await excalidraw?.exportScene();
+
+        download({blob, filename: 'scene.json'});
+      };
+
+      const download = ({blob, filename}) => {
+        const blobURL = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = filename;
+        link.click();
+
+        window.URL.revokeObjectURL(blobURL);
+      };
+
+      document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+          const btn1 = document.querySelector('div.actions button:first-of-type');
+          btn1?.addEventListener('click', toBlob);
+          const btn2 = document.querySelector('div.actions button:last-of-type');
+          btn2?.addEventListener('click', exportScene);
+        },
+        {once: true}
+      );
+    </script>
+  </body>
+</html>

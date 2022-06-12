@@ -6,6 +6,10 @@
 
 - sync: v0.0.29 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
 
+### Web Components: New
+
+- excalidraw: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/excalidraw/CHANGELOG.md))
+
 ### Web Components:
 
 - lazy-img: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
