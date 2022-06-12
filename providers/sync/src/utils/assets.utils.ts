@@ -149,6 +149,10 @@ const getImages = ({selector}: {selector: string}): HTMLDeckgoLazyImgElement[] |
     return undefined;
   }
 
+  if (element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+    return [element as HTMLDeckgoLazyImgElement];
+  }
+
   const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = element.querySelectorAll('deckgo-lazy-img');
 
   if (!imgs || imgs.length <= 0) {
