@@ -11,6 +11,10 @@
 - lazy-img: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
 - studio: v0.0.21 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
 
+### Others
+
+- editor: v7.11.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+
 <a name="7.0.1"></a>
 
 # [7.0.1](https://github.com/deckgo/deckdeckgo/compare/v7.0.0...v7.0.1) (2022-05-04)

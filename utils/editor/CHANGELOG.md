@@ -1,3 +1,9 @@
+# 7.11.0 (2022-06-12)
+
+### Features
+
+- clean more attributes on publish (`data-src`)
+
 # 7.10.0 (2022-04-21)
 
 ### Features
