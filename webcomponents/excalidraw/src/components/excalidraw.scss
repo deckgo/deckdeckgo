@@ -20,7 +20,7 @@ deckgo-excalidraw {
     }
 
     .excalidraw-wrapper .App-menu_top .Stack section {
-      max-width: fit-content;
+      width: auto;
     }
 
     .excalidraw-wrapper .App-menu_top > section {
@@ -31,11 +31,19 @@ deckgo-excalidraw {
     .excalidraw-wrapper .App-menu_bottom .Stack section {
       max-width: fit-content;
       justify-content: center;
+
+      * {
+        pointer-events: all;
+      }
     }
 
     .excalidraw-wrapper footer {
       display: flex;
       justify-content: center;
+    }
+
+    .excalidraw-wrapper footer > div:first-of-type {
+      pointer-events: none !important;
     }
 
     .excalidraw-wrapper footer > div:last-of-type,
