@@ -50,6 +50,7 @@
   "devDependencies": {
     "dotenv": "^10.0.0",
     "node-fetch": "^2.6.7",
-    "sass": "^1.39.0"
+    "sass": "^1.39.0",
+    "type-fest": "^0.21.3"
   }
 }
