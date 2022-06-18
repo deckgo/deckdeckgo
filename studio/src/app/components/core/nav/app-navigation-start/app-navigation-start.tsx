@@ -32,7 +32,8 @@ export class AppNavigationStart {
               'application/octet-stream': ['.ddg']
             }
           }
-        ]
+        ],
+        extension: 'ddg'
       });
     } catch (err) {
       throwError(`Something went wrong. ${err}.`);
