@@ -1,3 +1,9 @@
+# 0.0.30 (2022-06-18)
+
+### Features
+
+- fallback file extension for download `.ddg` or `.papyrs`
+
 # 0.0.29 (2022-06-12)
 
 ### Features

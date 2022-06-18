@@ -30,7 +30,7 @@ export const importData = async (file: File): Promise<'doc' | 'deck'> => {
   return result;
 };
 
-export const exportData = async ({types}: {types: FilePickerAcceptType[]}) => {
+export const exportData = async ({types, extension}: {types: FilePickerAcceptType[]; extension: 'ddg' | 'papyrs'}) => {
   if (!isDeckEdited() && !isDocEdited()) {
     throw new Error('No deck or doc found');
   }
@@ -74,7 +74,8 @@ export const exportData = async ({types}: {types: FilePickerAcceptType[]}) => {
   await save({
     filename: DeckStore.getInstance().get()?.data?.name || DocStore.getInstance().get()?.data?.name,
     blob,
-    types
+    types,
+    extension
   });
 };
 

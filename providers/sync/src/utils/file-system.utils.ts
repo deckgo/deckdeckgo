@@ -1,4 +1,4 @@
-export const save = (data: {filename: string | undefined; blob: Blob; types: FilePickerAcceptType[]}): Promise<void> => {
+export const save = (data: {filename: string | undefined; blob: Blob; types: FilePickerAcceptType[]; extension: string}): Promise<void> => {
   if ('showSaveFilePicker' in window) {
     return exportNativeFileSystem(data);
   }
@@ -31,7 +31,7 @@ const writeFile = async ({fileHandle, blob}: {fileHandle: FileSystemFileHandle; 
   await writer.close();
 };
 
-const download = async ({filename, blob}: {filename: string; blob: Blob}) => {
+const download = async ({filename, blob, extension}: {filename: string; blob: Blob; extension: string}) => {
   const a: HTMLAnchorElement = document.createElement('a');
   a.style.display = 'none';
   document.body.appendChild(a);
@@ -39,7 +39,7 @@ const download = async ({filename, blob}: {filename: string; blob: Blob}) => {
   const url: string = window.URL.createObjectURL(blob);
 
   a.href = url;
-  a.download = `${filename}.md`;
+  a.download = `${filename}.${extension}`;
 
   a.click();
 
