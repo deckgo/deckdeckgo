@@ -1,3 +1,9 @@
+# 0.0.31 (2022-07-01)
+
+### Features
+
+- update published landing page after remove a document or deck from storage
+
 # 0.0.30 (2022-06-18)
 
 ### Features

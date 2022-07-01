@@ -1,3 +1,9 @@
+# 7.12.0 (2022-07-01)
+
+### Features
+
+- add interface to `updateLanding` (update the published index html page)
+
 # 7.11.1 (2022-06-12)
 
 ### Features

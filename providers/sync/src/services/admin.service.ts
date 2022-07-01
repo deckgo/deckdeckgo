@@ -3,6 +3,7 @@ import {nanoid} from 'nanoid';
 import {deleteDeck} from '../providers/deck.provider';
 import {deleteDoc} from '../providers/doc.provider';
 import {getParagraph} from '../providers/paragraph.provider';
+import {updateLanding} from '../providers/publish.provider';
 import {getSlide} from '../providers/slide.provider';
 import {deleteFile} from '../providers/storage.provider';
 import {ImportData} from '../types/import.types';
@@ -158,6 +159,12 @@ export const deleteDeckOrDoc = async ({data, deleteStorage}: {data: DeckOrDoc; d
   if (data.doc) {
     const {doc} = data;
     await Promise.all([deleteStorageFile({meta: doc.data.meta, folder: 'd', deleteStorage}), deleteDoc(doc.id)]);
+
+    // If we deleted the file in the storage, we also want to update the list of posts displayed on the landing page
+    if (deleteStorage) {
+      await updateLanding();
+    }
+
     return;
   }
 

@@ -1,4 +1,14 @@
-import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UserSocial} from '@deckdeckgo/editor';
+import {
+  Author,
+  Deck,
+  DeckPublish,
+  UpdateLanding,
+  Doc,
+  DocPublish,
+  Meta,
+  PublishUrl,
+  UserSocial
+} from '@deckdeckgo/editor';
 import {AuthStore} from '../stores/auth.store';
 import {DeckStore} from '../stores/deck.store';
 import {DocStore} from '../stores/doc.store';
@@ -66,6 +76,12 @@ const publishDeck = async ({inputs, config}: PublishParams): Promise<void> => {
   const {deckPublish}: {deckPublish: DeckPublish} = await cloudProvider<{deckPublish: DeckPublish}>();
 
   await deckPublish({deck, config});
+};
+
+export const updateLanding = async (): Promise<void> => {
+  const {updateLanding: updateLandingPage}: {updateLanding: UpdateLanding} = await cloudProvider<{updateLanding: UpdateLanding}>();
+
+  await updateLandingPage();
 };
 
 const updateDeckMeta = (inputs: PublishInputs): Deck => {
