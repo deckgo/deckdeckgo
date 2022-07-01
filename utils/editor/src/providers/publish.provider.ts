@@ -12,3 +12,7 @@ export interface DocPublish {
 export interface PublishUrl {
   (): Promise<string>;
 }
+
+export interface UpdateLanding {
+  (): Promise<void>;
+}
