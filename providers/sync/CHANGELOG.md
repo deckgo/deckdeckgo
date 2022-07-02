@@ -1,3 +1,9 @@
+# 0.0.32 (2022-07-02)
+
+### Build
+
+- bump dependencies
+
 # 0.0.31 (2022-07-01)
 
 ### Features
