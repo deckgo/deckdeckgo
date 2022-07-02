@@ -16,6 +16,7 @@ export interface PublishData {
   attributes: Record<string, string> | undefined;
   social_image_name: string;
   social_image_value: Blob | undefined;
+  social_links: string | undefined;
 }
 
 export interface DeckPublishData extends PublishData {
@@ -92,12 +93,13 @@ const publishData = async ({
     title,
     description: (meta?.description || fallbackName)?.trim(),
     author: meta?.author?.name || fallbackAuthor,
-    bio: buildBio({meta, socialImgPath}),
+    bio: meta?.author?.bio,
     photo_url: meta?.author?.photo_url,
     head_extra: head_extra.length > 0 ? head_extra.join('') : undefined,
     attributes,
     social_image_name: encodeURI(title).toLowerCase(),
-    social_image_value: socialImage
+    social_image_value: socialImage,
+    social_links: buildSocialLinks({meta, socialImgPath})
   };
 };
 
@@ -198,19 +200,14 @@ const getSocialImage = async (): Promise<Blob | undefined> => {
   return deckGoSocialImg?.toBlob('image/png');
 };
 
-const buildBio = ({meta, socialImgPath}: {meta: Meta | undefined; socialImgPath?: string}): string | undefined => {
+const buildSocialLinks = ({meta, socialImgPath}: {meta: Meta | undefined; socialImgPath?: string}): string | undefined => {
   if (!meta || !meta.author) {
     return undefined;
   }
 
   const {
-    author: {bio, social, name}
+    author: {social, name}
   }: Meta = meta;
-
-  // If not path to display the social images (twitter logo etc.), then we cannot generate the link. In deckdeckgo there is currently no landing page.
-  if (!socialImgPath) {
-    return bio;
-  }
 
   const buildSocialLink = ({
     username,
@@ -227,12 +224,12 @@ const buildBio = ({meta, socialImgPath}: {meta: Meta | undefined; socialImgPath?
   }): string | undefined =>
     !username || username === ''
       ? undefined
-      : `<a href="https://${href}/${username}" aria-label="${authorName} on ${platformName}" rel="noopener norefferer"><img src="${socialImgPath}/${iconName}.svg" role="presentation" alt="${platformName} logo" /></a>`;
+      : `<a href="https://${href}/${username}" aria-label="${authorName} on ${platformName}" rel="noopener norefferer"><deckgo-lazy-img svg-src="${socialImgPath}/${iconName}.svg" role="presentation" alt="${platformName} logo" /></a>`;
 
   const buildCustomLink = ({custom, authorName}: {custom: string | undefined; authorName: string}): string | undefined =>
     !custom || custom === ''
       ? undefined
-      : `<a href="${custom}" aria-label="${authorName}" rel="noopener norefferer"><img src="${socialImgPath}/globe.svg" role="presentation" alt="" /></a>`;
+      : `<a href="${custom}" aria-label="${authorName}" rel="noopener norefferer"><deckgo-lazy-img svg-src="${socialImgPath}/globe.svg" role="presentation" alt="" /></a>`;
 
   const twitterLink: string | undefined = buildSocialLink({
     username: social?.twitter,
@@ -263,10 +260,9 @@ const buildBio = ({meta, socialImgPath}: {meta: Meta | undefined; socialImgPath?
     authorName: name
   });
 
-  const hasBio: boolean = bio !== undefined && bio !== '';
   const hasLinks: boolean = twitterLink !== undefined || linkedInLink !== undefined || githubLink !== undefined || customUrl !== undefined;
 
-  return `${bio ?? ''}${hasBio && hasLinks ? ' ▪' : ''}${[customUrl, twitterLink, githubLink, linkedInLink]
-    .filter((link: string | undefined) => link !== undefined)
-    .join('')}`;
+  return hasLinks
+    ? `${[customUrl, twitterLink, githubLink, linkedInLink].filter((link: string | undefined) => link !== undefined).join('')}`
+    : undefined;
 };
