@@ -17,6 +17,7 @@ export interface PublishData {
   social_image_name: string;
   social_image_value: Blob | undefined;
   social_links: string | undefined;
+  social_image_link: string | undefined;
 }
 
 export interface DeckPublishData extends PublishData {
@@ -61,7 +62,8 @@ export const docPublishData = async ({
   return {
     ...(await publishData({meta, selector: docSelector, fallbackName: data.name, fallbackAuthor, socialImgPath})),
     paragraphs: getParagraphs(),
-    theme
+    theme,
+    social_image_link: getDocSocialImgLink({selector: docSelector})
   };
 };
 
@@ -99,7 +101,8 @@ const publishData = async ({
     attributes,
     social_image_name: encodeURI(title).toLowerCase(),
     social_image_value: socialImage,
-    social_links: buildSocialLinks({meta, socialImgPath})
+    social_links: buildSocialLinks({meta, socialImgPath}),
+    social_image_link: undefined
   };
 };
 
@@ -265,4 +268,30 @@ const buildSocialLinks = ({meta, socialImgPath}: {meta: Meta | undefined; social
   return hasLinks
     ? `${[customUrl, twitterLink, githubLink, linkedInLink].filter((link: string | undefined) => link !== undefined).join('')}`
     : undefined;
+};
+
+const getDocSocialImgLink = ({selector}: {selector: string}): string | undefined => {
+  const firstParagraph: HTMLElement | null = document.querySelector(`${selector} > article *:nth-child(1)`);
+  const secondParagraph: HTMLElement | null = document.querySelector(`${selector} > article *:nth-child(2)`);
+
+  const getImgSrc = (element: HTMLElement | null | undefined): string | undefined => {
+    const attribute: string | null | undefined = element?.getAttribute('img-src');
+    return attribute?.indexOf('http') === 0 ? attribute : undefined;
+  }
+
+  if (firstParagraph?.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+    return getImgSrc(firstParagraph);
+  }
+
+  if (secondParagraph?.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+    return getImgSrc(secondParagraph);
+  }
+
+  const firstParagraphChild: HTMLElement | null | undefined = firstParagraph?.querySelector('deckgo-lazy-img');
+  if (firstParagraphChild !== null && firstParagraphChild !== undefined) {
+    return getImgSrc(firstParagraphChild);
+  }
+
+  const secondParagraphChild: HTMLElement | null | undefined = secondParagraph?.querySelector('deckgo-lazy-img');
+  return getImgSrc(secondParagraphChild);
 };
