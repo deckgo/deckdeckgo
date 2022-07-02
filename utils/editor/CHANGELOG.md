@@ -1,3 +1,10 @@
+# 7.13.0 (2022-07-02)
+
+### Features
+
+- collect social links (twitter etc.) for publish
+- use image of first or second paragraph for the social card (if exists in document)
+
 # 7.12.0 (2022-07-01)
 
 ### Features
