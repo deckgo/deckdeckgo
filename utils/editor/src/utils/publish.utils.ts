@@ -4,7 +4,7 @@ import {Meta} from '../models/data/meta';
 import {deckSelector} from './deck.utils';
 import {docSelector} from './doc.utils';
 import {getGoogleFontUrl, GoogleFont, googleFonts} from './fonts.utils';
-import { cleanNode, dirtyPublishAttributes, isElementNode } from './node.utils';
+import {cleanNode, dirtyPublishAttributes, isElementNode} from './node.utils';
 
 export interface PublishData {
   title: string;
@@ -46,17 +46,19 @@ export const deckPublishData = async ({deck, fallbackAuthor}: {deck: Deck; fallb
 export const docPublishData = async ({
   doc,
   fallbackAuthor,
-  theme
+  theme,
+  socialImgPath
 }: {
   doc: Doc;
   fallbackAuthor: string;
   theme: string | undefined;
+  socialImgPath?: string;
 }): Promise<DocPublishData> => {
   const {data} = doc;
   const {meta} = data;
 
   return {
-    ...(await publishData({meta, selector: docSelector, fallbackName: data.name, fallbackAuthor})),
+    ...(await publishData({meta, selector: docSelector, fallbackName: data.name, fallbackAuthor, socialImgPath})),
     paragraphs: getParagraphs(),
     theme
   };
@@ -66,12 +68,14 @@ const publishData = async ({
   meta,
   fallbackName,
   fallbackAuthor,
-  selector
+  selector,
+  socialImgPath
 }: {
   meta: Meta | undefined;
   fallbackName: string;
   fallbackAuthor: string;
   selector: string;
+  socialImgPath?: string;
 }): Promise<PublishData> => {
   const googleFontLink: string | undefined = getGoogleFontLink();
   const canonicalLink: string | undefined = getCanonicalLink({meta});
@@ -88,7 +92,7 @@ const publishData = async ({
     title,
     description: (meta?.description || fallbackName)?.trim(),
     author: meta?.author?.name || fallbackAuthor,
-    bio: meta?.author?.bio,
+    bio: buildBio({meta, socialImgPath}),
     photo_url: meta?.author?.photo_url,
     head_extra: head_extra.length > 0 ? head_extra.join('') : undefined,
     attributes,
@@ -192,4 +196,77 @@ const getParagraphs = (): string[] => {
 const getSocialImage = async (): Promise<Blob | undefined> => {
   const deckGoSocialImg: HTMLDeckgoSocialImgElement | null = document.querySelector('deckgo-social-img');
   return deckGoSocialImg?.toBlob('image/png');
+};
+
+const buildBio = ({meta, socialImgPath}: {meta: Meta | undefined; socialImgPath?: string}): string | undefined => {
+  if (!meta || !meta.author) {
+    return undefined;
+  }
+
+  const {
+    author: {bio, social, name}
+  }: Meta = meta;
+
+  // If not path to display the social images (twitter logo etc.), then we cannot generate the link. In deckdeckgo there is currently no landing page.
+  if (!socialImgPath) {
+    return bio;
+  }
+
+  const buildSocialLink = ({
+    username,
+    href,
+    authorName,
+    platformName,
+    iconName
+  }: {
+    username: string | undefined;
+    href: string;
+    authorName: string;
+    platformName: string;
+    iconName: string;
+  }): string | undefined =>
+    !username || username === ''
+      ? undefined
+      : `<a href="https://${href}/${username}" aria-label="${authorName} on ${platformName}" rel="noopener norefferer"><img src="${socialImgPath}/${iconName}.svg" role="presentation" alt="${platformName} logo" /></a>`;
+
+  const buildCustomLink = ({custom, authorName}: {custom: string | undefined; authorName: string}): string | undefined =>
+    !custom || custom === ''
+      ? undefined
+      : `<a href="${custom}" aria-label="${authorName}" rel="noopener norefferer"><img src="${socialImgPath}/globe.svg" role="presentation" alt="" /></a>`;
+
+  const twitterLink: string | undefined = buildSocialLink({
+    username: social?.twitter,
+    href: 'twitter.com',
+    authorName: name,
+    platformName: 'Twitter',
+    iconName: 'twitter'
+  });
+
+  const linkedInLink: string | undefined = buildSocialLink({
+    username: social?.linkedin,
+    href: 'www.linkedin.com/in',
+    authorName: name,
+    platformName: 'LinkedIn',
+    iconName: 'linkedin'
+  });
+
+  const githubLink: string | undefined = buildSocialLink({
+    username: social?.github,
+    href: 'github.com',
+    authorName: name,
+    platformName: 'GitHub',
+    iconName: 'github'
+  });
+
+  const customUrl: string | undefined = buildCustomLink({
+    custom: social?.custom,
+    authorName: name
+  });
+
+  const hasBio: boolean = bio !== undefined && bio !== '';
+  const hasLinks: boolean = twitterLink !== undefined || linkedInLink !== undefined || githubLink !== undefined || customUrl !== undefined;
+
+  return `${bio ?? ''}${hasBio && hasLinks ? ' ▪' : ''}${[customUrl, twitterLink, githubLink, linkedInLink]
+    .filter((link: string | undefined) => link !== undefined)
+    .join('')}`;
 };
