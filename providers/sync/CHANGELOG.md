@@ -1,3 +1,9 @@
+# 0.0.33 (2022-07-02)
+
+### Features
+
+- update storage on delete only if needed
+
 # 0.0.32 (2022-07-02)
 
 ### Build

@@ -157,11 +157,20 @@ export const loadAndImportDoc = (doc: Doc): Promise<void> => {
 
 export const deleteDeckOrDoc = async ({data, deleteStorage}: {data: DeckOrDoc; deleteStorage: boolean}) => {
   if (data.doc) {
-    const {doc} = data;
-    await Promise.all([deleteStorageFile({meta: doc.data.meta, folder: 'd', deleteStorage}), deleteDoc(doc.id)]);
+    const {
+      doc: {
+        id,
+        data: {meta}
+      }
+    } = data;
 
-    // If we deleted the file in the storage, we also want to update the list of posts displayed on the landing page
-    if (deleteStorage) {
+    // If a pathname is defined, then there is a storage
+    const hasStorage: boolean = hasPathname(meta);
+
+    await Promise.all([deleteStorageFile({meta, folder: 'd', deleteStorage}), deleteDoc(id)]);
+
+    // If we deleted the file in the storage, we also want to update the list of posts displayed on the landing page but only if there is a storage
+    if (deleteStorage && hasStorage) {
       await updateLanding();
     }
 
@@ -179,16 +188,11 @@ const deleteStorageFile = async ({meta, folder, deleteStorage}: {meta: Meta | un
     return;
   }
 
-  if (!meta) {
+  if (!hasPathname(meta)) {
     return;
   }
 
   const {pathname} = meta;
-
-  if (!pathname) {
-    return;
-  }
-
   const filename: string = pathname.replace(`/${folder}/`, '');
 
   // We do not have the downloadUrl here but, it does not matter much as it is only use to extract the token for secret file which, in this case, is not used because the data is public.
@@ -197,4 +201,13 @@ const deleteStorageFile = async ({meta, folder, deleteStorage}: {meta: Meta | un
     fullPath: meta.pathname,
     name: filename
   });
+};
+
+const hasPathname = (meta: Meta | undefined): boolean => {
+  if (!meta) {
+    return false;
+  }
+
+  const {pathname} = meta;
+  return pathname !== undefined;
 };
