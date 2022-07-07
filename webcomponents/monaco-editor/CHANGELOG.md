@@ -1,3 +1,9 @@
+# 1.4.1 (2022-07-07)
+
+### Fix
+
+- typo in `unescapeCode`
+
 # 1.4.0 (2022-03-25)
 
 ### Features

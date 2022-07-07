@@ -3,7 +3,7 @@ export const escapeCode = (code: string | undefined): string | undefined =>
 
 export const unescapeCode = (code: string | undefined): string | undefined =>
   code
-    ?.replace(/'&amp;/g, '&')
+    ?.replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
