@@ -14,6 +14,7 @@ export * from './loaders/doc.loader';
 export * from './providers/auth.provider';
 export * from './providers/deck.provider';
 export * from './providers/doc.provider';
+export * from './providers/feed.provider';
 export * from './providers/paragraph.provider';
 export * from './providers/publish.provider';
 export * from './providers/slide.provider';

@@ -1,3 +1,9 @@
+# 7.14.0 (2022-07-21)
+
+### Features
+
+- types to submit to feed
+
 # 7.13.0 (2022-07-02)
 
 ### Features
