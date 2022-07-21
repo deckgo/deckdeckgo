@@ -1,5 +1,4 @@
-import {Deck, Doc, DocSubmitFeed, throwError} from '@deckdeckgo/editor';
-import {DeckSubmitFeed} from '@deckdeckgo/editor/lib';
+import {Deck, DeckSubmitFeed, Doc, DocSubmitFeed, throwError} from '@deckdeckgo/editor';
 import {DeckStore} from '../stores/deck.store';
 import {DocStore} from '../stores/doc.store';
 import {EnvStore} from '../stores/env.store';
