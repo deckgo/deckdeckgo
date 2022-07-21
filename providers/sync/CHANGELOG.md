@@ -1,3 +1,9 @@
+# 0.0.34 (2022-07-21)
+
+### Features
+
+- submit doc/deck to feed
+
 # 0.0.33 (2022-07-02)
 
 ### Features
