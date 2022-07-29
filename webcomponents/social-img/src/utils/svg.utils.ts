@@ -52,18 +52,24 @@ const inlineStyle = ({clone, style}: {clone: SVGGraphicsElement; style: CSSStyle
     return;
   }
 
-  for (const key of Object.keys(style)) {
-    text.style.setProperty(key, style[key]);
+  for (let i = style.length; i--; ) {
+    const key = style[i];
+    const value = style.getPropertyValue(key);
+
+    // Prevent empty style which seems to bloat Safari which makes it miss font styles
+    if (value !== '') {
+      text.style.setProperty(key, value);
+    }
   }
 };
 
 // escape text to support emoji
-const escapeText = ({clone}: {clone: SVGGraphicsElement;}) => {
+const escapeText = ({clone}: {clone: SVGGraphicsElement}) => {
   const text: HTMLParagraphElement | null = clone.querySelector('foreignObject > p');
 
   if (!text) {
     return;
   }
 
-  text.innerText = unescape(encodeURIComponent(text.innerText))
+  text.innerText = unescape(encodeURIComponent(text.innerText));
 };

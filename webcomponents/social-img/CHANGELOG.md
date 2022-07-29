@@ -1,3 +1,9 @@
+# 1.3.1 (2022-07-29)
+
+### Fix
+
+- Safari not interpreting font styles
+
 # 1.3.0 (2022-03-24)
 
 ### Features

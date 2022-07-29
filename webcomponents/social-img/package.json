@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/social-img",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Generate dynamically a social image with a text and an optional logo",
   "main": "dist/index.cjs.js",
   "module": "dist/social-img/social-img.esm.js",
