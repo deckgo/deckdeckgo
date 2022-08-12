@@ -24,8 +24,8 @@ export const createOfflineDoc = async (docData: DocData): Promise<Doc> => {
 export const getOfflineDoc = (docId: string): Promise<Doc | undefined> => get(`/docs/${docId}`);
 
 export const updateOfflineDoc = (doc: Doc): Promise<void> =>
-  update(`/docs/${doc.id}`, ({data}: Doc) => ({
-    id: doc.id,
+  update(`/docs/${doc.id}`, ({data, ...rest}: Doc) => ({
+    ...rest,
     data: {
       ...data,
       ...doc.data,

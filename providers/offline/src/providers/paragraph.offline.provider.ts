@@ -30,8 +30,8 @@ export const getOfflineParagraph = ({docId, paragraphId}: {docId: string; paragr
   get(`/docs/${docId}/paragraphs/${paragraphId}`);
 
 export const updateOfflineParagraph = ({docId, paragraph}: {docId: string; paragraph: Paragraph}): Promise<void> =>
-  update(`/docs/${docId}/paragraphs/${paragraph.id}`, ({data}: Paragraph) => ({
-    id: paragraph.id,
+  update(`/docs/${docId}/paragraphs/${paragraph.id}`, ({data, ...rest}: Paragraph) => ({
+    ...rest,
     data: {
       ...data,
       ...paragraph.data,

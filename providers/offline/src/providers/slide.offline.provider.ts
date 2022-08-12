@@ -23,8 +23,8 @@ export const createOfflineSlide = async (deckId: string, slideData: SlideData): 
 export const getOfflineSlide = (deckId: string, slideId: string): Promise<Slide | undefined> => get(`/decks/${deckId}/slides/${slideId}`);
 
 export const updateOfflineSlide = (deckId: string, slide: Slide): Promise<void> =>
-  update(`/decks/${deckId}/slides/${slide.id}`, ({data}: Slide) => ({
-    id: slide.id,
+  update(`/decks/${deckId}/slides/${slide.id}`, ({data, ...rest}: Slide) => ({
+    ...rest,
     data: {
       ...data,
       ...slide.data,

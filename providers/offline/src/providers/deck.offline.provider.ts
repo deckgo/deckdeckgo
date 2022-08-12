@@ -24,8 +24,8 @@ export const createOfflineDeck = async (deckData: DeckData): Promise<Deck> => {
 export const getOfflineDeck = (deckId: string): Promise<Deck | undefined> => get(`/decks/${deckId}`);
 
 export const updateOfflineDeck = (deck: Deck): Promise<void> =>
-  update(`/decks/${deck.id}`, ({data}: Deck) => ({
-    id: deck.id,
+  update(`/decks/${deck.id}`, ({data, ...rest}: Deck) => ({
+    ...rest,
     data: {
       ...data,
       ...deck.data,
