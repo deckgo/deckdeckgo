@@ -27,7 +27,8 @@ export const updateOfflineSlide = (deckId: string, slide: Slide): Promise<void> 
     id: slide.id,
     data: {
       ...data,
-      ...slide.data
+      ...slide.data,
+      updated_at: new Date()
     }
   }));
 

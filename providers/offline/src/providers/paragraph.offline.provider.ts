@@ -34,7 +34,8 @@ export const updateOfflineParagraph = ({docId, paragraph}: {docId: string; parag
     id: paragraph.id,
     data: {
       ...data,
-      ...paragraph.data
+      ...paragraph.data,
+      updated_at: new Date()
     }
   }));
 

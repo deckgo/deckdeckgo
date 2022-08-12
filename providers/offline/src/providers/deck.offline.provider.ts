@@ -1,6 +1,6 @@
-import { Deck,DeckData } from '@deckdeckgo/editor';
-import { get,set,update } from 'idb-keyval';
-import { nanoid } from 'nanoid';
+import {Deck, DeckData} from '@deckdeckgo/editor';
+import {get, set, update} from 'idb-keyval';
+import {nanoid} from 'nanoid';
 
 export const createOfflineDeck = async (deckData: DeckData): Promise<Deck> => {
   const deckId: string = nanoid();
@@ -28,6 +28,7 @@ export const updateOfflineDeck = (deck: Deck): Promise<void> =>
     id: deck.id,
     data: {
       ...data,
-      ...deck.data
+      ...deck.data,
+      updated_at: new Date()
     }
   }));

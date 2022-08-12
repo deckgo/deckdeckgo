@@ -28,6 +28,7 @@ export const updateOfflineDoc = (doc: Doc): Promise<void> =>
     id: doc.id,
     data: {
       ...data,
-      ...doc.data
+      ...doc.data,
+      updated_at: new Date()
     }
   }));
