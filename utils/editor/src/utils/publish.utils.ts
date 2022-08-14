@@ -34,10 +34,10 @@ export interface DocPublishData extends PublishData {
 
 export const deckPublishData = async ({deck, fallbackAuthor}: {deck: Deck; fallbackAuthor: string}): Promise<DeckPublishData> => {
   const {data} = deck;
-  const {meta, background, footer, header} = data;
+  const {meta, background, footer, header} = data ?? {};
 
   return {
-    ...(await publishData({meta, selector: deckSelector, fallbackName: data.name, fallbackAuthor})),
+    ...(await publishData({meta, selector: deckSelector, fallbackName: data?.name ?? '', fallbackAuthor})),
     slides: getSlides(),
     background: background ? `<div slot="background">${background}</div>` : undefined,
     header: background ? `<div slot="header">${header}</div>` : undefined,
@@ -57,10 +57,10 @@ export const docPublishData = async ({
   socialImgPath?: string;
 }): Promise<DocPublishData> => {
   const {data} = doc;
-  const {meta} = data;
+  const {meta} = data ?? {};
 
   return {
-    ...(await publishData({meta, selector: docSelector, fallbackName: data.name, fallbackAuthor, socialImgPath})),
+    ...(await publishData({meta, selector: docSelector, fallbackName: data?.name ?? '', fallbackAuthor, socialImgPath})),
     paragraphs: getParagraphs(),
     theme,
     social_image_link: getDocSocialImgLink({selector: docSelector})
@@ -277,7 +277,7 @@ const getDocSocialImgLink = ({selector}: {selector: string}): string | undefined
   const getImgSrc = (element: HTMLElement | null | undefined): string | undefined => {
     const attribute: string | null | undefined = element?.getAttribute('img-src');
     return attribute?.indexOf('http') === 0 ? attribute : undefined;
-  }
+  };
 
   if (firstParagraph?.nodeName.toLowerCase() === 'deckgo-lazy-img') {
     return getImgSrc(firstParagraph);

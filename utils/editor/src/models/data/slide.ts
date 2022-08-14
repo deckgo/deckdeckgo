@@ -1,3 +1,5 @@
+import type {DataRecord} from './data';
+
 export enum SlideTemplate {
   TITLE = 'title',
   CONTENT = 'content',
@@ -77,7 +79,4 @@ export interface SlideData {
   updated_at?: Date | number | BigInt;
 }
 
-export interface Slide {
-  id: string;
-  data: SlideData;
-}
+export type Slide = DataRecord<SlideData>;

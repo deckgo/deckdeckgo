@@ -1,5 +1,6 @@
-import {Meta} from './meta';
-import {Deploy} from './deploy';
+import type {DataRecord} from './data';
+import type {Deploy} from './deploy';
+import type {Meta} from './meta';
 
 export interface DocData {
   name: string;
@@ -16,7 +17,4 @@ export interface DocData {
   updated_at?: Date | number | BigInt;
 }
 
-export interface Doc {
-  id: string;
-  data: DocData;
-}
+export type Doc = DataRecord<DocData>;

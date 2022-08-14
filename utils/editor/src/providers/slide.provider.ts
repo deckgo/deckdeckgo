@@ -9,5 +9,5 @@ export interface UpdateSlide {
 }
 
 export interface DeleteSlide {
-  (deckId: string, slideId: string): Promise<void>;
+  (deckId: string, slideId: string, updated_at?: Date | number | BigInt): Promise<void>;
 }

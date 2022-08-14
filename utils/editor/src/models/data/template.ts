@@ -1,3 +1,5 @@
+import type {DataRecord} from './data';
+
 export interface TemplateDataSlot {
   name: string;
   placeholder?: string;
@@ -28,7 +30,4 @@ export interface TemplateData {
   updated_at?: Date | number | BigInt;
 }
 
-export interface Template {
-  id: string;
-  data: TemplateData;
-}
+export type Template = DataRecord<TemplateData>;

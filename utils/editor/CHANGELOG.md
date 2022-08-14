@@ -1,3 +1,13 @@
+# 8.0.0 (2022-08-14)
+
+### Breaking Changes
+
+- `data` becomes optional
+
+### Features
+
+- Deck, slide, doc, paragraph and user inherits from same record type that can contains timestamps
+
 # 7.14.0 (2022-07-21)
 
 ### Features

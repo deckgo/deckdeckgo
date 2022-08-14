@@ -1,3 +1,5 @@
+import type {DataRecord} from './data';
+
 export interface ParagraphData {
   children?: string[];
 
@@ -9,7 +11,4 @@ export interface ParagraphData {
   updated_at?: Date | number | BigInt;
 }
 
-export interface Paragraph {
-  id: string;
-  data: ParagraphData;
-}
+export type Paragraph = DataRecord<ParagraphData>;
