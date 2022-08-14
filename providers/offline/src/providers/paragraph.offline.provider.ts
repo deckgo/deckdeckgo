@@ -1,5 +1,5 @@
 import type {Paragraph, ParagraphData} from '@deckdeckgo/editor';
-import {del, get, set, update} from 'idb-keyval';
+import {get, set, update} from 'idb-keyval';
 
 export const createOfflineParagraph = async ({
   docId,
@@ -40,4 +40,6 @@ export const updateOfflineParagraph = ({docId, paragraph}: {docId: string; parag
   }));
 
 export const deleteOfflineParagraph = ({docId, paragraphId}: {docId: string; paragraphId: string}): Promise<void> =>
-  del(`/docs/${docId}/paragraphs/${paragraphId}`);
+  update(`/docs/${docId}/paragraphs/${paragraphId}`, ({data, ...rest}: Paragraph) => ({
+    ...rest
+  }));

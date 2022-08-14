@@ -1,5 +1,5 @@
-import {Slide, SlideData} from '@deckdeckgo/editor';
-import {del, get, set, update} from 'idb-keyval';
+import type {Slide, SlideData} from '@deckdeckgo/editor';
+import {get, set, update} from 'idb-keyval';
 import {nanoid} from 'nanoid';
 
 export const createOfflineSlide = async (deckId: string, slideData: SlideData): Promise<Slide> => {
@@ -32,4 +32,7 @@ export const updateOfflineSlide = (deckId: string, slide: Slide): Promise<void> 
     }
   }));
 
-export const deleteOfflineSlide = (deckId: string, slideId: string): Promise<void> => del(`/decks/${deckId}/slides/${slideId}`);
+export const deleteOfflineSlide = ({deckId, slideId}: {deckId: string; slideId: string}): Promise<void> =>
+  update(`/decks/${deckId}/slides/${slideId}`, ({data, ...rest}: Slide) => ({
+    ...rest
+  }));

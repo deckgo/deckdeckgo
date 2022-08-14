@@ -50,10 +50,9 @@ const collectDecksData = async (data: SyncPending): Promise<Partial<SyncData>> =
     uniqueSyncData(data.updateSlides).map((slide: SyncPendingSlide) => getSlide(slide))
   );
 
-  const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({
-    deckId,
-    slideId
-  }));
+  const deleteSlides: SyncDataSlide[] | undefined = await Promise.all(
+    uniqueSyncData(data.deleteSlides).map((slide: SyncPendingSlide) => getSlide(slide))
+  );
 
   return {
     updateDecks: deleteDecks
@@ -85,11 +84,8 @@ const collectDocsData = async (data: SyncPending): Promise<Partial<SyncData>> =>
     uniqueSyncData(data.updateParagraphs).map((paragraph: SyncPendingParagraph) => getParagraph(paragraph))
   );
 
-  const deleteParagraphs: SyncDataParagraph[] | undefined = uniqueSyncData(data.deleteParagraphs).map(
-    ({docId, paragraphId}: SyncPendingParagraph) => ({
-      docId,
-      paragraphId
-    })
+  const deleteParagraphs: SyncDataParagraph[] | undefined = await Promise.all(
+    uniqueSyncData(data.deleteParagraphs).map((paragraph: SyncPendingParagraph) => getParagraph(paragraph))
   );
 
   return {

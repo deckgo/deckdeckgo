@@ -1,4 +1,4 @@
-import {Deck, DeckData} from '@deckdeckgo/editor';
+import type {Deck, DeckData} from '@deckdeckgo/editor';
 import {get, set, update} from 'idb-keyval';
 import {nanoid} from 'nanoid';
 
