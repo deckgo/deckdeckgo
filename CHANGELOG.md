@@ -4,7 +4,9 @@
 
 ### Providers
 
-- sync: v0.0.35 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+- firebase: v4.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+- offline: v0.0.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+- sync: v0.0.36 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
 
 ### Web Components: New
 
@@ -14,12 +16,12 @@
 
 - lazy-img: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
 - monaco-editor: v1.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
-- studio: v0.0.21 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
+- studio: v0.0.22 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
 - social-img: v1.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md))
 
 ### Others
 
-- editor: v7.14.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v8.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 
 <a name="7.0.1"></a>
 

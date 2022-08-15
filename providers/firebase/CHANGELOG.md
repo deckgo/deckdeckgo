@@ -1,3 +1,13 @@
+# 4.2.0 (2022-08-15)
+
+### Features
+
+- delete idb entry after delete
+
+### Build
+
+- bump dependencies
+
 # 4.1.4 (2022-04-02)
 
 ### Build

@@ -5,7 +5,7 @@ export interface DeckEntries {
 }
 
 export interface DeleteDeck {
-  (deckId: string): Promise<void>;
+  (deckId: string, updated_at?: Date | number | BigInt): Promise<void>;
 }
 
 export interface CreateDeck {

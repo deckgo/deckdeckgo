@@ -5,7 +5,7 @@ export interface DocEntries {
 }
 
 export interface DeleteDoc {
-  (deckId: string): Promise<void>;
+  (deckId: string, updated_at?: Date | number | BigInt): Promise<void>;
 }
 
 export interface CreateDoc {

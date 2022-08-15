@@ -1,3 +1,5 @@
+import type {DataRecord} from './data';
+
 export interface UserSocial {
   twitter?: string;
   linkedin?: string;
@@ -26,7 +28,4 @@ export interface UserData {
   updated_at: Date | number | BigInt;
 }
 
-export interface User {
-  id: string;
-  data: UserData;
-}
+export type User = DataRecord<UserData>;

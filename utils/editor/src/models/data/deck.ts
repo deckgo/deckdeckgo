@@ -1,5 +1,6 @@
-import {Meta} from './meta';
-import {Deploy} from './deploy';
+import type {DataRecord} from './data';
+import type {Deploy} from './deploy';
+import type {Meta} from './meta';
 
 export interface DeckGitHubRepo {
   id: string;
@@ -45,7 +46,4 @@ export interface DeckData {
   updated_at?: Date | number | BigInt;
 }
 
-export interface Deck {
-  id: string;
-  data: DeckData;
-}
+export type Deck = DataRecord<DeckData>;

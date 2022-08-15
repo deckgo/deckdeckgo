@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/offline",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "David Dal Busco",
   "description": "Offline providers for DeckDeckGo editors.",
   "license": "AGPL-3.0-or-later",
@@ -23,10 +23,10 @@
     "README.md"
   ],
   "dependencies": {
-    "idb-keyval": "^6.1.0",
+    "idb-keyval": "^6.2.0",
     "nanoid": "^3.3.1"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "^7.3.1"
+    "@deckdeckgo/editor": "^8.1.0"
   }
 }

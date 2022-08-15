@@ -1,4 +1,4 @@
-import {UserSocial} from './user';
+import type {UserSocial} from './user';
 
 export interface Author {
   name: string;

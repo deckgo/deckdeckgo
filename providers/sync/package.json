@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/sync",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "author": "David Dal Busco",
   "description": "Sync data and auth providers for DeckDeckGo editors.",
   "license": "AGPL-3.0-or-later",
@@ -24,8 +24,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@deckdeckgo/editor": "^7.14.0",
-    "@deckdeckgo/offline": "^0.0.6",
+    "@deckdeckgo/editor": "^8.1.0",
+    "@deckdeckgo/offline": "^0.0.7",
     "nanoid": "^4.0.0"
   },
   "devDependencies": {

@@ -9,5 +9,5 @@ export interface UpdateParagraph {
 }
 
 export interface DeleteParagraph {
-  (docId: string, slideId: string): Promise<void>;
+  (docId: string, slideId: string, updated_at?: Date | number | BigInt): Promise<void>;
 }

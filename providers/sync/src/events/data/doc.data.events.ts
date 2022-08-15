@@ -15,6 +15,7 @@ import {
   createOfflineDoc,
   createOfflineParagraph,
   deleteOfflineParagraph,
+  getOfflineDoc,
   updateOfflineDoc,
   updateOfflineParagraph
 } from '@deckdeckgo/offline';
@@ -189,10 +190,7 @@ export class DocDataEvents {
         const index: number = elementIndex(paragraphElement);
         doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
-        const updatedDoc: Doc = await updateOfflineDoc(doc);
-        DocStore.getInstance().set({...updatedDoc});
-
-        await syncUpdateDoc(updatedDoc.id);
+        await this.updateAndSyncDoc(doc);
 
         resolve();
       } catch (err) {
@@ -225,10 +223,7 @@ export class DocDataEvents {
 
         doc.data.paragraphs = [...doc.data.paragraphs.filter((paragraphId: string) => !filterParagraphIds.includes(paragraphId))];
 
-        const updatedDoc: Doc = await updateOfflineDoc(doc);
-        DocStore.getInstance().set({...updatedDoc});
-
-        await syncUpdateDoc(updatedDoc.id);
+        await this.updateAndSyncDoc(doc);
 
         resolve();
       } catch (err) {
@@ -312,12 +307,9 @@ export class DocDataEvents {
           return;
         }
 
-        doc.data.name = title.replace(/\u200B/g,'');
+        doc.data.name = title.replace(/\u200B/g, '');
 
-        const updatedDoc: Doc = await updateOfflineDoc(doc);
-        DocStore.getInstance().set({...updatedDoc});
-
-        await syncUpdateDoc(updatedDoc.id);
+        await this.updateAndSyncDoc(doc);
 
         resolve();
       } catch (err) {
@@ -358,5 +350,18 @@ export class DocDataEvents {
           {}
         )
       : null;
+  }
+
+  private async updateAndSyncDoc(doc: Doc) {
+    // Atomic update that preserve timestamps
+    await updateOfflineDoc(doc);
+
+    const {id} = doc;
+
+    // Read current doc value to update the store with timestamps. Technically we could spare this operation at the moment but it's cleaner.
+    const updatedDoc: Doc = await getOfflineDoc(id);
+    DocStore.getInstance().set({...updatedDoc});
+
+    await syncUpdateDoc(id);
   }
 }
