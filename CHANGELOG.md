@@ -16,7 +16,7 @@
 
 - lazy-img: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
 - monaco-editor: v1.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
-- studio: v0.0.21 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
+- studio: v0.0.22 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
 - social-img: v1.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md))
 
 ### Others
