@@ -1,3 +1,13 @@
+# 0.0.36 (2022-08-15)
+
+### Features
+
+- read doc from idb after update before updating store
+
+### Build
+
+- bump dependencies
+
 # 0.0.35 (2022-07-21)
 
 ### Fix
