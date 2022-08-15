@@ -4,12 +4,7 @@ export interface Log {
   duration?: number;
 }
 
-export const log = (detail: Pick<Partial<Log>, 'level'> & Omit<Log, 'level'>) => {
-  const logDetail: Log = {
-    level: 'info',
-    ...detail
-  };
-
-  const $event: CustomEvent<Log> = new CustomEvent<Log>('ddgLog', {detail: logDetail, bubbles: true});
+export const log = (detail: Log) => {
+  const $event: CustomEvent<Log> = new CustomEvent<Log>('ddgLog', {detail, bubbles: true});
   document.dispatchEvent($event);
 };

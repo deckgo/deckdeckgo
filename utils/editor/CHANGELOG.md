@@ -1,3 +1,9 @@
+# 8.1.1 (2022-08-15)
+
+### Features
+
+- make `level` mandatory for `log` (since previous declaration was not supported anyway)
+
 # 8.1.0 (2022-08-15)
 
 ### Features
