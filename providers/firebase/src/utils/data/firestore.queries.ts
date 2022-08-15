@@ -3,6 +3,8 @@ import 'firebase/firestore';
 
 import {filterFieldDelete} from './firestore.utils';
 
+import {del} from 'idb-keyval';
+
 export const entries = <T>({userId, collection}: {userId: string; collection: string}): Promise<{id: string; data: T}[]> => {
   return new Promise<{id: string; data: T}[]>(async (resolve, reject) => {
     try {
@@ -34,6 +36,15 @@ export const deleteEntry = ({id, collection}: {id: string; collection: string}):
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       await firestore.collection(collection).doc(id).delete();
+
+      try {
+        const key: string = `/${collection}/${id}`.replace(/\/\//g, '/');
+
+        await del(key);
+      } catch (err) {
+        // Ignore error, in the cloud the entity has been removed and locally the data have been wiped out too
+        console.error(err);
+      }
 
       resolve();
     } catch (err) {
