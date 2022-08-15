@@ -1,3 +1,9 @@
+# 8.1.0 (2022-08-15)
+
+### Features
+
+- add log `level`
+
 # 8.0.0 (2022-08-14)
 
 ### Breaking Changes
