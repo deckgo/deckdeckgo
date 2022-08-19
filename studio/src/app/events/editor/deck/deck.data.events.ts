@@ -22,6 +22,7 @@ import {
   createOfflineDeck,
   createOfflineSlide,
   deleteOfflineSlide,
+  getOfflineDeck,
   getOfflineSlide,
   updateOfflineDeck,
   updateOfflineSlide
@@ -396,7 +397,9 @@ export class DeckDataEvents {
   }
 
   private async updateDeckAndSync(deck: Deck) {
-    const updatedDeck: Deck = await updateOfflineDeck(deck);
+    await updateOfflineDeck(deck);
+
+    const updatedDeck: Deck = await getOfflineDeck(deck.id);
 
     // Update store
     setDeck({...updatedDeck});
@@ -474,7 +477,9 @@ export class DeckDataEvents {
         }
 
         if (editorStore.state.deck) {
-          const updatedSlide: Slide = await updateOfflineSlide(editorStore.state.deck.id, slideUpdate);
+          await updateOfflineSlide(editorStore.state.deck.id, slideUpdate);
+
+          const updatedSlide: Slide = await getOfflineSlide(editorStore.state.deck.id, slideUpdate.id);
 
           await syncUpdateSlide({deckId: editorStore.state.deck.id, slideId: updatedSlide.id});
         }
@@ -522,7 +527,7 @@ export class DeckDataEvents {
             }
 
             // 2. Delete the slide
-            await deleteOfflineSlide(currentDeck.id, slideId);
+            await deleteOfflineSlide({deckId: currentDeck.id, slideId});
 
             await syncDeleteSlide({deckId: currentDeck.id, slideId});
           }

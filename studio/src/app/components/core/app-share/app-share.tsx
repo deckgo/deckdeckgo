@@ -63,9 +63,7 @@ export class AppShare {
         {
           twitter: {
             socialShareText: twitterText,
-            socialShareUrl: publishedUrl,
-            socialSharePopupWidth: 300,
-            socialSharePopupHeight: 400
+            socialShareUrl: publishedUrl
           }
         },
         {
