@@ -1,12 +1,8 @@
-export interface PublishInputs {
-  name: string;
-  description: string;
-  tags: string[];
-  github: boolean;
-  canonical: string | undefined;
-}
+import type {Meta} from '@deckdeckgo/editor';
+
+export type PublishInputs = Required<Pick<Meta, 'title' | 'description' | 'tags'>> & Pick<Meta, 'canonical' | 'lang'>;
 
 export interface PublishParams {
   inputs: PublishInputs;
-  config?: Record<string, string>;
+  config?: Record<string, string | boolean>;
 }

@@ -13,6 +13,8 @@ export interface Meta {
   description?: string;
   tags?: string[];
 
+  lang?: string;
+
   pathname?: string;
 
   canonical?: string;

@@ -1,14 +1,4 @@
-import {
-  Author,
-  Deck,
-  DeckPublish,
-  UpdateLanding,
-  Doc,
-  DocPublish,
-  Meta,
-  PublishUrl,
-  UserSocial
-} from '@deckdeckgo/editor';
+import {Author, Deck, DeckPublish, Doc, DocPublish, Meta, PublishUrl, UpdateLanding, UserSocial} from '@deckdeckgo/editor';
 import {AuthStore} from '../stores/auth.store';
 import {DeckStore} from '../stores/deck.store';
 import {DocStore} from '../stores/doc.store';
@@ -71,7 +61,7 @@ const publishDoc = async ({inputs, config}: PublishParams): Promise<void> => {
 };
 
 const publishDeck = async ({inputs, config}: PublishParams): Promise<void> => {
-  const deck: Deck = updateDeckMeta(inputs);
+  const deck: Deck = updateDeckMeta({inputs, config});
 
   const {deckPublish}: {deckPublish: DeckPublish} = await cloudProvider<{deckPublish: DeckPublish}>();
 
@@ -84,22 +74,23 @@ export const updateLanding = async (): Promise<void> => {
   await updateLandingPage();
 };
 
-const updateDeckMeta = (inputs: PublishInputs): Deck => {
+const updateDeckMeta = ({inputs, config}: PublishParams): Deck => {
   const deck: Deck = {...DeckStore.getInstance().get()};
 
-  const {name, github} = inputs;
+  const {title} = inputs;
+  const {github} = config;
 
-  deck.data.name = name;
+  deck.data.name = title;
 
   deck.data.meta = updateMeta({inputs, meta: deck.data.meta});
 
   // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept
   if (AuthStore.getInstance().get().gitHub) {
     if (deck.data.github) {
-      deck.data.github.publish = github;
+      deck.data.github.publish = github === true;
     } else {
       deck.data.github = {
-        publish: github
+        publish: github === true
       };
     }
   }
@@ -115,8 +106,8 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
 const updateDocMeta = (inputs: PublishInputs): Doc => {
   const doc: Doc = {...DocStore.getInstance().get()};
 
-  const {name} = inputs;
-  doc.data.name = name;
+  const {title} = inputs;
+  doc.data.name = title;
 
   doc.data.meta = updateMeta({inputs, meta: doc.data.meta});
 
@@ -124,7 +115,7 @@ const updateDocMeta = (inputs: PublishInputs): Doc => {
 };
 
 const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefined}): Meta => {
-  const {name, description, tags, canonical} = inputs;
+  const {title, description, tags, canonical, lang} = inputs;
 
   if (!UserStore.getInstance().get() || !UserStore.getInstance().get().data) {
     throw new Error('No user');
@@ -134,12 +125,12 @@ const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefin
 
   const updateMeta: Meta = !meta
     ? {
-        title: name,
+        title,
         updated_at: now as unknown as Date
       }
     : {
         ...meta,
-        title: name,
+        title,
         updated_at: now as unknown as Date
       };
 
@@ -194,6 +185,12 @@ const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefin
     updateMeta.canonical = canonical;
   } else {
     updateMeta.canonical = null;
+  }
+
+  if (lang !== null && lang !== undefined && lang !== '') {
+    updateMeta.lang = lang;
+  } else {
+    updateMeta.lang = null;
   }
 
   return updateMeta;

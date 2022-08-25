@@ -138,11 +138,13 @@ export class AppPublishEdit {
         this.onSuccessfulPublish();
 
         await publish({
-          name: this.caption,
-          description: this.description,
-          tags: this.tags,
-          github: this.pushToGitHub,
-          canonical: this.canonical
+          inputs: {
+            title: this.caption,
+            description: this.description,
+            tags: this.tags,
+            canonical: this.canonical
+          },
+          github: this.pushToGitHub
         });
 
         resolve();
