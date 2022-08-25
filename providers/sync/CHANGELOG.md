@@ -1,3 +1,9 @@
+# 0.0.37 (2022-08-25)
+
+### Features
+
+- support for published `lang`
+
 # 0.0.36 (2022-08-15)
 
 ### Features

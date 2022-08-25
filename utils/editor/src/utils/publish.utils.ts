@@ -1,24 +1,22 @@
 import {Deck} from '../models/data/deck';
 import {Doc} from '../models/data/doc';
-import {Meta} from '../models/data/meta';
+import {Author, Meta} from '../models/data/meta';
 import {deckSelector} from './deck.utils';
 import {docSelector} from './doc.utils';
 import {getGoogleFontUrl, GoogleFont, googleFonts} from './fonts.utils';
 import {cleanNode, dirtyPublishAttributes, isElementNode} from './node.utils';
 
-export interface PublishData {
-  title: string;
-  description: string;
-  author: string;
-  bio: string | undefined;
-  photo_url: string | undefined;
-  head_extra: string | undefined;
-  attributes: Record<string, string> | undefined;
-  social_image_name: string;
-  social_image_value: Blob | undefined;
-  social_links: string | undefined;
-  social_image_link: string | undefined;
-}
+export type PublishData = Required<Pick<Meta, 'title' | 'description' | 'lang'>> &
+  Pick<Author, 'bio' | 'photo_url'> &
+  Pick<Meta, 'canonical'> & {
+    author: string;
+    head_extra: string | undefined;
+    attributes: Record<string, string> | undefined;
+    social_image_name: string;
+    social_image_value: Blob | undefined;
+    social_links: string | undefined;
+    social_image_link: string | undefined;
+  };
 
 export interface DeckPublishData extends PublishData {
   slides: string[];
@@ -94,7 +92,7 @@ const publishData = async ({
   return {
     title,
     description: (meta?.description || fallbackName)?.trim(),
-    author: meta?.author?.name || fallbackAuthor,
+    author: meta?.author?.name ?? fallbackAuthor,
     bio: meta?.author?.bio,
     photo_url: meta?.author?.photo_url,
     head_extra: head_extra.length > 0 ? head_extra.join('') : undefined,
@@ -102,7 +100,8 @@ const publishData = async ({
     social_image_name: encodeURI(title).toLowerCase(),
     social_image_value: socialImage,
     social_links: buildSocialLinks({meta, socialImgPath}),
-    social_image_link: undefined
+    social_image_link: undefined,
+    lang: meta?.lang ?? 'en'
   };
 };
 

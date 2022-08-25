@@ -1,3 +1,9 @@
+# 8.2.0 (2022-08-25)
+
+### Features
+
+- publish `lang` (default `en`)
+
 # 8.1.1 (2022-08-15)
 
 ### Features
