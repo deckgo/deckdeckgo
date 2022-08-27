@@ -14,6 +14,7 @@ export default {
 };
 
 export const Poll = ({pollLink, socketUrl}) => {
+  const simpleLink = pollLink.replace('https://', '');
   return `<div class="container">
   <deckgo-deck embedded="true">
     <deckgo-slide-poll poll-link="${pollLink}" socket-url="${socketUrl}">
@@ -22,9 +23,9 @@ export const Poll = ({pollLink, socketUrl}) => {
         <p slot="answer-2">Meh</p>
         <p slot="answer-3">I could'nt care less</p>
         <p slot="answer-4">Tell me why</p>
-        <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
-        <p slot="awaiting-votes">Awaiting first votes</p>
         <p slot="answer-5">Ain't nothin' but a heartache</p>
+        <p slot="how-to">Go to <a href="${pollLink}">${simpleLink}</a> and use the code {0}</p>
+        <p slot="awaiting-votes">Awaiting first votes</p>
       </deckgo-slide-poll>
   </deckgo-deck>
 </div>`;
