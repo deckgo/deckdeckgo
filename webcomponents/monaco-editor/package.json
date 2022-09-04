@@ -1,9 +1,9 @@
 {
   "name": "@deckdeckgo/monaco-editor",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "A Monaco Editor web component",
   "main": "dist/index.cjs.js",
-  "module": "dist/monaco-editor/monaco-editor.esm.js",
+  "module": "dist/index.js",
   "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",

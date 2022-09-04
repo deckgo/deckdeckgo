@@ -1,9 +1,9 @@
 {
   "name": "@deckdeckgo/highlight-code",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "description": "A Web Component to highlight your code",
   "main": "dist/index.cjs.js",
-  "module": "dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js",
+  "module": "dist/index.js",
   "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",

@@ -59,6 +59,14 @@ export namespace Components {
         "label": string;
     }
 }
+export interface DeckgoHighlightCodeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeckgoHighlightCodeElement;
+}
+export interface DeckgoHighlightCodeEditCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeckgoHighlightCodeEditElement;
+}
 declare global {
     interface HTMLDeckgoHighlightCodeElement extends Components.DeckgoHighlightCode, HTMLStencilElement {
     }
@@ -102,11 +110,11 @@ declare namespace LocalJSX {
         /**
           * Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway.
          */
-        "onPrismLanguageError"?: (event: CustomEvent<string>) => void;
+        "onPrismLanguageError"?: (event: DeckgoHighlightCodeCustomEvent<string>) => void;
         /**
           * Emitted when a language is fetched and loaded
          */
-        "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
+        "onPrismLanguageLoaded"?: (event: DeckgoHighlightCodeCustomEvent<string>) => void;
         "revealProgress"?: 'start' | 'partial' | 'end';
         /**
           * Present the code in a stylish "windowed" card
@@ -119,7 +127,7 @@ declare namespace LocalJSX {
     }
     interface DeckgoHighlightCodeEdit {
         "label"?: string;
-        "onEditCode"?: (event: CustomEvent<void>) => void;
+        "onEditCode"?: (event: DeckgoHighlightCodeEditCustomEvent<void>) => void;
     }
     interface IntrinsicElements {
         "deckgo-highlight-code": DeckgoHighlightCode;

@@ -1,3 +1,9 @@
+# 4.4.0 (2022-09-04)
+
+### Build
+
+- improve support for `vite` projects
+
 # 4.3.0 (2022-03-18)
 
 ### Features
