@@ -18,6 +18,10 @@ export namespace Components {
         "styloConfig": Partial<StyloConfig>;
     }
 }
+export interface DeckgoStudioDocCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeckgoStudioDocElement;
+}
 declare global {
     interface HTMLDeckgoDocIndicatorElement extends Components.DeckgoDocIndicator, HTMLStencilElement {
     }
@@ -42,9 +46,9 @@ declare namespace LocalJSX {
     }
     interface DeckgoStudioDoc {
         "loadDoc"?: (docId: string | undefined) => Promise<Doc> | undefined;
-        "onDocDataEvents"?: (event: CustomEvent<'init' | 'destroy'>) => void;
-        "onDocDidLoad"?: (event: CustomEvent<HTMLElement>) => void;
-        "onDocReady"?: (event: CustomEvent<boolean>) => void;
+        "onDocDataEvents"?: (event: DeckgoStudioDocCustomEvent<'init' | 'destroy'>) => void;
+        "onDocDidLoad"?: (event: DeckgoStudioDocCustomEvent<HTMLElement>) => void;
+        "onDocReady"?: (event: DeckgoStudioDocCustomEvent<boolean>) => void;
         "resetDoc"?: () => void | undefined;
         "styloConfig"?: Partial<StyloConfig>;
     }

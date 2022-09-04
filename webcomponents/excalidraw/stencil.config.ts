@@ -30,5 +30,8 @@ export const config: Config = {
   ],
   devServer: {
     openBrowser: false
+  },
+  extras: {
+    experimentalImportInjection: true
   }
 };

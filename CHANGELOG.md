@@ -10,14 +10,15 @@
 
 ### Web Components: New
 
-- excalidraw: v1.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/excalidraw/CHANGELOG.md))
+- excalidraw: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/excalidraw/CHANGELOG.md))
 
 ### Web Components:
 
-- lazy-img: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
-- monaco-editor: v1.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
-- studio: v0.0.22 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
-- social-img: v1.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md))
+- highlight-code: v4.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/highlight-code/CHANGELOG.md))
+- lazy-img: v3.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/CHANGELOG.md))
+- monaco-editor: v1.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
+- studio: v0.0.23 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/studio/CHANGELOG.md))
+- social-img: v1.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md))
 
 ### Others
 

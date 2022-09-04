@@ -27,5 +27,8 @@ export const config: Config = {
     postcss({
       plugins: [autoprefixer()]
     })
-  ]
+  ],
+  extras: {
+    experimentalImportInjection: true
+  }
 };

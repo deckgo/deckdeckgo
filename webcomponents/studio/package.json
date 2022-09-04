@@ -1,9 +1,9 @@
 {
   "name": "@deckdeckgo/studio",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "The editor(s) of DeckDeckGo.",
   "main": "dist/index.cjs.js",
-  "module": "dist/studio/studio.esm.js",
+  "module": "dist/index.js",
   "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",
@@ -49,7 +49,7 @@
     "nanoid": "^4.0.0"
   },
   "peerDependencies": {
-    "@deckdeckgo/lazy-img": "^3.2.0",
+    "@deckdeckgo/lazy-img": "*",
     "@papyrs/stylo": "*"
   },
   "devDependencies": {

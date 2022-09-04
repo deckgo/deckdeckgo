@@ -14,6 +14,10 @@ export namespace Components {
         "updateLanguage": (languageId: string) => Promise<void>;
     }
 }
+export interface DeckgoMonacoEditorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeckgoMonacoEditorElement;
+}
 declare global {
     interface HTMLDeckgoMonacoEditorElement extends Components.DeckgoMonacoEditor, HTMLStencilElement {
     }
@@ -27,7 +31,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoMonacoEditor {
-        "onEditorDidLoad"?: (event: CustomEvent<void>) => void;
+        "onEditorDidLoad"?: (event: DeckgoMonacoEditorCustomEvent<void>) => void;
         "options"?: MonacoEditorOptions;
     }
     interface IntrinsicElements {
