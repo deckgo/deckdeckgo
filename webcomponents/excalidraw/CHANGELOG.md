@@ -1,3 +1,9 @@
+# 1.2.0 (2022-10-10)
+
+### Features
+
+- upgrade `@excalidraw/excalidraw` and scene compatibility
+
 # 1.1.0 (2022-09-04)
 
 ### Build
