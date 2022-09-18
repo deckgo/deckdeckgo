@@ -1,3 +1,9 @@
+# 0.0.38 (2022-09-18)
+
+### Fix
+
+- stringify `bigint` for open and export to filesystem
+
 # 0.0.37 (2022-08-25)
 
 ### Features

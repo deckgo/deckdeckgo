@@ -7,6 +7,8 @@ import {ImportAsset, ImportData} from '../types/import.types';
 import {cleanDeck, cleanDoc} from './import.utils';
 import {isOnline} from './offline.utils';
 
+const bigintStringify = (_key: string, value: unknown): unknown => (typeof value === 'bigint' ? `BIGINT::${value}` : value);
+
 export const zip = async ({data, assets}: {data: ImportData; assets: UserAsset[]}): Promise<Blob> => {
   const zip = await initJSZip();
 
@@ -16,7 +18,7 @@ export const zip = async ({data, assets}: {data: ImportData; assets: UserAsset[]
     })
   );
 
-  const blob: Blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+  const blob: Blob = new Blob([JSON.stringify(data, bigintStringify)], {type: 'application/json'});
 
   zip.file('data.json', blob, {
     base64: true
@@ -25,10 +27,13 @@ export const zip = async ({data, assets}: {data: ImportData; assets: UserAsset[]
   const assetsBlob: Blob = new Blob(
     [
       JSON.stringify(
-        assets.map(({key, url}: UserAsset) => ({
-          key,
-          ...(url && {url})
-        }))
+        assets.map(
+          ({key, url}: UserAsset) => ({
+            key,
+            ...(url && {url})
+          }),
+          bigintStringify
+        )
       )
     ],
     {type: 'application/json'}
