@@ -15,9 +15,9 @@
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
     "clean-css-cli": "^5.3.3",
-    "node-sass": "^6.0.1",
     "postcss": "^8.3.6",
-    "postcss-cli": "^8.3.1"
+    "postcss-cli": "^8.3.1",
+    "sass": "^1.55.0"
   },
   "main": "lib/cjs/index.cjs.js",
   "module": "lib/esm/index.js",
@@ -26,11 +26,11 @@
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib/types",
     "build": "rimraf lib && rimraf css && node ./esbuild.js && npm run ts-declaration && npm run build-deck && npm run build-doc",
     "build-deck": "npm run build-deck-sass && npm run build-deck-autoprefix && npm run build-deck-cleancss",
-    "build-deck-sass": "node-sass --output-style expanded styles/deck/index.scss ./css/deck.css",
+    "build-deck-sass": "sass --style expanded styles/deck/index.scss ./css/deck.css",
     "build-deck-autoprefix": "postcss --use autoprefixer --map false --output ./css/deck.css ./css/deck.css",
     "build-deck-cleancss": "cleancss -o ./css/deck.min.css ./css/deck.css",
     "build-doc": "npm run build-doc-sass && npm run build-doc-autoprefix && npm run build-doc-cleancss",
-    "build-doc-sass": "node-sass --output-style expanded styles/doc/index.scss ./css/doc.css",
+    "build-doc-sass": "sass --style expanded styles/doc/index.scss ./css/doc.css",
     "build-doc-autoprefix": "postcss --use autoprefixer --map false --output ./css/doc.css ./css/doc.css",
     "build-doc-cleancss": "cleancss -o ./css/doc.min.css ./css/doc.css"
   },
