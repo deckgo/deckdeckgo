@@ -11,6 +11,7 @@ export * from './models/data/template';
 export * from './models/data/token';
 export * from './models/data/user';
 export * from './models/data/data';
+export * from './models/data/interaction';
 
 export * from './models/storage/storage';
 
