@@ -1,3 +1,9 @@
+# 8.3.0 (2022-10-02)
+
+### Features
+
+- add `data-selectable-paragraph` to dirty attributes 
+
 # 8.2.0 (2022-08-25)
 
 ### Features

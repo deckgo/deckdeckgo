@@ -11,7 +11,8 @@ export const dirtyAttributes: string[] = [
   'data-gramm',
   'data-gramm_id',
   'data-gramm_editor',
-  'data-gr-id'
+  'data-gr-id',
+  'data-selectable-paragraph'
 ];
 
 export const dirtyPublishAttributes: string[] = ['paragraph_id', 'data-src', ...dirtyAttributes];
