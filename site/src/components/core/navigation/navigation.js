@@ -50,8 +50,6 @@ const Navigation = ({data, fix, lang, navTheme}) => {
   return (
     <>
       <header className={`${header} ` + (fix ? `${fixStyle}` : scrolled ? `${fixStyle} animated` : '') + `${theme}`}>
-        <Announcement></Announcement>
-
         <nav className={nav}>
           <button className={menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
             <img
@@ -66,29 +64,8 @@ const Navigation = ({data, fix, lang, navTheme}) => {
           <div className={start}>
             {renderDeckDeckGo()}
 
-            <Link to={`/${lang}/features`}>
-              <FormattedMessage id="nav.features" />
-            </Link>
-
-            <Link to={`/${lang}/discover`}>
-              <FormattedMessage id="nav.discover" />
-            </Link>
-
-            <Link to={`/${lang}/pricing`}>
-              <FormattedMessage id="nav.pricing" />
-            </Link>
           </div>
 
-          <div className={end}>
-            <a href="https://app.deckdeckgo.com/signin" rel="noopener noreferrer">
-              <FormattedMessage id="nav.signin" />
-            </a>
-
-            <LinkButton
-              targetUrl="https://app.deckdeckgo.com"
-              msgId="nav.write.presentation"
-              color={(navTheme === 'features' || navTheme === 'pricing') && !scrolled ? 'light' : 'primary'}></LinkButton>
-          </div>
         </nav>
       </header>
 

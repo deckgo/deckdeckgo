@@ -17,14 +17,6 @@
     max-width: 720px;
   }
 
-  &:global(.action) {
-    margin: 5.75rem 0 0.25rem;
-  }
-
-  @media (max-width: 768px) {
-    margin: 2.25rem 0 0.25rem;
-  }
-
   :global(section) {
     width: inherit;
 
