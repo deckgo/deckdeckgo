@@ -24,35 +24,8 @@ exports.onCreateNode = async ({node, actions: {createNode}, createNodeId, getCac
 };
 
 exports.sourceNodes = async ({actions, createNodeId, createContentDigest}) => {
-  const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development';
-
-  if (activeEnv !== 'production' || !process.env.FIREBASE_FUNCTIONS_URL || !process.env.FIREBASE_FEED_TOKEN) {
-    const feed = JSON.parse(fs.readFileSync('./decks.sample.json'));
-    createNodes(actions, createNodeId, createContentDigest, feed);
-
-    return;
-  }
-
-  try {
-    const rawResponse = await fetch(`${process.env.FIREBASE_FUNCTIONS_URL}/feed`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.FIREBASE_FEED_TOKEN}`
-      }
-    });
-
-    if (!rawResponse || !rawResponse.ok) {
-      console.error('Cannot fetch feed data.');
-      return;
-    }
-
-    const feed = await rawResponse.json();
-    createNodes(actions, createNodeId, createContentDigest, feed);
-  } catch (err) {
-    console.error(err);
-  }
+  const feed = JSON.parse(fs.readFileSync('./decks.sample.json'));
+  createNodes(actions, createNodeId, createContentDigest, feed);
 };
 
 // https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/creating-a-source-plugin/
