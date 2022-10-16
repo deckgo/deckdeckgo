@@ -10,8 +10,6 @@ import {Links} from '../links/links';
 export const Footer = ({action = true, lang}) => {
   return (
     <footer className={`${footer} ${action ? 'action' : ''}`}>
-      {renderAction()}
-
       <Links lang={lang} action={action}></Links>
     </footer>
   );

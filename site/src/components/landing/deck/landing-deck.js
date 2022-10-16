@@ -76,18 +76,12 @@ export const LandingDeck = () => {
             '--color': 'var(--color-primary-contrast)'
           }}>
           <h2 slot="title" style={{fontSize: 'var(--font-size-h1)', lineHeight: 'var(--line-height-h1)'}}>
-            <FormattedMessage id="hero.deck.slide1.title" />
+            That was a title 😃
           </h2>
           <div slot="content">
             <div>
-              <FormattedMessage id="hero.deck.slide1.content" />
+              And a subtitle
             </div>
-
-            <LinkButton
-              style={{marginTop: '1.25rem'}}
-              targetUrl="https://app.deckdeckgo.com"
-              msgId="hero.deck.slide1.get.started"
-              color="light"></LinkButton>
           </div>
 
           {renderSlideBackground()}
@@ -95,7 +89,7 @@ export const LandingDeck = () => {
 
         <deckgo-slide-title>
           <h2 slot="title">
-            <FormattedMessage id="hero.deck.slide2.title" />
+            It used to work on all devices
           </h2>
           <div slot="content" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '100%'}}>
             <img data-src="/assets/img/landing/mobile-light.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
@@ -217,19 +211,8 @@ function Example() {
 
         <deckgo-slide-title style={{'--background': 'var(--color-dark)', '--color': 'var(--color-dark-contrast)'}}>
           <h2 slot="title">
-            <FormattedMessage id="hero.deck.slide9.title" />
+            <FormattedMessage id="hero.deck.slide9.title" />.
           </h2>
-          <div slot="content" style={{marginBottom: '48px'}}>
-            <h3 style={{fontWeight: '300'}}>
-              <FormattedMessage id="hero.deck.slide9.content" />
-            </h3>
-
-            <LinkButton
-              style={{marginTop: '1.25rem'}}
-              targetUrl="https://app.deckdeckgo.com"
-              msgId="hero.deck.slide9.start.presentation"
-              color="light"></LinkButton>
-          </div>
 
           {renderSlideBackground()}
         </deckgo-slide-title>

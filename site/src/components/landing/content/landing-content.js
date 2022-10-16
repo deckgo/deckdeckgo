@@ -133,12 +133,6 @@ export const LandingContent = () => {
           {renderDescription()}
         </div>
       </section>
-
-      <LandingPoll />
-
-      <section>
-        <div className={`${main} ${remote}`}>{renderRemote()}</div>
-      </section>
     </>
   );
 
