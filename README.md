@@ -124,6 +124,8 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 ## Infrastructure
 
+⚠️ **DEPRECATED** ⚠️
+
 | Project               | Version                                                                                        |              Links              |               Changelog               |
 | --------------------- | ---------------------------------------------------------------------------------------------- | :-----------------------------: | :-----------------------------------: |
 | **AWS (Backend)**     | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.0.0&color=success) |  [`README`](backend/README.md)  |  [`CHANGELOG`](backend/CHANGELOG.md)  |
