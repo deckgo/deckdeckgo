@@ -1,3 +1,9 @@
+# 8.4.0 (2022-10-31)
+
+### Features
+
+- types for `interaction` and `like` data
+
 # 8.3.0 (2022-10-02)
 
 ### Features

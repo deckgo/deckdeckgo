@@ -1,6 +1,6 @@
 <a name="7.1.0"></a>
 
-# [7.1.0](https://github.com/deckgo/deckdeckgo/compare/v7.0.1...v7.1.0) (2022-XX-YY)
+# [7.1.0](https://github.com/deckgo/deckdeckgo/compare/v7.0.1...v7.1.0) (2022-10-31)
 
 ### Providers
 
@@ -22,7 +22,7 @@
 
 ### Others
 
-- editor: v8.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v8.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 
 <a name="7.0.1"></a>
 
