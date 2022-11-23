@@ -19,6 +19,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "internal-ip": "^6.2.0",
-    "socket.io": "2.3.0"
+    "socket.io": "2.5.0"
   }
 }
