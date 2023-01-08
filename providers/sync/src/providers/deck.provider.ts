@@ -14,11 +14,11 @@ export const decks = async (userId: string): Promise<Deck[]> => {
   throw new Error('Not implemented');
 };
 
-export const deleteDeck = async (deckId: string): Promise<void> => {
+export const deleteDeck = async ({deckId, updated_at}: {deckId: string; updated_at?: Date | number | BigInt}): Promise<void> => {
   if (EnvStore.getInstance().cloud()) {
     const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await cloudProvider<{deleteDeck: DeleteDeck}>();
 
-    return deleteUserDeck(deckId);
+    return deleteUserDeck(deckId, updated_at);
   }
 
   throw new Error('Not implemented');
@@ -36,7 +36,13 @@ export const snapshotDeck = (): Promise<() => void | undefined> =>
     }
   });
 
-const snapshotDeckUser = async ({deckId, onNext}: {deckId: string; onNext: (snapshot: Deck) => Promise<void>}): Promise<() => void | undefined> => {
+const snapshotDeckUser = async ({
+  deckId,
+  onNext
+}: {
+  deckId: string;
+  onNext: (snapshot: Deck) => Promise<void>;
+}): Promise<() => void | undefined> => {
   if (EnvStore.getInstance().cloud()) {
     const {snapshotDeck: snapshotUserDeck}: {snapshotDeck: SnapshotDeck} = await cloudProvider<{snapshotDeck: SnapshotDeck}>();
 

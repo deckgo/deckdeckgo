@@ -1,3 +1,9 @@
+# 0.0.39 (2023-01-08)
+
+### Fix
+
+- forward `updated_at` to fix delete features
+
 # 0.0.39 (2022-10-02)
 
 ### Build

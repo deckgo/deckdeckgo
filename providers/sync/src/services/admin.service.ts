@@ -160,14 +160,15 @@ export const deleteDeckOrDoc = async ({data, deleteStorage}: {data: DeckOrDoc; d
     const {
       doc: {
         id,
-        data: {meta}
+        data: {meta},
+        updated_at
       }
     } = data;
 
     // If a pathname is defined, then there is a storage
     const hasStorage: boolean = hasPathname(meta);
 
-    await Promise.all([deleteStorageFile({meta, folder: 'd', deleteStorage}), deleteDoc(id)]);
+    await Promise.all([deleteStorageFile({meta, folder: 'd', deleteStorage}), deleteDoc({docId: id, updated_at})]);
 
     // If we deleted the file in the storage, we also want to update the list of posts displayed on the landing page but only if there is a storage
     if (deleteStorage && hasStorage) {
@@ -179,7 +180,10 @@ export const deleteDeckOrDoc = async ({data, deleteStorage}: {data: DeckOrDoc; d
 
   const {deck} = data;
 
-  await Promise.all([deleteStorageFile({meta: deck.data.meta, folder: 'p', deleteStorage}), deleteDeck(deck.id)]);
+  await Promise.all([
+    deleteStorageFile({meta: deck.data.meta, folder: 'p', deleteStorage}),
+    deleteDeck({deckId: deck.id, updated_at: deck.updated_at})
+  ]);
 };
 
 const deleteStorageFile = async ({meta, folder, deleteStorage}: {meta: Meta | undefined; folder: 'p' | 'd'; deleteStorage: boolean}) => {

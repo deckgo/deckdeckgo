@@ -1,3 +1,11 @@
+<a name="7.2.0"></a>
+
+# [7.2.0](https://github.com/deckgo/deckdeckgo/compare/v7.1.0...v7.2.0) (2023-XX-YY)
+
+### Providers
+
+- sync: v0.0.40 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/offline/CHANGELOG.md))
+
 <a name="7.1.0"></a>
 
 # [7.1.0](https://github.com/deckgo/deckdeckgo/compare/v7.0.1...v7.1.0) (2022-10-31)
